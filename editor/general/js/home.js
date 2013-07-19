@@ -1,5 +1,12 @@
+// Globale Variablen
+var xDrehung = 0;
+var yDrehung = 0;
+var zDrehung = 0;
+
+
 // Fuer die ID-Zuweisung
 var shapeCounter = 0;
+
 
 // Die Variable speicher die mit der Maus zuletzt ausgewaehlte ID eines Elements
 var aktuelleID;
@@ -40,8 +47,7 @@ function addElement(element)
     
     /* Letzte erzeugtes Element bleibt ausgewaehlt */
    	aktuelleID = IDname;
-   	
-   	    
+   
     return false;
 };
 
@@ -147,8 +153,7 @@ $(function()
 	});
 /*************************************************************************************************************/	
 
-
-	// Verschieben der Slider //
+	// Slider zum Verschieben //
 	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
     	var koordinaten =   $("#x-sliderV").slider('option', 'value') + " " 
         	              + $("#y-sliderV").slider('option', 'value') + " "  
@@ -163,7 +168,7 @@ $(function()
      }});
 
 		
-	// Skalieren der Slider //
+	// Slider zum Skalieren //
 	$(".slider2").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
     	var koordinaten =   $("#sliderS").slider('option', 'value') + " " 
         	              + $("#sliderS").slider('option', 'value') + " "  
@@ -174,4 +179,43 @@ $(function()
         $( "#amount-S" ).val( $( "#sliderS" ).slider( "value" ) );     
      }});
 
+	
+	// Slider zum Drehen ////////////////////////////////////////////////////////////////////////////////////////////////////////
+	$(".slider3").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
+		
+		var winkel = $("#x-sliderD").slider('option', 'value');
+		var bogenmass = winkel * (3.14 / 180);
+    	var koordinatenX = winkel + " " + yDrehung + " "  + zDrehung + " " + bogenmass;
+    	
+    	xDrehung = winkel;
+    	
+        document.getElementById(aktuelleID).setAttribute("rotation", koordinatenX);
+        $( "#amount-xD" ).val( $( "#x-sliderD" ).slider( "value" ) );
+    }});
+     
+    $(".slider4").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
+        
+        var winkel = $("#y-sliderD").slider('option', 'value');
+		var bogenmass = winkel * (3.14 / 180);
+    	var koordinatenY = xDrehung + " " + winkel + " "  + zDrehung + " " + bogenmass;
+    	
+    	yDrehung = winkel;
+    	
+        document.getElementById(aktuelleID).setAttribute("rotation", koordinatenY);
+     	$( "#amount-yD" ).val( $( "#y-sliderD" ).slider( "value" ) );
+    }});
+     
+    $(".slider5").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
+        
+		var winkel = $("#z-sliderD").slider('option', 'value');
+		var bogenmass = winkel * (3.14 / 180);
+    	var koordinatenZ = xDrehung + " " + yDrehung + " "  + winkel + " " + bogenmass;
+    	
+    	zDrehung = winkel;
+    	
+        document.getElementById(aktuelleID).setAttribute("rotation", koordinatenZ);
+     	$( "#amount-zD" ).val( $( "#z-sliderD" ).slider( "value" ) );
+    }});
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 });

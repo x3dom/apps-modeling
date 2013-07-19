@@ -1,4 +1,4 @@
-#verschieben, #skalieren
+#verschieben, #skalieren, #drehen
 {
 	border:2px solid #102941;
 	margin-top: 15px;
@@ -13,7 +13,7 @@
 	font-weight: bold;
 }
 
-.slider1, .slider2
+.slider1, .slider2, .slider3, .slider4, .slider5
 {
 	margin-top: 10px;
 	margin-left: 10%;
@@ -25,7 +25,7 @@
 	margin: 5px;
 }
 
-#z-sliderV,  #sliderS
+#z-sliderV,  #sliderS, #z-sliderD
 {
 	margin-bottom: 20px;
 }
