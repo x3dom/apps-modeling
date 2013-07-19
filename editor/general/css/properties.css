@@ -1,0 +1,31 @@
+#verschieben, #skalieren
+{
+	border:2px solid #102941;
+	margin-top: 15px;
+}
+
+/* Textfelder wo die Zahlen kommen */
+.amount
+{
+	width: 40px;
+	margin-left: 5px;
+	color: #052F57;
+	font-weight: bold;
+}
+
+.slider1, .slider2
+{
+	margin-top: 10px;
+	margin-left: 10%;
+	width: 80%;
+}
+
+.text-slider
+{
+	margin: 5px;
+}
+
+#z-sliderV,  #sliderS
+{
+	margin-bottom: 20px;
+}

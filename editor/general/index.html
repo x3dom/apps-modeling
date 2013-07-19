@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Bachelorarbeit</title>
+		<link href="css/custom-theme/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/jquery-ui-1.10.3.custom.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="css/properties.css"/>
+		<link rel="stylesheet" type="text/css" href="css/home.css"/>
+		<script src="js/home.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/x3dom.css"/>
+    	<script type="text/javascript" src="http://www.x3dom.org/download/x3dom.js"></script>
+    	
+    	<script>
+			$(function()
+			{
+				$("#menu-accordeon").button();
+				$("#loeschen").button();
+				$("#export").button();
+				$("#import").button();
+				
+				$("#Box").button();
+				$("#Cone").button();
+				$("#Cylinder").button();
+				$("#Sphere").button();
+				
+				$("#axisButton").button();
+			});
+		</script>
+	</head>
+	
+	<body>
+		
+		
+		<div id="rechte-leiste-oben"> 
+			
+			<!---------------------------------------------------------->
+			<div id="menu">
+				<button id="loeschen">Löschen</button>
+				<button id="import">Import</button>
+				<button id="export">Export</button>
+				<button id="menu-accordeon">Menü off</button>
+			</div>
+			<!---------------------------------------------------------->
+		
+		</div>
+		
+		
+		<div id="linke-leiste">
+			
+			<!---------------------------------------------------------->
+			<div id="accordeon-oben">
+				<h3>Grundelemente</h3>
+				<div>
+					<div id="menu_elemente">
+						<button id="Box"> </button>
+						<button id="Sphere"> </button>
+						<button id="Cone"> </button>
+						<button id="Cylinder"> </button>
+					</div>
+				</div>
+				
+					
+				<h3>Transformationen</h3>
+				<div>
+                
+                
+					<!----------------------------------------------------------------------------------->
+					<div id="verschieben">						
+						<p>
+							<label style="margin: 5px;">Verschieben</label>	
+						</p>
+					
+						<p>
+							<label for="amount-xV" class="text-slider">X :</label>
+							<input type="text" id="amount-xV" class="amount" value="0"/>
+
+							<label for="amount-yV" class="text-slider">Y :</label>
+							<input type="text" id="amount-yV"class="amount" value="0"/>
+
+							<label for="amount-zV" class="text-slider">Z :</label>
+							<input type="text" id="amount-zV" class="amount" value="0"/>
+						</p>
+						
+						<div id="x-sliderV" class="slider1"> </div>
+						<div id="y-sliderV" class="slider1"> </div>
+						<div id="z-sliderV" class="slider1"> </div>	
+					</div>
+					<!----------------------------------------------------------------------------------->
+					
+					
+					<!----------------------------------------------------------------------------------->
+					<div id="skalieren">
+						<p>
+							<label for="amount-S" class="text-slider">Skalieren :</label>
+							<input type="text" id="amount-S" class="amount" value="0"/>
+						</p>
+						
+						<div id="sliderS" class="slider2"> </div>
+					</div>
+					<!----------------------------------------------------------------------------------->
+				</div>
+				
+				
+				<!----------------------------------------------------------------------------------->
+				
+				<h3>Eigenschaften</h3>
+				
+				<!----------------------------------------------------------------------------------->
+				
+			</div>
+			<!---------------------------------------------------------->
+			
+		</div>
+		
+		<div id="DIVaxisButton"><button id="axisButton"> </button></div>
+		
+		<!---------------------------------------------------------->
+		<div id="x3d-view">
+			<x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
+				<scene>
+					<viewpoint position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209"></viewpoint>
+					<transform id="root" translation="0 0 0"></transform>
+					<transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
+				</scene>
+			</x3d>
+		</div>
+		<!---------------------------------------------------------->
+		
+
+	</body>
+</html>

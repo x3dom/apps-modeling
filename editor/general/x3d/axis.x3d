@@ -1,0 +1,53 @@
+<x3d>
+	<scene>
+		<group>
+			<!-- X arrow and label -->
+            <Transform rotation='0 0 1 -1.57079'>
+            	<Shape>
+                	<Cylinder DEF='ArrowCylinder' bottom='false' radius='.025' height='20.0' top='false'></Cylinder>                    
+                    <Appearance DEF='Red'><Material diffuseColor='.7 .1 .1' emissiveColor='.33 0 0'></Material></Appearance>
+               	</Shape>
+                
+                <Transform translation='0 10.25 0'>
+                	<Shape>                            
+                		<Cone DEF='ArrowCone' bottomRadius='.10' height='0.5'></Cone>
+                    	<Appearance USE='Red'></Appearance>
+                	</Shape>
+                </Transform>                
+			</Transform>
+			
+			
+			<!-- Y arrow and label -->                            
+            <Shape>
+            	<Cylinder USE='ArrowCylinder'></Cylinder>
+            	<Appearance DEF='Green'>
+                	<Material diffuseColor='.1 .6 .1' emissiveColor='.05 .2 .05'></Material>
+            	</Appearance>
+			</Shape>
+            <Transform translation='0 10.25 0'>
+            	<Shape>
+                	<Cone USE='ArrowCone'></Cone>
+                    <Appearance USE='Green'></Appearance>
+              	</Shape>
+			</Transform>
+			
+			
+			<!-- Z arrow and label -->
+            <Transform rotation='1 0 0 1.57079'>                                    
+            	<Shape>
+                	<Cylinder USE='ArrowCylinder'></Cylinder>
+                    	<Appearance DEF='Blue'>
+                        	<Material diffuseColor='.3 .3 1' emissiveColor='.1 .1 .33'></Material>
+                        </Appearance>
+            	</Shape>
+                <Transform translation='0 10.25 0'>
+                	<Shape>
+                    	<Cone USE='ArrowCone'></Cone>
+                        <Appearance USE='Blue'></Appearance>
+                    </Shape>
+                </Transform>
+			</Transform>
+			
+		</group>
+	</scene>
+</x3d> 
