@@ -1,11 +1,10 @@
-// Globale Variablen
-var xDrehung = 0;
-var yDrehung = 0;
-var zDrehung = 0;
-
-
 // Fuer die ID-Zuweisung
 var shapeCounter = 0;
+
+// fuer die Slider im Verschiebenfeld
+var posX = 0;
+var posY = 0;
+var posZ = 0;
 
 
 // Die Variable speicher die mit der Maus zuletzt ausgewaehlte ID eines Elements
@@ -58,6 +57,20 @@ function addElement(element)
 function elementAttribute(IDname)
 {
 	aktuelleID = IDname;
+	
+	
+	/* X Y Z Position vom Element Speichern jedes Mal beim klick */
+	var pos = document.getElementById(aktuelleID).getAttribute("translation");
+	translationOffset = x3dom.fields.SFVec3f.parse(pos);
+	posX = translationOffset[0];
+	posY = translationOffset[1];
+	posZ = translationOffset[2];
+	
+		
+	// Textfelder und Slider aktualisieren - Verschieben
+	$( "#amount-xV" ).val( posX.valueOf );
+    $( "#amount-yV" ).val( posY.valueOf );
+    $( "#amount-zV" ).val( posZ.valueOf );
 };
 
 
@@ -154,17 +167,20 @@ $(function()
 /*************************************************************************************************************/	
 
 	// Slider zum Verschieben //
-	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
-    	var koordinaten =   $("#x-sliderV").slider('option', 'value') + " " 
-        	              + $("#y-sliderV").slider('option', 'value') + " "  
-            	          + $("#z-sliderV").slider('option', 'value');
+	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {		
+		
+		posX = $("#x-sliderV").slider('option', 'value');
+		posY = $("#y-sliderV").slider('option', 'value');
+		posZ = $("#z-sliderV").slider('option', 'value');
+    	
+    	var koordinaten =   posX + " " + posY + " " + posZ;
             	          
         document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
         
-        $( "#amount-xV" ).val( $( "#x-sliderV" ).slider( "value" ) );
-     	$( "#amount-yV" ).val( $( "#y-sliderV" ).slider( "value" ) );
-     	$( "#amount-zV" ).val( $( "#z-sliderV" ).slider( "value" ) );
-     
+        // Textfelder aktualisieren
+        $( "#amount-xV" ).val( posX );
+     	$( "#amount-yV" ).val( posY );
+     	$( "#amount-zV" ).val( posZ );
      }});
 
 		
@@ -185,9 +201,7 @@ $(function()
 		
 		var winkel = $("#x-sliderD").slider('option', 'value');
 		var bogenmass = winkel * (3.14 / 180);
-    	var koordinatenX = winkel + " " + yDrehung + " "  + zDrehung + " " + bogenmass;
-    	
-    	xDrehung = winkel;
+    	var koordinatenX = winkel + " " + 0 + " "  + 0 + " " + bogenmass;
     	
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenX);
         $( "#amount-xD" ).val( $( "#x-sliderD" ).slider( "value" ) );
@@ -197,10 +211,8 @@ $(function()
         
         var winkel = $("#y-sliderD").slider('option', 'value');
 		var bogenmass = winkel * (3.14 / 180);
-    	var koordinatenY = xDrehung + " " + winkel + " "  + zDrehung + " " + bogenmass;
-    	
-    	yDrehung = winkel;
-    	
+    	var koordinatenY = 0 + " " + winkel + " "  + 0 + " " + bogenmass;
+
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenY);
      	$( "#amount-yD" ).val( $( "#y-sliderD" ).slider( "value" ) );
     }});
@@ -209,9 +221,7 @@ $(function()
         
 		var winkel = $("#z-sliderD").slider('option', 'value');
 		var bogenmass = winkel * (3.14 / 180);
-    	var koordinatenZ = xDrehung + " " + yDrehung + " "  + winkel + " " + bogenmass;
-    	
-    	zDrehung = winkel;
+    	var koordinatenZ = 0 + " " + 0 + " "  + winkel + " " + bogenmass;
     	
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenZ);
      	$( "#amount-zD" ).val( $( "#z-sliderD" ).slider( "value" ) );
