@@ -62,15 +62,24 @@ function elementAttribute(IDname)
 	/* X Y Z Position vom Element Speichern jedes Mal beim klick */
 	var pos = document.getElementById(aktuelleID).getAttribute("translation");
 	translationOffset = x3dom.fields.SFVec3f.parse(pos);
-	posX = translationOffset[0];
-	posY = translationOffset[1];
-	posZ = translationOffset[2];
 	
-		
-	// Textfelder und Slider aktualisieren - Verschieben
-	$( "#amount-xV" ).val( posX.valueOf );
-    $( "#amount-yV" ).val( posY.valueOf );
-    $( "#amount-zV" ).val( posZ.valueOf );
+	/*
+	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {		
+    	
+    	//document.getElementById(".slider1").setAttribute('option', translationOffset);
+    	
+    	var koordinaten = $("#x-sliderV").slider('option', 'value') + " " + 
+    					  $("#y-sliderV").slider('option', 'value') + " " + 
+    					  $("#z-sliderV").slider('option', 'value');
+            	          
+        document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
+        
+        // Textfelder aktualisieren
+        $( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
+     	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
+     	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
+     }});
+     */
 };
 
 
@@ -165,7 +174,6 @@ $(function()
 		icons: iconsAccordion
 	});
 /*************************************************************************************************************/	
-
 	// Slider zum Verschieben //
 	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {		
 		
