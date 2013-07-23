@@ -1,11 +1,6 @@
 // Fuer die ID-Zuweisung
 var shapeCounter = 0;
 
-// fuer die Slider im Verschiebenfeld
-var posX = 0;
-var posY = 0;
-var posZ = 0;
-
 
 // Die Variable speicher die mit der Maus zuletzt ausgewaehlte ID eines Elements
 var aktuelleID;
@@ -40,10 +35,11 @@ function addElement(element)
         
     var ot = document.getElementById('root');
     ot.appendChild(t);
-    
-    /* Jedes Element bekommt ein eigenes ID, und ein eigenes eventListener */
-    document.getElementById(IDname).addEventListener("click", function(){elementAttribute(IDname)}, true);
-    
+       	
+
+   	document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
+
+
     /* Letzte erzeugtes Element bleibt ausgewaehlt */
    	aktuelleID = IDname;
    
@@ -51,37 +47,12 @@ function addElement(element)
 };
 
 
-
-// Wenn auf ein Element geklickt wird speichern wir zu erst seine ID, 
-//mit der ID koennen andere Funktionen auf das Element angewendet werden
-function elementAttribute(IDname)
+function elementClick(IDname)
 {
+	/* neue aktuelleID setzen */
 	aktuelleID = IDname;
-	
-	
-	/* X Y Z Position vom Element Speichern jedes Mal beim klick */
-	var pos = document.getElementById(aktuelleID).getAttribute("translation");
-	translationOffset = x3dom.fields.SFVec3f.parse(pos);
-	
-	/*
-	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {		
-    	
-    	//document.getElementById(".slider1").setAttribute('option', translationOffset);
-    	
-    	var koordinaten = $("#x-sliderV").slider('option', 'value') + " " + 
-    					  $("#y-sliderV").slider('option', 'value') + " " + 
-    					  $("#z-sliderV").slider('option', 'value');
-            	          
-        document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
-        
-        // Textfelder aktualisieren
-        $( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
-     	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
-     	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
-     }});
-     */
+	position();
 };
-
 
 
 // Remove die Nodeelemente mit Hilfe der ID    
@@ -173,26 +144,43 @@ $(function()
 		active: false,
 		icons: iconsAccordion
 	});
-/*************************************************************************************************************/	
-	// Slider zum Verschieben //
-	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {		
-		
-		posX = $("#x-sliderV").slider('option', 'value');
-		posY = $("#y-sliderV").slider('option', 'value');
-		posZ = $("#z-sliderV").slider('option', 'value');
-    	
-    	var koordinaten =   posX + " " + posY + " " + posZ;
-            	          
-        document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
-        
-        // Textfelder aktualisieren
-        $( "#amount-xV" ).val( posX );
-     	$( "#amount-yV" ).val( posY );
-     	$( "#amount-zV" ).val( posZ );
-     }});
 
+/*******************************************************************************************************************************/
+
+function position()
+{
+	//Position beim klick aufrufen 
+	var pos = document.getElementById(aktuelleID).getAttribute("translation");
+	translationOffset = x3dom.fields.SFVec3f.parse(pos);
 		
-	// Slider zum Skalieren //
+	$("#x-sliderV").slider('option', 'value', translationOffset[0]);
+	$("#y-sliderV").slider('option', 'value', translationOffset[1]);
+	$("#z-sliderV").slider('option', 'value', translationOffset[2]);
+	
+	// Textfelder aktualisieren
+    $( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
+    $( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
+    $( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
+	
+}
+
+	// Slider zum Verschieben ////////////////////////////////////////////////////////////////////////////////////////////////// 
+	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
+								
+    var koordinaten = $("#x-sliderV").slider('option', 'value') + " " + 
+    		 	  	  $("#y-sliderV").slider('option', 'value') + " " + 
+    		  	  	  $("#z-sliderV").slider('option', 'value');
+          	          
+    	document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
+        
+    	// Textfelder aktualisieren
+    	$( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
+    	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
+    	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
+    }});
+	
+	
+	// Slider zum Skalieren ////////////////////////////////////////////////////////////////////////////////////////////////////
 	$(".slider2").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
     	var koordinaten =   $("#sliderS").slider('option', 'value') + " " 
         	              + $("#sliderS").slider('option', 'value') + " "  
