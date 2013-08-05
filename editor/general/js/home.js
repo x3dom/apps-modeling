@@ -167,7 +167,7 @@ $(function()
 				
 	$("#accordeon-oben").accordion({
 		heightStyle: "content",
-		collapsible: true,
+		collapsible: false,
 		active: false,
 		icons: iconsAccordion
 	});

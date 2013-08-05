@@ -106,138 +106,97 @@
 				$("#Sphere").button();
 				
 				$("#axisButton").button();
-			});
-		</script>
+                                 
+                                
+                        });
+                        
+                        var fadeSwitch = 0;
+                        function fadeLeft(){
+                            if (fadeSwitch === 0){
+                                $("#Links").animate(
+                                {
+                                    left: "-70px"
+                                }, 250);
+                                fadeSwitch++;
+                            }
+                            else {
+                                $("#Links").animate(
+                                {
+                                    left: "0px"
+                                }, 250);
+                                fadeSwitch--;
+                            }
+                        }
+                        
+                        
+                        var fadeSwitch1 = 0;
+                        function fadeRight(){
+                            if (fadeSwitch1 === 0){
+                                $("#Rechts").animate(
+                                {
+                                    right: "-170px"
+                                }, 250);
+                                fadeSwitch1++;
+                            }
+                            else {
+                                $("#Rechts").animate(
+                                {
+                                    right: "0px"
+                                }, 250);
+                                fadeSwitch1--;
+                            }
+                        }
+                        
+        </script>
 	</head>
 	
-	<body>
-		
-		
-		<div id="rechte-leiste-oben"> 
-			
-			<!---------------------------------------------------------->
-			<div id="menu">
-				<button id="loeschen">Löschen</button>
-				<button id="import">Import</button>
-				<button id="export">Export</button>
-				<button id="menu-accordeon">Menü off</button>
-			</div>
-			<!---------------------------------------------------------->
-		
-		</div>
-		
-		
-		<div id="linke-leiste">
-			
-			<!---------------------------------------------------------->
-			<div id="accordeon-oben">
-				<h3>Grundelemente</h3>
-				<div>
-					<div id="menu_elemente">
-						<button id="Box"> </button>
-						<button id="Sphere"> </button>
-						<button id="Cone"> </button>
-						<button id="Cylinder"> </button>
-					</div>
-				</div>
-				
-					
-				<h3>Transformationen</h3>
-				<div>
-                
-					<!----------------------------------------------------------------------------------->
-					<div id="verschieben">						
-						<p>
-							<label style="margin: 5px;">Verschieben</label>	
-						</p>
-					
-						<p>
-							<label for="amount-xV" class="text-slider">X :</label>
-							<input type="text" id="amount-xV" class="amount" value="0"/>
-
-							<label for="amount-yV" class="text-slider">Y :</label>
-							<input type="text" id="amount-yV" class="amount" value="0"/>
-
-							<label for="amount-zV" class="text-slider">Z :</label>
-							<input type="text" id="amount-zV" class="amount" value="0"/>
-						</p>
-						
-						<div id="x-sliderV" class="slider1"> </div>
-						<div id="y-sliderV" class="slider1"> </div>
-						<div id="z-sliderV" class="slider1"> </div>	
-					</div>
-					<!----------------------------------------------------------------------------------->
-					
-					
-					<!----------------------------------------------------------------------------------->
-					<div id="skalieren">
-						<p>
-							<label for="amount-S" class="text-slider">Skalieren :</label>
-							<input type="text" id="amount-S" class="amount" value="0"/>
-						</p>
-						
-						<div id="sliderS" class="slider2"> </div>
-					</div>
-					<!----------------------------------------------------------------------------------->
-					
-					<!----------------------------------------------------------------------------------->
-					<div id="drehen">						
-						<p>
-							<label style="margin: 5px;">Drehen</label>	
-						</p>
-					
-						<p>
-							<label for="amount-xD" class="text-slider">X :</label>
-							<input type="text" id="amount-xD" class="amount" value="0"/>
-
-							<label for="amount-yD" class="text-slider">Y :</label>
-							<input type="text" id="amount-yD" class="amount" value="0"/>
-
-							<label for="amount-zD" class="text-slider">Z :</label>
-							<input type="text" id="amount-zD" class="amount" value="0"/>
-						</p>
-						
-						<div id="x-sliderD" class="slider3"> </div>
-						<div id="y-sliderD" class="slider4"> </div>
-						<div id="z-sliderD" class="slider5"> </div>	
-					</div>
-					<!----------------------------------------------------------------------------------->
-				</div>
-				
-				
-				<!----------------------------------------------------------------------------------->
-				
-				<h3>Eigenschaften</h3>
-				
-				<!----------------------------------------------------------------------------------->
-				
-			</div>
-			<!---------------------------------------------------------->
-			
-		</div>
-		
-		<div id="DIVaxisButton"><button id="axisButton"> </button></div>
-		
-		<!---------------------------------------------------------->
-		<div id="x3d-view">
-			<x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
-				<scene>
-					<viewpoint position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209"></viewpoint>
-                                        
-                                        <Shape render='true'>
-                                            <Appearance>
-                                              <Material ambientIntensity='0' diffuseColor='0.11 0.21 0.11' emissiveColor='0.11 0.21 0.11' shininess='0.1' specularColor='0.3 0.3 0.3'/>
-                                            </Appearance>
-                                            <Plane size='18 18'  primType='LINES' subdivision='48 48' />
-                                         </Shape>
-
-					<transform id="root" translation="0 0 0"></transform>
-					<transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
-				</scene>
-			</x3d>
-		</div>
-		<!---------------------------------------------------------->
-		
-
+	<body style="position: absolute; height: 100%; width: 100%;">
+           
+        <div id="Oben" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; background-color: blue; z-index: 10000;"></div> 
+        <div id="Unten" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; bottom: 0px; background-color: blue; z-index: 10000;"></div> 
+        
+        <div id="Links" style="position: absolute; left: 0px; height:100%; width: 100px; z-index: 10000;">
+            <div style="width: 70px; height: 100%; background-color: yellow;">
+                <img id="Box" src="images/box.jpg" style="width: 60px; height: 60px; margin: 5px;" />
+                <img id="Sphere" src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="Cone" src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="Cylinder" src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+            </div>
+            <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; width: 30px; height: 100px; left: 70px; top: 50%; margin-top: -50px; z-index: 100000; background-color:yellow;"></div>
+        </div>
+        
+        <div id="Rechts" style="position: absolute; right: 0px; height:100%; width: 200px; z-index: 10000;">
+            <div onclick="fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; width: 30px; height: 100px; right: 170px; top: 50%; margin-top: -50px; z-index: 100000; background-color:yellow;"></div>
+            <div style="position:absolute; right: 0px; width: 170px; height: 100%; background-color: yellow;">
+                <img src="images/box.jpg" style="width: 60px; height: 60px; margin: 5px;" />
+                <img src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+            </div>
+        </div>
+        
+        <div id="x3d-view">
+                <x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
+                        <scene>
+                                <viewpoint position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209"></viewpoint>
+                                <transform rotation="1 0 0 -1.57" >
+                                <Shape render='true'>
+                                    <Appearance>
+                                      <Material emissiveColor='0.2 0.2 0.2' />
+                                    </Appearance>
+                                    <Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
+                                 </Shape>
+                                </transform>
+                                <transform id="root" translation="0 0 0"></transform>
+                                <transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
+                        </scene>
+                </x3d>
+        </div>
+        
+        
+        
 	</body>
 </html>
+
+
+

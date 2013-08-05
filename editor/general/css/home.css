@@ -9,8 +9,8 @@ body
 
 #x3d-view
 {
-	z-index: 100;
-	float:none;
+	z-index: 0;
+	float:left;
 	margin: 0px;
 	padding: 0px;
 	min-width: 100%;
@@ -36,13 +36,13 @@ body
 		color-stop(1, rgb(148,148,148))
 	);
 
-	position:fixed;
+	position:absolute;
 }
 
 
 #x3d
 {
-	position:fixed;
+    z-index: 1;
 	min-width: 100%;
 	max-width: 100%;
 	min-height: 100%;
@@ -59,20 +59,18 @@ body
 	width: 30%;
 	min-height: 5%;
 	max-height: 5%;
-	position:absolute;
+	position:relative;
 	/*border:2px solid #102941;*/
 }
 
 
 #linke-leiste
 {
-	visibility: visible;
+    margin-top: 5px;
 	padding-left: 5px;
 	z-index: 200;
-	width: 22%;
-	min-height: 100%;
-	max-height: 100%;
-	position:absolute;
+	width: 60px;
+	float:left;
 
 	/* Durchsichtig
 	opacity: .5;
@@ -164,7 +162,7 @@ body
 	background: url(../images/box.jpg);
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
-	background-size: 95px 95px;
+	background-size: 50px 50px;
 }
 
 		
