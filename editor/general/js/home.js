@@ -26,19 +26,15 @@ function addElement(element)
 	mat.setAttribute("shininess", ".3");
 	
 	app.appendChild(mat);
-	
 	s.appendChild(app);
-		
     t.appendChild(s);
+    
     var b = document.createElement(element);
-    s.appendChild(b);
-        
+    s.appendChild(b);        
     var ot = document.getElementById('root');
     ot.appendChild(t);
        	
-
    	document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
-
 
     /* Letzte erzeugtes Element bleibt ausgewaehlt */
    	aktuelleID = IDname;
@@ -111,54 +107,12 @@ $(function()
 	$("#Sphere").click(function(){window.addElement("Sphere");});
 	$("#Cone").click(function(){window.addElement("Cone");});
 	$("#Box").click(function(){window.addElement("Box");});
-	
-	
-	
 	$("#loeschen").click(function(){window.removeNode();});
-	$("#export").click(function(){});
-	$("#import").click(function(){});
+
 	
+/*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
 	
-// Mit dem Button wird das Koordinatensystem aus- und eingeblendet
-	$("#axisButton").click(function()
-	{		
-		
-		var elem = document.getElementById("#axis");
-		var state = elem.getAttribute("visibility");
-		
-		if(state == hidden)
-		{ 
-			$('#axisButton').css({'background-image':'url(./images/koordinatenSchwarz.png)'});
-			document.getElementById("#axis").setAttribute("visibility", "visible");
-		}
-		else
-		{
-			$('#axisButton').css({'background-image':'url(./images/koordinatenFarbe.png)'});
-			document.getElementById("#axis").setAttribute("visibility", "hidden");
-		}
-	});
-	
-	
-	
-/*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/	
-	
-	/* Mit dem Button kann ich das Menue ein uns ausblenden um Platz auf dem Display zu haben */
-	$("#menu-accordeon").click(function()
-	{
-		
-		if($("#linke-leiste").css('visibility') == 'hidden')
-		{ 	
-			$("#menu-accordeon").html("Menü off");
-			$("#linke-leiste").css('visibility', 'visible');
-		}
-		else
-		{
-			$("#menu-accordeon").html("Menü on");
-			$("#linke-leiste").css('visibility', 'hidden');
-		}
-	});
-		
-	
+	/* Das blendet die kleine Symbole beim Accordion ein */
 	var iconsAccordion = 
 	{
 		header: "ui-icon-circle-arrow-e",

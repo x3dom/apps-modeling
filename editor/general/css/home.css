@@ -42,7 +42,7 @@ body
 
 #x3d
 {
-    z-index: 1;
+    z-index: 10;
 	min-width: 100%;
 	max-width: 100%;
 	min-height: 100%;
@@ -52,47 +52,83 @@ body
 }
 
 
-#rechte-leiste-oben
+#button_Links
 {
-	margin-left: 59.3%;
-	z-index: 200;
-	width: 30%;
-	min-height: 5%;
-	max-height: 5%;
-	position:relative;
-	/*border:2px solid #102941;*/
+	background-image: linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		right top,
+		left top,
+		color-stop(0.95, rgb(17,17,17)),
+		color-stop(1, rgb(255,255,255))
+	);
 }
 
 
-#linke-leiste
+#button_Rechts
 {
-    margin-top: 5px;
-	padding-left: 5px;
-	z-index: 200;
-	width: 60px;
-	float:left;
-
-	/* Durchsichtig
-	opacity: .5;
-	filter: alpha(opacity=50);*/
+	background-image: linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		right top,
+		color-stop(0.95, rgb(17,17,17)),
+		color-stop(1, rgb(255,255,255))
+	);
 }
 
 
-#accordeon-oben
+#Oben
 {
-	z-index: 200;
-	width: 100%;
-	min-height: 100%;
-	max-height: 100%;
+	background-image: linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		right bottom,
+		right top,
+		color-stop(0.95, rgb(17,17,17)),
+		color-stop(1, rgb(255,255,255))
+	);
 }
+
+
+#Unten
+{
+	background-image: linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		right top,
+		right bottom,
+		color-stop(0.95, rgb(17,17,17)),
+		color-stop(1, rgb(255,255,255))
+	);
+}
+
 
 #accordeon-oben .ui-accordion-content
 {
 	padding: 5%;
 }
 
-
-/* Buttons oben rechts **********************/
 
 #loeschen
 {
@@ -106,124 +142,6 @@ body
     position:absolute;
 }
 
-#import
-{
-	margin-left: 25.3%;
-	
-	z-index: 200;    			
-    min-width: 24.2%;
-    max-width: 24.2%;
-    min-height: 100%;
-    max-height: 100%;
-    position:absolute;
-}
-
-#export
-{
-	margin-left: 50.2%;
-	
-	z-index: 200;    			
-    min-width: 24.2%;
-    max-width: 24.2%;
-    min-height: 100%;
-    max-height: 100%;
-    position:absolute;
-}
-
-#menu-accordeon
-{
-	margin-left: 75.1%;
-	
-	z-index: 200;    			
-    min-width: 24.2%;
-    max-width: 24.2%;
-    min-height: 100%;
-    max-height: 100%;
-    position:absolute;
-}
-
-
-/*******************************************/
-
-
-#menu_elemente button
-{
-	margin-left: 8%;
-	margin-right: auto;
-	margin-top: 8%;
-   			
-	width: 100px;
-	height: 100px;
-}
-
-			
-#Box
-{
-	background: url(../images/box.jpg);
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-size: 50px 50px;
-}
-
-		
-#Cone
-{
-	background: url(../images/cone.jpg);
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-size: 95px 95px;
-}
-
-			
-#Cylinder
-{
-	background: url(../images/cylinder.jpg);
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-size: 95px 95px;
-}
-
-			
-#Sphere
-{
-	background: url(../images/sphere.jpg);
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-size: 95px 95px;
-}
-
-/*********************************************************/
-
-#DIVaxisButton
-{
-	margin-top: 43%;
-	margin-left: 94.1%;
-	z-index: 200;
-	width: 70px;
-	height: 70px;
-	position:absolute;
-	border:4px solid #102941;
-}
-
-
-#axisButton
-{
-	background: url(../images/koordinatenFarbe.png);
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-size: 70px 70px;
-	
-	min-height: 70px;
-	max-height: 70px;
-	
-	min-width: 70px;
-	max-width: 70px;
-	
-	padding: 0px;
-	margin: 0px;
-	
-	position: absolute;
-}
 
 #axis
 {
