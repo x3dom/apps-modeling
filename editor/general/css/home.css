@@ -73,19 +73,19 @@ body
 {
 	width: 85px;
 	color: #FFFFFF;
-	background-color: #414141;
-        height: 10px;
+	background: transparent;
+    height: 10px;
 	text-decoration: none;
 	padding: 9px;
 	display: block;
-        font-family: Calibri;
-        border: solid 1px #fff;
-        border-radius: 2px;
+    font-family: Calibri;
+    border: solid 1px #fff;
+    border-radius: 2px;
 }
 
 .nav li a:hover
 {
-	background-color: #000000;
+	background-color: #333333;
 }
 
 .nav > li
@@ -116,80 +116,22 @@ body
 
 #button_Links
 {
-	/*background-image: linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		right top,
-		left top,
-		color-stop(0.95, rgb(17,17,17)),
-		color-stop(1, rgb(255,255,255))
-	);
-	
-	
-	border-top-left-radius: 2px;
-	border-top-right-radius: 30px;
-	border-bottom-left-radius: 2px;
- 	border-bottom-right-radius: 30px;
- 	
-    box-shadow: 3px 3px 3px grey,
-                3px -3px 3px grey;*/
+    box-shadow: 1px 1px 10px grey,
+                1px -1px 10px grey;
 }
 
 
 #button_Rechts
-{
-/*	background-image: linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		left top,
-		right top,
-		color-stop(0.95, rgb(17,17,17)),
-		color-stop(1, rgb(255,255,255))
-	);
-	
-	border-top-left-radius: 30px;
-	border-top-right-radius: 2px;
-	border-bottom-left-radius: 30px;
- 	border-bottom-right-radius: 2px;
- 	
-    box-shadow:-3px 3px 3px grey,
-               -3px -3px 3px grey;*/
+{ 	
+    box-shadow:-1px 1px 10px grey,
+               -1px -1px 10px grey;
 }
 
 
 #Oben
-{
-	/*background-image: linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		right bottom,
-		right top,
-		color-stop(0.95, rgb(17,17,17)),
-		color-stop(1, rgb(255,255,255))
-	);
-	
-	border-top-left-radius: 2px;
-  	border-top-right-radius: 2px;
- 	border-bottom-left-radius: 30px;
- 	border-bottom-right-radius: 30px;
- 	
+{ 	
     box-shadow: 3px 3px 3px grey,
-               -3px 3px 3px grey;*/
+               -3px 3px 3px grey;
 }
 
 
@@ -212,10 +154,10 @@ body
 	border-bottom-left-radius: 2px;
   	border-bottom-right-radius: 2px;
  	border-top-left-radius: 30px;
- 	border-top-right-radius: 30px;
+ 	border-top-right-radius: 30px;*/
  	
     box-shadow: 3px -3px 3px grey,
-               -3px -3px 3px grey;*/
+               -3px -3px 3px grey;
 }
 
 /****************************************************************************************************/
@@ -225,6 +167,27 @@ body
 {
 	padding: 5%;
 }
+
+
+/* DropDown Boxen ***********************************************************************************/
+
+.ObjektList, .Views
+{
+   background: transparent;
+   color: white;
+   width: 150px;
+   padding: 5px;
+   font-size: 12px;
+   line-height: 1;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+   border:1px solid gray;
+   background: url(../images/down_img.jpg) no-repeat right #333333;
+}
+
+/****************************************************************************************************/
+
 
 /* Löschen Button ***********************************************************************************/
 

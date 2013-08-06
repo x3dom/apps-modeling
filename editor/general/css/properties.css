@@ -10,8 +10,10 @@
 	height: 10px;
 	width: 40px;
 	margin-left: 5px;
-	color: #052F57;
+	color: white;
+	/*color: #052F57;*/
 	font-weight: bold;
+	background: transparent;
 }
 
 .slider1, .slider2, .slider3, .slider4, .slider5

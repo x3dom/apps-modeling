@@ -96,7 +96,7 @@
                     $("#loeschen").button();
             });	
 				
-	    var fadeSwitch = 0;
+	    	var fadeSwitch = 0;
             function fadeLeft(){
                 if (fadeSwitch === 0){
                     $("#Links").animate(
@@ -149,7 +149,7 @@
 	<body style="position: absolute; height: 100%; width: 100%;">
            
         
-		<div id="Oben" style="position: absolute; background-image: url(images/karbon_bg.png); border-radius: 0px 0px 10px 10px; border: solid 2px #fff; border-top: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; z-index: 10000;">
+		<div id="Oben" style="position: absolute; border-radius: 0px 0px 10px 10px; border: solid 2px #fff; border-top: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; z-index: 10000;">
         		
         	<div id="header" style="margin-left: 25px;">
         		<ul class="nav">
@@ -162,13 +162,13 @@
         		</ul>
         	</div>
         	
-        	<select id="ObjektList" style="float:left; width: 150px; height: 30px; margin: 5px;">
+        	<select class="ObjektList" style="float:left; width: 150px; height: 30px; margin: 5px;">
   				<option>Objekt 1</option>
   				<option>Objekt 2</option>
   				<option>Objekt 3</option>
 			</select>
 			
-			<select id="Views" style="float:left; width: 150px; height: 30px; margin: 5px;">
+			<select class="Views" style="float:left; width: 150px; height: 30px; margin: 5px;">
   				<option>Front</option>
   				<option>Back</option>
   				<option>Right</option>
@@ -182,7 +182,16 @@
        	</div>
         
         
-        <div id="Unten" style="position: absolute; background-image: url(images/karbon_bg.png); border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000;"> 
+        <div id="Unten" style="position: absolute; border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000;"> 
+        	
+        	<div style="float: left; position: fixed; margin-left: 25px;">
+        		<p>
+        			<label style="color: white;">Objekt:  </label>
+        			<input type="text" id="ObjektName" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background: transparent;" />
+        		</p>
+        	</div>
+        	
+        	
         	<div style="float: right; margin-right: 25px;">
 				<p>
 					<label class="text-slider" style="color: white;">X :</label>
