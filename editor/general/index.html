@@ -84,17 +84,19 @@
 		<script type="text/javascript" src="../../../x3dom/src/nodes/VolumeRendering.js"></script>
 		<script type="text/javascript" src="../../../x3dom/src/nodes/CADGeometry.js"></script>
 		<script type="text/javascript" src="../../../x3dom/src/nodes/Terrain.js"></script>
+                <script type="text/javascript" src="../../../x3dom/src/nodes/GeometryEDF.js"></script>
 		<script type="text/javascript" src="../../../x3dom/src/Docs.js"></script>
         
     	
     	<script>
-			$(function()
-			{
-				$("#menu-accordeon").button();
-				$("#loeschen").button();
-			});	
+            
+            $(function()
+            {
+                    $("#menu-accordeon").button();
+                    $("#loeschen").button();
+            });	
 				
-	        var fadeSwitch = 0;
+	    var fadeSwitch = 0;
             function fadeLeft(){
                 if (fadeSwitch === 0){
                     $("#Links").animate(
@@ -129,7 +131,8 @@
                     }, 250);
                     fadeSwitch1--;
                 }
-            }                 
+            }     
+            
         </script>
 	</head>
 	
@@ -146,6 +149,7 @@
                 <img id="Sphere" src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Cone" src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Cylinder" src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="Dish" src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 100px; left: 70px; top: 50%; margin-top: -50px; z-index: 100000; background-color: #111111;"> </div>
@@ -229,7 +233,6 @@
         
 <!-- X3D - Element ------------------------------------------------------------------------------------------------------------------>
 
-        
         <div id="x3d-view">
                 <x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
 	                <scene>

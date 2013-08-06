@@ -8,25 +8,25 @@ var aktuelleID;
 
 function addElement(element)
 {	
-	var IDname = "element_" + shapeCounter;
-	shapeCounter++;
+    var IDname = "element_" + shapeCounter;
+    shapeCounter++;
 		
     var t = document.createElement('Transform');
     t.setAttribute("id", IDname);
     t.setAttribute("translation", "0 0 0");
     var s = document.createElement('Shape');
 		
-	// Appearance Node
-	var app = document.createElement('Appearance');
-		
-	// Material Node
-	var mat = document.createElement('Material');
-	mat.setAttribute("emissiveColor", "0 0 1");
-	mat.setAttribute("transparency", ".4");
-	mat.setAttribute("shininess", ".3");
-	
-	app.appendChild(mat);
-	s.appendChild(app);
+    // Appearance Node
+    var app = document.createElement('Appearance');
+
+    // Material Node
+    var mat = document.createElement('Material');
+    mat.setAttribute("emissiveColor", "0 0 1");
+    mat.setAttribute("transparency", ".4");
+    mat.setAttribute("shininess", ".3");
+
+    app.appendChild(mat);
+    s.appendChild(app);
     t.appendChild(s);
     
     var b = document.createElement(element);
@@ -34,10 +34,10 @@ function addElement(element)
     var ot = document.getElementById('root');
     ot.appendChild(t);
        	
-   	document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
+    document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
 
     /* Letzte erzeugtes Element bleibt ausgewaehlt */
-   	aktuelleID = IDname;
+    aktuelleID = IDname;
    
     return false;
 };
@@ -107,6 +107,7 @@ $(function()
 	$("#Sphere").click(function(){window.addElement("Sphere");});
 	$("#Cone").click(function(){window.addElement("Cone");});
 	$("#Box").click(function(){window.addElement("Box");});
+        $("#Dish").click(function(){window.addElement("Dish");});
 	$("#loeschen").click(function(){window.removeNode();});
 
 	
