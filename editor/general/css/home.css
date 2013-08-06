@@ -52,6 +52,64 @@ body
 }
 
 
+/* Menu *********************************************************************************************/
+
+#header
+{
+	margin: 5px;
+	float: left;
+	width: 100px;
+	font-family:"Blackadder ITC";
+}
+
+#header ul, ol
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+.nav li a
+{
+	width: 85px;
+	color: #FFFFFF;
+	background-color: #111111;
+	text-decoration: none;
+	padding: 9px;
+	display: block;
+}
+
+.nav li a:hover
+{
+	background-color: #000000;
+}
+
+.nav > li
+{
+	float: left;
+}
+
+.nav li ul
+{
+	display: none;
+	position: absolute;
+}
+
+.nav li:hover > ul 
+{
+	display: block;	
+}
+
+.nav li ul li
+{
+	position:relative;
+}
+
+/****************************************************************************************************/
+
+
+/* Leisten ******************************************************************************************/
+
 #button_Links
 {
 	background-image: linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
@@ -123,12 +181,15 @@ body
 	);
 }
 
+/****************************************************************************************************/
+
 
 #accordeon-oben .ui-accordion-content
 {
 	padding: 5%;
 }
 
+/* Löschen Button ***********************************************************************************/
 
 #loeschen
 {
@@ -141,6 +202,8 @@ body
     max-height: 100%;
     position:absolute;
 }
+
+/****************************************************************************************************/
 
 
 #axis

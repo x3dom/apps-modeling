@@ -148,7 +148,41 @@
 	
 	<body style="position: absolute; height: 100%; width: 100%;">
            
-        <div id="Oben" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; background-color: blue; z-index: 10000;"> </div> 
+        
+		<div id="Oben" style="position: absolute; left: 50%; margin-left: -300px; height: 40px; width: 600px; background-color: blue; z-index: 10000;">
+        		
+        	<div id="header">
+        		<ul class="nav">
+        			<li><a href="#">Datei</a>
+        				<ul>
+        					<li><a href="#">Export</a></li>
+        					<li><a href="#">Import</a></li>
+        					<li><a href="#">Close</a></li>
+        				</ul>
+        			</li>
+        		</ul>
+        	</div>
+        	
+        	<select id="ObjektList" style="float:left; width: 150px; height: 30px; margin: 5px;">
+  				<option>Milk</option>
+  				<option>Coffee</option>
+  				<option>Tea</option>
+			</select>
+			
+			<select id="Views" style="float:left; width: 150px; height: 30px; margin: 5px;">
+  				<option>Front</option>
+  				<option>Back</option>
+  				<option>Right</option>
+  				<option>Left</option>
+			</select>
+			
+			<img id="ButtonRotieren" style="float: right; width: 30px; height: 30px; margin: 5px; background-color: yellow;" />
+			<img id="ButtonSkalieren" style="float: right; width: 30px; height: 30px; margin: 5px; background-color: yellow;" />
+			<img id="ButtonDrehen" style="float: right; width: 30px; height: 30px; margin: 5px; background-color: yellow;" />
+        		
+       	</div>
+        
+        
         <div id="Unten" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; bottom: 0px; background-color: blue; z-index: 10000;"> </div> 
         
         
