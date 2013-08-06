@@ -112,7 +112,7 @@ body
 
 #button_Links
 {
-	background-image: linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+	/*background-image: linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -o-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -moz-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -webkit-linear-gradient(right , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
@@ -133,13 +133,13 @@ body
  	border-bottom-right-radius: 30px;
  	
     box-shadow: 3px 3px 3px grey,
-                3px -3px 3px grey;
+                3px -3px 3px grey;*/
 }
 
 
 #button_Rechts
 {
-	background-image: linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
+/*	background-image: linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -o-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -moz-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
 	background-image: -webkit-linear-gradient(left , rgb(17,17,17) 95%, rgb(255,255,255) 100%);
@@ -159,7 +159,7 @@ body
  	border-bottom-right-radius: 2px;
  	
     box-shadow:-3px 3px 3px grey,
-               -3px -3px 3px grey;
+               -3px -3px 3px grey;*/
 }
 
 
