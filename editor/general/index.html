@@ -134,14 +134,13 @@
             }     
             
             function run(){
-                document.getElementById("pyramid_01")._x3domNode._vf.xbottom = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.ybottom = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.xtop = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.ytop = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.xoff = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.yoff = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode._vf.height = (Math.random() * 100) % 5;
-                document.getElementById("pyramid_01")._x3domNode.fieldChanged("xbottom");
+                document.getElementById("slope_01")._x3domNode._vf.xtshear = (Math.random() * 100) % 35;
+                document.getElementById("slope_01")._x3domNode._vf.ytshear = (Math.random() * 100) % 35;
+                document.getElementById("slope_01")._x3domNode._vf.xbshear = (Math.random() * 100) % 35;
+                document.getElementById("slope_01")._x3domNode._vf.ybshear = (Math.random() * 100) % 35;
+                document.getElementById("slope_01")._x3domNode._vf.radius = (Math.random() * 100) % 5;
+                document.getElementById("slope_01")._x3domNode._vf.height = (Math.random() * 100) % 15;
+                document.getElementById("slope_01")._x3domNode.fieldChanged("xtshear");
             }
             
         </script>
@@ -163,6 +162,7 @@
                 <img id="Dish" src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Snout" src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Pyramid" src="images/pyramid.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="SlopedCylinder" src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 100px; left: 70px; top: 50%; margin-top: -50px; z-index: 100000; background-color: #111111;"> </div>

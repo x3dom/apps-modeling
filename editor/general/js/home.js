@@ -110,6 +110,7 @@ $(function()
         $("#Dish").click(function(){window.addElement("Dish");});
         $("#Snout").click(function(){window.addElement("Snout");});
         $("#Pyramid").click(function(){window.addElement("Pyramid");});
+        $("#SlopedCylinder").click(function(){window.addElement("SlopeBottomCylinder");});
 	$("#loeschen").click(function(){window.removeNode();});
 
 	
