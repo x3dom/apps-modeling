@@ -157,16 +157,15 @@
         				<ul>
         					<li><a href="#">Export</a></li>
         					<li><a href="#">Import</a></li>
-        					<li><a href="#">Close</a></li>
         				</ul>
         			</li>
         		</ul>
         	</div>
         	
         	<select id="ObjektList" style="float:left; width: 150px; height: 30px; margin: 5px;">
-  				<option>Milk</option>
-  				<option>Coffee</option>
-  				<option>Tea</option>
+  				<option>Objekt 1</option>
+  				<option>Objekt 2</option>
+  				<option>Objekt 3</option>
 			</select>
 			
 			<select id="Views" style="float:left; width: 150px; height: 30px; margin: 5px;">
@@ -183,7 +182,20 @@
        	</div>
         
         
-        <div id="Unten" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; bottom: 0px; background-color: blue; z-index: 10000;"> </div> 
+        <div id="Unten" style="position: absolute; left: 50%; margin-left: -300px; height: 50px; width: 600px; bottom: 0px; background-color: blue; z-index: 10000;"> 
+        	<div style="float: right; margin-right: 10px;">
+				<p>
+					<label class="text-slider" style="color: white;">X :</label>
+					<input type="text" id="amount-x" class="amount" value="0"/>
+	
+					<label class="text-slider" style="color: white;">Y :</label>
+					<input type="text" id="amount-y" class="amount" value="0"/>
+	
+					<label class="text-slider" style="color: white;">Z :</label>
+					<input type="text" id="amount-z" class="amount" value="0"/>
+				</p>
+        	</div>
+        </div> 
         
         
         
@@ -215,17 +227,6 @@
 							<p>
 								<label style="margin: 5px;">Verschieben</label>	
 							</p>
-						
-							<p>
-								<label for="amount-xV" class="text-slider">X :</label>
-								<input type="text" id="amount-xV" class="amount" value="0"/>
-		
-								<label for="amount-yV" class="text-slider">Y :</label>
-								<input type="text" id="amount-yV" class="amount" value="0"/>
-		
-								<label for="amount-zV" class="text-slider">Z :</label>
-								<input type="text" id="amount-zV" class="amount" value="0"/>
-							</p>
 							
 							<div id="x-sliderV" class="slider1"> </div>
 							<div id="y-sliderV" class="slider1"> </div>
@@ -251,17 +252,6 @@
 								<label style="margin: 5px;">Drehen</label>	
 							</p>
 						
-							<p>
-								<label for="amount-xD" class="text-slider">X :</label>
-								<input type="text" id="amount-xD" class="amount" value="0"/>
-		
-								<label for="amount-yD" class="text-slider">Y :</label>
-								<input type="text" id="amount-yD" class="amount" value="0"/>
-		
-								<label for="amount-zD" class="text-slider">Z :</label>
-								<input type="text" id="amount-zD" class="amount" value="0"/>
-							</p>
-							
 							<div id="x-sliderD" class="slider3"> </div>
 							<div id="y-sliderD" class="slider4"> </div>
 							<div id="z-sliderD" class="slider5"> </div>	
@@ -284,16 +274,15 @@
                 <x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
 	                <scene>
 	                        <viewpoint position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209"></viewpoint>
+	                        
 	                        <transform rotation="1 0 0 -1.57" >
-	                        <Shape render='true'>
-	                            <Appearance>
-	                              <Material emissiveColor='0.2 0.2 0.2' />
-	                            </Appearance>
-	                            <Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
-	                         </Shape>
+	                        	<Shape render='true'>
+	                            	<Appearance><Material emissiveColor='0.2 0.2 0.2' /></Appearance>
+	                            	<Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
+	                         	</Shape>
 	                        </transform>  
                                 
-                                <transform id="root" translation="0 0 0"></transform>
+                            <transform id="root" translation="0 0 0"></transform>
 	                        <transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
 	                </scene>
                 </x3d>

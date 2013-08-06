@@ -1,7 +1,6 @@
 // Fuer die ID-Zuweisung
 var shapeCounter = 0;
 
-
 // Die Variable speicher die mit der Maus zuletzt ausgewaehlte ID eines Elements
 var aktuelleID;
 
@@ -30,7 +29,8 @@ function addElement(element)
     t.appendChild(s);
     
     var b = document.createElement(element);
-    s.appendChild(b);        
+    s.appendChild(b);
+            
     var ot = document.getElementById('root');
     ot.appendChild(t);
        	
@@ -97,7 +97,6 @@ function removeNode()
 };
 
 
-
 // jQuery //
 
 $(function()
@@ -107,10 +106,10 @@ $(function()
 	$("#Sphere").click(function(){window.addElement("Sphere");});
 	$("#Cone").click(function(){window.addElement("Cone");});
 	$("#Box").click(function(){window.addElement("Box");});
-        $("#Dish").click(function(){window.addElement("Dish");});
-        $("#Snout").click(function(){window.addElement("Snout");});
-        $("#Pyramid").click(function(){window.addElement("Pyramid");});
-        $("#SlopedCylinder").click(function(){window.addElement("SlopeBottomCylinder");});
+   	$("#Dish").click(function(){window.addElement("Dish");});
+    $("#Snout").click(function(){window.addElement("Snout");});
+    $("#Pyramid").click(function(){window.addElement("Pyramid");});
+    $("#SlopedCylinder").click(function(){window.addElement("SlopeBottomCylinder");});
 	$("#loeschen").click(function(){window.removeNode();});
 
 	
@@ -143,9 +142,9 @@ $(function()
     	document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
         
     	// Textfelder aktualisieren
-    	$( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
-    	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
-    	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
+    	$( "#amount-x" ).val( $("#x-sliderV").slider('option', 'value') );
+    	$( "#amount-y" ).val( $("#y-sliderV").slider('option', 'value') );
+    	$( "#amount-z" ).val( $("#z-sliderV").slider('option', 'value') );
     	
     }});
 	
@@ -170,7 +169,7 @@ $(function()
     	var koordinatenX = winkel + " " + 0 + " "  + 0 + " " + bogenmass;
     	
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenX);
-        $( "#amount-xD" ).val( $( "#x-sliderD" ).slider( "value" ) );
+        $( "#amount-x" ).val( $( "#x-sliderD" ).slider( "value" ) );
     }});
      
     $(".slider4").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
@@ -180,7 +179,7 @@ $(function()
     	var koordinatenY = 0 + " " + winkel + " "  + 0 + " " + bogenmass;
 
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenY);
-     	$( "#amount-yD" ).val( $( "#y-sliderD" ).slider( "value" ) );
+     	$( "#amount-y" ).val( $( "#y-sliderD" ).slider( "value" ) );
     }});
      
     $(".slider5").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
@@ -190,7 +189,7 @@ $(function()
     	var koordinatenZ = 0 + " " + 0 + " "  + winkel + " " + bogenmass;
     	
         document.getElementById(aktuelleID).setAttribute("rotation", koordinatenZ);
-     	$( "#amount-zD" ).val( $( "#z-sliderD" ).slider( "value" ) );
+     	$( "#amount-z" ).val( $( "#z-sliderD" ).slider( "value" ) );
     }});
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
