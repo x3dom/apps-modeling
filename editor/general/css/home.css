@@ -125,6 +125,15 @@ body
 		color-stop(0.95, rgb(17,17,17)),
 		color-stop(1, rgb(255,255,255))
 	);
+	
+	
+	border-top-left-radius: 2px;
+	border-top-right-radius: 30px;
+	border-bottom-left-radius: 2px;
+ 	border-bottom-right-radius: 30px;
+ 	
+    box-shadow: 3px 3px 3px grey,
+                3px -3px 3px grey;
 }
 
 
@@ -143,6 +152,14 @@ body
 		color-stop(0.95, rgb(17,17,17)),
 		color-stop(1, rgb(255,255,255))
 	);
+	
+	border-top-left-radius: 30px;
+	border-top-right-radius: 2px;
+	border-bottom-left-radius: 30px;
+ 	border-bottom-right-radius: 2px;
+ 	
+    box-shadow:-3px 3px 3px grey,
+               -3px -3px 3px grey;
 }
 
 
@@ -161,6 +178,14 @@ body
 		color-stop(0.95, rgb(17,17,17)),
 		color-stop(1, rgb(255,255,255))
 	);
+	
+	border-top-left-radius: 2px;
+  	border-top-right-radius: 2px;
+ 	border-bottom-left-radius: 30px;
+ 	border-bottom-right-radius: 30px;
+ 	
+    box-shadow: 3px 3px 3px grey,
+               -3px 3px 3px grey;
 }
 
 
@@ -179,6 +204,14 @@ body
 		color-stop(0.95, rgb(17,17,17)),
 		color-stop(1, rgb(255,255,255))
 	);
+	
+	border-bottom-left-radius: 2px;
+  	border-bottom-right-radius: 2px;
+ 	border-top-left-radius: 30px;
+ 	border-top-right-radius: 30px;
+ 	
+    box-shadow: 3px -3px 3px grey,
+               -3px -3px 3px grey;
 }
 
 /****************************************************************************************************/
