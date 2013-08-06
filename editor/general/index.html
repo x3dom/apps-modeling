@@ -134,12 +134,14 @@
             }     
             
             function run(){
-                document.getElementById("snout_01")._x3domNode._vf.Dtop = (Math.random() * 100) % 5;
-                document.getElementById("snout_01")._x3domNode._vf.Dbottom = (Math.random() * 100) % 5;
-                document.getElementById("snout_01")._x3domNode._vf.XOff = (Math.random() * 100) % 5;
-                document.getElementById("snout_01")._x3domNode._vf.YOff = (Math.random() * 100) % 5;
-                document.getElementById("snout_01")._x3domNode._vf.height = (Math.random() * 100) % 5;
-                document.getElementById("snout_01")._x3domNode.fieldChanged("Dbottom");
+                document.getElementById("pyramid_01")._x3domNode._vf.xbottom = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.ybottom = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.xtop = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.ytop = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.xoff = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.yoff = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode._vf.height = (Math.random() * 100) % 5;
+                document.getElementById("pyramid_01")._x3domNode.fieldChanged("xbottom");
             }
             
         </script>
@@ -160,6 +162,7 @@
                 <img id="Cylinder" src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Dish" src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Snout" src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="Pyramid" src="images/pyramid.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 100px; left: 70px; top: 50%; margin-top: -50px; z-index: 100000; background-color: #111111;"> </div>
@@ -254,8 +257,8 @@
 	                            </Appearance>
 	                            <Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
 	                         </Shape>
-	                        </transform>
-
+	                        </transform>  
+                                
                                 <transform id="root" translation="0 0 0"></transform>
 	                        <transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
 	                </scene>
