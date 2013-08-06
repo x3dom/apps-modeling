@@ -101,7 +101,7 @@
                 if (fadeSwitch === 0){
                     $("#Links").animate(
                     {
-                        left: "-76px"
+                        left: "-77px"
                     }, 250);
                     fadeSwitch++;
                 }
@@ -149,7 +149,7 @@
 	<body style="position: absolute; height: 100%; width: 100%;">
            
         
-		<div id="Oben" style="position: absolute; left: 50%; margin-left: -300px; height: 40px; width: 600px; z-index: 10000;">
+		<div id="Oben" style="position: absolute; background-image: url(images/karbon_bg.png); border-radius: 0px 0px 10px 10px; border: solid 2px #fff; border-top: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; z-index: 10000;">
         		
         	<div id="header" style="margin-left: 25px;">
         		<ul class="nav">
@@ -182,7 +182,7 @@
        	</div>
         
         
-        <div id="Unten" style="position: absolute; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000;"> 
+        <div id="Unten" style="position: absolute; background-image: url(images/karbon_bg.png); border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000;"> 
         	<div style="float: right; margin-right: 25px;">
 				<p>
 					<label class="text-slider" style="color: white;">X :</label>
@@ -200,24 +200,24 @@
         
         
         <div id="Links" style="position: absolute; left: 0px; height:100%; width: 100px; z-index: 10000;">
-            <div style="width: 75px; height: 100%; background-image: url(images/karbon_bg.png); border: solid 1px #fff; border-left: none; border-radius: 0px 10px 0px 0px; padding-top: 5px;">
-                <img id="Box" src="images/box.jpg" style="width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Sphere" src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Cone" src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Cylinder" src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Dish" src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Snout" src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="Pyramid" src="images/pyramid.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
-                <img id="SlopedCylinder" src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" />
+            <div style="width: 75px; height: 100%; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-left: none; border-radius: 0px 10px 0px 0px; padding-top: 5px; font-size: 10px; font-weight: bold;">
+                <div id="Box" onmouseover="this.style.cursor='pointer';"><img src="images/box.jpg" style="width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 23px;">Box</div></div>
+                <div id="Sphere" onmouseover="this.style.cursor='pointer';"><img src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -43px; margin-bottom: 25px; margin-left: 18px;">Sphere</div></div>
+                <div id="Cone" onmouseover="this.style.cursor='pointer';"><img src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 23px;">Cone</div></div>
+                <div id="Cylinder" onmouseover="this.style.cursor='pointer';"><img src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 18px;">Cylinder</div></div>
+                <div id="Dish" onmouseover="this.style.cursor='pointer';"><img src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -43px; margin-bottom: 25px; margin-left: 23px;">Dish</div></div>
+                <div id="Snout" onmouseover="this.style.cursor='pointer';"><img src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 20px;">Snout</div></div>
+                <div id="Pyramid" onmouseover="this.style.cursor='pointer';"><img src="images/pyramid.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 17px;">Pyramid</div></div>
+                <div id="SlopedCylinder" onmouseover="this.style.cursor='pointer';"><img src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -52px; margin-bottom: 25px; margin-left: 17px;">Slope Cylinder</div></div>
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
-            width: 30px; height: 100px; left: 76px; top: 50%; margin-top: -50px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
+            width: 30px; height: 100px; left: 77px; top: 50%; margin-top: -50px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
         </div>
         
         
         
 		<div id="Rechts" style="position: absolute; right: 0px; height:100%; width: 170px; z-index: 1000;">
-            <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 1px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
+            <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
             	
 	            <div id="accordeon-oben" style="width: 160px; height: 100%; margin-bottom: 50px; margin-left:auto; margin-right:auto;">
 					<h3>Transformationen</h3>
