@@ -108,6 +108,7 @@ $(function()
 	$("#Cone").click(function(){window.addElement("Cone");});
 	$("#Box").click(function(){window.addElement("Box");});
         $("#Dish").click(function(){window.addElement("Dish");});
+        $("#Snout").click(function(){window.addElement("Snout");});
 	$("#loeschen").click(function(){window.removeNode();});
 
 	

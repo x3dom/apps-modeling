@@ -133,6 +133,15 @@
                 }
             }     
             
+            function run(){
+                document.getElementById("snout_01")._x3domNode._vf.Dtop = (Math.random() * 100) % 5;
+                document.getElementById("snout_01")._x3domNode._vf.Dbottom = (Math.random() * 100) % 5;
+                document.getElementById("snout_01")._x3domNode._vf.XOff = (Math.random() * 100) % 5;
+                document.getElementById("snout_01")._x3domNode._vf.YOff = (Math.random() * 100) % 5;
+                document.getElementById("snout_01")._x3domNode._vf.height = (Math.random() * 100) % 5;
+                document.getElementById("snout_01")._x3domNode.fieldChanged("Dbottom");
+            }
+            
         </script>
 	</head>
 	
@@ -150,6 +159,7 @@
                 <img id="Cone" src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Cylinder" src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
                 <img id="Dish" src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
+                <img id="Snout" src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px;" />
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 100px; left: 70px; top: 50%; margin-top: -50px; z-index: 100000; background-color: #111111;"> </div>
@@ -232,7 +242,7 @@
 
         
 <!-- X3D - Element ------------------------------------------------------------------------------------------------------------------>
-
+<!--<div onclick="run();" style="position: absolute; top: 0px; left: 50%; width: 50px; height: 30px; background-color:yellow; z-index: 1000000;"></div>-->
         <div id="x3d-view">
                 <x3d xmlns="http://www.web3d.org/specifications/x3d-namespace" id="x3d" showStat="true">
 	                <scene>
@@ -245,7 +255,8 @@
 	                            <Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
 	                         </Shape>
 	                        </transform>
-	                        <transform id="root" translation="0 0 0"></transform>
+
+                                <transform id="root" translation="0 0 0"></transform>
 	                        <transform id="axis"><inline url="x3d/axis.x3d"></inline></transform>
 	                </scene>
                 </x3d>
