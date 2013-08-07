@@ -20,13 +20,16 @@ function PrimitiveManager(){
      */
     this.addPrimitive = function(primitive){
    
-        var id = "element_" + shapeCounter;
+        if (HANDLING_MODE === "hand") HANDLING_MODE = "translation";
+   
+        var id = "primitive_" + shapeCounter;
         shapeCounter++;
-
+        
         var t = document.createElement('Transform');
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         var s = document.createElement('Shape');
+        t.IDMap = {id:id, shapeID:s.id, name:id};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -41,17 +44,14 @@ function PrimitiveManager(){
         s.appendChild(app);
         t.appendChild(s);
 
-        var b = document.createElement(primitive);
-        s.appendChild(b);
+        var prim = document.createElement(primitive);
+        s.appendChild(prim);
 
-        var ot = document.getElementById('root');
-        ot.appendChild(t);
+        var root = document.getElementById('root');
+        root.appendChild(t);
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
-        
-        var trans = (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5);
-        primitiveList[id].setAttribute("translation", trans);
         setTransformValues(id, HANDLING_MODE);
         
         actualID = id;
@@ -60,10 +60,9 @@ function PrimitiveManager(){
     
     
     /*
-     * 
-     * TODO: Das Element muss auch aus der primitiveList[] entfernt werden
-     * Remove Node
-     */     
+     * Removes a primitive from the DOM and from primitive array
+     * @returns {undefined}
+     */  
     this.removeNode = function()
     {
         var ot = document.getElementById(actualID);
@@ -74,12 +73,37 @@ function PrimitiveManager(){
             if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
             {
                 ot.removeChild(ot.childNodes[i]);
+                delete primitiveList[actualID];
+                clearTransformValues();
+                
                     break;
             }
         }
     };
-
     
+    
+    
+    /*
+     * Clears the value fields of the transformation
+     * @returns {undefined}
+     */
+    this.clearTransformationValues = function(){
+        clearTransformValues();
+    };
+    
+    
+    
+    /*
+     * Clears the value fields of the transformation
+     * @returns {undefined}
+     */
+    function clearTransformValues(){
+        document.getElementById("amount-x").value = "";
+        document.getElementById("amount-y").value = "";
+        document.getElementById("amount-z").value = "";
+        document.getElementById("ObjektName").value = "";
+    }
+
     
     
     /*
@@ -131,8 +155,6 @@ function PrimitiveManager(){
                         document.getElementById("amount-z").value;
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
-        
-        
     };
     
     
@@ -155,6 +177,16 @@ function PrimitiveManager(){
         document.getElementById("amount-y").value = xyz[1].substr(0, 5);
         document.getElementById("amount-z").value = xyz[2].substr(0, 5);
         
-        document.getElementById("ObjektName").value = id;
+        document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
     }
+    
+    
+    
+    /*
+     * Sets the name of a primitive to the users defined value
+     * @returns {null}
+     */
+    this.setPrimitiveName = function() {
+        primitiveList[actualID].IDMap.name = document.getElementById("ObjektName").value;
+    };
 }

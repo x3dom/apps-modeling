@@ -1,7 +1,7 @@
 // PrimitiveManager handles the adding of new primitives and their behaviour
 var primitiveManager = new PrimitiveManager();
 // Variable that defines the handling mode
-var HANDLING_MODE = "scale";
+var HANDLING_MODE = "translation";
 // Variables that handle the toggle behaviour of the toolbars
 var fadeSwitch = [0, 0];
 
