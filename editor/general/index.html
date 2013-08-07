@@ -212,10 +212,10 @@
 			</select>
 			
 
-			<div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="HANDLING_MODE = 'rotation'; primitiveManager.setValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
-			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="HANDLING_MODE = 'scale'; primitiveManager.setValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="HANDLING_MODE = 'translation'; primitiveManager.setValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
+			<div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="HANDLING_MODE = 'rotation'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
+			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="HANDLING_MODE = 'scale'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="HANDLING_MODE = 'translation'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="HANDLING_MODE = 'hand'; primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
         		
        	</div>
         
@@ -225,7 +225,7 @@
         	<div style="float: left; position: fixed; margin-left: 25px;">
         		<p>
         			<label style="color: white;">Object:  </label>
-        			<input type="text" id="ObjektName" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background-color: #333333;" />
+        			<input type="text" id="ObjektName" onchange="primitiveManager.setPrimitiveName();" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background-color: #333333;" />
         		</p>
         	</div>
         	
@@ -233,13 +233,13 @@
         	<div style="float: right; margin-right: 25px;">
 				<p>
 					<label class="text-slider" style="color: white;">X :</label>
-					<input type="text" id="amount-x" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
+                                        <input type="text" id="amount-x" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
 	
 					<label class="text-slider" style="color: white;">Y :</label>
-					<input type="text" id="amount-y" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
+					<input type="text" id="amount-y" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
 	
 					<label class="text-slider" style="color: white;">Z :</label>
-					<input type="text" id="amount-z" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
+					<input type="text" id="amount-z" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
 				</p>
         	</div>
         </div> 
