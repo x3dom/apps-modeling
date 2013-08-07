@@ -30,10 +30,10 @@ body
 		linear,
 		left bottom,
 		left top,
-		color-stop(0, rgb(0,0,0)),
-		color-stop(0.72, rgb(71,71,71)),
-		color-stop(1, rgb(71,71,71)),
-		color-stop(1, rgb(148,148,148))
+		color-stop(0, rgb(41,41,41)),
+		color-stop(0.72, rgb(105,105,105)),
+		color-stop(1, rgb(105,105,105)),
+		color-stop(1, rgb(140,140,140))
 	);
 
 	position:absolute;
@@ -73,19 +73,21 @@ body
 {
 	width: 85px;
 	color: #FFFFFF;
-	background: transparent;
-    height: 10px;
+        height: 10px;
 	text-decoration: none;
-	padding: 9px;
+	padding: 11px;
+        padding-right: 9px;
+        padding-top: 7px;
 	display: block;
-    font-family: Calibri;
-    border: solid 1px #fff;
-    border-radius: 2px;
+        font-family: Calibri;
+        border: solid 1px gray;
+        border-radius: 0px;
+        background-color: #333333;
 }
 
 .nav li a:hover
 {
-	background-color: #333333;
+	background-color: #414141;
 }
 
 .nav > li
@@ -116,22 +118,19 @@ body
 
 #button_Links
 {
-    box-shadow: 1px 1px 10px grey,
-                1px -1px 10px grey;
+
 }
 
 
 #button_Rechts
-{ 	
-    box-shadow:-1px 1px 10px grey,
-               -1px -1px 10px grey;
+{
+
 }
 
 
 #Oben
 { 	
-    box-shadow: 3px 3px 3px grey,
-               -3px 3px 3px grey;
+    background-image: url(images/karbon_bg.png);
 }
 
 
@@ -155,9 +154,11 @@ body
   	border-bottom-right-radius: 2px;
  	border-top-left-radius: 30px;
  	border-top-right-radius: 30px;*/
- 	
-    box-shadow: 3px -3px 3px grey,
-               -3px -3px 3px grey;
+        
+        /*box-shadow:   3px 3px 3px grey,
+                     -3px 3px 3px grey,
+                      3px -3px 3px grey,
+                     -3px -3px 3px grey;*/
 }
 
 /****************************************************************************************************/
@@ -165,8 +166,8 @@ body
 
 #accordeon-oben .ui-accordion-content
 {
-	padding: 5%;
-	background: #AAAAAA;
+    padding: 5%;
+    background: #AAAAAA;
 }
 
 
@@ -194,9 +195,8 @@ body
 
 #loeschen
 {
-	margin-left: 2px;
-	
-	z-index: 200;    			
+    margin-left: 2px;
+    z-index: 200;    			
     min-width: 24.2%;
     max-width: 24.2%;
     min-height: 100%;
@@ -210,7 +210,7 @@ body
 
 #ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben
 {
-	border:1px solid gray;
+    border:1px solid gray;
 }
 
 #ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover

@@ -146,10 +146,10 @@
         </script>
 	</head>
 	
-	<body style="position: absolute; height: 100%; width: 100%;">
+	<body style="position: fixed; height: 100%; overflow: hidden; width: 100%;">
            
         
-		<div id="Oben" style="position: absolute; border-radius: 0px 0px 10px 10px; border: solid 2px #fff; border-top: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; z-index: 10000;">
+		<div id="Oben" style="position: absolute; border-radius: 0px 0px 10px 10px; border: solid 2px #fff; border-top: none; left: 50%; margin-left: -300px; height: 41px; width: 600px; z-index: 10000; background-image: url(images/karbon_bg.png);">
         		
         	<div id="header" style="margin-left: 10px;">
         		<ul class="nav">
@@ -177,20 +177,20 @@
 			</select>
 			
 
-			<div><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';" style="float: right; width: 30px; height: 30px; margin: 5px; margin-right: 10px;"></div>
-			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';" style="float: right; width: 30px; height: 30px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';" style="float: right; width: 30px; height: 30px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" style="float: right; width: 30px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
+			<div><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
+			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
         		
        	</div>
         
         
-        <div id="Unten" style="position: absolute; border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000;"> 
+        <div id="Unten" style="position: absolute; border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000; background-image: url(images/karbon_bg.png);"> 
         	
         	<div style="float: left; position: fixed; margin-left: 25px;">
         		<p>
         			<label style="color: white;">Objekt:  </label>
-        			<input type="text" id="ObjektName" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background: transparent;" />
+        			<input type="text" id="ObjektName" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background-color: #333333;" />
         		</p>
         	</div>
         	
@@ -198,13 +198,13 @@
         	<div style="float: right; margin-right: 25px;">
 				<p>
 					<label class="text-slider" style="color: white;">X :</label>
-					<input type="text" id="amount-x" class="amount" value="0"/>
+					<input type="text" id="amount-x" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
 	
 					<label class="text-slider" style="color: white;">Y :</label>
-					<input type="text" id="amount-y" class="amount" value="0"/>
+					<input type="text" id="amount-y" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
 	
 					<label class="text-slider" style="color: white;">Z :</label>
-					<input type="text" id="amount-z" class="amount" value="0"/>
+					<input type="text" id="amount-z" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
 				</p>
         	</div>
         </div> 
@@ -223,7 +223,7 @@
                 <div id="SlopedCylinder" onmouseover="this.style.cursor='pointer';"><img src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -52px; margin-bottom: 25px; margin-left: 17px;">Slope Cylinder</div></div>
             </div>
             <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
-            width: 30px; height: 100px; left: 77px; top: 50%; margin-top: -50px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
+            width: 30px; height: 150px; left: 77px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
         </div>
         
         
@@ -274,7 +274,7 @@
 				 
            	</div>
             <div id="button_Rechts" onclick="fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
-            width: 30px; height: 100px; right: 170px; top: 50%; margin-top: -50px; z-index: 100000; background-image: url(images/params.png);"> </div>
+            width: 30px; height: 150px; right: 170px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/params.png);"> </div>
 		</div>
 
 
