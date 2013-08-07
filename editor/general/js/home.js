@@ -45,35 +45,7 @@ function elementClick(IDname)
 {
 	/* neue aktuelleID setzen */
 	aktuelleID = IDname;
-	position();
 };
-
-
-function position()
-{
-	//Position beim klick aufrufen 
-	var pos = document.getElementById(aktuelleID).getAttribute("translation");
-	//sliderPos = x3dom.fields.SFVec3f.parse(pos);
-	
-	sliderPos = SFVec3f.get(0, pos);
-		
-	alert("x: " + sliderPos.x);
-	
-	/*
-	$(".slider1").bind("slidechange", function(event, ui)
-	{
-		$("#x-sliderV").slider('option', 'value', pos[0]);
-		$("#y-sliderV").slider('option', 'value', pos[1]);
-		$("#z-sliderV").slider('option', 'value', pos[2]);
-		
-		alert("Wert:" + pos[0]);
-		// Textfelder aktualisieren
-    	$( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
-    	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
-    	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
-	});
-	*/	
-}
 
 
 // Remove die Nodeelemente mit Hilfe der ID    

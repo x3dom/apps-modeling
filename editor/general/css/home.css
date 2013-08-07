@@ -114,60 +114,11 @@ body
 /****************************************************************************************************/
 
 
-/* Leisten ******************************************************************************************/
-
-#button_Links
-{
-
-}
-
-
-#button_Rechts
-{
-
-}
-
-
-#Oben
-{ 	
-    background-image: url(images/karbon_bg.png);
-}
-
-
-#Unten
-{
-	/*background-image: linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(top, rgb(17,17,17) 95%, rgb(255,255,255) 100%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		right top,
-		right bottom,
-		color-stop(0.95, rgb(17,17,17)),
-		color-stop(1, rgb(255,255,255))
-	);
-	
-	border-bottom-left-radius: 2px;
-  	border-bottom-right-radius: 2px;
- 	border-top-left-radius: 30px;
- 	border-top-right-radius: 30px;*/
-        
-        /*box-shadow:   3px 3px 3px grey,
-                     -3px 3px 3px grey,
-                      3px -3px 3px grey,
-                     -3px -3px 3px grey;*/
-}
-
-/****************************************************************************************************/
-
-
 #accordeon-oben .ui-accordion-content
 {
     padding: 5%;
-    background: #AAAAAA;
+    background: #191415;
+    color: #FFFFFF;
 }
 
 
@@ -219,13 +170,7 @@ body
 }
 
 #ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active
-{
-	
-	/*-webkit-box-shadow: inset 4px 4px 50px grey; /* webkit browser*/ 
-	/*-moz-box-shadow: inset 4px 4px 50px grey; /* firefox */ 
-	/*box-shadow: inset 4px 4px 50px grey;*/
-	
-	
+{	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,
 	        	  2px -2px 2px grey,
