@@ -3,8 +3,8 @@
  * added primitives of the workspace
  * @returns {PrimitiveManager}
  */
-function PrimitiveManager(){
-    
+function PrimitiveManager()
+{    
     // Counter to create unique identificators
     var shapeCounter = 0;
     // List of all created primitives
@@ -18,7 +18,8 @@ function PrimitiveManager(){
      * @param {type} primitive name of the primitive that should be created
      * @returns {Boolean}
      */
-    this.addPrimitive = function(primitive){
+    this.addPrimitive = function(primitive)
+    {
     
         actualID = "element_" + shapeCounter;
         shapeCounter++;
@@ -47,8 +48,7 @@ function PrimitiveManager(){
         var ot = document.getElementById('root');
         ot.appendChild(t);
 
-        document.getElementById(actualID).addEventListener("click", function(){primitiveSelected(actualID);}, false);
-        document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
+        document.getElementById(actualID).addEventListener("click", function(){primitiveSelected(actualID)}, false);
         
         var trans = (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5);
         document.getElementById(actualID).setAttribute("translation", trans);
@@ -59,6 +59,8 @@ function PrimitiveManager(){
     
     
     /*
+     * 
+     * TODO: Das Element muss auch aus der primitiveList[] entfernt werden
      * Remove Node
      */     
 	this.removeNode = function()
@@ -74,8 +76,6 @@ function PrimitiveManager(){
 	  			break;
 	  		}
 	  	}
-	        
-	    return false;
 	};
     
     
@@ -91,19 +91,16 @@ function PrimitiveManager(){
     }
     
     
-    
-    
     this.setValues = function(){
         setTranslationValues(actualID, HANDLING_MODE);
     };
     
     
-    
-    
     /*
      * Sets the translation
      */
-    function setTranslationValues(id, mode){
+    function setTranslationValues(id, mode)
+    {
         var shape = document.getElementById(id);
         var xyz; (mode === "translation") ? xyz = shape.attributes[mode].nodeValue.split(" ") : 
                                             xyz = shape.attributes[mode].nodeValue.split(",");
@@ -113,4 +110,3 @@ function PrimitiveManager(){
         document.getElementById("amount-z").value = xyz[2].substr(0, 5);
     }
 }
-

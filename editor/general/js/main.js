@@ -20,10 +20,6 @@ addParameter({name:"blab23lub", value: 3.0, id:"id_03"});
 
 
 
-
-
-
-
 /*
  * Initialization of all JQuery elements
  */
