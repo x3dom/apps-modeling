@@ -155,20 +155,20 @@
         		
         	<div id="header" style="margin-left: 10px;">
         		<ul class="nav">
-        			<li><a href="#">Datei</a>
+        			<li><a href="#">File</a>
         				<ul>
         					<li><a href="#" onmouseover="this.style.cursor='pointer';">Export</a></li>
         					<li><a href="#" onmouseover="this.style.cursor='pointer';">Import</a></li>
-        					<li><a href="#" onmouseover="this.style.cursor='pointer';">Delete</a></li>
+        					<li><a href="#" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';">Delete</a></li>
         				</ul>
         			</li>
         		</ul>
         	</div>
         	
         	<select class="ObjektList" onmouseover="this.style.cursor='pointer';" style="float:left; width: 150px; height: 30px; margin: 5px;">
-  				<option>Objekt 1</option>
-  				<option>Objekt 2</option>
-  				<option>Objekt 3</option>
+  				<option>Object 1</option>
+  				<option>Object 2</option>
+  				<option>Object 3</option>
 			</select>
 			
 			<select class="Views" onmouseover="this.style.cursor='pointer';" style="float:left; width: 150px; height: 30px; margin: 5px;">
@@ -191,7 +191,7 @@
         	
         	<div style="float: left; position: fixed; margin-left: 25px;">
         		<p>
-        			<label style="color: white;">Objekt:  </label>
+        			<label style="color: white;">Object:  </label>
         			<input type="text" id="ObjektName" class="amount" value="" style="width: 150px; font-weight: bold; height: 15px; border: 1px solid gray; background-color: #333333;" />
         		</p>
         	</div>
@@ -234,9 +234,10 @@
             <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
             	
 	            <div id="accordeon-oben" style="width: 160px; height: 100%; margin-bottom: 50px; margin-left:auto; margin-right:auto;">
-					<h3>Transformationen</h3>
+					<h3>Properties</h3>
 					<div>
-						<!----------------------------------------------------------------------------------->
+						<!--
+						
 						<div id="verschieben">						
 							<p>
 								<label style="margin: 5px;">Verschieben</label>	
@@ -246,10 +247,7 @@
 							<div id="y-sliderV" class="slider1"> </div>
 							<div id="z-sliderV" class="slider1"> </div>	
 						</div>
-						<!----------------------------------------------------------------------------------->
-						
-						
-						<!----------------------------------------------------------------------------------->
+
 						<div id="skalieren">
 							<p>
 								<label for="amount-S" class="text-slider">Skalieren :</label>
@@ -258,9 +256,7 @@
 							
 							<div id="sliderS" class="slider2"> </div>
 						</div>
-						<!----------------------------------------------------------------------------------->
-						
-						<!----------------------------------------------------------------------------------->
+
 						<div id="drehen">						
 							<p>
 								<label style="margin: 5px;">Drehen</label>	
@@ -270,7 +266,8 @@
 							<div id="y-sliderD" class="slider4"> </div>
 							<div id="z-sliderD" class="slider5"> </div>	
 						</div>
-						<!----------------------------------------------------------------------------------->
+
+						-->
 					</div>
 					
 					<h3>Colors</h3>

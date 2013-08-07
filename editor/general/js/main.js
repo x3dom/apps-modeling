@@ -9,8 +9,9 @@ var fadeSwitch = [0, 0];
 
 
 // TODO: Andres
-function addParameter(object) {
-    
+function addParameter(object) 
+{
+	    
 }
 
 addParameter({name:"blablub", value: 2.0, id:"id_01"});

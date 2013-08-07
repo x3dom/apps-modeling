@@ -48,6 +48,7 @@ function PrimitiveManager(){
         ot.appendChild(t);
 
         document.getElementById(actualID).addEventListener("click", function(){primitiveSelected(actualID);}, false);
+        document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
         
         var trans = (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5) + " " + (Math.random() * 100 % 5);
         document.getElementById(actualID).setAttribute("translation", trans);
@@ -56,6 +57,26 @@ function PrimitiveManager(){
         primitiveList[actualID] = t;
     };
     
+    
+    /*
+     * Remove Node
+     */     
+	this.removeNode = function()
+	{
+		var ot = document.getElementById(actualID);
+		
+		for (var i = 0; i < ot.childNodes.length; i++) 
+		{
+			// check if we have a real X3DOM Node; not just e.g. a Text-tag
+	        if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
+	        {
+	        	ot.removeChild(ot.childNodes[i]);
+	  			break;
+	  		}
+	  	}
+	        
+	    return false;
+	};
     
     
     /*
