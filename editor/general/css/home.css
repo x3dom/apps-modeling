@@ -206,6 +206,34 @@ body
 
 /****************************************************************************************************/
 
+/* die 4 Buttons zum Manipulieren *******************************************************************/
+
+#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben
+{
+	border:1px solid gray;
+}
+
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover
+{
+	border:1px solid white;
+}
+
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active
+{
+	
+	/*-webkit-box-shadow: inset 4px 4px 50px grey; /* webkit browser*/ 
+	/*-moz-box-shadow: inset 4px 4px 50px grey; /* firefox */ 
+	/*box-shadow: inset 4px 4px 50px grey;*/
+	
+	
+	box-shadow:   2px 2px 2px grey,
+	       		 -2px 2px 2px grey,
+	        	  2px -2px 2px grey,
+	       		 -2px -2px 2px grey;
+}
+
+/****************************************************************************************************/
+
 
 #axis
 {
