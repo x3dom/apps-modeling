@@ -13,6 +13,7 @@ function PrimitiveManager(){
     var actualID = "";
     
     
+    
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
@@ -29,7 +30,7 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         var s = document.createElement('Shape');
-        t.IDMap = {id:id, shapeID:s.id, name:id};
+        t.IDMap = {id:id, shapeID:s.id, name:id, number:(shapeCounter-1)};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -50,6 +51,7 @@ function PrimitiveManager(){
         var root = document.getElementById('root');
         root.appendChild(t);
         
+        addPrimitiveToComboBox(t.IDMap.name);
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
         setTransformValues(id, HANDLING_MODE);
@@ -59,7 +61,7 @@ function PrimitiveManager(){
     
     
     
-    /*
+    /* TODO: SYNCHRONIZATION WITH COMBOBOX
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
@@ -73,6 +75,7 @@ function PrimitiveManager(){
             if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
             {
                 ot.removeChild(ot.childNodes[i]);
+                delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.number);
                 delete primitiveList[actualID];
                 clearTransformValues();
                 
@@ -159,6 +162,17 @@ function PrimitiveManager(){
     
     
     
+    /*
+     * Handles the synchronization if a primitive is selected at the combobox
+     * @param {type} id identifier of the primitive that should be set to active
+     * @returns {undefined}
+     */
+    this.comboBoxChanged = function(id){
+        actualID = "primitive_" + id;
+        setTransformValues(actualID, HANDLING_MODE);
+    };
+    
+    
     
     /*
      * Sets the values of the actual selected transformation
@@ -168,16 +182,22 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function setTransformValues(id, mode){
-        var xyz = ""; 
-        
-        (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
-                                   xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
-        
-        document.getElementById("amount-x").value = xyz[0].substr(0, 5);
-        document.getElementById("amount-y").value = xyz[1].substr(0, 5);
-        document.getElementById("amount-z").value = xyz[2].substr(0, 5);
-        
-        document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
+        try {
+            var xyz = ""; 
+
+            (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
+                                       xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
+
+            document.getElementById("amount-x").value = xyz[0].substr(0, 5);
+            document.getElementById("amount-y").value = xyz[1].substr(0, 5);
+            document.getElementById("amount-z").value = xyz[2].substr(0, 5);
+
+            document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
+            document.getElementById("primitiveList").selectedIndex = [primitiveList[id].IDMap.number];
+            var test = document.getElementById('transformMode');
+            test.textContent = HANDLING_MODE.toUpperCase() + ':';
+        }
+        catch(ex){ }
     }
     
     
@@ -187,6 +207,28 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
+        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.number].text = document.getElementById("ObjektName").value;
         primitiveList[actualID].IDMap.name = document.getElementById("ObjektName").value;
     };
+    
+    
+    
+    /*
+     * Adds an option field to the select box with the name of a primitive
+     * @param {type} id name of the primitive's values that should be set
+     * @returns {null}
+     */
+    function addPrimitiveToComboBox(id){
+        var x=document.getElementById("primitiveList");
+        var option=document.createElement("option");
+        option.text = id;
+        
+        try {
+            // for IE earlier than version 8
+            x.add(option,x.options[null]);
+        }
+        catch (e){
+            x.add(option,null);
+        }
+    }
 }
