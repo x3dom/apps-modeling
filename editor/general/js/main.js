@@ -1,117 +1,49 @@
-// Fuer die ID-Zuweisung
-var shapeCounter = 0;
+// PrimitiveManager handles the adding of new primitives and their behaviour
+var primitiveManager = new PrimitiveManager();
+// Variable that defines the handling mode
+var HANDLING_MODE = "scale";
+// Variables that handle the toggle behaviour of the toolbars
+var fadeSwitch = [0, 0];
 
-// Die Variable speicher die mit der Maus zuletzt ausgewaehlte ID eines Elements
-var aktuelleID;
 
 
-function addElement(element)
-{	
-    var IDname = "element_" + shapeCounter;
-    shapeCounter++;
-		
-    var t = document.createElement('Transform');
-    t.setAttribute("id", IDname);
-    t.setAttribute("translation", "0 0 0");
-    var s = document.createElement('Shape');
-		
-    // Appearance Node
-    var app = document.createElement('Appearance');
 
-    // Material Node
-    var mat = document.createElement('Material');
-    mat.setAttribute("emissiveColor", "0 0 1");
-    mat.setAttribute("transparency", ".4");
-    mat.setAttribute("shininess", ".3");
-
-    app.appendChild(mat);
-    s.appendChild(app);
-    t.appendChild(s);
+// TODO: Andres
+function addParameter(object) {
     
-    var b = document.createElement(element);
-    s.appendChild(b);
-            
-    var ot = document.getElementById('root');
-    ot.appendChild(t);
-       	
-    document.getElementById(IDname).addEventListener("click", function(){elementClick(IDname)}, false);
-
-    /* Letzte erzeugtes Element bleibt ausgewaehlt */
-    aktuelleID = IDname;
-};
-
-
-function elementClick(IDname)
-{
-	/* neue aktuelleID setzen */
-	aktuelleID = IDname;
-	position();
-};
-
-
-function position()
-{
-	//Position beim klick aufrufen 
-	var pos = document.getElementById(aktuelleID).getAttribute("translation");
-	//sliderPos = x3dom.fields.SFVec3f.parse(pos);
-	
-	sliderPos = SFVec3f.get(0, pos);
-		
-	alert("x: " + sliderPos.x);
-	
-	/*
-	$(".slider1").bind("slidechange", function(event, ui)
-	{
-		$("#x-sliderV").slider('option', 'value', pos[0]);
-		$("#y-sliderV").slider('option', 'value', pos[1]);
-		$("#z-sliderV").slider('option', 'value', pos[2]);
-		
-		alert("Wert:" + pos[0]);
-		// Textfelder aktualisieren
-    	$( "#amount-xV" ).val( $("#x-sliderV").slider('option', 'value') );
-    	$( "#amount-yV" ).val( $("#y-sliderV").slider('option', 'value') );
-    	$( "#amount-zV" ).val( $("#z-sliderV").slider('option', 'value') );
-	});
-	*/	
 }
 
-
-// Remove die Nodeelemente mit Hilfe der ID    
-function removeNode()
-{
-	var ot = document.getElementById(aktuelleID);
-	
-	for (var i = 0; i < ot.childNodes.length; i++) 
-	{
-		// check if we have a real X3DOM Node; not just e.g. a Text-tag
-        if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
-        {
-        	ot.removeChild(ot.childNodes[i]);
-  			break;
-  		}
-  	}
-        
-    return false;
-};
+addParameter({name:"blablub", value: 2.0, id:"id_01"});
+addParameter({name:"blablu3b", value: 1.0, id:"id_02"});
+addParameter({name:"blab23lub", value: 3.0, id:"id_03"});
 
 
-// jQuery //
 
+
+
+
+
+/*
+ * Initialization of all JQuery elements
+ */
 $(function()
 {
-	// Grundelemente mit Button-Klick einfuegen
-	$("#Cylinder").click(function(){window.addElement("Cylinder");});
-	$("#Sphere").click(function(){window.addElement("Sphere");});
-	$("#Cone").click(function(){window.addElement("Cone");});
-	$("#Box").click(function(){window.addElement("Box");});
-   	$("#Dish").click(function(){window.addElement("Dish");});
-    $("#Snout").click(function(){window.addElement("Snout");});
-    $("#Pyramid").click(function(){window.addElement("Pyramid");});
-    $("#SlopedCylinder").click(function(){window.addElement("SlopeBottomCylinder");});
-	$("#loeschen").click(function(){window.removeNode();});
-
-	
-/*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
+    // Grundelemente mit Button-Klick einfuegen
+    $("#Cylinder").click(function(){primitiveManager.addPrimitive("Cylinder");});
+    $("#Sphere").click(function(){primitiveManager.addPrimitive("Sphere");});
+    $("#Cone").click(function(){primitiveManager.addPrimitive("Cone");});
+    $("#Box").click(function(){primitiveManager.addPrimitive("Box");});
+    $("#Dish").click(function(){primitiveManager.addPrimitive("Dish");});
+    $("#Snout").click(function(){primitiveManager.addPrimitive("Snout");});
+    $("#Pyramid").click(function(){primitiveManager.addPrimitive("Pyramid");});
+    $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
+    $("#loeschen").click(function(){window.removeNode();});
+    
+    $("#menu-accordeon").button();
+    $("#loeschen").button();
+    
+    
+    /*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
 	
 	/* Das blendet die kleine Symbole beim Accordion ein */
 	var iconsAccordion = 
@@ -192,3 +124,47 @@ $(function()
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 });
+
+
+
+/*
+ * Toggeling fade function of the left toolbar
+ */
+function fadeLeft(){
+    if (fadeSwitch[0] === 0){
+        $("#Links").animate(
+        {
+            left: "-77px"
+        }, 250);
+        fadeSwitch[0]++;
+    }
+    else {
+        $("#Links").animate(
+        {
+            left: "0px"
+        }, 250);
+        fadeSwitch[0]--;
+    }
+}
+
+
+
+/*
+ * Toggeling fade function of the right toolbar
+ */
+function fadeRight(){
+    if (fadeSwitch[1] === 0){
+        $("#Rechts").animate(
+        {
+            right: "-170px"
+        }, 250);
+        fadeSwitch[1]++;
+    }
+    else {
+        $("#Rechts").animate(
+        {
+            right: "0px"
+        }, 250);
+        fadeSwitch[1]--;
+    }
+} 
