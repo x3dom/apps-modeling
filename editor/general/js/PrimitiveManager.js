@@ -5,12 +5,13 @@
  */
 function PrimitiveManager(){
     
-    // Counter to create unique identificators
-    var shapeCounter = 0;
     // List of all created primitives
     var primitiveList = [];
     // actually active id
     var actualID = "";
+    // count of primitives
+    var primCounter = 0;
+    var primitiveCounter = 0;
     
     
     
@@ -23,14 +24,14 @@ function PrimitiveManager(){
    
         if (HANDLING_MODE === "hand") HANDLING_MODE = "translation";
    
-        var id = "primitive_" + shapeCounter;
-        shapeCounter++;
+        var id = "primitive_" + primCounter;
+        primCounter++;
         
         var t = document.createElement('Transform');
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         var s = document.createElement('Shape');
-        t.IDMap = {id:id, shapeID:s.id, name:id, number:(shapeCounter-1)};
+        t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter)};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -51,12 +52,13 @@ function PrimitiveManager(){
         var root = document.getElementById('root');
         root.appendChild(t);
         
-        addPrimitiveToComboBox(t.IDMap.name);
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
+        addPrimitiveToComboBox(t.IDMap.name);
         setTransformValues(id, HANDLING_MODE);
         
         actualID = id;
+        primitiveCounter++;
     };
     
     
@@ -74,11 +76,15 @@ function PrimitiveManager(){
             // check if we have a real X3DOM Node; not just e.g. a Text-tag
             if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
             {
+                for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < primitiveCounter; j++){
+                    primitiveList["primitive_" + j].IDMap.cboxNumber--;
+                }
                 ot.removeChild(ot.childNodes[i]);
-                delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.number);
+                delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.cboxNumber);
                 delete primitiveList[actualID];
-                clearTransformValues();
                 
+                clearTransformValues();
+                primitiveCounter--;
                     break;
             }
         }
@@ -168,7 +174,7 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.comboBoxChanged = function(id){
-        actualID = "primitive_" + id;
+        actualID = document.getElementById("primitiveList")[id].Node.IDMap.id;
         setTransformValues(actualID, HANDLING_MODE);
     };
     
@@ -193,7 +199,7 @@ function PrimitiveManager(){
             document.getElementById("amount-z").value = xyz[2].substr(0, 5);
 
             document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
-            document.getElementById("primitiveList").selectedIndex = [primitiveList[id].IDMap.number];
+            document.getElementById("primitiveList").selectedIndex = primitiveList[id].IDMap.cboxNumber;
             document.getElementById('transformMode').textContent = HANDLING_MODE.toUpperCase() + ':';
         }
         catch(ex){ }
@@ -206,7 +212,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.number].text = document.getElementById("ObjektName").value;
+        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.cboxNumber].text = document.getElementById("ObjektName").value;
         primitiveList[actualID].IDMap.name = document.getElementById("ObjektName").value;
     };
     
@@ -220,6 +226,7 @@ function PrimitiveManager(){
     function addPrimitiveToComboBox(id){
         var x=document.getElementById("primitiveList");
         var option=document.createElement("option");
+        option.Node = primitiveList[id];
         option.text = id;
         
         try {
