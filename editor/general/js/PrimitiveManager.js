@@ -194,8 +194,7 @@ function PrimitiveManager(){
 
             document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
             document.getElementById("primitiveList").selectedIndex = [primitiveList[id].IDMap.number];
-            var test = document.getElementById('transformMode');
-            test.textContent = HANDLING_MODE.toUpperCase() + ':';
+            document.getElementById('transformMode').textContent = HANDLING_MODE.toUpperCase() + ':';
         }
         catch(ex){ }
     }

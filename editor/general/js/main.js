@@ -7,7 +7,6 @@ var fadeSwitch = [0, 0];
 
 
 
-
 // TODO: Andres
 function addParameter(object) 
 {

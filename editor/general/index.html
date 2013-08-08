@@ -96,87 +96,33 @@
              * Damit werden neue Buttonelemente in der Linke Leite erzeugt
              */
 	        function newDivImg(img, name)
-			{
-			    var divID = document.createElement("div");
-                divID.setAttribute("id", name);
-               	divID.setAttribute("style", "background-image: 'url(' + img + ')'; width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");
+                {
+                    var divID = document.createElement("div");
+                    divID.setAttribute("id", name);
+                    divID.setAttribute("style", "background-image: url(" + img + "); width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");
 				
-				divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
-				divID.onclick = Function("alert('alert');");
-				
-				var divIDinnen = document.createElement("div");
-				divIDinnen.setAttribute("style", "color: #fff; margin: 24px; margin-left: 8px;");
-				divIDinnen.innerHTML = name;			
-				
-				divID.appendChild(divIDinnen);
-                document.getElementById("divs").appendChild(divID);
-			}
+                    divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
+                    divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
+
+                    var divIDinnen = document.createElement("div");
+                    divIDinnen.setAttribute("style", "color: #fff; margin: 24px; margin-left: 8px;");
+                    divIDinnen.innerHTML = name;			
+
+                    divID.appendChild(divIDinnen);
+                    document.getElementById("divs").appendChild(divID);
+                }
 			
 	        window.onload = function()
 	        {   
-	        	newDivImg("images/box.jpg", "Box");
-	        	newDivImg("images/sphere.jpg", "Sphere");
-	        	newDivImg("images/cone.jpg", "Cone");
-	        	newDivImg("images/cylinder.jpg", "Cylinder");
-	        	newDivImg("images/dish.jpg", "Dish");
-	        	newDivImg("images/snout.jpg", "Snout");
-	        	newDivImg("images/pyramid.jpg", "Pyramid");
-	        	newDivImg("images/slopedcylinder.jpg", "SlopedCylinder");
-	        }
-            
-            
-            $(function()
-            {
-                    $("#menu-accordeon").button();
-                    $("#loeschen").button();
-            });	
-				
-	    	var fadeSwitch = 0;
-            function fadeLeft(){
-                if (fadeSwitch === 0){
-                    $("#Links").animate(
-                    {
-                        left: "-77px"
-                    }, 250);
-                    fadeSwitch++;
-                }
-                else {
-                    $("#Links").animate(
-                    {
-                        left: "0px"
-                    }, 250);
-                    fadeSwitch--;
-                }
-            }
-            
-            
-            var fadeSwitch1 = 0;
-            function fadeRight(){
-                if (fadeSwitch1 === 0){
-                    $("#Rechts").animate(
-                    {
-                        right: "-170px"
-                    }, 250);
-                    fadeSwitch1++;
-                }
-                else {
-                    $("#Rechts").animate(
-                    {
-                        right: "0px"
-                    }, 250);
-                    fadeSwitch1--;
-                }
-            }     
-            
-            function run(){
-                document.getElementById("slope_01")._x3domNode._vf.xtshear = (Math.random() * 100) % 35;
-                document.getElementById("slope_01")._x3domNode._vf.ytshear = (Math.random() * 100) % 35;
-                document.getElementById("slope_01")._x3domNode._vf.xbshear = (Math.random() * 100) % 35;
-                document.getElementById("slope_01")._x3domNode._vf.ybshear = (Math.random() * 100) % 35;
-                document.getElementById("slope_01")._x3domNode._vf.radius = (Math.random() * 100) % 5;
-                document.getElementById("slope_01")._x3domNode._vf.height = (Math.random() * 100) % 15;
-                document.getElementById("slope_01")._x3domNode.fieldChanged("xtshear");
-            }
+                    newDivImg("images/box.jpg", "Box");
+                    newDivImg("images/sphere.jpg", "Sphere");
+                    newDivImg("images/cone.jpg", "Cone");
+                    newDivImg("images/cylinder.jpg", "Cylinder");
+                    newDivImg("images/dish.jpg", "Dish");
+                    newDivImg("images/snout.jpg", "Snout");
+                    newDivImg("images/pyramid.jpg", "Pyramid");
+                    newDivImg("images/slopedcylinder.jpg", "Sloped Cylinder");
+	        };
             
         </script>
 	</head>
