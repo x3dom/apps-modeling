@@ -9,8 +9,9 @@ function PrimitiveManager(){
     var primitiveList = [];
     // actually active id
     var actualID = "";
-    // count of primitives
+    // count of all primitives that were created during this session
     var primCounter = 0;
+    // count of actually used primitives on workspace 
     var primitiveCounter = 0;
     
     
@@ -22,7 +23,7 @@ function PrimitiveManager(){
      */
     this.addPrimitive = function(primitive){
    
-        if (HANDLING_MODE === "hand") HANDLING_MODE = "translation";
+        if (HANDLING_MODE === "hand") controller.Activate("translation");
    
         var id = "primitive_" + primCounter;
         primCounter++;
@@ -63,7 +64,7 @@ function PrimitiveManager(){
     
     
     
-    /* TODO: SYNCHRONIZATION WITH COMBOBOX
+    /* 
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
@@ -116,6 +117,7 @@ function PrimitiveManager(){
         document.getElementById("amount-y").value = "";
         document.getElementById("amount-z").value = "";
         document.getElementById("ObjektName").value = "";
+        document.getElementById('transformMode').textContent = '';
     }
 
     
@@ -129,6 +131,8 @@ function PrimitiveManager(){
     function primitiveSelected(id)
     {
         actualID = id;
+        if (HANDLING_MODE === "hand") controller.Activate("translation");
+        document.getElementById("primitiveList").disabled = false;
         setTransformValues(id, HANDLING_MODE);
     }
     
@@ -247,4 +251,46 @@ function PrimitiveManager(){
             x.add(option,null);
         }
     }
+}
+
+
+
+
+function Controller(){
+    
+    this.Activate = function(mode){
+        
+        HANDLING_MODE = mode;
+        
+        if (mode === "translation"){
+            document.getElementById("ButtonHand").style.border = "solid 1px gray";
+            document.getElementById("ButtonVerschieben").style.border = "solid 1px #fff";
+            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
+            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            document.getElementById("primitiveList").disabled = false;
+        }
+        else if (mode === "scale"){
+            document.getElementById("ButtonHand").style.border = "solid 1px gray";
+            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
+            document.getElementById("ButtonSkalieren").style.border = "solid 1px #fff";
+            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            document.getElementById("primitiveList").disabled = false;
+        }
+        else if (mode === "rotation"){
+            document.getElementById("ButtonHand").style.border = "solid 1px gray";
+            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
+            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
+            document.getElementById("ButtonRotieren").style.border = "solid 1px #fff";
+            document.getElementById("primitiveList").disabled = false;
+        }
+        else {
+            document.getElementById("ButtonHand").style.border = "solid 1px #fff";
+            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
+            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
+            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            
+            document.getElementById("primitiveList").selectedIndex = 0;
+            document.getElementById("primitiveList").disabled = true;
+        }
+    };
 }

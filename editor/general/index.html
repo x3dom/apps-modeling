@@ -91,39 +91,7 @@
         
     	
     	<script>
-            
-            /*
-             * Damit werden neue Buttonelemente in der Linke Leite erzeugt
-             */
-	        function newDivImg(img, name)
-                {
-                    var divID = document.createElement("div");
-                    divID.setAttribute("id", name);
-                    divID.setAttribute("style", "background-image: url(" + img + "); width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");
-				
-                    divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
-                    divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
 
-                    var divIDinnen = document.createElement("div");
-                    divIDinnen.setAttribute("style", "color: #fff; margin: 24px; margin-left: 8px;");
-                    divIDinnen.innerHTML = name;			
-
-                    divID.appendChild(divIDinnen);
-                    document.getElementById("divs").appendChild(divID);
-                }
-			
-	        window.onload = function()
-	        {   
-                    newDivImg("images/box.jpg", "Box");
-                    newDivImg("images/sphere.jpg", "Sphere");
-                    newDivImg("images/cone.jpg", "Cone");
-                    newDivImg("images/cylinder.jpg", "Cylinder");
-                    newDivImg("images/dish.jpg", "Dish");
-                    newDivImg("images/snout.jpg", "Snout");
-                    newDivImg("images/pyramid.jpg", "Pyramid");
-                    newDivImg("images/slopedcylinder.jpg", "Sloped Cylinder");
-	        };
-            
         </script>
 	</head>
 	
@@ -156,10 +124,10 @@
 			</select>
 			
 
-                    <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="HANDLING_MODE = 'rotation'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
-			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="HANDLING_MODE = 'scale'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="HANDLING_MODE = 'translation'; primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="HANDLING_MODE = 'hand'; primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
+                    <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
+			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
+			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
         		
        	</div>
         
@@ -176,7 +144,7 @@
         	
         	<div style="float: right; margin-right: 25px;">
 				<p>
-                                        <label id="transformMode" class="text-slider" style="color: white;">Mode:</label>
+                                        <label id="transformMode" class="text-slider" style="color: white;"></label>
 					
                                         <label class="text-slider" style="color: white;">X :</label>
                                         <input type="text" id="amount-x" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />

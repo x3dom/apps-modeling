@@ -1,9 +1,52 @@
 // PrimitiveManager handles the adding of new primitives and their behaviour
 var primitiveManager = new PrimitiveManager();
+// Controller that handles the activation of the transformation modes
+var controller = new Controller();
 // Variable that defines the handling mode
 var HANDLING_MODE = "translation";
 // Variables that handle the toggle behaviour of the toolbars
 var fadeSwitch = [0, 0];
+
+
+
+
+/*
+ * Damit werden neue Buttonelemente in der Linke Leite erzeugt
+ */
+function newDivImg(img, name)
+{
+    var divID = document.createElement("div");
+    divID.setAttribute("id", name);
+    divID.setAttribute("style", "background-image: url(" + img + "); width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");
+
+    divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
+    divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
+
+    var divIDinnen = document.createElement("div");
+    divIDinnen.setAttribute("style", "color: #fff; margin: 24px; margin-left: 8px;");
+    divIDinnen.innerHTML = name;			
+
+    divID.appendChild(divIDinnen);
+    document.getElementById("divs").appendChild(divID);
+}
+
+
+
+
+window.onload = function(){
+    controller.Activate("hand");
+    
+    
+    newDivImg("images/box.jpg", "Box");
+    newDivImg("images/sphere.jpg", "Sphere");
+    newDivImg("images/cone.jpg", "Cone");
+    newDivImg("images/cylinder.jpg", "Cylinder");
+    newDivImg("images/dish.jpg", "Dish");
+    newDivImg("images/snout.jpg", "Snout");
+    newDivImg("images/pyramid.jpg", "Pyramid");
+    newDivImg("images/slopedcylinder.jpg", "Sloped Cylinder");
+};
+
 
 
 
