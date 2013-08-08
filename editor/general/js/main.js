@@ -17,13 +17,14 @@ function newDivImg(img, name)
 {
     var divID = document.createElement("div");
     divID.setAttribute("id", name);
-    divID.setAttribute("style", "background-image: url(" + img + "); width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");
-
+    divID.innerHTML = "<img src="+img+" width= 60 height= 60 />";
+    divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");		
+		
     divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
     divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
 
     var divIDinnen = document.createElement("div");
-    divIDinnen.setAttribute("style", "color: #fff; margin: 24px; margin-left: 8px;");
+    divIDinnen.setAttribute("style", "color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
     divIDinnen.innerHTML = name;			
 
     divID.appendChild(divIDinnen);
