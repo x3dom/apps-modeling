@@ -107,6 +107,10 @@ $(function()
     $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
     $("#loeschen").click(function(){window.removeNode();});
     
+	$("#amount-x").spinner({});
+	$("#amount-y").spinner({});
+	$("#amount-z").spinner({});
+	
     $("#menu-accordeon").button();
     $("#loeschen").button();
     

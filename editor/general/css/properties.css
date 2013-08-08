@@ -7,12 +7,10 @@
 /* Textfelder wo die Zahlen kommen */
 .amount
 {
-	height: 10px;
-	width: 40px;
+	width: 35px;
 	margin-left: 5px;
 	color: white;
-	/*color: #052F57;*/
-	font-weight: bold;
+	font-size:0.9em;
 	background: transparent;
 }
 

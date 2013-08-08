@@ -91,7 +91,6 @@
         
     	
     	<script>
-
         </script>
 	</head>
 	
@@ -124,7 +123,7 @@
 			</select>
 			
 
-                    <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
+            <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
 			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
 			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
 			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
@@ -144,16 +143,16 @@
         	
         	<div style="float: right; margin-right: 25px;">
 				<p>
-                                        <label id="transformMode" class="text-slider" style="color: white;"></label>
-					
-                                        <label class="text-slider" style="color: white;">X :</label>
-                                        <input type="text" id="amount-x" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
-	
+                    <label id="transformMode" class="text-slider" style="color: white;"> </label>
+
+                    <label class="text-slider" style="color: white;">X :</label>
+                    <input type="text" id="amount-x" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
+
 					<label class="text-slider" style="color: white;">Y :</label>
-					<input type="text" id="amount-y" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
+					<input type="text" id="amount-y" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
 	
 					<label class="text-slider" style="color: white;">Z :</label>
-					<input type="text" id="amount-z" onchange="primitiveManager.setTransformationValuesToPrimitive();" style="background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" />
+					<input type="text" id="amount-z" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
 				</p>
         	</div>
         </div> 

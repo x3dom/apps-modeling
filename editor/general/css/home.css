@@ -73,16 +73,16 @@ body
 {
 	width: 85px;
 	color: #FFFFFF;
-        height: 10px;
+    height: 10px;
 	text-decoration: none;
 	padding: 11px;
-        padding-right: 9px;
-        padding-top: 7px;
+    padding-right: 9px;
+    padding-top: 7px;
 	display: block;
-        font-family: Calibri;
-        border: solid 1px gray;
-        border-radius: 0px;
-        background-color: #333333;
+    font-family: Calibri;
+    border: solid 1px gray;
+    border-radius: 0px;
+    background-color: #333333;
 }
 
 .nav li a:hover
