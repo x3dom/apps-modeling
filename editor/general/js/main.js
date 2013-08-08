@@ -37,7 +37,12 @@ function newDivImg(img, name)
 window.onload = function(){
     controller.Activate("hand");
     
+    /* Damit wird die Rechte Leiste getestet */
+	addParameter({name:"Propertie 1", value: 2.0, id:"id_01"});
+	addParameter({name:"Propertie 2", value: 1.0, id:"id_02"});
+	addParameter({name:"Propertie 3", value: 3.0, id:"id_03"});
     
+   
     newDivImg("images/box.jpg", "Box");
     newDivImg("images/sphere.jpg", "Sphere");
     newDivImg("images/cone.jpg", "Cone");
@@ -49,17 +54,40 @@ window.onload = function(){
 };
 
 
+function someDiv()
+{
+   if (document.getElementById('fix')) {
+      document.getElementById('fix').innerHTML = "Hier ist das Element";
+      document.getElementById('fix').style.color = "green";
+   } else {
+      alert('Fehler: Kein Element mit der ID fix gefunden!');
+   }
+}
+
+
+
 
 
 // TODO: Andres
-function addParameter(object) 
-{
-	    
+function addParameter(object)
+{	
+	var divID = document.createElement("div");	
+	divID.setAttribute("style", "margin-top: 10px;");
+	
+	var newLabel = document.createElement("label");
+	newLabel.innerText = object.name;
+		
+	var newInput = document.createElement("input");
+	newInput.setAttribute("style", "width: 112px;");
+	newInput.id = object.id;
+	newInput.value= object.value;
+	
+   	newLabel.appendChild(newInput);
+   	divID.appendChild(newLabel); 
+    document.getElementById("properties").appendChild(divID);
+	
+    $("#"+object.id).spinner({});
 }
-
-addParameter({name:"blablub", value: 2.0, id:"id_01"});
-addParameter({name:"blablu3b", value: 1.0, id:"id_02"});
-addParameter({name:"blab23lub", value: 3.0, id:"id_03"});
 
 
 
@@ -67,7 +95,7 @@ addParameter({name:"blab23lub", value: 3.0, id:"id_03"});
  * Initialization of all JQuery elements
  */
 $(function()
-{
+{	
     // Grundelemente mit Button-Klick einfuegen
     $("#Cylinder").click(function(){primitiveManager.addPrimitive("Cylinder");});
     $("#Sphere").click(function(){primitiveManager.addPrimitive("Sphere");});
