@@ -31,7 +31,7 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         var s = document.createElement('Shape');
-        t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter)};
+        t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -69,23 +69,28 @@ function PrimitiveManager(){
      */  
     this.removeNode = function()
     {
-        var ot = document.getElementById(actualID);
+        if (document.getElementById("primitiveList").selectedIndex !== 0) {
+            var ot = document.getElementById(actualID);
 
-        for (var i = 0; i < ot.childNodes.length; i++) 
-        {
-            // check if we have a real X3DOM Node; not just e.g. a Text-tag
-            if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
+            for (var i = 0; i < ot.childNodes.length; i++) 
             {
-                for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < primitiveCounter; j++){
-                    primitiveList["primitive_" + j].IDMap.cboxNumber--;
+                // check if we have a real X3DOM Node; not just e.g. a Text-tag
+                if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
+                { 
+                    ot.removeChild(ot.childNodes[i]);
+                    for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
+                        try {
+                            document.getElementById("primitiveList")[j].Primitive.IDMap.cboxNumber--;
+                        }
+                        catch (ex){}
+                    }
+                    delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.cboxNumber);
+                    delete primitiveList[actualID];
+
+                    clearTransformValues();
+                    primitiveCounter--;
+                        break;
                 }
-                ot.removeChild(ot.childNodes[i]);
-                delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.cboxNumber);
-                delete primitiveList[actualID];
-                
-                clearTransformValues();
-                primitiveCounter--;
-                    break;
             }
         }
     };
@@ -174,8 +179,13 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.comboBoxChanged = function(id){
-        actualID = document.getElementById("primitiveList")[id].Node.IDMap.id;
-        setTransformValues(actualID, HANDLING_MODE);
+        if (document.getElementById("primitiveList").selectedIndex === 0) {
+            clearTransformValues();
+        }
+        else {
+            actualID = document.getElementById("primitiveList")[id].Primitive.IDMap.id;
+            setTransformValues(actualID, HANDLING_MODE);
+        }
     };
     
     
@@ -226,7 +236,7 @@ function PrimitiveManager(){
     function addPrimitiveToComboBox(id){
         var x=document.getElementById("primitiveList");
         var option=document.createElement("option");
-        option.Node = primitiveList[id];
+        option.Primitive = primitiveList[id];
         option.text = id;
         
         try {
