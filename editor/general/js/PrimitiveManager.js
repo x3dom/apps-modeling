@@ -96,6 +96,14 @@ function PrimitiveManager(){
         }
     };
     
+    /*
+     * This function remove the Axis
+     * @returns (undefined)
+     */
+    this.removeAxis = function()
+    {
+    	delete document.getElementById("axis").remove();s
+    }
     
     
     /*
