@@ -13,7 +13,7 @@ var fadeSwitch = [0, 0];
 /*
  * Damit werden neue Buttonelemente in der Linke Leite erzeugt
  */
-function newDivImg(img, name)
+function addLeftbarElement(img, name)
 {
     var divID = document.createElement("div");
     divID.setAttribute("id", name);
@@ -32,44 +32,10 @@ function newDivImg(img, name)
 }
 
 
-
-
-window.onload = function(){
-    controller.Activate("hand");
-    
-    /* Damit wird die Rechte Leiste getestet */
-	addParameter({name:"Propertie 1", value: 2.0, id:"id_01"});
-	addParameter({name:"Propertie 2", value: 1.0, id:"id_02"});
-	addParameter({name:"Propertie 3", value: 3.0, id:"id_03"});
-    
-   
-    newDivImg("images/box.jpg", "Box");
-    newDivImg("images/sphere.jpg", "Sphere");
-    newDivImg("images/cone.jpg", "Cone");
-    newDivImg("images/cylinder.jpg", "Cylinder");
-    newDivImg("images/dish.jpg", "Dish");
-    newDivImg("images/snout.jpg", "Snout");
-    newDivImg("images/pyramid.jpg", "Pyramid");
-    newDivImg("images/slopedcylinder.jpg", "Sloped Cylinder");
-};
-
-
-function someDiv()
-{
-   if (document.getElementById('fix')) {
-      document.getElementById('fix').innerHTML = "Hier ist das Element";
-      document.getElementById('fix').style.color = "green";
-   } else {
-      alert('Fehler: Kein Element mit der ID fix gefunden!');
-   }
-}
-
-
-
-
-
-// TODO: Andres
-function addParameter(object)
+/*
+ * Damit werden in der rechte Leiste die Parameterelemente angelegt
+ */
+function addRightbarElement(object)
 {	
 	var divID = document.createElement("div");	
 	divID.setAttribute("style", "margin-top: 10px;");
@@ -87,6 +53,38 @@ function addParameter(object)
     document.getElementById("properties").appendChild(divID);
 	
     $("#"+object.id).spinner({});
+}
+
+
+
+window.onload = function(){
+    controller.Activate("hand");
+    
+    /* Damit wird die Rechte Leiste getestet */
+	addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
+	addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
+	addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});
+    
+   
+    addLeftbarElement("images/box.jpg", "Box");
+    addLeftbarElement("images/sphere.jpg", "Sphere");
+   	addLeftbarElement("images/cone.jpg", "Cone");
+    addLeftbarElement("images/cylinder.jpg", "Cylinder");
+    addLeftbarElement("images/dish.jpg", "Dish");
+    addLeftbarElement("images/snout.jpg", "Snout");
+    addLeftbarElement("images/pyramid.jpg", "Pyramid");
+    addLeftbarElement("images/slopedcylinder.jpg", "Sloped Cylinder");
+};
+
+
+function someDiv()
+{
+   if (document.getElementById('fix')) {
+      document.getElementById('fix').innerHTML = "Hier ist das Element";
+      document.getElementById('fix').style.color = "green";
+   } else {
+      alert('Fehler: Kein Element mit der ID fix gefunden!');
+   }
 }
 
 

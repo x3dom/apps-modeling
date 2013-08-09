@@ -161,17 +161,17 @@ body
 
 /* die 4 Buttons zum Manipulieren *******************************************************************/
 
-#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #DeleteAxis
+#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #DeleteAxis, #DeletePlane
 {
     border:1px solid gray;
 }
 
-#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover
 {
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,

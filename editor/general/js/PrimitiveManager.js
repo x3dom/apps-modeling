@@ -121,6 +121,25 @@ function PrimitiveManager(){
     	}    	
     }
     
+    /*
+     * This function remove the plane
+     * @returns (undefined)
+     */
+    this.removePlane = function()
+    {
+    	var renderWert = document.getElementById("plane");
+    	
+    	if(renderWert.getAttribute("render", 0) == "true")
+    	{
+    		renderWert.setAttribute("render", "false");
+    	}
+    	
+    	else
+    	{
+    		renderWert.setAttribute("render", "true");
+    	}
+    }
+    
     
     /*
      * Clears the value fields of the transformation

@@ -111,11 +111,11 @@
         		</ul>
         	</div>
         	
-                <select id="primitiveList" onchange="primitiveManager.comboBoxChanged(this.selectedIndex);" class="ObjektList" onmouseover="this.style.cursor='pointer';" style="float:left; width: 150px; height: 30px; margin: 5px;">
+                <select id="primitiveList" onchange="primitiveManager.comboBoxChanged(this.selectedIndex);" class="ObjektList" onmouseover="this.style.cursor='pointer';" style="float:left; width: 140px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
                     <option>nothing selected</option>
                 </select>
 			
-			<select class="Views" onmouseover="this.style.cursor='pointer';" style="float:left; width: 115px; height: 30px; margin: 5px;">
+			<select class="Views" onmouseover="this.style.cursor='pointer';" style="float:left; width: 80px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
   				<option>Front</option>
   				<option>Back</option>
   				<option>Right</option>
@@ -123,10 +123,12 @@
 			</select>
 						
             <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;"></div>
-			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px;"></div>
-			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 2px; margin-left: 0px;"></div>
-        	<div><img src="images/axis_png.png" id="DeleteAxis" onclick="primitiveManager.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 5px;"></div>	
+			<div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
+			<div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
+			<div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
+        	<div><img src="images/axis_png.png" id="DeleteAxis" onclick="primitiveManager.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 5px;"></div>
+        	<div><img src="images/plane_png.png" id="DeletePlane" onclick="primitiveManager.removePlane();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>	
+	
        	</div>
         
         
@@ -239,7 +241,7 @@
 	                        <viewpoint position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209"></viewpoint>
 	                        
 	                        <transform rotation="1 0 0 -1.57" >
-	                        	<Shape render='true'>
+	                        	<Shape id="plane" render="true">
 	                            	<Appearance><Material emissiveColor='0.2 0.2 0.2' /></Appearance>
 	                            	<Plane solid="false" size='18 18'  primType='LINES' subdivision='48 48' />
 	                         	</Shape>
