@@ -221,6 +221,8 @@ function fadeLeft(){
             left: "-89px"
         }, 250);
         fadeSwitch[0]++;
+        
+        $("#linksSlider").hide(250);
     }
     else {
         $("#Links").animate(
@@ -228,6 +230,8 @@ function fadeLeft(){
             left: "0px"
         }, 250);
         fadeSwitch[0]--;
+        
+        $("#linksSlider").show(250);
     }
 }
 
