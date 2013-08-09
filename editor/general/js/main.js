@@ -74,6 +74,12 @@ window.onload = function(){
     addLeftbarElement("images/snout.jpg", "Snout");
     addLeftbarElement("images/pyramid.jpg", "Pyramid");
     addLeftbarElement("images/slopedcylinder.jpg", "Sloped Cylinder");
+    
+    addLeftbarElement("images/box.jpg", "Box");
+    addLeftbarElement("images/box.jpg", "Box");
+    addLeftbarElement("images/box.jpg", "Box");
+    addLeftbarElement("images/box.jpg", "Box");
+    addLeftbarElement("images/box.jpg", "Box");
 };
 
 
@@ -111,20 +117,16 @@ $(function()
 	
     $("#menu-accordeon").button();
     $("#loeschen").button();
-    
-    
-    /*
-     * TODO: Noch nicht ganz implementiert !!!
-     */
-    $("#linksSlider").slider({
-    	animate:true,
-    	orientation: "vertical",
-        range: "min",
-        min: 0,
-        max: 100,
-        value: 100
-    });
-    
+        
+        
+    /** Slider an der linke Leiste */    		
+	$('#divs').slimScroll({
+		height: '99%',
+		size: '10px',
+		color: '#FFFFFF',
+		position: 'left'
+	});
+			
     
     /*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
 	
@@ -218,11 +220,9 @@ function fadeLeft(){
     if (fadeSwitch[0] === 0){
         $("#Links").animate(
         {
-            left: "-89px"
+            left: "-87px"
         }, 250);
         fadeSwitch[0]++;
-        
-        $("#linksSlider").hide(250);
     }
     else {
         $("#Links").animate(
@@ -230,8 +230,6 @@ function fadeLeft(){
             left: "0px"
         }, 250);
         fadeSwitch[0]--;
-        
-        $("#linksSlider").show(250);
     }
 }
 
