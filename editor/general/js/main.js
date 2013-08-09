@@ -18,7 +18,7 @@ function addLeftbarElement(img, name)
     var divID = document.createElement("div");
     divID.setAttribute("id", name);
     divID.innerHTML = "<img src="+img+" width= 60 height= 60 />";
-    divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;");		
+    divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px #fff; border-radius: 5px;");		
 		
     divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
     divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
@@ -113,6 +113,19 @@ $(function()
     $("#loeschen").button();
     
     
+    /*
+     * TODO: Noch nicht ganz implementiert !!!
+     */
+    $("#linksSlider").slider({
+    	animate:true,
+    	orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 100,
+        value: 100
+    });
+    
+    
     /*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
 	
 	/* Das blendet die kleine Symbole beim Accordion ein */
@@ -205,7 +218,7 @@ function fadeLeft(){
     if (fadeSwitch[0] === 0){
         $("#Links").animate(
         {
-            left: "-77px"
+            left: "-89px"
         }, 250);
         fadeSwitch[0]++;
     }
