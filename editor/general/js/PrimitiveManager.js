@@ -102,7 +102,23 @@ function PrimitiveManager(){
      */
     this.removeAxis = function()
     {
-    	delete document.getElementById("axis").remove();s
+    	
+    	if(document.getElementById("axis"))
+    	{
+    		delete document.getElementById("axis").remove();
+    	}
+    	else
+    	{
+	    	var t = document.createElement('Transform');
+	        t.setAttribute('id', 'axis');
+	        
+	        var innen = document.createElement('inline');
+	        innen.setAttribute('url', 'x3d/axis.x3d');	   
+	        t.appendChild(innen);
+	        
+	        var onOff = document.getElementById('onOff');
+	        onOff.appendChild(t);
+    	}    	
     }
     
     
