@@ -61,14 +61,14 @@ window.onload = function(){
     controller.Activate("hand");
     
     /* Damit wird die Rechte Leiste getestet */
-	addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
-	addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
-	addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});
+    addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
+    addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
+    addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});
     
    
     addLeftbarElement("images/box.jpg", "Box");
     addLeftbarElement("images/sphere.jpg", "Sphere");
-   	addLeftbarElement("images/cone.jpg", "Cone");
+    addLeftbarElement("images/cone.jpg", "Cone");
     addLeftbarElement("images/cylinder.jpg", "Cylinder");
     addLeftbarElement("images/dish.jpg", "Dish");
     addLeftbarElement("images/snout.jpg", "Snout");
@@ -161,9 +161,21 @@ $(function()
     $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
     $("#loeschen").click(function(){window.removeNode();});
     
-	$("#amount-x").spinner({});
-	$("#amount-y").spinner({});
-	$("#amount-z").spinner({});
+    $("#amount-x").spinner({
+        stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
+    $("#amount-y").spinner({         
+        stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
+    $("#amount-z").spinner({         
+        stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
 	
     $("#menu-accordeon").button();
     $("#loeschen").button();

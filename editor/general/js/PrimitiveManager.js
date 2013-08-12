@@ -60,6 +60,7 @@ function PrimitiveManager(){
         
         actualID = id;
         primitiveCounter++;
+        highlight(true);
     };
     
     
@@ -106,6 +107,7 @@ function PrimitiveManager(){
     	if(document.getElementById("axis"))
     	{
     		delete document.getElementById("axis").remove();
+                document.getElementById("DeleteAxis").style.border="solid 1px gray";
     	}
     	else
     	{
@@ -118,8 +120,12 @@ function PrimitiveManager(){
 	        
 	        var onOff = document.getElementById('onOff');
 	        onOff.appendChild(t);
+                
+                document.getElementById("DeleteAxis").style.border="solid 1px #fff";
     	}    	
-    }
+    };
+    
+    
     
     /*
      * This function remove the plane
@@ -129,16 +135,19 @@ function PrimitiveManager(){
     {
     	var renderWert = document.getElementById("plane");
     	
-    	if(renderWert.getAttribute("render", 0) == "true")
+    	if(renderWert.getAttribute("render", 0) === "true")
     	{
     		renderWert.setAttribute("render", "false");
+                document.getElementById("DeletePlane").style.border="solid 1px gray";
     	}
     	
     	else
     	{
     		renderWert.setAttribute("render", "true");
+                document.getElementById("DeletePlane").style.border="solid 1px #fff";
     	}
-    }
+    };
+    
     
     
     /*
@@ -164,16 +173,16 @@ function PrimitiveManager(){
     }
 
     
-    
+
     /*
      * Will be called if a primitive is selected and should
      * set the values of translation, rotation or scaling
      * @param {type} id name of the primitive's values that should be set
      * @returns {null}
      */
-    function primitiveSelected(id)
-    {
+    function primitiveSelected(id){
         actualID = id;
+        highlight(true);
         if (HANDLING_MODE === "hand") controller.Activate("translation");
         document.getElementById("primitiveList").disabled = false;
         setTransformValues(id, HANDLING_MODE);
@@ -181,6 +190,22 @@ function PrimitiveManager(){
     
     
     
+    /*
+     * Highlights the actually selected primitive
+     * @param {type} highlightOn false if all should be dehighlighted
+     * @returns {null}
+     */
+    function highlight(highlightOn){  
+        for (var j = 0; j < primCounter; j++){
+            primitiveList["primitive_" + j].highlight(false, "");
+        }
+        if (highlightOn)
+            primitiveList[actualID].highlight(true, "");  
+    };
+    
+    
+    
+     
     /*
      * Sets the values of the actual selected transformation
      * to the value fields in the bottom bar
@@ -233,6 +258,7 @@ function PrimitiveManager(){
             actualID = document.getElementById("primitiveList")[id].Primitive.IDMap.id;
             setTransformValues(actualID, HANDLING_MODE);
         }
+        highlight(true);
     };
     
     
