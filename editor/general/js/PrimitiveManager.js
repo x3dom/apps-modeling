@@ -40,7 +40,7 @@ function PrimitiveManager(){
         // Material Node
         var mat = document.createElement('Material');
         mat.setAttribute("diffuseColor", "0.25 0.5 0.75");
-        mat.setAttribute("transparency", "0.35");
+        mat.setAttribute("transparency", "0.3");
         mat.setAttribute("shininess", ".3");
 
         app.appendChild(mat);
@@ -203,7 +203,7 @@ function PrimitiveManager(){
             catch(ex){}
         }
         if (highlightOn) {
-            primitiveList[actualID].highlight(true, "255 255 0"); 
+            primitiveList[actualID].highlight(true, "1 1 0"); 
         }
     };
     
