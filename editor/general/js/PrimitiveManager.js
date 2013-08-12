@@ -197,7 +197,10 @@ function PrimitiveManager(){
      */
     function highlight(highlightOn){  
         for (var j = 0; j < primCounter; j++){
-            primitiveList["primitive_" + j].highlight(false, "");
+            try {
+                primitiveList["primitive_" + j].highlight(false, "");
+            }
+            catch(ex){}
         }
         if (highlightOn) {
             primitiveList[actualID].highlight(true, "255 255 0"); 
