@@ -39,8 +39,8 @@ function PrimitiveManager(){
 
         // Material Node
         var mat = document.createElement('Material');
-        mat.setAttribute("emissiveColor", "0 0 1");
-        mat.setAttribute("transparency", ".4");
+        mat.setAttribute("diffuseColor", "0.25 0.5 0.75");
+        mat.setAttribute("transparency", "0.35");
         mat.setAttribute("shininess", ".3");
 
         app.appendChild(mat);
@@ -199,8 +199,9 @@ function PrimitiveManager(){
         for (var j = 0; j < primCounter; j++){
             primitiveList["primitive_" + j].highlight(false, "");
         }
-        if (highlightOn)
-            primitiveList[actualID].highlight(true, "");  
+        if (highlightOn) {
+            primitiveList[actualID].highlight(true, "255 255 0"); 
+        }
     };
     
     
