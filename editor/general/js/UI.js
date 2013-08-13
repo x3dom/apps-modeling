@@ -140,7 +140,8 @@ function UI(primitiveManager){
         };
         
         obj.disable = function(bool){
-            //$("#" + id).spinner( "option", "disabled", bool );
+            if (bool) document.getElementById(id).style.opacity="0.5";
+            else document.getElementById(id).style.opacity="1.0";
             document.getElementById(id).disabled = bool;
         };
         
@@ -196,6 +197,8 @@ function UI(primitiveManager){
         };
         
         obj.disable = function(bool){
+            if (bool) document.getElementById(id).style.opacity="0.5";
+            else document.getElementById(id).style.opacity="1.0";
             document.getElementById(id).disabled = bool;
         };
         
