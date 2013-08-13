@@ -131,8 +131,8 @@
                 <div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
                 <div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
                 <div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px;"></div>
-        	<div><img src="images/axis_png.png" id="DeleteAxis" onclick="ui.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 5px; border: solid 1px #fff;"></div>
-        	<div><img src="images/plane_png.png" id="DeletePlane" onclick="ui.removePlane();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; border: solid 1px #fff;"></div>	
+        	<div><img src="images/axis_png.png" id="DeleteAxis" onclick="controller.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 5px; border: solid 1px #fff;"></div>
+        	<div><img src="images/plane_png.png" id="DeletePlane" onclick="controller.removePlane();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; border: solid 1px #fff;"></div>	
        	</div>
         
         
@@ -167,16 +167,6 @@
         <div id="Links" style="position: absolute; left: 0px; height:100%; width: 100px; z-index: 10000;">
             <div style="width: 85px; height: 100%; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-left: none; border-radius: 0px 10px 0px 0px; padding-top: 5px; font-size: 10px; font-weight: bold;">
             	<div id="divs"> </div>
-               <!--
-                <div id="Box" onmouseover="this.style.cursor='pointer';"><img src="images/box.jpg" style="width: 60px; height: 60px; margin: 5px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 23px;">Box</div></div>
-                <div id="Sphere" onmouseover="this.style.cursor='pointer';"><img src="images/sphere.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -43px; margin-bottom: 25px; margin-left: 18px;">Sphere</div></div>
-                <div id="Cone" onmouseover="this.style.cursor='pointer';"><img src="images/cone.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 23px;">Cone</div></div>
-                <div id="Cylinder" onmouseover="this.style.cursor='pointer';"><img src="images/cylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 18px;">Cylinder</div></div>
-                <div id="Dish" onmouseover="this.style.cursor='pointer';"><img src="images/dish.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -43px; margin-bottom: 25px; margin-left: 23px;">Dish</div></div>
-                <div id="Snout" onmouseover="this.style.cursor='pointer';"><img src="images/snout.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 20px;">Snout</div></div>
-                <div id="Pyramid" onmouseover="this.style.cursor='pointer';"><img src="images/pyramid.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 17px;">Pyramid</div></div>
-                <div id="SlopedCylinder" onmouseover="this.style.cursor='pointer';"><img src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -52px; margin-bottom: 25px; margin-left: 17px;">Slope Cylinder</div></div>
-               -->
             </div>
             <div id="button_Links" onclick="ui.fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 150px; left: 85px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
@@ -191,38 +181,6 @@
 					<h3>Properties</h3>
 					
 					<div id="properties">
-						<!--
-						
-						<div id="verschieben">						
-							<p>
-								<label style="margin: 5px;">Verschieben</label>	
-							</p>
-							
-							<div id="x-sliderV" class="slider1"> </div>
-							<div id="y-sliderV" class="slider1"> </div>
-							<div id="z-sliderV" class="slider1"> </div>	
-						</div>
-
-						<div id="skalieren">
-							<p>
-								<label for="amount-S" class="text-slider">Skalieren :</label>
-								<input type="text" id="amount-s" class="amountS" value="0" style="color: white; background-color: #333333; padding: 4px; border: solid 1px gray;" class="amount" value="0"/>
-							</p>
-							
-							<div id="sliderS" class="slider2"> </div>
-						</div>
-
-						<div id="drehen">						
-							<p>
-								<label style="margin: 5px;">Drehen</label>	
-							</p>
-						
-							<div id="x-sliderD" class="slider3"> </div>
-							<div id="y-sliderD" class="slider4"> </div>
-							<div id="z-sliderD" class="slider5"> </div>	
-						</div>
-
-						-->
 					</div>
 					
 					<h3>Colors</h3>

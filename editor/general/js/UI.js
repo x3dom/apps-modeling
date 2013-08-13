@@ -61,112 +61,28 @@ function UI(primitiveManager){
         addLeftbarElement("images/box.jpg", "Box");
         addLeftbarElement("images/box.jpg", "Box");
         
-        
-        $("#menu-accordeon").button();
-        $("#loeschen").button();
-        
-        
-        /** Slider an der linke Leiste */    		
+        // scrollbar for primitives of left bar   		
 	$('#divs').slimScroll({
 		height: '99%',
 		size: '10px',
 		color: '#FFFFFF',
 		position: 'left'
 	});
-			
-    
-        /*** Das hier ist alles fuer das Accordeon-Menue ************************************************************/			
-	
-	/* Das blendet die kleine Symbole beim Accordion ein */
+
+	// symbols of accordion on right bar
 	var iconsAccordion = 
 	{
 		header: "ui-icon-circle-arrow-e",
 		activeHeader: "ui-icon-circle-arrow-s"
 	};
 				
+        // creation of the accordion on the right bar                        
 	$("#accordeon-oben").accordion({
 		heightStyle: "content",
 		collapsible: false,
 		active: false,
 		icons: iconsAccordion
 	});	
-	
-
-        /*******************************************************************************************************************************/
-
-
-	// Slider zum Verschieben ////////////////////////////////////////////////////////////////////////////////////////////////// 
-	$(".slider1").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
-								
-        var koordinaten = $("#x-sliderV").slider('option', 'value') + " " + 
-                                      $("#y-sliderV").slider('option', 'value') + " " + 
-                                      $("#z-sliderV").slider('option', 'value');
-
-            document.getElementById(aktuelleID).setAttribute("translation", koordinaten);
-            alert(koordinaten);
-            // Textfelder aktualisieren
-            $( "#amount-x" ).val( $("#x-sliderV").slider('option', 'value') );
-            $( "#amount-y" ).val( $("#y-sliderV").slider('option', 'value') );
-            $( "#amount-z" ).val( $("#z-sliderV").slider('option', 'value') );
-
-        }});
-
-
-            // Slider zum Skalieren ////////////////////////////////////////////////////////////////////////////////////////////////////
-            $(".slider2").slider({min: 0, max: 15, value:0, step: 0.001, slide: function(event, ui) {
-            var koordinaten =   $("#sliderS").slider('option', 'value') + " " 
-                                  + $("#sliderS").slider('option', 'value') + " "  
-                              + $("#sliderS").slider('option', 'value');
-
-            document.getElementById(aktuelleID).setAttribute("scale", koordinaten);
-
-            $( "#amount-S" ).val( $( "#sliderS" ).slider( "value" ) );     
-         }});
-
-
-            // Slider zum Drehen ////////////////////////////////////////////////////////////////////////////////////////////////////////
-            $(".slider3").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
-
-                    var winkel = $("#x-sliderD").slider('option', 'value');
-                    var bogenmass = winkel * (3.14 / 180);
-            var koordinatenX = winkel + " " + 0 + " "  + 0 + " " + bogenmass;
-
-            document.getElementById(aktuelleID).setAttribute("rotation", koordinatenX);
-            $( "#amount-x" ).val( $( "#x-sliderD" ).slider( "value" ) );
-        }});
-
-        $(".slider4").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
-
-            var winkel = $("#y-sliderD").slider('option', 'value');
-                    var bogenmass = winkel * (3.14 / 180);
-            var koordinatenY = 0 + " " + winkel + " "  + 0 + " " + bogenmass;
-
-            document.getElementById(aktuelleID).setAttribute("rotation", koordinatenY);
-            $( "#amount-y" ).val( $( "#y-sliderD" ).slider( "value" ) );
-        }});
-
-        $(".slider5").slider({min: 0, max: 360, value:0, step: 0.001, slide: function(event, ui) {
-
-                    var winkel = $("#z-sliderD").slider('option', 'value');
-                    var bogenmass = winkel * (3.14 / 180);
-            var koordinatenZ = 0 + " " + 0 + " "  + winkel + " " + bogenmass;
-
-            document.getElementById(aktuelleID).setAttribute("rotation", koordinatenZ);
-            $( "#amount-z" ).val( $( "#z-sliderD" ).slider( "value" ) );
-        }});
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
-        // Grundelemente mit Button-Klick einfuegen
-        /*$("#Cylinder").click(function(){primitiveManager.addPrimitive("Cylinder");});
-        $("#Sphere").click(function(){primitiveManager.addPrimitive("Sphere");});
-        $("#Cone").click(function(){primitiveManager.addPrimitive("Cone");});
-        $("#Box").click(function(){primitiveManager.addPrimitive("Box");});
-        $("#Dish").click(function(){primitiveManager.addPrimitive("Dish");});
-        $("#Snout").click(function(){primitiveManager.addPrimitive("Snout");});
-        $("#Pyramid").click(function(){primitiveManager.addPrimitive("Pyramid");});
-        $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
-        $("#loeschen").click(function(){window.removeNode();});*/
     }
     
     
@@ -225,60 +141,7 @@ function UI(primitiveManager){
     };
     
     
-    
-    /*
-     * This function removes the axis cross 
-     * @returns (undefined)
-     */
-    this.removeAxis = function()
-    {
-    	
-    	if(document.getElementById("axis"))
-    	{
-    		delete document.getElementById("axis").remove();
-                document.getElementById("DeleteAxis").style.border="solid 1px gray";
-    	}
-    	else
-    	{
-	    	var t = document.createElement('Transform');
-	        t.setAttribute('id', 'axis');
-	        
-	        var innen = document.createElement('inline');
-	        innen.setAttribute('url', 'x3d/axis.x3d');	   
-	        t.appendChild(innen);
-	        
-	        var onOff = document.getElementById('onOff');
-	        onOff.appendChild(t);
-                
-                document.getElementById("DeleteAxis").style.border="solid 1px #fff";
-    	}    	
-    };
-    
-    
-    
-    /*
-     * This function removes the orientation plane
-     * @returns (undefined)
-     */
-    this.removePlane = function()
-    {
-    	var renderWert = document.getElementById("plane");
-    	
-    	if(renderWert.getAttribute("render", 0) === "true")
-    	{
-    		renderWert.setAttribute("render", "false");
-                document.getElementById("DeletePlane").style.border="solid 1px gray";
-    	}
-    	
-    	else
-    	{
-    		renderWert.setAttribute("render", "true");
-                document.getElementById("DeletePlane").style.border="solid 1px #fff";
-    	}
-    };
-    
-    
-    
+
     /*
      * Toggeling fade function of the left toolbar
      */
