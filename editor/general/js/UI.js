@@ -93,6 +93,59 @@ function UI(primitiveManager){
         
         return obj;
     };
+    
+    
+    
+    /*
+     * This function remove the Axis
+     * @returns (undefined)
+     */
+    this.removeAxis = function()
+    {
+    	
+    	if(document.getElementById("axis"))
+    	{
+    		delete document.getElementById("axis").remove();
+                document.getElementById("DeleteAxis").style.border="solid 1px gray";
+    	}
+    	else
+    	{
+	    	var t = document.createElement('Transform');
+	        t.setAttribute('id', 'axis');
+	        
+	        var innen = document.createElement('inline');
+	        innen.setAttribute('url', 'x3d/axis.x3d');	   
+	        t.appendChild(innen);
+	        
+	        var onOff = document.getElementById('onOff');
+	        onOff.appendChild(t);
+                
+                document.getElementById("DeleteAxis").style.border="solid 1px #fff";
+    	}    	
+    };
+    
+    
+    
+    /*
+     * This function remove the plane
+     * @returns (undefined)
+     */
+    this.removePlane = function()
+    {
+    	var renderWert = document.getElementById("plane");
+    	
+    	if(renderWert.getAttribute("render", 0) === "true")
+    	{
+    		renderWert.setAttribute("render", "false");
+                document.getElementById("DeletePlane").style.border="solid 1px gray";
+    	}
+    	
+    	else
+    	{
+    		renderWert.setAttribute("render", "true");
+                document.getElementById("DeletePlane").style.border="solid 1px #fff";
+    	}
+    };
    
 
     
