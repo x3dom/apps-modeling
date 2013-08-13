@@ -4,13 +4,13 @@
 			<!-- X arrow and label -->
             <Transform rotation='0 0 1 -1.57079'>
             	<Shape>
-                	<Cylinder DEF='ArrowCylinder' bottom='false' radius='.02' height='20.0' top='false'></Cylinder>                    
+                	<Cylinder DEF='ArrowCylinder' bottom='false' radius='.02' height='20.0' top='false' subdivision="12"></Cylinder>                    
                     <Appearance DEF='Red'><Material diffuseColor='.7 .1 .1' emissiveColor='.33 0 0'></Material></Appearance>
                	</Shape>
                 
                 <Transform translation='0 10.25 0'>
                 	<Shape>                            
-                		<Cone DEF='ArrowCone' bottomRadius='.10' height='0.5'></Cone>
+                		<Cone DEF='ArrowCone' bottomRadius='.10' height='0.5' subdivision="16"></Cone>
                     	<Appearance USE='Red'></Appearance>
                 	</Shape>
                 </Transform>                
