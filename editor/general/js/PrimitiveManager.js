@@ -3,7 +3,7 @@
  * added primitives of the workspace
  * @returns {PrimitiveManager}
  */
-function PrimitiveManager(){
+function PrimitiveManager(ui){
     
     // List of all created primitives
     var primitiveList = [];
@@ -165,11 +165,11 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     function clearTransformValues(){
-        document.getElementById("amount-x").value = "";
-        document.getElementById("amount-y").value = "";
-        document.getElementById("amount-z").value = "";
-        document.getElementById("ObjektName").value = "";
-        document.getElementById('transformMode').textContent = '';
+        ui.BBTransX.set("");
+        ui.BBTransY.set("");
+        ui.BBTransZ.set("");
+        ui.BBPrimName.set("");
+        ui.BBTransformMode.set("");
     }
 
     
@@ -229,20 +229,20 @@ function PrimitiveManager(){
         var tempValue = ""; 
 
         if(HANDLING_MODE === "translation") {
-            tempValue = document.getElementById("amount-x").value + " " +
-                        document.getElementById("amount-y").value + " " +
-                        document.getElementById("amount-z").value;
+            tempValue = ui.BBTransX.get() + " " +
+                        ui.BBTransY.get() + " " +
+                        ui.BBTransZ.get();
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
-            primitiveList[actualID].setAttribute(HANDLING_MODE, "1,0,0," + (document.getElementById("amount-x").value * (Math.PI / 180.0)));
+            primitiveList[actualID].setAttribute(HANDLING_MODE, "1,0,0," + (ui.BBTransX.get() * (Math.PI / 180.0)));
             //primitiveList[actualID].setAttribute(HANDLING_MODE, "0,1,0," + (document.getElementById("amount-y").value * (Math.PI / 180.0)));
             //primitiveList[actualID].setAttribute(HANDLING_MODE, "0,0,1," + (document.getElementById("amount-z").value * (Math.PI / 180.0)));
         }
         else {
-            tempValue = document.getElementById("amount-x").value + "," +
-                        document.getElementById("amount-y").value + "," +
-                        document.getElementById("amount-z").value;
+            tempValue = ui.BBTransX.get() + "," +
+                        ui.BBTransY.get() + "," +
+                        ui.BBTransZ.get();
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
     };
@@ -281,13 +281,13 @@ function PrimitiveManager(){
             (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
                                        xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
 
-            document.getElementById("amount-x").value = xyz[0].substr(0, 5);
-            document.getElementById("amount-y").value = xyz[1].substr(0, 5);
-            document.getElementById("amount-z").value = xyz[2].substr(0, 5);
+            ui.BBTransX.set(xyz[0].substr(0, 5));
+            ui.BBTransY.set(xyz[1].substr(0, 5));
+            ui.BBTransZ.set(xyz[2].substr(0, 5));
 
-            document.getElementById("ObjektName").value = primitiveList[id].IDMap.name;
+            ui.BBPrimName.set(primitiveList[id].IDMap.name);
             document.getElementById("primitiveList").selectedIndex = primitiveList[id].IDMap.cboxNumber;
-            document.getElementById('transformMode').textContent = HANDLING_MODE.toUpperCase() + ':';
+            ui.BBTransformMode.set(HANDLING_MODE.toUpperCase() + ':');
         }
         catch(ex){ }
     }
@@ -299,8 +299,8 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.cboxNumber].text = document.getElementById("ObjektName").value;
-        primitiveList[actualID].IDMap.name = document.getElementById("ObjektName").value;
+        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.cboxNumber].text = ui.BBPrimName.get();
+        primitiveList[actualID].IDMap.name = ui.BBPrimName.get();
     };
     
     

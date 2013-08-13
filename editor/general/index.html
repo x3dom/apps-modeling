@@ -12,8 +12,9 @@
 		<link rel="stylesheet" type="text/css" href="css/properties.css"/>
 		<link rel="stylesheet" type="text/css" href="css/home.css"/>
 		<!--<script src="js/home.js"></script>-->
-        <script src="js/PrimitiveManager.js"></script>
-        <script src="js/main.js"></script>
+                <script src="js/PrimitiveManager.js"></script>
+                <script src="js/UI.js"></script>
+                <script src="js/main.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/x3dom.css"/>
 		        
@@ -140,7 +141,7 @@
         	<div style="float: left; position: fixed; margin-left: 25px;">
         		<p>
         			<label style="color: white;">Object:  </label>
-        			<input type="text" id="ObjektName" onchange="primitiveManager.setPrimitiveName();" class="amount" value="" style="width: 110px; font-weight: bold; border-radius: 5px; margin-top:0px; padding-bottom: 4px; padding-left: 5px; height: 18px; border: 1px solid gray; background-color: #111111;" />
+        			<input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value="" style="width: 110px; font-weight: bold; border-radius: 5px; margin-top:0px; padding-bottom: 4px; padding-left: 5px; height: 18px; border: 1px solid gray; background-color: #111111;" />
         		</p>
         	</div>
         	
@@ -150,13 +151,13 @@
                         <label id="transformMode" class="text-slider" style="color: white;"></label>
 
                         <label class="text-slider" style="color: white;">X :</label>
-                        <input type="text" id="amount-x" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
+                        <input type="text" id="amountX" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
 
                         <label class="text-slider" style="color: white;">Y :</label>
-                        <input type="text" id="amount-y" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
+                        <input type="text" id="amountY" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
 
                         <label class="text-slider" style="color: white;">Z :</label>
-                        <input type="text" id="amount-z" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
+                        <input type="text" id="amountZ" onchange="primitiveManager.setTransformationValuesToPrimitive();" class="amount" />
                     </p>
         	</div>
         </div> 

@@ -1,5 +1,7 @@
+// UI handles all the access to all gui elements
+var ui = new UI();
 // PrimitiveManager handles the adding of new primitives and their behaviour
-var primitiveManager = new PrimitiveManager();
+var primitiveManager = new PrimitiveManager(ui);
 // Controller that handles the activation of the transformation modes
 var controller = new Controller();
 // Variable that defines the handling mode
@@ -181,17 +183,17 @@ $(function()
     $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
     $("#loeschen").click(function(){window.removeNode();});
     
-    $("#amount-x").spinner({
+    $("#amountX").spinner({
         stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
-    $("#amount-y").spinner({         
+    $("#amountY").spinner({         
         stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
-    $("#amount-z").spinner({         
+    $("#amountZ").spinner({         
         stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
