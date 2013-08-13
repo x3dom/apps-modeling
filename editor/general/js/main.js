@@ -12,5 +12,6 @@ var HANDLING_MODE = "translation";
 window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
+    primitiveManager.clearTransformationValues();
 };
 

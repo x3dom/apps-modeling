@@ -127,10 +127,16 @@ function PrimitiveManager(){
      */
     function clearTransformValues(){
         ui.BBTransX.set("");
+        ui.BBTransX.disable(true);
         ui.BBTransY.set("");
+        ui.BBTransY.disable(true);
         ui.BBTransZ.set("");
+        ui.BBTransZ.disable(true);
         ui.BBPrimName.set("");
+        ui.BBPrimName.disable(true);
         ui.BBTransformMode.set("");
+        ui.BBDelete.disable(true);
+        highlight(false);
     }
 
     
@@ -245,10 +251,15 @@ function PrimitiveManager(){
             ui.BBTransX.set(xyz[0].substr(0, 5));
             ui.BBTransY.set(xyz[1].substr(0, 5));
             ui.BBTransZ.set(xyz[2].substr(0, 5));
-
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
             document.getElementById("primitiveList").selectedIndex = primitiveList[id].IDMap.cboxNumber;
             ui.BBTransformMode.set(HANDLING_MODE.toUpperCase() + ':');
+            
+            ui.BBTransX.disable(false);
+            ui.BBTransY.disable(false);
+            ui.BBTransZ.disable(false);
+            ui.BBPrimName.disable(false);
+            ui.BBDelete.disable(false); 
         }
         catch(ex){ }
     }
@@ -337,7 +348,7 @@ function Controller(ui){
             ui.TBTranslate.dehighlight();
             ui.TBScale.dehighlight();
             ui.TBRotate.dehighlight();
-            
+
             document.getElementById("primitiveList").selectedIndex = 0;
             document.getElementById("primitiveList").disabled = true;
         }

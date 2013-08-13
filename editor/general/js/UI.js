@@ -26,31 +26,31 @@ function UI(primitiveManager){
         that.TBTranslate = that.newImageProperty("ButtonVerschieben");
         that.TBScale = that.newImageProperty("ButtonSkalieren");
         that.TBRotate = that.newImageProperty("ButtonRotieren");
-        
+       
         that.BBPrimName = that.newTextProperty("primitiveName");
-        
-        that.BBTransX = that.newTextProperty("amountX");
+        that.BBDelete = that.newImageProperty("deletePrimitive");
+        that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
         
-        that.BBTransY = that.newTextProperty("amountY");
+        that.BBTransY = that.newSpinnerProperty("amountY");
         $("#amountY").spinner({         
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
         
-        that.BBTransZ = that.newTextProperty("amountZ");
+        that.BBTransZ = that.newSpinnerProperty("amountZ");
         $("#amountZ").spinner({         
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
         
-        that.TransformMode = that.newLabelProperty("transformMode");
+        that.BBTransformMode = that.newLabelProperty("transformMode");
         
         addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
         addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
@@ -97,6 +97,32 @@ function UI(primitiveManager){
     
     
     
+    
+    /*
+     * Creates a new text field property with getter and setter of function
+     * @param {id} identifier in the html document where the value should be get/set
+     * @returns {property with getter and setter}
+     */
+    this.newSpinnerProperty = function(id){
+        var obj = {};
+
+        obj.get = function(){
+            return document.getElementById(id).value;
+        };
+        
+        obj.set = function(value){
+            document.getElementById(id).value = value;
+        };
+        
+        obj.disable = function(bool){
+            $("#" + id).spinner( "option", "disabled", bool );
+        };
+        
+        return obj;
+    };
+    
+    
+    
     /*
      * Creates a new text field property with getter and setter of function
      * @param {id} identifier in the html document where the value should be get/set
@@ -106,17 +132,16 @@ function UI(primitiveManager){
         var obj = {};
 
         obj.get = function(){
-            try {
-                return document.getElementById(id).value;
-            }
-            catch(ex){}
+            return document.getElementById(id).value;
         };
         
         obj.set = function(value){
-            try {
-                document.getElementById(id).value = value;
-            }
-            catch(ex){}
+            document.getElementById(id).value = value;
+        };
+        
+        obj.disable = function(bool){
+            //$("#" + id).spinner( "option", "disabled", bool );
+            document.getElementById(id).disabled = bool;
         };
         
         return obj;
@@ -134,17 +159,11 @@ function UI(primitiveManager){
         var obj = {};
 
         obj.get = function(){
-            try {
-                return document.getElementById(id).textContent;
-            }
-            catch(ex){}
+            return document.getElementById(id).textContent;
         };
         
         obj.set = function(value){
-            try {
-                document.getElementById(id).textContent = value;
-            }
-            catch(ex){}
+            document.getElementById(id).textContent = value;
         };
         
         return obj;
