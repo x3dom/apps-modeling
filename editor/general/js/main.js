@@ -1,7 +1,7 @@
-// UI handles all the access to all gui elements
-var ui = new UI();
 // PrimitiveManager handles the adding of new primitives and their behaviour
-var primitiveManager = new PrimitiveManager(ui);
+var primitiveManager = new PrimitiveManager();
+// UI handles all the access to all gui elements
+var ui = new UI(primitiveManager);
 // Controller that handles the activation of the transformation modes
 var controller = new Controller();
 // Variable that defines the handling mode
@@ -61,6 +61,8 @@ function addRightbarElement(object)
 
 window.onload = function(){
     controller.Activate("hand");
+    
+    ui.initialize();
     
     /* Damit wird die Rechte Leiste getestet */
     addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
@@ -183,21 +185,6 @@ $(function()
     $("#SlopedCylinder").click(function(){primitiveManager.addPrimitive("SlopeBottomCylinder");});
     $("#loeschen").click(function(){window.removeNode();});
     
-    $("#amountX").spinner({
-        stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
-            }
-        });
-    $("#amountY").spinner({         
-        stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
-            }
-        });
-    $("#amountZ").spinner({         
-        stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
-            }
-        });
 	
     $("#menu-accordeon").button();
     $("#loeschen").button();

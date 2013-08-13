@@ -3,7 +3,7 @@
  * added primitives of the workspace
  * @returns {PrimitiveManager}
  */
-function PrimitiveManager(ui){
+function PrimitiveManager(){
     
     // List of all created primitives
     var primitiveList = [];
@@ -13,6 +13,18 @@ function PrimitiveManager(ui){
     var primCounter = 0;
     // count of actually used primitives on workspace 
     var primitiveCounter = 0;
+    // ui element to get access to the gui elements
+    var ui = {};
+    
+    
+    /*
+     * Adds a new primitive to the working area and stores its reference
+     * @param {UI} uiElement ui element that handles the access to gui elements
+     * @returns {Null}
+     */
+    this.setUI = function(uiElement){
+        ui = uiElement;
+    };
     
     
     

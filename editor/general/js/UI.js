@@ -2,7 +2,42 @@
  * The UI object handles the getter and setter function for all GUI elements
  * @returns {UI}
  */
-function UI(){
+function UI(primitiveManager){
+    
+    
+    this.initialize = function(){ 
+        initializeUI();
+        primitiveManager.setUI(that);
+    };
+    
+    
+    
+    function initializeUI(){
+        that.BBPrimName = that.newTextProperty("primitiveName");
+        
+        that.BBTransX = that.newTextProperty("amountX");
+        $("#amountX").spinner({
+            stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
+        
+        that.BBTransY = that.newTextProperty("amountY");
+        $("#amountY").spinner({         
+            stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
+        
+        that.BBTransZ = that.newTextProperty("amountZ");
+        $("#amountZ").spinner({         
+            stop:function(e,ui){
+                primitiveManager.setTransformationValuesToPrimitive();
+            }
+        });
+        
+        that.TransformMode = that.newLabelProperty("transformMode");
+    }
     
     
     
@@ -58,14 +93,11 @@ function UI(){
         
         return obj;
     };
+   
+
     
-    
-    
-    this.BBPrimName = this.newTextProperty("primitiveName");
-    this.BBTransX = this.newTextProperty("amountX");
-    this.BBTransY = this.newTextProperty("amountY");
-    this.BBTransZ = this.newTextProperty("amountZ");
-    this.TransformMode = this.newLabelProperty("transformMode");
+    // Starts initialization of all ui components
+    var that = this;
 }
 
 
