@@ -65,11 +65,7 @@ function UI(primitiveManager){
         addLeftbarElement("images/pyramid.jpg", "Pyramid");
         addLeftbarElement("images/slopedcylinder.jpg", "Sloped Cylinder");
 
-        addLeftbarElement("images/box.jpg", "Box");
-        addLeftbarElement("images/box.jpg", "Box");
-        addLeftbarElement("images/box.jpg", "Box");
-        addLeftbarElement("images/box.jpg", "Box");
-        addLeftbarElement("images/box.jpg", "Box");
+		addLeftbarElement("images/box.jpg", "frei");
         
         // scrollbar for primitives of left bar   		
 	$('#divs').slimScroll({
@@ -250,7 +246,45 @@ function UI(primitiveManager){
     }; 
     
     
-    
+	/*  
+     * Open UI for the HTML Canvas
+     */
+    elementCanvas = function(name)
+    {        	
+		$("#htmlCanvas").dialog({
+            height: 500,
+            width: 600,
+            modal: true
+        });
+        
+        canvasLabeln = document.getElementById("htmlCanvas");
+        canvasLabeln.innerHTML = "<label id='labelX'>X Value: </label><input id='labelValueX'/>" + 
+        						 "<label id='labelZ'> Z Value: </label><input id='labelValueZ'/>";
+        
+        labelX = document.getElementById("labelX");
+        labelZ = document.getElementById("labelZ");
+        labelValueX = document.getElementById("labelZ");
+        labelValueZ = document.getElementById("labelZ");
+        
+        labelX.setAttribute("style", "margin-bottom: 5px;");
+        labelZ.setAttribute("style", "margin-bottom: 5px;");
+        labelValueX.setAttribute("style", "width: 10px; margin-bottom: 5px;");
+        labelValueZ.setAttribute("style", "width: 10px; margin-bottom: 5px;");
+        
+                        
+		$("#labelValueX").spinner({
+        	stop:function(e,ui){
+            	
+        	}
+    	});
+    	
+        $("#labelValueZ").spinner({
+        	stop:function(e,ui){
+            	
+        	}
+    	});
+	};
+	
     
     /*
      * Adds one primitive element to the left bar 
@@ -266,7 +300,15 @@ function UI(primitiveManager){
         divID.setAttribute("onmouseover", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
+        
+        if(name == "frei")
+        {
+			divID.onclick = function(){elementCanvas(name);};	
+     	}
+        else
+        {
+        	divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};	
+        }
 
         var divIDinnen = document.createElement("div");
         divIDinnen.setAttribute("id", name+"_inner");
