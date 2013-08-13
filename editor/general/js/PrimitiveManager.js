@@ -324,6 +324,16 @@ function PrimitiveManager(){
             x.add(option,null);
         }
     }
+    
+    
+    
+    /*
+     * Returns the actually selected primitive 
+     * @returns {primitive}
+     */
+    this.getActualPrimitive = function(){
+        return primitiveList[actualID];
+    };
 }
 
 
