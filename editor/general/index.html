@@ -117,7 +117,7 @@
                     <option>nothing selected</option>
                 </select>
 			
-			<select class="Views" onclick="setViewpoint(value);" onmouseover="this.style.cursor='pointer';" style="float:left; width: 80px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
+			<select class="Views" onclick="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';" style="float:left; width: 80px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
 				<option value='none'>None</option>
   				<option value='front'>Front</option>
   				<option value='back'>Back</option>
@@ -178,7 +178,7 @@
                 <div id="SlopedCylinder" onmouseover="this.style.cursor='pointer';"><img src="images/slopedcylinder.jpg" style="width: 60px; height: 60px; margin: 5px; margin-top: 0px; border: solid 1px #fff; border-radius: 5px;" /><div style="color: #fff; margin-top: -52px; margin-bottom: 25px; margin-left: 17px;">Slope Cylinder</div></div>
                -->
             </div>
-            <div id="button_Links" onclick="fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
+            <div id="button_Links" onclick="ui.fadeLeft();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 150px; left: 85px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/primitiv.png);"> </div>
         </div>        
         
@@ -232,7 +232,7 @@
 				</div>
 				 
            	</div>
-            <div id="button_Rechts" onclick="fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
+            <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 150px; right: 168px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/params.png);"> </div>
 		</div>
 
