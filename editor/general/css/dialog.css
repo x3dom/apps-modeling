@@ -1,0 +1,25 @@
+#canvasFeld
+{
+	height: 410px;
+}
+
+#labelValueX, #labelValueZ
+{
+	float:left;
+	width: 50px;
+	height: 20px;
+}
+
+#buttonCreateShape
+{
+	float: right;
+	height: 28px;
+}
+
+#divLine
+{
+	height:1px;
+	width: 100%;
+	background-color: #DDDDDD;
+	margin-bottom: 7px;
+}

@@ -258,19 +258,15 @@ function UI(primitiveManager){
         });
         
         canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<label id='labelX'>X Value: </label><input id='labelValueX'/>" + 
-        						 "<label id='labelZ'> Z Value: </label><input id='labelValueZ'/>";
-        
-        labelX = document.getElementById("labelX");
-        labelZ = document.getElementById("labelZ");
-        labelValueX = document.getElementById("labelZ");
-        labelValueZ = document.getElementById("labelZ");
-        
-        labelX.setAttribute("style", "margin-bottom: 5px;");
-        labelZ.setAttribute("style", "margin-bottom: 5px;");
-        labelValueX.setAttribute("style", "width: 10px; margin-bottom: 5px;");
-        labelValueZ.setAttribute("style", "width: 10px; margin-bottom: 5px;");
-        
+        canvasLabeln.innerHTML = "<div id='canvasFeld'> </div>" + 
+        						 "<div id='divDialogInner'>" +
+        						 	"<div id='divLine'></div>" +
+        						 		
+							 			"<label>X Value: </label><input id='labelValueX'/>" + 
+							 			"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
+							 			"<button id='buttonCreateShape'>Create Shape</button>" +
+        						 		
+        						 "</div>";
                         
 		$("#labelValueX").spinner({
         	stop:function(e,ui){
@@ -283,6 +279,11 @@ function UI(primitiveManager){
             	
         	}
     	});
+    	
+    	$("#buttonCreateShape").button()
+			.click(function( event ) {
+				event.preventDefault();
+		});
 	};
 	
     
