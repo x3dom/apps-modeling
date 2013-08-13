@@ -126,13 +126,14 @@
   				<option value='bottom'>Bottom</option>
 			</select>
 						
-            <div><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 10px;" /></div>
-                <div><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;" /></div>
-                <div><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px;" /></div>
-                <div><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: right; width: 28px; height: 28px; margin: 5px;" /></div>
-        	<div><img src="images/axis_png.png" id="DeleteAxis" onclick="controller.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; margin-right: 5px; border: solid 1px #fff;" /></div>
-        	<div><img src="images/plane_png.png" id="DeletePlane" onclick="controller.removePlane();" onmouseover="this.style.cursor='pointer';" style="float: right; width: 28px; height: 28px; margin: 5px; border: solid 1px #fff;" /></div>	
-       	</div>
+            
+                <div style="margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left;"><img src="images/plane_png.png" id="DeletePlane" onclick="controller.removePlane();" onmouseover="this.style.cursor='pointer';" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; border: solid 1px #fff;" /></div>	
+        	<div style="border-right: 2px solid #b1b1b1; height:41px; float:left;"><img src="images/axis_png.png" id="DeleteAxis" onclick="controller.removeAxis();" onmouseover="this.style.cursor='pointer';" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 10px; border: solid 1px #fff;" /></div>
+                <div style="float:left;"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px;" /></div>
+                <div style="float:left;"><img src="images/verschieben_png.png" id="ButtonVerschieben" onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;" /></div>
+                <div style="float:left;"><img src="images/skalieren_png.png" id="ButtonSkalieren" onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;" /></div>
+                <div style="float:left;"><img src="images/drehen_png.png" id="ButtonRotieren" onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();" onmouseover="this.style.cursor='pointer';" style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;" /></div>
+        </div>
         
         
         <div id="Unten" style="position: absolute; border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000; background-image: url(images/karbon_bg.png);"> 
