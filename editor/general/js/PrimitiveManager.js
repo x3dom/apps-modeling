@@ -300,7 +300,7 @@ function PrimitiveManager(){
 
 
 
-function Controller(){
+function Controller(ui){
     
     /*
      * Activates the specified transformation mode 
@@ -312,31 +312,31 @@ function Controller(){
         HANDLING_MODE = mode;
         
         if (mode === "translation"){
-            document.getElementById("ButtonHand").style.border = "solid 1px gray";
-            document.getElementById("ButtonVerschieben").style.border = "solid 1px #fff";
-            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
-            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            ui.TBHand.dehighlight();
+            ui.TBTranslate.highlight();
+            ui.TBScale.dehighlight();
+            ui.TBRotate.dehighlight();
             document.getElementById("primitiveList").disabled = false;
         }
         else if (mode === "scale"){
-            document.getElementById("ButtonHand").style.border = "solid 1px gray";
-            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
-            document.getElementById("ButtonSkalieren").style.border = "solid 1px #fff";
-            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            ui.TBHand.dehighlight();
+            ui.TBTranslate.dehighlight();
+            ui.TBScale.highlight();
+            ui.TBRotate.dehighlight();
             document.getElementById("primitiveList").disabled = false;
         }
         else if (mode === "rotation"){
-            document.getElementById("ButtonHand").style.border = "solid 1px gray";
-            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
-            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
-            document.getElementById("ButtonRotieren").style.border = "solid 1px #fff";
+            ui.TBHand.dehighlight();
+            ui.TBTranslate.dehighlight();
+            ui.TBScale.dehighlight();
+            ui.TBRotate.highlight();
             document.getElementById("primitiveList").disabled = false;
         }
         else {
-            document.getElementById("ButtonHand").style.border = "solid 1px #fff";
-            document.getElementById("ButtonVerschieben").style.border = "solid 1px gray";
-            document.getElementById("ButtonSkalieren").style.border = "solid 1px gray";
-            document.getElementById("ButtonRotieren").style.border = "solid 1px gray";
+            ui.TBHand.highlight();
+            ui.TBTranslate.dehighlight();
+            ui.TBScale.dehighlight();
+            ui.TBRotate.dehighlight();
             
             document.getElementById("primitiveList").selectedIndex = 0;
             document.getElementById("primitiveList").disabled = true;

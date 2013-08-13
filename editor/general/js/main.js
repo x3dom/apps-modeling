@@ -3,14 +3,14 @@ var primitiveManager = new PrimitiveManager();
 // UI handles all the access to all gui elements
 var ui = new UI(primitiveManager);
 // Controller that handles the activation of the transformation modes
-var controller = new Controller();
+var controller = new Controller(ui);
 // Variable that defines the handling mode
 var HANDLING_MODE = "translation";
 
 
 
 window.onload = function(){
-    controller.Activate("hand");
     ui.initialize(); 
+    controller.Activate("hand");
 };
 

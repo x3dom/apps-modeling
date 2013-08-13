@@ -6,6 +6,10 @@ function UI(primitiveManager){
     
     // Variables that handle the toggle behaviour of the toolbars
     var fadeSwitch = [0, 0];
+    // default color of all ui elements
+    var defColor = "gray";
+    // highlight color of all ui elements
+    var highlightColor = "#fff";
     
     
     
@@ -17,6 +21,12 @@ function UI(primitiveManager){
     
     
     function initializeUI(){
+        
+        that.TBHand = that.newImageProperty("ButtonHand");
+        that.TBTranslate = that.newImageProperty("ButtonVerschieben");
+        that.TBScale = that.newImageProperty("ButtonSkalieren");
+        that.TBRotate = that.newImageProperty("ButtonRotieren");
+        
         that.BBPrimName = that.newTextProperty("primitiveName");
         
         that.BBTransX = that.newTextProperty("amountX");
@@ -125,7 +135,7 @@ function UI(primitiveManager){
 
         obj.get = function(){
             try {
-                return document.getElementById(id).value;
+                return document.getElementById(id).textContent;
             }
             catch(ex){}
         };
@@ -135,6 +145,39 @@ function UI(primitiveManager){
                 document.getElementById(id).textContent = value;
             }
             catch(ex){}
+        };
+        
+        return obj;
+    };
+    
+    
+    
+    /*
+     * Creates a new image property with getter and setter of function
+     * @param {id} identifier in the html document where the value should be get/set
+     * @returns {property with getter and setter}
+     */
+    this.newImageProperty = function(id){
+        var obj = {};
+
+        obj.get = function(){
+            return document.getElementById(id).value;
+        };
+        
+        obj.set = function(value){
+            document.getElementById(id).textContent = value;
+        };
+        
+        obj.highlight = function(){
+            document.getElementById(id).style.border = "solid 1px " + highlightColor;
+        };
+        
+        obj.dehighlight = function(){
+            document.getElementById(id).style.border = "solid 1px " + defColor;
+        };
+        
+        obj.disable = function(bool){
+            document.getElementById(id).disabled = bool;
         };
         
         return obj;
@@ -196,13 +239,16 @@ function UI(primitiveManager){
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
         divID.innerHTML = "<img src="+img+" width= 60 height= 60 />";
-        divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px #fff; border-radius: 5px;");		
+        divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " + defColor + "; border-radius: 5px;");		
 
-        divID.setAttribute("onmouseover", "this.style.cursor='pointer';");
+        divID.setAttribute("onmouseover", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};
 
         var divIDinnen = document.createElement("div");
-        divIDinnen.setAttribute("style", "color: #fff; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
+        divIDinnen.setAttribute("id", name+"_inner");
+        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
         divIDinnen.innerHTML = name;			
 
         divID.appendChild(divIDinnen);
