@@ -34,7 +34,7 @@ function PrimitiveManager(){
      * @param {type} primitive name of the primitive that should be created
      * @returns {Boolean}
      */
-    this.addPrimitive = function(primitive){
+    this.addPrimitive = function(primitive, parameters){
    
         if (HANDLING_MODE === "hand") controller.Activate("translation");
    

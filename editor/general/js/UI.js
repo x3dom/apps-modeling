@@ -405,7 +405,7 @@ function UI(primitiveManager){
      	}
         else
         {
-            divID.onclick = function(){primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName);};	
+            divID.onclick = function(){primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, primitiveParameterMap[name].parameters);};	
         }
 
         var divIDinnen = document.createElement("div");
