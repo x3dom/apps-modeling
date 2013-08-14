@@ -26,6 +26,8 @@ function UI(primitiveManager){
         that.TBTranslate = that.newImageProperty("ButtonVerschieben");
         that.TBScale = that.newImageProperty("ButtonSkalieren");
         that.TBRotate = that.newImageProperty("ButtonRotieren");
+        that.TBPrimitiveList = that.newComboBoxProperty("primitiveList");
+        that.TBViewpoints = that.newComboBoxProperty("Views")
        
         that.BBPrimName = that.newTextProperty("primitiveName");
         that.BBDelete = that.newImageProperty("deletePrimitive");
@@ -202,6 +204,53 @@ function UI(primitiveManager){
     };
     
     
+    
+    /*
+     * Creates a new combobox property with getter and setter of function
+     * @param {id} identifier in the html document where the value should be get/set
+     * @returns {property with getter and setter}
+     */
+    this.newComboBoxProperty = function(id){
+        var obj = {};
+
+        obj.get = function(index){
+            return document.getElementById(id)[index];
+        };
+        
+        obj.set = function(index, value){
+            document.getElementById(id)[index].text = value;
+        };
+        
+        obj.disable = function(bool){
+            if (bool) document.getElementById(id).style.opacity="0.5";
+            else document.getElementById(id).style.opacity="1.0";
+            document.getElementById(id).disabled = bool;
+        };
+        
+        obj.idMap = function(index){
+            return document.getElementById(id)[index].Primitive.IDMap;
+        };
+        
+        obj.selectedIndex = function(){
+            return document.getElementById(id).selectedIndex;
+        };
+        
+        obj.selectIndex = function(index){
+            document.getElementById(id).selectedIndex = index;
+        };
+        
+        obj.add = function(option){
+            document.getElementById(id).add(option,null);
+        };
+        
+        obj.remove = function(index){
+            document.getElementById(id).remove(index);
+        };
+        
+        return obj;
+    };
+    
+    
 
     /*
      * Toggeling fade function of the left toolbar
@@ -329,7 +378,7 @@ function UI(primitiveManager){
         divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         
-        if(name == "frei")
+        if(name === "frei")
         {
 			divID.onclick = function(){elementCanvas(name);};	
      	}

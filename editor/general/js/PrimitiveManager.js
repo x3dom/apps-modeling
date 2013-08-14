@@ -72,7 +72,7 @@ function PrimitiveManager(){
         
         actualID = id;
         primitiveCounter++;
-        highlight(true);
+        highlightPrimitive(true);
     };
     
     
@@ -83,7 +83,7 @@ function PrimitiveManager(){
      */  
     this.removeNode = function()
     {
-        if (document.getElementById("primitiveList").selectedIndex !== 0) {
+        if (ui.TBPrimitiveList.selectedIndex() !== 0) {
             var ot = document.getElementById(actualID);
 
             for (var i = 0; i < ot.childNodes.length; i++) 
@@ -94,11 +94,11 @@ function PrimitiveManager(){
                     ot.removeChild(ot.childNodes[i]);
                     for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
                         try {
-                            document.getElementById("primitiveList")[j].Primitive.IDMap.cboxNumber--;
+                            ui.TBPrimitiveList.idMap(j).cboxNumber--;
                         }
                         catch (ex){}
                     }
-                    delete document.getElementById("primitiveList").remove(primitiveList[actualID].IDMap.cboxNumber);
+                    ui.TBPrimitiveList.remove(primitiveList[actualID].IDMap.cboxNumber);
                     delete primitiveList[actualID];
 
                     clearTransformValues();
@@ -136,7 +136,9 @@ function PrimitiveManager(){
         ui.BBPrimName.disable(true);
         ui.BBTransformMode.set("");
         ui.BBDelete.disable(true);
-        highlight(false);
+        ui.TBPrimitiveList.selectIndex(0);
+        ui.TBPrimitiveList.disable(true);
+        highlightPrimitive(false);
     }
 
     
@@ -149,9 +151,8 @@ function PrimitiveManager(){
      */
     function primitiveSelected(id){
         actualID = id;
-        highlight(true);
+        highlightPrimitive(true);
         if (HANDLING_MODE === "hand") controller.Activate("translation");
-        document.getElementById("primitiveList").disabled = false;
         setTransformValues(id, HANDLING_MODE);
     }
     
@@ -162,7 +163,7 @@ function PrimitiveManager(){
      * @param {type} highlightOn false if all should be dehighlighted
      * @returns {null}
      */
-    function highlight(highlightOn){  
+    function highlightPrimitive(highlightOn){  
         for (var j = 0; j < primCounter; j++){
             try {
                 primitiveList["primitive_" + j].highlight(false, "");
@@ -222,14 +223,13 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.comboBoxChanged = function(id){
-        if (document.getElementById("primitiveList").selectedIndex === 0) {
+        if (ui.TBPrimitiveList.selectedIndex() === 0) {
             clearTransformValues();
         }
         else {
-            actualID = document.getElementById("primitiveList")[id].Primitive.IDMap.id;
+            actualID = ui.TBPrimitiveList.idMap(id).id;
             setTransformValues(actualID, HANDLING_MODE);
         }
-        highlight(true);
     };
     
     
@@ -252,7 +252,7 @@ function PrimitiveManager(){
             ui.BBTransY.set(xyz[1].substr(0, 5));
             ui.BBTransZ.set(xyz[2].substr(0, 5));
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
-            document.getElementById("primitiveList").selectedIndex = primitiveList[id].IDMap.cboxNumber;
+            ui.TBPrimitiveList.selectIndex(primitiveList[id].IDMap.cboxNumber);
             ui.BBTransformMode.set(HANDLING_MODE.toUpperCase() + ':');
             
             ui.BBTransX.disable(false);
@@ -260,6 +260,9 @@ function PrimitiveManager(){
             ui.BBTransZ.disable(false);
             ui.BBPrimName.disable(false);
             ui.BBDelete.disable(false); 
+            ui.TBPrimitiveList.disable(false);
+            
+            highlightPrimitive(true);
         }
         catch(ex){ }
     }
@@ -271,7 +274,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        document.getElementById("primitiveList")[primitiveList[actualID].IDMap.cboxNumber].text = ui.BBPrimName.get();
+        ui.TBPrimitiveList.set(primitiveList[actualID].IDMap.cboxNumber, ui.BBPrimName.get());
         primitiveList[actualID].IDMap.name = ui.BBPrimName.get();
     };
     
@@ -283,18 +286,11 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function addPrimitiveToComboBox(id){
-        var x=document.getElementById("primitiveList");
         var option=document.createElement("option");
         option.Primitive = primitiveList[id];
         option.text = id;
         
-        try {
-            // for IE earlier than version 8
-            x.add(option,x.options[null]);
-        }
-        catch (e){
-            x.add(option,null);
-        }
+        ui.TBPrimitiveList.add(option);
     }
     
     
@@ -308,176 +304,3 @@ function PrimitiveManager(){
     };
 }
 
-
-
-
-function Controller(ui){
-    
-    /*
-     * Activates the specified transformation mode 
-     * @param {string} mode transformation mode (translation, scale, rotation, hand)
-     * @returns {Null}
-     */
-    this.Activate = function(mode){
-        
-        HANDLING_MODE = mode;
-        
-        if (mode === "translation"){
-            ui.TBHand.dehighlight();
-            ui.TBTranslate.highlight();
-            ui.TBScale.dehighlight();
-            ui.TBRotate.dehighlight();
-            document.getElementById("primitiveList").disabled = false;
-        }
-        else if (mode === "scale"){
-            ui.TBHand.dehighlight();
-            ui.TBTranslate.dehighlight();
-            ui.TBScale.highlight();
-            ui.TBRotate.dehighlight();
-            document.getElementById("primitiveList").disabled = false;
-        }
-        else if (mode === "rotation"){
-            ui.TBHand.dehighlight();
-            ui.TBTranslate.dehighlight();
-            ui.TBScale.dehighlight();
-            ui.TBRotate.highlight();
-            document.getElementById("primitiveList").disabled = false;
-        }
-        else {
-            ui.TBHand.highlight();
-            ui.TBTranslate.dehighlight();
-            ui.TBScale.dehighlight();
-            ui.TBRotate.dehighlight();
-
-            document.getElementById("primitiveList").selectedIndex = 0;
-            document.getElementById("primitiveList").disabled = true;
-        }
-    };
-    
-    
-    
-    /*
-     * Sets the specified view point in the editor
-     * @param {string} viewpoint name of the viewpoint that should be displayed
-     * @returns {Null}
-     */
-    this.setViewpoint = function(point)
-    {	
-        if(point === "none")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "9.89187 11.41910 20.11090");
-            vPoint.setAttribute("orientation", "-0.69262 0.71082 0.12256 0.61209");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "1 0 0 1.571");
-        }
-        else if(point === "front")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "0 0 30");
-            vPoint.setAttribute("orientation", "0 0 0 0");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "1 0 0 0");
-        }
-        else if(point === "back")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "0 0 -30");
-            vPoint.setAttribute("orientation", "0 1 0 3.142");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "1 0 0 0");
-        }
-        else if(point === "right")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "30 0 0");
-            vPoint.setAttribute("orientation", "0 1 0 1.571");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "0 1 0 1.571");
-        }
-        else if(point === "left")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "-30 0 0");
-            vPoint.setAttribute("orientation", "0 1 0 -1.571");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "0 1 0 1.571");
-        }
-        else if(point === "top")
-        {
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "0 30 0");
-            vPoint.setAttribute("orientation", "1 0 0 -1.571");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "1 0 0 1.571");
-        }
-        else if(point === "bottom")
-        {		
-            var vPoint = document.getElementById("viewPoint");
-            vPoint.setAttribute("position", "0 -30 0");
-            vPoint.setAttribute("orientation", "1 0 0 1.571");
-
-            var vPlane = document.getElementById("planeId");
-            vPlane.setAttribute("rotation", "1 0 0 1.571");
-        }		
-    };
-    
-    
-    
-    /*
-     * This function removes the axis cross 
-     * @returns (undefined)
-     */
-    this.removeAxis = function()
-    {
-    	
-    	if(document.getElementById("axis"))
-    	{
-    		delete document.getElementById("axis").remove();
-                document.getElementById("DeleteAxis").style.border="solid 1px gray";
-    	}
-    	else
-    	{
-	    	var t = document.createElement('Transform');
-	        t.setAttribute('id', 'axis');
-	        
-	        var innen = document.createElement('inline');
-	        innen.setAttribute('url', 'x3d/axis.x3d');	   
-	        t.appendChild(innen);
-	        
-	        var onOff = document.getElementById('onOff');
-	        onOff.appendChild(t);
-                
-                document.getElementById("DeleteAxis").style.border="solid 1px #fff";
-    	}    	
-    };
-    
-    
-    
-    /*
-     * This function removes the orientation plane
-     * @returns (undefined)
-     */
-    this.removePlane = function()
-    {
-    	var renderWert = document.getElementById("plane");
-    	
-    	if(renderWert.getAttribute("render", 0) === "true")
-    	{
-    		renderWert.setAttribute("render", "false");
-                document.getElementById("DeletePlane").style.border="solid 1px gray";
-    	}
-    	
-    	else
-    	{
-    		renderWert.setAttribute("render", "true");
-                document.getElementById("DeletePlane").style.border="solid 1px #fff";
-    	}
-    };
-}
