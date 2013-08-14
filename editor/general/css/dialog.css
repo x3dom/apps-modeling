@@ -1,6 +1,10 @@
-#canvasFeld
+#drawCanvas
 {
-	height: 410px;
+	width: 100%;
+	border-radius: 5px 5px 5px 5px; 
+	border: solid 1px #DDDDDD;
+	height: 400px;
+	margin-bottom: 5px;
 }
 
 #labelValueX, #labelValueZ

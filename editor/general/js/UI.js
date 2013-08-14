@@ -258,16 +258,43 @@ function UI(primitiveManager){
         });
         
         canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<div id='canvasFeld'> </div>" + 
-        						 "<div id='divDialogInner'>" +
+        canvasLabeln.innerHTML = "<div id='drawCanvas'></div>" + 
         						 	"<div id='divLine'></div>" +
-        						 		
 							 			"<label>X Value: </label><input id='labelValueX'/>" + 
 							 			"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
 							 			"<button id='buttonCreateShape'>Create Shape</button>" +
-        						 		
-        						 "</div>";
-                        
+        						 	"</div>";
+		
+		
+		
+		$.fn.drawC = function() 
+		{
+		    var x, y;
+		    var active = false;
+		    
+			canvas.onmousemove = function(e){
+			    x = e.clientX-canvas.offsetLeft;
+			    y = e.clientY-canvas.offsetTop;
+			    kx.innerHTML = x;
+			    ky.innerHTML = y;
+			    paint();
+			}
+			
+			canvas.onmousedown = function(){ active = true; }
+			
+			canvas.onmouseup = function(){ active = false; }
+			
+			function paint(){
+    			if(active){
+        			context.fillRect(x, y, 10, 10);
+    			}
+			}
+		}
+		
+		
+		$("drawCanvas").drawC();
+		
+		
 		$("#labelValueX").spinner({
         	stop:function(e,ui){
             	
