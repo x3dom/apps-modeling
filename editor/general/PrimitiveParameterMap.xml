@@ -1,0 +1,24 @@
+<PrimitiveParameterMap>
+    <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
+        <Parameter editorName="Boxparam1" x3domName="X3dparam1">1</Parameter>
+        <Parameter editorName="Boxparam2" x3domName="X3dparam2">2</Parameter>
+        <Parameter editorName="Boxparam3" x3domName="X3dparam3">3</Parameter>
+    </Primitive>
+    <Primitive editorName="Sphere" x3domName="Sphere" image="images/sphere.jpg">
+        <Parameter editorName="Sphereparam1" x3domName="X3dSphereparam1">1</Parameter>
+        <Parameter editorName="Sphereparam2" x3domName="X3dSphereparam2">2</Parameter>
+        <Parameter editorName="Sphereparam3" x3domName="X3dSphereparam3">3</Parameter>
+    </Primitive>
+    <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
+    </Primitive>
+    <Primitive editorName="Cylinder" x3domName="Cylinder" image="images/cylinder.jpg">
+    </Primitive>
+    <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
+    </Primitive>
+    <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
+    </Primitive>
+    <Primitive editorName="Pyramid" x3domName="Pyramid" image="images/pyramid.jpg">
+    </Primitive>
+    <Primitive editorName="Sloped Cylinder" x3domName="SlopedCylinder" image="images/slopedcylinder.jpg">
+    </Primitive>
+</PrimitiveParameterMap>

@@ -10,6 +10,8 @@ function UI(primitiveManager){
     var defColor = "gray";
     // highlight color of all ui elements
     var highlightColor = "#fff";
+    // primitive parameter map to synchronize names between editor and x3dom
+    var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");;
     
     
     
@@ -21,13 +23,13 @@ function UI(primitiveManager){
     
     
     function initializeUI(){
-        
+
         that.TBHand = that.newImageProperty("ButtonHand");
         that.TBTranslate = that.newImageProperty("ButtonVerschieben");
         that.TBScale = that.newImageProperty("ButtonSkalieren");
         that.TBRotate = that.newImageProperty("ButtonRotieren");
         that.TBPrimitiveList = that.newComboBoxProperty("primitiveList");
-        that.TBViewpoints = that.newComboBoxProperty("Views")
+        that.TBViewpoints = that.newComboBoxProperty("Views");
        
         that.BBPrimName = that.newTextProperty("primitiveName");
         that.BBDelete = that.newImageProperty("deletePrimitive");
@@ -58,41 +60,77 @@ function UI(primitiveManager){
         addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
         addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});
 
-        addLeftbarElement("images/box.jpg", "Box");
-        addLeftbarElement("images/sphere.jpg", "Sphere");
-        addLeftbarElement("images/cone.jpg", "Cone");
-        addLeftbarElement("images/cylinder.jpg", "Cylinder");
-        addLeftbarElement("images/dish.jpg", "Dish");
-        addLeftbarElement("images/snout.jpg", "Snout");
-        addLeftbarElement("images/pyramid.jpg", "Pyramid");
-        addLeftbarElement("images/slopedcylinder.jpg", "Sloped Cylinder");
+        for (var prim in primitiveParameterMap){
+            addLeftbarElement(primitiveParameterMap[prim].image, 
+                              primitiveParameterMap[prim].editorName);
+        }
 
-		addLeftbarElement("images/box.jpg", "frei");
-        
+        addLeftbarElement("images/box.jpg", "frei");
+
         // scrollbar for primitives of left bar   		
-		$('#divs').slimScroll({
-			height: '99%',
-			size: '10px',
-			color: '#FFFFFF',
-			position: 'left'
-		});
-		
-		// symbols of accordion on right bar
-		var iconsAccordion = 
-		{
-			header: "ui-icon-circle-arrow-e",
-			activeHeader: "ui-icon-circle-arrow-s"
-		};
-					
-		    // creation of the accordion on the right bar                        
-		$("#accordeon-oben").accordion({
-			heightStyle: "content",
-			collapsible: false,
-			active: false,
-			icons: iconsAccordion
-		});
-	}
+        $('#divs').slimScroll({
+                height: '99%',
+                size: '10px',
+                color: '#FFFFFF',
+                position: 'left'
+        });
+
+        // symbols of accordion on right bar
+        var iconsAccordion = 
+        {
+                header: "ui-icon-circle-arrow-e",
+                activeHeader: "ui-icon-circle-arrow-s"
+        };
+
+            // creation of the accordion on the right bar                        
+        $("#accordeon-oben").accordion({
+                heightStyle: "content",
+                collapsible: false,
+                active: false,
+                icons: iconsAccordion
+        });
+    }
     
+    
+    
+    /*
+     * Creates an array with primitives an their parameters, including
+     * a mapping between the x3dom names and editor names and a default value
+     * @param {string} file path to map source file (XML)
+     * @returns {Array}
+     */
+    function createParameterMap(file){
+        var xhttp;
+        
+        if (window.XMLHttpRequest){
+            xhttp=new XMLHttpRequest();
+        }
+        else {
+            xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.open("GET", file, false);
+        xhttp.send();
+       
+       var xmlDoc = xhttp.responseXML.childNodes[0];
+       var primitives = xmlDoc.getElementsByTagName("Primitive");
+       
+       var primitiveParameterMap = [];
+       for (var i = 0; i < primitives.length; i++){
+            primitiveParameterMap[primitives[i].getAttribute("editorName")] = {editorName: primitives[i].getAttribute("editorName"), 
+                                                                               x3domName: primitives[i].getAttribute("x3domName"),
+                                                                               image: primitives[i].getAttribute("image"),
+                                                                               parameters : []}; 
+
+            var parameters = primitives[i].getElementsByTagName("Parameter");
+            for (var j = 0; j < parameters.length; j++){
+                primitiveParameterMap[primitives[i].getAttribute("editorName")].parameters.push({editorName: parameters[j].getAttribute("editorName"), 
+                                                                                                 x3domName: parameters[j].getAttribute("x3domName"),
+                                                                                                 value: parameters[j].textContent}); 
+            }
+       }
+       
+       return primitiveParameterMap;
+    }
     
     
     
@@ -363,11 +401,11 @@ function UI(primitiveManager){
         
         if(name === "frei")
         {
-			divID.onclick = function(){elementCanvas(name);};	
+            divID.onclick = function(){elementCanvas(name);};	
      	}
         else
         {
-        	divID.onclick = function(){primitiveManager.addPrimitive(name.replace(new RegExp(' ', 'g'), ''));};	
+            divID.onclick = function(){primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName);};	
         }
 
         var divIDinnen = document.createElement("div");
