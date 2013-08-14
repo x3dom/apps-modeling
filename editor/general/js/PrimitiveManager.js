@@ -17,6 +17,7 @@ function PrimitiveManager(){
     var ui = {};
     
     
+    
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {UI} uiElement ui element that handles the access to gui elements
@@ -40,11 +41,22 @@ function PrimitiveManager(){
         var id = "primitive_" + primCounter;
         primCounter++;
         
+        var s = document.createElement('Shape');
+
         var t = document.createElement('Transform');
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
-        var s = document.createElement('Shape');
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
+        
+        var mt = document.createElement('MatrixTransform');
+        var transformMat = x3dom.fields.SFMatrix4f.identity();
+        mt.Transformation = {};
+        mt.Transformation.rotationX = 0;
+        mt.Transformation.rotationY = 0;
+        mt.Transformation.rotationZ = 0;
+        var transformString = matrixToString(transformMat);
+        mt.setAttribute("matrix", transformString);
+        mt.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -57,12 +69,13 @@ function PrimitiveManager(){
 
         app.appendChild(mat);
         s.appendChild(app);
-        t.appendChild(s);
+        mt.appendChild(s);
 
         var prim = document.createElement(primitive);
         s.appendChild(prim);
 
         var root = document.getElementById('root');
+        t.appendChild(mt);
         root.appendChild(t);
         
         primitiveList[id] = t;
@@ -74,6 +87,12 @@ function PrimitiveManager(){
         primitiveCounter++;
         highlightPrimitive(true);
     };
+    
+    
+    
+    function matrixToString(transformMat){
+        return transformMat.toString().substring(12, transformMat.toString().length - 2).replace(/\n/g,"");
+    }
     
     
     
@@ -194,18 +213,27 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.setTransformationValuesToPrimitive = function() {
-        var tempValue = ""; 
+        var tempValue = "";
+        var transformMat = x3dom.fields.SFMatrix4f.identity();
+        
 
         if(HANDLING_MODE === "translation") {
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
-                        ui.BBTransZ.get();
+                        ui.BBTransZ.get();   
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
-            primitiveList[actualID].setAttribute(HANDLING_MODE, "1,0,0," + (ui.BBTransX.get() * (Math.PI / 180.0)));
-            //primitiveList[actualID].setAttribute(HANDLING_MODE, "0,1,0," + (document.getElementById("amount-y").value * (Math.PI / 180.0)));
-            //primitiveList[actualID].setAttribute(HANDLING_MODE, "0,0,1," + (document.getElementById("amount-z").value * (Math.PI / 180.0)));
+            primitiveList[actualID].children[0].Transformation.rotationX = ui.BBTransX.get();
+            primitiveList[actualID].children[0].Transformation.rotationY = ui.BBTransY.get();
+            primitiveList[actualID].children[0].Transformation.rotationZ = ui.BBTransZ.get();
+            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * Math.PI / 180);
+            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * Math.PI / 180);
+            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * Math.PI / 180);
+
+            transformMat = rotX.mult(rotY);
+            transformMat = transformMat.mult(rotZ);
+            primitiveList[actualID].children[0].setAttribute("matrix", matrixToString(transformMat));
         }
         else {
             tempValue = ui.BBTransX.get() + "," +
@@ -243,14 +271,21 @@ function PrimitiveManager(){
      */
     function setTransformValues(id, mode){
         try {
-            var xyz = ""; 
+        var xyz = ""; 
+        
+            if (mode === "rotation"){
+                ui.BBTransX.set(primitiveList[id].children[0].Transformation.rotationX);
+                ui.BBTransY.set(primitiveList[id].children[0].Transformation.rotationY);
+                ui.BBTransZ.set(primitiveList[id].children[0].Transformation.rotationZ);
+            }
+            else {
+                (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
+                                           xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
+                ui.BBTransX.set(xyz[0].substr(0, 5));
+                ui.BBTransY.set(xyz[1].substr(0, 5));
+                ui.BBTransZ.set(xyz[2].substr(0, 5));
+            }
 
-            (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
-                                       xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
-
-            ui.BBTransX.set(xyz[0].substr(0, 5));
-            ui.BBTransY.set(xyz[1].substr(0, 5));
-            ui.BBTransZ.set(xyz[2].substr(0, 5));
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
             ui.TBPrimitiveList.selectIndex(primitiveList[id].IDMap.cboxNumber);
             ui.BBTransformMode.set(HANDLING_MODE.toUpperCase() + ':');
