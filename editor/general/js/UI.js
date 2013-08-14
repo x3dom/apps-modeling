@@ -295,6 +295,24 @@ function UI(primitiveManager){
     }; 
     
     
+	/*
+	 * This function draw the Canvas
+	 */
+	$.fn.drawC = function() 
+	{
+		canvas = document.getElementById("drawCanvas");
+		draw = canvas.getContext("2d");
+		
+		draw.fillStyle = "rgb(255, 0, 0)"; 
+		draw.beginPath();  
+			draw.moveTo(50, 50);  
+			draw.lineTo(50, 250);  
+			draw.lineTo(250, 250);  
+		draw.closePath();  
+		draw.fill();
+	}  
+    
+    
 	/*  
      * Open UI for the HTML Canvas
      */
@@ -307,43 +325,15 @@ function UI(primitiveManager){
         });
         
         canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<div id='drawCanvas'></div>" + 
+        canvasLabeln.innerHTML = "<div id='drawCanvas' onload='drawC()'></div>" + 
         						 	"<div id='divLine'></div>" +
 							 			"<label>X Value: </label><input id='labelValueX'/>" + 
 							 			"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
 							 			"<button id='buttonCreateShape'>Create Shape</button>" +
         						 	"</div>";
 		
-		
-		
-		$.fn.drawC = function() 
-		{
-		    var x, y;
-		    var active = false;
-		    
-			canvas.onmousemove = function(e){
-			    x = e.clientX-canvas.offsetLeft;
-			    y = e.clientY-canvas.offsetTop;
-			    kx.innerHTML = x;
-			    ky.innerHTML = y;
-			    paint();
-			}
+		/*$("#drawCanvas").drawC();*/
 			
-			canvas.onmousedown = function(){ active = true; }
-			
-			canvas.onmouseup = function(){ active = false; }
-			
-			function paint(){
-    			if(active){
-        			context.fillRect(x, y, 10, 10);
-    			}
-			}
-		}
-		
-		
-		$("drawCanvas").drawC();
-		
-		
 		$("#labelValueX").spinner({
         	stop:function(e,ui){
             	
@@ -360,8 +350,8 @@ function UI(primitiveManager){
 			.click(function( event ) {
 				event.preventDefault();
 		});
-	};
-	
+	};  
+    
     
     /*
      * Adds one primitive element to the left bar 
