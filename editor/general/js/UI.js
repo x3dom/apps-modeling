@@ -70,28 +70,28 @@ function UI(primitiveManager){
 		addLeftbarElement("images/box.jpg", "frei");
         
         // scrollbar for primitives of left bar   		
-	$('#divs').slimScroll({
-		height: '99%',
-		size: '10px',
-		color: '#FFFFFF',
-		position: 'left'
-	});
-
-	// symbols of accordion on right bar
-	var iconsAccordion = 
-	{
-		header: "ui-icon-circle-arrow-e",
-		activeHeader: "ui-icon-circle-arrow-s"
-	};
-				
-        // creation of the accordion on the right bar                        
-	$("#accordeon-oben").accordion({
-		heightStyle: "content",
-		collapsible: false,
-		active: false,
-		icons: iconsAccordion
-	});	
-    }
+		$('#divs').slimScroll({
+			height: '99%',
+			size: '10px',
+			color: '#FFFFFF',
+			position: 'left'
+		});
+		
+		// symbols of accordion on right bar
+		var iconsAccordion = 
+		{
+			header: "ui-icon-circle-arrow-e",
+			activeHeader: "ui-icon-circle-arrow-s"
+		};
+					
+		    // creation of the accordion on the right bar                        
+		$("#accordeon-oben").accordion({
+			heightStyle: "content",
+			collapsible: false,
+			active: false,
+			icons: iconsAccordion
+		});
+	}
     
     
     
@@ -293,25 +293,7 @@ function UI(primitiveManager){
            fadeSwitch[1]--;
        }
     }; 
-    
-    
-	/*
-	 * This function draw the Canvas
-	 */
-	$.fn.drawC = function() 
-	{
-		canvas = document.getElementById("drawCanvas");
-		draw = canvas.getContext("2d");
-		
-		draw.fillStyle = "rgb(255, 0, 0)"; 
-		draw.beginPath();  
-			draw.moveTo(50, 50);  
-			draw.lineTo(50, 250);  
-			draw.lineTo(250, 250);  
-		draw.closePath();  
-		draw.fill();
-	}  
-    
+       
     
 	/*  
      * Open UI for the HTML Canvas
@@ -325,15 +307,26 @@ function UI(primitiveManager){
         });
         
         canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<div id='drawCanvas' onload='drawC()'></div>" + 
-        						 	"<div id='divLine'></div>" +
-							 			"<label>X Value: </label><input id='labelValueX'/>" + 
-							 			"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
-							 			"<button id='buttonCreateShape'>Create Shape</button>" +
-        						 	"</div>";
+        canvasLabeln.innerHTML = "<canvas id='drawCanvas'> </canvas>" +
+								 "<div id='divLine'></div>" +
+						 		 	"<label>X Value: </label><input id='labelValueX'/>" + 
+						 		 	"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
+						 		 	"<button id='buttonCreateShape'>Create Shape</button>" +
+						 	 	 "</div>";
 		
-		/*$("#drawCanvas").drawC();*/
-			
+		/**********************************************/
+		canvas = document.getElementById("drawCanvas");
+		draw = canvas.getContext("2d");
+		
+		draw.fillStyle = "rgb(255, 0, 0)"; 
+		draw.beginPath();  
+			draw.moveTo(5, 20);  
+			draw.lineTo(20,  15);  
+			draw.lineTo(15, 5);  
+		draw.closePath();  
+		draw.fill();
+		/**********************************************/
+		
 		$("#labelValueX").spinner({
         	stop:function(e,ui){
             	
