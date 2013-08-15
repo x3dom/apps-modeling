@@ -56,9 +56,9 @@ function UI(primitiveManager){
         
         that.BBTransformMode = that.newLabelProperty("transformMode");
         
-        addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
+        /*addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
         addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
-        addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});
+        addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});*/
 
         for (var prim in primitiveParameterMap){
             addLeftbarElement(primitiveParameterMap[prim].image, 
@@ -416,31 +416,65 @@ function UI(primitiveManager){
         divID.appendChild(divIDinnen);
         document.getElementById("divs").appendChild(divID);
     }
+    
+    
+    
+    /*
+     * Clears all the properties on the right bar
+     * @returns (undefined)
+     */
+    this.clearParameters = function(){
+        var properties = document.getElementById("properties");
+        for (var i = (properties.children.length - 1); i >= 0 ; i--){
+            properties.removeChild(properties.children[i]);
+        }
+    };
+    
+    
+    
+    /*
+     * Creates all given parameters and adds it to the right bar
+     * @param {x3dom geometry} geometry geometry where the parameters should be set
+     * @returns (undefined)
+     */
+    this.createParameters = function(parameters){
+        for (var i = 0; i < parameters.length; i++){
+            addRightbarElement({param: parameters[i], id: "property_" + i, primitive: parameters.Primitive});
+        }
+    };
+    
 
 
 
-   /*
-    * Adds one prameter value to the right bar
-    * @returns (undefined)
-    */
+    /*
+     * Adds one prameter value to the right bar
+     * @returns (undefined)
+     */
     function addRightbarElement(object)
     {	
         var divID = document.createElement("div");	
         divID.setAttribute("style", "margin-top: 10px;");
 
         var newLabel = document.createElement("label");
-        newLabel.innerText = object.name;
+        newLabel.innerText = object.param.editorName;
 
         var newInput = document.createElement("input");
         newInput.setAttribute("style", "width: 112px;");
         newInput.id = object.id;
-        newInput.value= object.value;
+        newInput.value= object.param.value;
 
         newLabel.appendChild(newInput);
         divID.appendChild(newLabel); 
         document.getElementById("properties").appendChild(divID);
 
-        $("#"+object.id).spinner({});
+        $("#"+object.id).spinner({         
+            stop:function(e,ui){
+                object.primitive._x3domNode._vf[object.param.x3domName] = 
+                            parseFloat(document.getElementById(object.id).value);
+                object.primitive._x3domNode.fieldChanged(object.param.x3domName);
+                object.param.value = parseFloat(document.getElementById(object.id).value);
+            }
+        });
     }
    
 
