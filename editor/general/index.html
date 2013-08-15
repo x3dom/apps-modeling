@@ -124,13 +124,15 @@
                 </select>
 			
 			<select class="Views" onclick="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';" style="float:left; width: 80px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
-				<option value='none'>None</option>
-  				<option value='front'>Front</option>
-  				<option value='back'>Back</option>
-  				<option value='right'>Right</option>
-  				<option value='left'>Left</option>
-  				<option value='top'>Top</option>
-  				<option value='bottom'>Bottom</option>
+				<option value='reset'>Reset View</option>
+				<option value='all'>Show All</option>
+				<option value='upright'>Upright View</option>
+  				<option value='front'>Show Front</option>
+  				<option value='back'>Show Back</option>
+  				<option value='right'>Show Right</option>
+  				<option value='left'>Show Left</option>
+  				<option value='top'>Show Top</option>
+  				<option value='bottom'>Show Bottom</option>
 			</select>
 						
             
@@ -212,6 +214,7 @@
                 <scene>
                     <viewpoint id="viewPoint" position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209">
                     </viewpoint>
+                    <navigationMode id="navi" type='"EXAMINE" "ANY"'></navigationMode>
                     
                     <transform id="planeId" rotation="1 0 0 -1.571">
                     	<Shape id="plane" isPickable="false">
@@ -224,11 +227,9 @@
                     
                     <transform id="root" translation="0 0 0"></transform>
                     
-                    <group id="onOff">
-                        <transform id="axis">
-                            <inline url="x3d/axis.x3d"></inline>
-                        </transform>
-                    </group>
+                    <transform id="axis">
+                        <inline url="x3d/axis.x3d"></inline>
+                    </transform>
                 </scene>
             </x3d>
         </div>

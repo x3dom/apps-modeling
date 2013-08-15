@@ -50,6 +50,7 @@ function PrimitiveManager(){
         t.Parameters = parameters;
         
         var mt = document.createElement('MatrixTransform');
+        mt.setAttribute("id", 'mt_' + id);
         var transformMat = x3dom.fields.SFMatrix4f.identity();
         mt.Transformation = {};
         mt.Transformation.rotationX = 0;
@@ -64,8 +65,7 @@ function PrimitiveManager(){
         // Material Node
         var mat = document.createElement('Material');
         mat.setAttribute("diffuseColor", "0.25 0.5 0.75");
-        mat.setAttribute("specularColor", "0.0 0.0 0.0");
-        mat.setAttribute("emissiveColor", "0.0 0.0 0.0");
+        mat.setAttribute("specularColor", "0.2 0.2 0.2");
         mat.setAttribute("transparency", "0.3");
         mat.setAttribute("shininess", ".3");
         t.Material = mat;
@@ -82,8 +82,12 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
-        // TODO; update GUI elements
-        new Moveable(document.getElementById("x3d"), mt);
+        // TODO; update GUI elements, this callback is only for testing if values are received
+        function notified(elem, pos) {
+            console.log(elem.getAttribute('id') + ": " + pos.toString());
+        }
+        // wrapper for adding moving functionality, last param is callback
+        new Moveable(document.getElementById("x3d"), mt, notified);
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
