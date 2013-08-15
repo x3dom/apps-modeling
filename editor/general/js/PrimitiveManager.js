@@ -82,6 +82,9 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
+        // TODO; update GUI elements
+        new Moveable(document.getElementById("x3d"), mt);
+        
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
         addPrimitiveToComboBox(t.IDMap.name);
