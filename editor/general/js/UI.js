@@ -12,7 +12,7 @@ function UI(primitiveManager){
     var highlightColor = "#fff";
     // primitive parameter map to synchronize names between editor and x3dom
     var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");;
-    
+    var f;
     
     
     this.initialize = function(){ 
@@ -35,20 +35,23 @@ function UI(primitiveManager){
         that.BBDelete = that.newImageProperty("deletePrimitive");
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
+            step: 0.1,
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
         
         that.BBTransY = that.newSpinnerProperty("amountY");
-        $("#amountY").spinner({         
+        $("#amountY").spinner({
+            step: 0.1,
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
         });
         
         that.BBTransZ = that.newSpinnerProperty("amountZ");
-        $("#amountZ").spinner({         
+        $("#amountZ").spinner({
+            step: 0.1,
             stop:function(e,ui){
                 primitiveManager.setTransformationValuesToPrimitive();
             }
@@ -56,10 +59,6 @@ function UI(primitiveManager){
         
         that.BBTransformMode = that.newLabelProperty("transformMode");
         
-        /*addRightbarElement({name:"Propertie 1", value: 2.0, id:"id_01"});
-        addRightbarElement({name:"Propertie 2", value: 1.0, id:"id_02"});
-        addRightbarElement({name:"Propertie 3", value: 3.0, id:"id_03"});*/
-
         for (var prim in primitiveParameterMap){
             addLeftbarElement(primitiveParameterMap[prim].image, 
                               primitiveParameterMap[prim].editorName);
@@ -87,11 +86,16 @@ function UI(primitiveManager){
                 heightStyle: "content",
                 collapsible: false,
                 active: false,
-                icons: iconsAccordion
+                icons: iconsAccordion,
+                activate: function(event, ui) {
+                    if (ui.newHeader.text() === "Material Editor"){
+                        document.getElementById("diffuse").focus();
+                    }
+                }
         });
         
         
-        var f = $.farbtastic('#picker');
+        f = $.farbtastic('#picker');
 	var p = $('#picker').css('opacity', 1.0);
 	var selected;
 	$('.colorwell')
@@ -105,6 +109,24 @@ function UI(primitiveManager){
                     p.css('opacity', 1);
                     $(selected = this).css('opacity', 1).addClass('colorwell-selected');
             });
+            
+        $("#transparency").spinner({
+            min: 0.0,
+            max: 1.0, 
+            step: 0.1,
+            stop:function(e,ui){
+                primitiveManager.changePrimitiveMaterial("transparency");
+            }
+        });
+        
+        $("#shininess").spinner({
+            min: 0.0,
+            max: 1.0,
+            step: 0.1,
+            stop:function(e,ui){
+                primitiveManager.changePrimitiveMaterial("shininess");
+            }
+        });
     }
     
     
@@ -464,7 +486,9 @@ function UI(primitiveManager){
 
     /*
      * Adds one prameter value to the right bar
-     * @returns (undefined)
+     * @param {object} object includes editorName and x3domName of parameter and
+     * the value that should be set 
+     * @returns (Null)
      */
     function addRightbarElement(object)
     {	
@@ -483,7 +507,8 @@ function UI(primitiveManager){
         divID.appendChild(newLabel); 
         document.getElementById("properties").appendChild(divID);
 
-        $("#"+object.id).spinner({         
+        $("#"+object.id).spinner({
+            step: 0.1,
             stop:function(e,ui){
                 object.primitive._x3domNode._vf[object.param.x3domName] = 
                             parseFloat(document.getElementById(object.id).value);
@@ -492,6 +517,40 @@ function UI(primitiveManager){
             }
         });
     }
+    
+    
+    
+    /*
+     * Sets all parameters of a material to the material editor on the right bar
+     * @param {material} material includes diffuse, specular, emissive color, 
+     * shininess and transparency
+     * @returns (Null)
+     */
+    this.setMaterial = function(material){
+        
+        // setting of emissive color
+        var colorfield = document.getElementById("diffuse");
+        var color = material.getAttribute("diffuseColor");
+        colorfield.focus();
+        f.setColor(color);
+        
+        // setting of specular color
+        colorfield = document.getElementById("specular");
+        color = material.getAttribute("specularColor");
+        colorfield.focus();
+        f.setColor(color);
+        
+        // setting of diffuse color
+        colorfield = document.getElementById("emissive");
+        color = material.getAttribute("emissiveColor");
+        colorfield.focus();
+        f.setColor(color);
+        
+        document.getElementById("transparency").value = material.getAttribute("transparency");
+        document.getElementById("shininess").value = material.getAttribute("shininess");
+        
+        document.getElementById("diffuse").focus();
+    };
    
 
     
