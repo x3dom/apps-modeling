@@ -64,8 +64,11 @@ function PrimitiveManager(){
         // Material Node
         var mat = document.createElement('Material');
         mat.setAttribute("diffuseColor", "0.25 0.5 0.75");
+        mat.setAttribute("specularColor", "0.0 0.0 0.0");
+        mat.setAttribute("emissiveColor", "0.0 0.0 0.0");
         mat.setAttribute("transparency", "0.3");
         mat.setAttribute("shininess", ".3");
+        t.Material = mat;
 
         app.appendChild(mat);
         s.appendChild(app);
@@ -144,6 +147,32 @@ function PrimitiveManager(){
                 }
             }
         }
+    };
+    
+    
+    
+    /*
+     * Changes the material of a primitive 
+     * @param {elementid} element the id of the textfield with the color
+     * @returns (undefined)
+     */
+    this.changePrimitiveMaterial = function(element){
+        var rgb = document.getElementById(element).value;
+	var r = parseInt('0x' + rgb.substr(1,2))/255.0;
+	var g = parseInt('0x' + rgb.substr(3,2))/255.0;
+	var b = parseInt('0x' + rgb.substr(5,2))/255.0;
+	rgb = (r + " "  + g + " " + b);
+        primitiveList[actualID].highlight(false, "");
+	if(element === "diffuse"){
+            primitiveList[actualID].Material.setAttribute('diffuseColor', rgb);
+        }
+	else if(element === "specular"){
+            primitiveList[actualID].children[0].children[0].children[0].children[0].setAttribute('specularColor', rgb);
+        }
+	else if(element === "emissive"){
+            primitiveList[actualID].children[0].children[0].children[0].children[0].setAttribute('emissiveColor', rgb);
+        }
+        primitiveList[actualID].highlight(true, "1 1 0");
     };
     
     
