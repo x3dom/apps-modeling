@@ -63,11 +63,11 @@ function PrimitiveManager(){
 
         // Material Node
         var mat = document.createElement('Material');
-        mat.setAttribute("diffuseColor", "0.25 0.5 0.75");
-        mat.setAttribute("specularColor", "0.0 0.0 0.0");
-        mat.setAttribute("emissiveColor", "0.0 0.0 0.0");
+        mat.setAttribute("diffuseColor", "#3F7EBD");
+        mat.setAttribute("specularColor", "#000000");
+        mat.setAttribute("emissiveColor", "#000000");
         mat.setAttribute("transparency", "0.3");
-        mat.setAttribute("shininess", ".3");
+        mat.setAttribute("shininess", "0.3");
         t.Material = mat;
 
         app.appendChild(mat);
@@ -92,6 +92,7 @@ function PrimitiveManager(){
         
         actualID = id;
         primitiveCounter++;
+        ui.setMaterial(mat);
         highlightPrimitive(true);
         setDefaultParameters(prim, parameters);
         ui.clearParameters();
@@ -161,19 +162,21 @@ function PrimitiveManager(){
      */
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
-	var r = parseInt('0x' + rgb.substr(1,2))/255.0;
-	var g = parseInt('0x' + rgb.substr(3,2))/255.0;
-	var b = parseInt('0x' + rgb.substr(5,2))/255.0;
-	rgb = (r + " "  + g + " " + b);
         primitiveList[actualID].highlight(false, "");
 	if(element === "diffuse"){
             primitiveList[actualID].Material.setAttribute('diffuseColor', rgb);
         }
 	else if(element === "specular"){
-            primitiveList[actualID].children[0].children[0].children[0].children[0].setAttribute('specularColor', rgb);
+            primitiveList[actualID].Material.setAttribute('specularColor', rgb);
         }
 	else if(element === "emissive"){
-            primitiveList[actualID].children[0].children[0].children[0].children[0].setAttribute('emissiveColor', rgb);
+            primitiveList[actualID].Material.setAttribute('emissiveColor', rgb);
+        }
+        else if(element === "transparency"){
+            primitiveList[actualID].Material.setAttribute('transparency', rgb);
+        }
+        else if(element === "shininess"){
+            primitiveList[actualID].Material.setAttribute('shininess', rgb);
         }
         primitiveList[actualID].highlight(true, "1 1 0");
     };
@@ -223,6 +226,7 @@ function PrimitiveManager(){
         highlightPrimitive(true);
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
+        ui.setMaterial(primitiveList[id].Material);
         if (HANDLING_MODE === "hand") controller.Activate("translation");
         setTransformValues(id, HANDLING_MODE);
     }
