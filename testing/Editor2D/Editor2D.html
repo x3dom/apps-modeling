@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>2D-Editor</title>
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/Editor2D.js"></script>
+<script type="text/javascript">
+	var editor2D;
+	$(function() {
+     	//Create Editor2D
+		editor2D = new Editor2D();
+    });
+</script>
+
+<body>
+<input type="button" value="Open Editor" onClick="editor2D.show();">
+</body>
+</html>
