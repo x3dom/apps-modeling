@@ -90,6 +90,7 @@ function UI(primitiveManager){
                 activate: function(event, ui) {
                     if (ui.newHeader.text() === "Material Editor"){
                         document.getElementById("diffuse").focus();
+                        that.setMaterial(primitiveManager.getActualPrimitive().Material);
                     }
                 }
         });
@@ -564,29 +565,30 @@ function UI(primitiveManager){
      * @returns (Null)
      */
     this.setMaterial = function(material){
-        
-        // setting of emissive color
-        var colorfield = document.getElementById("diffuse");
-        var color = material.getAttribute("diffuseColor");
-        colorfield.focus();
-        f.setColor(color);
-        
-        // setting of specular color
-        colorfield = document.getElementById("specular");
-        color = material.getAttribute("specularColor");
-        colorfield.focus();
-        f.setColor(color);
-        
-        // setting of diffuse color
-        colorfield = document.getElementById("emissive");
-        color = material.getAttribute("emissiveColor");
-        colorfield.focus();
-        f.setColor(color);
-        
-        document.getElementById("transparency").value = material.getAttribute("transparency");
-        document.getElementById("shininess").value = material.getAttribute("shininess");
-        
-        document.getElementById("diffuse").focus();
+        if ($("#accordeon-oben").accordion("option", "active") === 1){
+            // setting of emissive color
+            var colorfield = document.getElementById("diffuse");
+            var color = material.getAttribute("diffuseColor");
+            colorfield.focus();
+            f.setColor(color);
+
+            // setting of specular color
+            colorfield = document.getElementById("specular");
+            color = material.getAttribute("specularColor");
+            colorfield.focus();
+            f.setColor(color);
+
+            // setting of diffuse color
+            colorfield = document.getElementById("emissive");
+            color = material.getAttribute("emissiveColor");
+            colorfield.focus();
+            f.setColor(color);
+
+            document.getElementById("transparency").value = material.getAttribute("transparency");
+            document.getElementById("shininess").value = material.getAttribute("shininess");
+
+            document.getElementById("diffuse").focus();
+        }
     };
    
 

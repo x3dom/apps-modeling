@@ -50,6 +50,7 @@ function PrimitiveManager(){
         t.Parameters = parameters;
         
         var mt = document.createElement('MatrixTransform');
+        mt.setAttribute("id", 'mt_' + id);
         var transformMat = x3dom.fields.SFMatrix4f.identity();
         mt.Transformation = {};
         mt.Transformation.rotationX = 0;
@@ -82,8 +83,12 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
-        // TODO; update GUI elements
-        new Moveable(document.getElementById("x3d"), mt);
+        // TODO; update GUI elements, this callback is only for testing if values are received
+        function notified(elem, pos) {
+            console.log(elem.getAttribute('id') + ": " + pos.toString());
+        }
+        // wrapper for adding moving functionality, last param is callback
+        new Moveable(document.getElementById("x3d"), mt, notified);
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
