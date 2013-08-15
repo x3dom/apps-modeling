@@ -89,6 +89,22 @@ function UI(primitiveManager){
                 active: false,
                 icons: iconsAccordion
         });
+        
+        
+        var f = $.farbtastic('#picker');
+	var p = $('#picker').css('opacity', 1.0);
+	var selected;
+	$('.colorwell')
+            .each(function () { f.linkTo(this); $(this).css('opacity', 1.0); })
+            .focus(function() {
+                    if (selected) {
+                      $(selected).css('opacity', 1.0).removeClass('colorwell-selected');
+                      $(selected).onchange = function() { alert("HUHU"); };
+                    }
+                    f.linkTo(this);
+                    p.css('opacity', 1);
+                    $(selected = this).css('opacity', 1).addClass('colorwell-selected');
+            });
     }
     
     
