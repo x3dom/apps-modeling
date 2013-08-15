@@ -372,39 +372,43 @@ function UI(primitiveManager){
        
     
     /*
-     * 
+     * Show and hide from showStat from x3d-tree
      */
     this.showStatistik = function()
     {
-    	temp = document.getElementById("x3d");
+    	var x3d = document.getElementById("x3d");
+    	var showStat = x3d.getAttribute("showStat");
     	
-    	if(temp.getAttribute("showStat"))
+    	if(showStat == true)
     	{
-    		
-    		temp.setAttribute("showStat", "false");
-    	}
+    		x3d.setAttribute("showStat", "false");
+       	}
+       	
     	else
     	{
-    		alert("hier");
-    		temp.setAttribute("showStat", "true");
+    		alert("Showstat false");
+    		x3d.setAttribute("showStat", "true");
     	}
+    	x3dom.refresh();
     };
     
     
     /*
-     * 
+     * Show and hide from from showLog from x3d-tree
      */
     this.showInfo = function()
     {
-    	temp = document.getElementById("x3d");
+    	var x3d = document.getElementById("x3d");
+    	var showLog = x3d.getAttribute("showLog");
     	
-    	if(temp.getAttribute("showLog"))
+    	if(showLog == true)
     	{
-    		temp.setAttribute("showLog", "false");
+    		x3d.setAttribute("showLog", "false");
     	}
     	else
     	{
-    		temp.setAttribute("showLog", "true");
+    		alert("Showlog false");
+    		x3d.setAttribute("showLog", "true");
     	}
     };
     
