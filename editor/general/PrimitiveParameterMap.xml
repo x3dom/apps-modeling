@@ -2,16 +2,23 @@
     <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">        
     </Primitive>
     <Primitive editorName="Sphere" x3domName="Sphere" image="images/sphere.jpg">
+        <Parameter editorName="Radius" x3domName="radius">1.0</Parameter>
     </Primitive>
     <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
+        <Parameter editorName="Bottom Radius" x3domName="bottomRadius">1.0</Parameter>
+        <Parameter editorName="Top Radius" x3domName="topRadius">0.0</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Cylinder" x3domName="Cylinder" image="images/cylinder.jpg">
+        <Parameter editorName="Radius" x3domName="radius">0.5</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
         <Parameter editorName="Diameter" x3domName="diameter">2.0</Parameter>
-        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter editorName="Radius" x3domName="radius">0.0</Parameter>
-        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter> 
     </Primitive>
     <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
         <Parameter editorName="DTop" x3domName="dtop">0.4</Parameter>
