@@ -349,7 +349,6 @@ function UI(primitiveManager){
     };
 
 
-
    /*
     * Toggeling fade function of the right toolbar
     */
@@ -370,6 +369,44 @@ function UI(primitiveManager){
        }
     }; 
        
+    
+    /*
+     * 
+     */
+    this.showStatistik = function()
+    {
+    	temp = document.getElementById("x3d");
+    	
+    	if(temp.getAttribute("showStat"))
+    	{
+    		
+    		temp.setAttribute("showStat", "false");
+    	}
+    	else
+    	{
+    		alert("hier");
+    		temp.setAttribute("showStat", "true");
+    	}
+    };
+    
+    
+    /*
+     * 
+     */
+    this.showInfo = function()
+    {
+    	temp = document.getElementById("x3d");
+    	
+    	if(temp.getAttribute("showLog"))
+    	{
+    		temp.setAttribute("showLog", "false");
+    	}
+    	else
+    	{
+    		temp.setAttribute("showLog", "true");
+    	}
+    };
+    
     
 	/*  
      * Open UI for the HTML Canvas

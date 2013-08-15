@@ -112,8 +112,8 @@
         		<ul class="nav">
         			<li><a href="#">File</a>
         				<ul>
-        					<li><a href="#" onmouseover="this.style.cursor='pointer';">Export</a></li>
-        					<li><a href="#" onmouseover="this.style.cursor='pointer';">Import</a></li>
+        					<li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Statistik</a></li>
+        					<li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Loginfo</a></li>
         				</ul>
         			</li>
         		</ul>
@@ -193,13 +193,13 @@
 					
 					<h3>Material Editor</h3>
 					<div id="colors">
-                                            <center><div id='picker' class='picker'></div></center>
-                                            <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                                            <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Specular</div><input type='text' id='specular' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                                            <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                                            <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' style="width: 110px;" value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                                            <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' style="width: 110px;" value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                                        </div>				
+                        <center><div id='picker' class='picker'></div></center>
+                        <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                        <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Specular</div><input type='text' id='specular' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                        <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;" name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                        <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' style="width: 110px;" value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                        <div class='form-item' style='padding-top:5px; padding-bottom:2px;'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' style="width: 110px;" value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                    </div>				
 				</div>
            	</div>
             <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
@@ -210,7 +210,7 @@
 <!-- X3D - Element -->
 <!--<div onclick="run();" style="position: absolute; top: 0px; left: 50%; width: 50px; height: 30px; background-color:yellow; z-index: 1000000;"></div>-->
         <div id="x3d-view">
-            <x3d id="x3d" showStat="true" showLog="false">
+            <x3d id="x3d" showStat="true" showLog="true">
                 <scene>
                     <viewpoint id="viewPoint" position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209">
                     </viewpoint>
