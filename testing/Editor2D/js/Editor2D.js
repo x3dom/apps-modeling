@@ -1,10 +1,7 @@
-$(function() {
- 
- //Create Overlay
- document    
-
-});
-
+/*
+ * 
+ * @returns {Editor2D}
+ */
 Editor2D = function (width, height) {
 
 	var that = this;
@@ -22,90 +19,175 @@ Editor2D = function (width, height) {
 	this.mousePosX = 0;
 	this.mousePosY = 0;
 	this.pointList = [{x: 0, y: 2}, {x: 2, y: 2}, {x: 3, y: 0}];
-
-	var mouseWheelEvent = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel";
-
-	//Create Overlay
- 	this.overlay = document.createElement('div');
-	this.overlay.style.position = 'fixed';
-	this.overlay.style.top = '0px';
-	this.overlay.style.left = '0px';
-	this.overlay.style.margin = '0px';
-	this.overlay.style.padding = '0px';
-	this.overlay.style.width = '100%';
-	this.overlay.style.height = '100%';
-	this.overlay.style.zIndex = '9999';
-	this.overlay.style.backgroundColor = 'rgba(90, 90, 90, 0.75)';
-	this.overlay.style.display = 'none';
 	
-	//Create Editor Container 
-	this.editor = document.createElement('div');
-	this.editor.style.width = this.width + 30 + 'px';
-	this.editor.style.height = this.height + 30 + 'px';
-	this.editor.style.position = 'relative';
-	this.editor.style.top = '50%';
-	this.editor.style.left = '50%';
-	this.editor.style.margin = -(this.height + 30)/2 + 'px 0px 0px ' + -(this.width + 30)/2 + 'px';
-	this.editor.style.backgroundColor = 'rgb(60, 60, 60)';
-	this.editor.style.borderRadius = '15px';
-	this.editor.style.boxShadow = '5px 5px 5px #333';
+	/*
+     * Inititialize the full 2D-Editor  
+     */
+	this.init = function ()
+	{
+		//Create Overlay
+		this.overlay = this.createOverlay();
+		
+		//Create Editor 
+		this.editor = this.createEditor();
+		
+		//Create Canvas
+		this.canvas = this.createCanvas();
+		
+		//Create Context
+		this.context = this.canvas.getContext("2d");
 	
-	//Create Canvas
-	this.canvas = document.createElement('canvas');
-	this.canvas.width = this.width;
-	this.canvas.height = this.height;
-	this.canvas.style.margin = '15px 0px 0px 15px';
-	this.canvas.style.border = '2px solid #CCC';
-	this.canvas.style.borderRadius = '10px';
-	this.canvas.style.cursor = 'crosshair';
-	this.canvas.addEventListener(mouseWheelEvent, function (evt) {
-		//Update mouse position
-		that.getMousePos(evt)
+		//Deactivate context smoothing
+		this.context.mozImageSmoothingEnabled = false;
+		this.context.webkitImageSmoothingEnabled = false;
 		
-		if (evt.wheelDelta > 0 || evt.detail > 0) {
-			if (that.gridSize < 100) {
-				that.gridSize += 5;
-				that.draw();
-			}
-		} else {
-			if (that.gridSize > 10) {
-				that.gridSize -= 5;
-				that.draw();
-			}
-		}
-	});
-	this.canvas.addEventListener('mousedown', function (evt) {
-		//Update mouse position
-		that.getMousePos(evt)
+		//Append canvas to editor
+		this.editor.appendChild(this.canvas);
 		
-		switch (evt.which) {
+		//Append editor to overlay
+		this.overlay.appendChild(this.editor);
+		
+		//Append overlay to body	
+		document.body.appendChild(this.overlay);
+	};
+	
+	/*
+     * Create a full-screen overlay div-container 
+     * @returns {div}
+     */
+	this.createOverlay = function ()
+	{
+		//Create div-element
+		var overlay = document.createElement('div');
+		
+		//Set styles
+		overlay.style.position = 'fixed';
+		overlay.style.top = '0px';
+		overlay.style.left = '0px';
+		overlay.style.margin = '0px';
+		overlay.style.padding = '0px';
+		overlay.style.width = '100%';
+		overlay.style.height = '100%';
+		overlay.style.zIndex = '9999';
+		overlay.style.backgroundColor = 'rgba(90, 90, 90, 0.75)';
+		overlay.style.display = 'none';
+		
+		//Return element
+		return overlay;
+	};
+	
+	/*
+     * Create an on screen centered div-container for the editor
+     * @returns {div}
+     */
+	this.createEditor = function ()
+	{
+		//Create div-element
+		var editor = document.createElement('div');
+		
+		//Set styles
+		editor.style.width = this.width + 30 + 'px';
+		editor.style.height = this.height + 30 + 'px';
+		editor.style.position = 'relative';
+		editor.style.top = '50%';
+		editor.style.left = '50%';
+		editor.style.margin = -(this.height + 30)/2 + 'px 0px 0px ' + -(this.width + 30)/2 + 'px';
+		editor.style.backgroundColor = 'rgb(60, 60, 60)';
+		editor.style.borderRadius = '15px';
+		editor.style.boxShadow = '5px 5px 5px #333';
+		
+		//Return element
+		return editor;
+	};
+	
+	/*
+     * Create a canvas element for drawing and attach different 
+	 * mouse event listener for interaction 
+     * @returns {canvas}
+     */
+	this.createCanvas = function ()
+	{
+		//Create canvas-element
+		var canvas = document.createElement('canvas');
+		
+		//Set styles
+		canvas.width = this.width;
+		canvas.height = this.height;
+		canvas.style.margin = '15px 0px 0px 15px';
+		canvas.style.border = '2px solid #CCC';
+		canvas.style.borderRadius = '10px';
+		canvas.style.cursor = 'crosshair';
+		
+		//Add mousewheel handler (Chrome, Safari, Opera)
+		canvas.addEventListener("mousewheel", this.mouseWheelListener);
+		
+		//Add mousewheel handler (Firefox)
+		canvas.addEventListener("DOMMouseScroll", this.mouseWheelListener);
+		
+		//Add mouseup listener
+		canvas.addEventListener('mouseup', this.mouseUpListener);
+		
+		//Add mousedown listener
+		canvas.addEventListener('mousedown', this.mouseDownListener);
+		
+		//Add mousemove listener
+		canvas.addEventListener('mousemove', this.mouseMoveListener);
+		
+		return canvas;
+	};
+	
+	
+	/*
+     * Handle the 'mouseup'-event
+	 * @param {event} the fired mouse-event
+     */
+	this.mouseUpListener = function (evt)
+	{
+		that.mouseButton = 'NONE';
+		that.canvas.style.cursor = 'crosshair';
+	};
+	
+	/*
+     * Handle the 'mousedown'-event
+	 * @param {event} the fired mouse-event
+     */
+	this.mouseDownListener = function (evt)
+	{
+		//Update mouse position
+		that.updateMousePos(evt)
+		
+		//Handle different mouse buttons
+		switch (evt.which) 
+		{
 			case 1: 
 				that.mouseButton = 'LEFT';
 				that.clickPosX = that.mousePosX;
 				that.clickPosY = that.mousePosY;  
 				that.canvas.style.cursor = 'haircross'; 
-				break;
+			break;
 			case 2: 
 				that.mouseButton = 'MIDDLE';
 				that.clickPosX = that.mousePosX;
 				that.clickPosY = that.mousePosY;
 				that.canvas.style.cursor = 'move'; 
-				break;
+			break;
 			case 3: 
 				that.mouseButton = 'RIGHT';
 				that.clickPosX = that.mousePosX;
 				that.clickPosY = that.mousePosY; 
 				that.canvas.style.cursor = 'haircross'; 
-				break;
+			break;
 		}
-	});
-	this.canvas.addEventListener('mouseup', function (evt) {
-		that.mouseButton = 'NONE';
-		that.canvas.style.cursor = 'crosshair';
-	});
-	this.canvas.addEventListener('mousemove', function (evt) {
+	};
+	
+	/*
+     * Handle the 'mousemove'-event
+	 * @param {event} the fired mouse-event
+     */
+	this.mouseMoveListener = function (evt)
+	{
 		//Update mouse position
-		that.getMousePos(evt)
+		that.updateMousePos(evt)
 		
 		//Handle different mouse buttons
 		switch (that.mouseButton) {
@@ -127,112 +209,192 @@ Editor2D = function (width, height) {
 		}
 		
 		that.draw();
-	});
+	};
 	
-	//Append Elements
-	this.editor.appendChild(this.canvas);
-	this.overlay.appendChild(this.editor);	
-	document.body.appendChild(this.overlay);
+	/*
+     * Handle the 'mousewheel'-event
+	 * @param {event} the fired mouse-event
+     */
+	this.mouseWheelListener = function (evt)
+	{
+		//Update mouse position
+		that.updateMousePos(evt)
 		
-	//Create Context
-	this.context = this.canvas.getContext("2d");
+		//Check for up- or down-scroll
+		if (evt.wheelDelta > 0 || evt.detail > 0) 
+		{
+			//If allowed increment grid size and redraw it
+			if (that.gridSize < 100) 
+			{
+				that.gridSize += 5;
+				that.draw();
+			}
+		} 
+		else 
+		{
+			//If allowed decrement grid size and redraw it
+			if (that.gridSize > 10) 
+			{
+				that.gridSize -= 5;
+				that.draw();
+			}
+		}
+	};
 	
-	this.context.mozImageSmoothingEnabled = false;
-	this.context.webkitImageSmoothingEnabled = false;
-	
-	this.getMousePos = function(evt) {
+	/*
+     * Updates the actual saved mouse position
+	 * @param {event} the fired mouse-event
+     */
+	this.updateMousePos = function (evt) 
+	{
 		var rect = that.canvas.getBoundingClientRect();
 		that.mousePosX = (evt.clientX - rect.left - this.centerX - 2) / that.gridSize;
 		that.mousePosY = (evt.clientY - rect.top - this.centerY - 2.5) / that.gridSize;	
 	};
 	
+	/*
+     * Clear the canvas and draw the grid, points and lines
+     */
+	this.draw = function()
+	{
+		//Clear the canvas before next draw
+		this.context.clearRect(0, 0, this.width, this.height);
+		
+		//Draw the grid
+		this.drawGrid();
+		
+		//Draw the lines
+		this.drawLines();
+		
+		//Draw the points
+		this.drawPoints();
+	};
+	
+	/*
+     * Draw the whole grid
+     */
 	this.drawGrid = function () 
 	{	
+		//Start new path for grid lines
 		this.context.beginPath();
+		
+		//Set line width and color
+		this.context.lineWidth = 1;
+		this.context.strokeStyle = '#777';
 
+		//Create vertical lines right from centerpoint
 		for (var x = this.centerX + this.gridSize; x <= this.width; x += this.gridSize) {
 			this.context.moveTo(x, 0);
 			this.context.lineTo(x, this.height);
 		}
 		
+		//Create vertical lines left from centerpoint
 		for (x = this.centerX - this.gridSize; x >= 0; x -= this.gridSize) {
 			this.context.moveTo(x, 0);
 			this.context.lineTo(x, this.height);
 		}
 		
+		//Create horizontal lines top from centerpoint
 		for (var y = this.centerY + this.gridSize; y <= this.height; y += this.gridSize) {
 			this.context.moveTo(0, y);
 			this.context.lineTo(this.width, y);
 		}
 		
+		//Create horizontal lines bottom from centerpoint
 		for (var y = this.centerY - this.gridSize; y >= 0; y -= this.gridSize) {
 			this.context.moveTo(0, y);
 			this.context.lineTo(this.width, y);
 		}
 		
-		this.context.lineWidth = 1;
-		this.context.strokeStyle = '#777';
+		//Draw it!
 		this.context.stroke();
 		
+		//Start new path for center lines
 		this.context.beginPath();
+		
+		//Set line width and color
+		this.context.lineWidth = 2;
+		this.context.strokeStyle = '#CCC';
+		
+		//Create vertical center line
 		this.context.moveTo(this.centerX, 0);
 		this.context.lineTo(this.centerX, this.height);
 		
+		//Create horizontal center line
 		this.context.moveTo(0, this.centerY);
 		this.context.lineTo(this.width, this.centerY);
 		
-		this.context.lineWidth = 2;
-		this.context.strokeStyle = '#CCC';
+		//Draw it!
 		this.context.stroke();
 	};
 	
+	/*
+     * Draw the lines and curves between the points
+     */
 	this.drawLines = function()
 	{
+		//Loop over all points
 		for (var p=1; p<this.pointList.length; p++)
 		{
+			//Start new path for every line
 			this.context.beginPath();
-			this.context.moveTo(this.pointList[p-1].x * this.gridSize + this.centerX, this.pointList[p-1].y * this.gridSize + this.centerY);
-			this.context.lineTo(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY);
+			
+			//Set line width and color
 			this.context.lineWidth = 2;
 			this.context.strokeStyle = '#CCC';
+			
+			//Create line between the actual and the previous point
+			this.context.moveTo(this.pointList[p-1].x * this.gridSize + this.centerX, this.pointList[p-1].y * this.gridSize + this.centerY);
+			this.context.lineTo(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY);
+			
+			//Draw it!
 			this.context.stroke();
 		}
 	};
 	
+	/*
+     * Draw the points
+     */
 	this.drawPoints = function () 
 	{
+		//Loop over all points
 		for (var p=0; p<this.pointList.length; p++)
 		{
+			//Start new path for every line
 			this.context.beginPath();
-			this.context.arc(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY, this.gridSize/4, 0, Math.PI*2, false); 
-			this.context.closePath();
+			
+			//Set point color
 			this.context.fillStyle = '#2956a8';
+			
+			//Create actual point
+			this.context.arc(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY, this.gridSize/4, 0, Math.PI*2, false); 
+			
+			//Close the path
+			this.context.closePath();
+			
+			//Draw it!
 			this.context.fill();
 		}
-	}
+	};
 	
-	this.draw = function()
-	{
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		
-		this.drawGrid();
-		this.drawLines();
-		this.drawPoints();
-	}
-	
-	this.draw();
-}
+	//Finaly initialize the 2D-Editor
+	this.init();	
+};
 
-Editor2D.prototype.show = function () {
-	
-	this.overlay.style.display = 'block';
-}
-
-Editor2D.prototype.hide = function () {
+/*
+* TODO
+*/
+Editor2D.prototype.hide = function () 
+{
 	this.overlay.style.display = 'none';
-}
+};
 
-Editor2D.prototype.show = function () {
+/*
+* TODO
+*/
+Editor2D.prototype.show = function () 
+{
+	this.draw();
 	this.overlay.style.display = 'block';
-}
+};
 

@@ -12,11 +12,13 @@
 		<link rel="stylesheet" type="text/css" href="css/properties.css"/>
 		<link rel="stylesheet" type="text/css" href="css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="css/dialog.css"/>
+                <link rel='stylesheet' type='text/css' href='css/farbtastic.css'/>
 		<!--<script src="js/home.js"></script>-->
         <script src="js/PrimitiveManager.js"></script>
         <script src="js/UI.js"></script>
         <script src="js/Controller.js"></script>
         <script src="js/main.js"></script>
+        <script type='text/javascript' src='js/farbtastic.js'></script>
 		
 		<link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/x3dom.css"/>
 		        
@@ -182,18 +184,17 @@
 		<div id="Rechts" style="position: absolute; right: 0px; height:100%; width: 170px; z-index: 1000;">
             <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
             	
-	            <div id="accordeon-oben" style="width: 160px; height: 100%; margin-bottom: 50px; margin-left:auto; margin-right:auto;">
+	            <div id="accordeon-oben" style="width: 160px; height: 100%; margin-bottom: 50px; margin-left:5px; margin-right:5px;">
 					<h3>Properties</h3>
 					
 					<div id="properties">
 					</div>
 					
-					<h3>Colors</h3>
+					<h3>Color Editor</h3>
 					<div id="colors">
-						
+                                            <center><div id='picker' class='picker'></div></center>
 					</div>				
 				</div>
-				 
            	</div>
             <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute; 
             width: 30px; height: 150px; right: 168px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/params.png);"> </div>

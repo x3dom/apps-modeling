@@ -1,24 +1,49 @@
 <PrimitiveParameterMap>
-    <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
-        <Parameter editorName="Boxparam1" x3domName="X3dparam1">1</Parameter>
-        <Parameter editorName="Boxparam2" x3domName="X3dparam2">2</Parameter>
-        <Parameter editorName="Boxparam3" x3domName="X3dparam3">3</Parameter>
+    <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">        
     </Primitive>
     <Primitive editorName="Sphere" x3domName="Sphere" image="images/sphere.jpg">
-        <Parameter editorName="Sphereparam1" x3domName="X3dSphereparam1">1</Parameter>
-        <Parameter editorName="Sphereparam2" x3domName="X3dSphereparam2">2</Parameter>
-        <Parameter editorName="Sphereparam3" x3domName="X3dSphereparam3">3</Parameter>
+        <Parameter editorName="Radius" x3domName="radius">1.0</Parameter>
     </Primitive>
     <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
+        <Parameter editorName="Bottom Radius" x3domName="bottomRadius">1.0</Parameter>
+        <Parameter editorName="Top Radius" x3domName="topRadius">0.0</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Cylinder" x3domName="Cylinder" image="images/cylinder.jpg">
+        <Parameter editorName="Radius" x3domName="radius">0.5</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
+        <Parameter editorName="Diameter" x3domName="diameter">2.0</Parameter>
+        <Parameter editorName="Radius" x3domName="radius">0.0</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter> 
     </Primitive>
     <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
+        <Parameter editorName="DTop" x3domName="dtop">0.4</Parameter>
+        <Parameter editorName="DBottom" x3domName="dbottom">1.0</Parameter>
+        <Parameter editorName="XOff" x3domName="xoff">0.25</Parameter>
+        <Parameter editorName="YOff" x3domName="yoff">0.25</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Pyramid" x3domName="Pyramid" image="images/pyramid.jpg">
+        <Parameter editorName="XBottom" x3domName="xbottom">1.0</Parameter>
+        <Parameter editorName="YBottom" x3domName="ybottom">1.0</Parameter>
+        <Parameter editorName="XTop" x3domName="xtop">0.5</Parameter>
+        <Parameter editorName="YTop" x3domName="ytop">0.5</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="XOff" x3domName="xoff">0.25</Parameter>
+        <Parameter editorName="YOff" x3domName="yoff">0.25</Parameter>
     </Primitive>
     <Primitive editorName="Sloped Cylinder" x3domName="SlopedCylinder" image="images/slopedcylinder.jpg">
+        <Parameter editorName="Radius" x3domName="radius">1.0</Parameter>
+        <Parameter editorName="Height" x3domName="height">2.0</Parameter>
+        <Parameter editorName="XTShear" x3domName="xtshear">-15.0</Parameter>
+        <Parameter editorName="YTShear" x3domName="ytshear">10.0</Parameter>
+        <Parameter editorName="XBShear" x3domName="xbshear">5.0</Parameter>
+        <Parameter editorName="YBShear" x3domName="ybshear">35.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
 </PrimitiveParameterMap>

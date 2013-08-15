@@ -47,6 +47,7 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
+        t.Parameters = parameters;
         
         var mt = document.createElement('MatrixTransform');
         var transformMat = x3dom.fields.SFMatrix4f.identity();
@@ -56,7 +57,6 @@ function PrimitiveManager(){
         mt.Transformation.rotationZ = 0;
         var transformString = matrixToString(transformMat);
         mt.setAttribute("matrix", transformString);
-        mt.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
 
         // Appearance Node
         var app = document.createElement('Appearance');
@@ -73,6 +73,7 @@ function PrimitiveManager(){
 
         var prim = document.createElement(primitive);
         s.appendChild(prim);
+        t.Parameters.Primitive = prim;
 
         var root = document.getElementById('root');
         t.appendChild(mt);
@@ -86,10 +87,27 @@ function PrimitiveManager(){
         actualID = id;
         primitiveCounter++;
         highlightPrimitive(true);
+        setDefaultParameters(prim, parameters);
+        ui.clearParameters();
+        ui.createParameters(t.Parameters);
     };
     
     
     
+    function setDefaultParameters(primitive, parameters){
+        for (var i = 0; i < parameters.length; i++){
+            primitive._x3domNode._vf[parameters[i].x3domName] = parseFloat(parameters[i].value);
+            primitive._x3domNode.fieldChanged(parameters[i].x3domName);
+        }
+    };
+    
+    
+    
+    /*
+     * Creates a string from SFMatrix4f that can be set on MatrixTransform
+     * @param {SFMatrix4f} transformMat matrix that should be converted to a string
+     * @returns (undefined)
+     */
     function matrixToString(transformMat){
         return transformMat.toString().substring(12, transformMat.toString().length - 2).replace(/\n/g,"");
     }
@@ -171,6 +189,8 @@ function PrimitiveManager(){
     function primitiveSelected(id){
         actualID = id;
         highlightPrimitive(true);
+        ui.clearParameters();
+        ui.createParameters(primitiveList[id].Parameters);
         if (HANDLING_MODE === "hand") controller.Activate("translation");
         setTransformValues(id, HANDLING_MODE);
     }
