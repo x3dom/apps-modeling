@@ -79,6 +79,8 @@ function PrimitiveManager(){
         s.appendChild(prim);
         t.Parameters.Primitive = prim;
 
+        t.Shape = s;
+
         var root = document.getElementById('root');
         t.appendChild(mt);
         root.appendChild(t);
@@ -99,6 +101,7 @@ function PrimitiveManager(){
         primitiveCounter++;
         ui.setMaterial(mat);
         highlightPrimitive(true);
+        highlightBoundingVolume(id, true);
         setDefaultParameters(prim, parameters);
         ui.clearParameters();
         ui.createParameters(t.Parameters);
@@ -237,11 +240,41 @@ function PrimitiveManager(){
     function primitiveSelected(id){
         actualID = id;
         highlightPrimitive(true);
+        highlightBoundingVolume(id, true);
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
         if (HANDLING_MODE === "hand") controller.Activate("translation");
         setTransformValues(id, HANDLING_MODE);
+    }
+    
+    
+    
+    function highlightBoundingVolume(id, bool){  
+        var transform = document.getElementById('cpnt_transform');
+        var matrixTransform = document.getElementById('cpnt_matrixTransform');
+        
+        transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
+        transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
+        matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
+        
+        var min = x3dom.fields.SFVec3f.parse(primitiveList[id].Parameters.Primitive._x3domNode._mesh._vol.min);
+        var max = x3dom.fields.SFVec3f.parse(primitiveList[id].Parameters.Primitive._x3domNode._mesh._vol.max);
+        if (min.x === 0 && max.x === 0 && min.y === 0 && max.y === 0 && min.z === 0 && max.z === 0){
+            min.x = -1; min.y = -1; min.z = -1;
+            max.x = 1; max.y = 1; max.z = 1;
+        }
+        var box = document.getElementById('cpnt');
+        box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
+                                  min.x+' '+min.y+' '+max.z+', '+
+                                  max.x+' '+min.y+' '+max.z+', '+
+                                  max.x+' '+min.y+' '+min.z+', '+
+                                  min.x+' '+max.y+' '+min.z+', '+
+                                  min.x+' '+max.y+' '+max.z+', '+
+                                  max.x+' '+max.y+' '+max.z+', '+
+                                  max.x+' '+max.y+' '+min.z );
+        
+        box.setAttribute("render", bool);
     }
     
     
@@ -310,6 +343,8 @@ function PrimitiveManager(){
                         ui.BBTransZ.get();
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
+        
+        highlightBoundingVolume(actualID, true);
     };
     
     
