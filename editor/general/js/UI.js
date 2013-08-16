@@ -11,10 +11,16 @@ function UI(primitiveManager){
     // highlight color of all ui elements
     var highlightColor = "#fff";
     // primitive parameter map to synchronize names between editor and x3dom
-    var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");;
-    var f;
+    var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
+    // color picker component
+    var farbtasticPicker;
     
     
+    
+    /*
+     * Initializes the UIComponent
+     * @returns {Null}
+     */
     this.initialize = function(){ 
         initializeUI();
         primitiveManager.setUI(that);
@@ -22,6 +28,10 @@ function UI(primitiveManager){
     
     
     
+    /*
+     * Initializes all components of the UI of the editor
+     * @returns {Null}
+     */
     function initializeUI(){
 
         that.TBHand = that.newImageProperty("ButtonHand");
@@ -94,18 +104,22 @@ function UI(primitiveManager){
                     }
                 }
         });
+        that.RBAccordion = $("#accordeon-oben");
+        that.RBAccordion.disable = function(bool){
+            $("#accordeon-oben").accordion("option", { disabled: bool });
+        };
         
-        f = $.farbtastic('#picker');
+        farbtasticPicker = $.farbtastic('#picker');
 	var p = $('#picker').css('opacity', 1.0);
 	var selected;
 	$('.colorwell')
-            .each(function () { f.linkTo(this); $(this).css('opacity', 1.0); })
+            .each(function () { farbtasticPicker.linkTo(this); $(this).css('opacity', 1.0); })
             .focus(function() {
                     if (selected) {
                       $(selected).css('opacity', 1.0).removeClass('colorwell-selected');
                       $(selected).onchange = function() { alert("HUHU"); };
                     }
-                    f.linkTo(this);
+                    farbtasticPicker.linkTo(this);
                     p.css('opacity', 1);
                     $(selected = this).css('opacity', 1).addClass('colorwell-selected');
             });
@@ -573,19 +587,19 @@ function UI(primitiveManager){
             var colorfield = document.getElementById("diffuse");
             var color = material.getAttribute("diffuseColor");
             colorfield.focus();
-            f.setColor(color);
+            farbtasticPicker.setColor(color);
 
             // setting of specular color
             colorfield = document.getElementById("specular");
             color = material.getAttribute("specularColor");
             colorfield.focus();
-            f.setColor(color);
+            farbtasticPicker.setColor(color);
 
             // setting of diffuse color
             colorfield = document.getElementById("emissive");
             color = material.getAttribute("emissiveColor");
             colorfield.focus();
-            f.setColor(color);
+            farbtasticPicker.setColor(color);
 
             document.getElementById("transparency").value = material.getAttribute("transparency");
             document.getElementById("shininess").value = material.getAttribute("shininess");

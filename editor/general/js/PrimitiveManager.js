@@ -106,6 +106,13 @@ function PrimitiveManager(){
     
     
     
+    /*
+     * Sets the default values of a new primitive to the propertie fields of the
+     * right bars accordion
+     * @param {Primitive} primitive the primitive where the default values should be set
+     * @param {Parameters} parameters the parameters that should be set to primitive as default
+     * @returns (undefined)
+     */
     function setDefaultParameters(primitive, parameters){
         for (var i = 0; i < parameters.length; i++){
             primitive._x3domNode._vf[parameters[i].x3domName] = parseFloat(parameters[i].value);
@@ -215,7 +222,7 @@ function PrimitiveManager(){
         ui.BBDelete.disable(true);
         ui.TBPrimitiveList.selectIndex(0);
         ui.TBPrimitiveList.disable(true);
-        $("#accordeon-oben").accordion("option", { disabled: true });
+        ui.RBAccordion.disable(true);
         highlightPrimitive(false);
     }
 
@@ -358,7 +365,7 @@ function PrimitiveManager(){
             ui.BBPrimName.disable(false);
             ui.BBDelete.disable(false); 
             ui.TBPrimitiveList.disable(false);
-            $("#accordeon-oben").accordion("option", { disabled: false });
+            ui.RBAccordion.disable(false);
             
             highlightPrimitive(true);
         }
