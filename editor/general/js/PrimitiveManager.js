@@ -255,7 +255,8 @@ function PrimitiveManager(){
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
-        if (HANDLING_MODE === "hand") controller.Activate("translation");
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
         setTransformValues(id, HANDLING_MODE);
     }
     

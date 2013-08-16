@@ -96,9 +96,35 @@
         <script type="text/javascript" src="../../../x3dom/src/util/Moveable.js"></script>
 		<script type="text/javascript" src="../../../x3dom/src/Docs.js"></script>
         
-    	<script>
-
-        </script>
+        <style>
+            .x3dom-logContainer { 
+                bottom: 0px; 
+                left: 100px;
+                position: absolute; 
+            }
+            #x3dom-state-viewer {
+                display: block;
+                background-color: #323232;
+                color: #C8C8C8;
+                cursor: help;
+                font-family: Arial,sans-serif;
+                font-weight: bold;
+                margin: 0 0 2px;
+                opacity: 1;
+                padding: 5px;
+                position: absolute;
+                right: 175px;
+                text-transform: uppercase;
+                border: #000 1px solid;
+                top: 0px;
+                width: 170px;
+                z-index: 1001;
+                text-shadow: 0 !important;
+                -webkit-box-shadow: 0px 1px 55px rgba(0,0,0,0.7); /* webkit browser*/
+                -moz-box-shadow: 0px 1px 55px rgba(0,0,0,0.7); /* firefox */
+                box-shadow: 0px 1px 55px rgba(0,0,0,0.7);
+            }
+        </style>
 	</head>
 	
 	<body style="position: fixed; height: 100%; overflow: hidden; width: 100%;">
@@ -110,10 +136,10 @@
         		
         	<div id="header" style="margin-left: 10px; margin-right: 10px;">
         		<ul class="nav">
-        			<li><a>File</a>
+        			<li><a>Debug</a>
         				<ul>
-        					<li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Statistik</a></li>
-        					<li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Loginfo</a></li>
+        					<li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a></li>
+        					<li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a></li>
         				</ul>
         			</li>
         		</ul>
@@ -212,11 +238,11 @@
 <!-- X3D - Element -->
 <!--<div onclick="run();" style="position: absolute; top: 0px; left: 50%; width: 50px; height: 30px; background-color:yellow; z-index: 1000000;"></div>-->
         <div id="x3d-view">
-            <x3d id="x3d" showStat="false" showLog="true">
+            <x3d id="x3d" showStat="false" showLog="false">
                 <scene>
-                    <viewpoint id="viewPoint" position="9.89187 11.41910 20.11090" orientation="-0.69262 0.71082 0.12256 0.61209">
+                    <viewpoint id="viewPoint" position="8.36091 9.80723 16.91204" orientation="-0.69262 0.71082 0.12256 0.61209">
                     </viewpoint>
-                    <navigationMode id="navi" type='"EXAMINE" "ANY"'></navigationMode>
+                    <navigationInfo id="navi" type='"EXAMINE" "ANY"'></navigationInfo>
                     
                     <transform id="planeId" rotation="1 0 0 -1.571">
                     	<Shape id="plane" isPickable="false">
@@ -227,21 +253,23 @@
                     	</Shape>
                     </transform>
                     
-                    <transform id="cpnt_transform">
-                        <matrixtransform id="cpnt_matrixTransform">
-                            <Shape isPickable="false" DEF="line">
-                                <IndexedLineSet coordIndex="0 1 2 3 0 -1, 4 5 6 7 4 -1, 0 4 -1, 1 5 -1, 2 6 -1, 3 7 -1">
-                                    <Coordinate id="cpnt" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0"></Coordinate>
-                                    <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
-                                </IndexedLineSet>
-                            </Shape>
-                        </matrixtransform>
-                    </transform>
-                    <transform id="root" translation="0 0 0"></transform>
-                    
                     <transform id="axis">
                         <inline url="x3d/axis.x3d"></inline>
                     </transform>
+                    
+                    <transform id="cpnt_transform">
+                        <matrixTransform id="cpnt_matrixTransform">
+                            <Shape isPickable="false" DEF="line">
+                                <IndexedLineSet coordIndex="0 1 2 3 0 -1, 4 5 6 7 4 -1, 0 4 -1, 1 5 -1, 2 6 -1, 3 7 -1">
+                                    <Coordinate id="cpnt" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0">
+                                    </Coordinate>
+                                    <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
+                                </IndexedLineSet>
+                            </Shape>
+                        </matrixTransform>
+                    </transform>
+                    
+                    <transform id="root" translation="0 0 0"></transform>
                 </scene>
             </x3d>
         </div>

@@ -19,6 +19,7 @@
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
         <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+        <Parameter editorName="-" x3domName="insideOutsideRadius">true</Parameter>
     </Primitive>
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/placeholder.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>

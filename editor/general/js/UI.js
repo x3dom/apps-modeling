@@ -388,19 +388,16 @@ function UI(primitiveManager){
     this.showStatistik = function()
     {
     	var x3d = document.getElementById("x3d");
-    	var showStat = x3d.getAttribute("showStat");
     	
-    	if(showStat == true)
-    	{
-    		x3d.setAttribute("showStat", "false");
-       	}
-       	
-    	else
-    	{
-    		alert("Showstat false");
-    		x3d.setAttribute("showStat", "true");
-    	}
-    	x3dom.refresh();
+    	if (this.statsOn === undefined)
+    	    this.statsOn = false;
+    	
+    	if (this.statsOn === true)
+    	    x3d.runtime.statistics(false);
+	    else
+	        x3d.runtime.statistics(true);
+	    
+	    this.statsOn = !this.statsOn;
     };
     
     
@@ -410,17 +407,7 @@ function UI(primitiveManager){
     this.showInfo = function()
     {
     	var x3d = document.getElementById("x3d");
-    	var showLog = x3d.getAttribute("showLog");
-    	
-    	if(showLog == true)
-    	{
-    		x3d.setAttribute("showLog", "false");
-    	}
-    	else
-    	{
-    		alert("Showlog false");
-    		x3d.setAttribute("showLog", "true");
-    	}
+    	x3d.runtime.debug();
     };
     
     
@@ -551,7 +538,11 @@ function UI(primitiveManager){
      * @returns (Null)
      */
     function addRightbarElement(object)
-    {	
+    {
+        // THINKABOUTME: better add 'editable' flag
+        if (object.param.editorName == "-")
+            return;
+        
         var divID = document.createElement("div");	
         divID.setAttribute("style", "margin-top: 10px;");
 
