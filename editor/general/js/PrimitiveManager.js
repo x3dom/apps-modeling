@@ -215,6 +215,7 @@ function PrimitiveManager(){
         ui.BBDelete.disable(true);
         ui.TBPrimitiveList.selectIndex(0);
         ui.TBPrimitiveList.disable(true);
+        $("#accordeon-oben").accordion("option", { disabled: true });
         highlightPrimitive(false);
     }
 
@@ -357,6 +358,7 @@ function PrimitiveManager(){
             ui.BBPrimName.disable(false);
             ui.BBDelete.disable(false); 
             ui.TBPrimitiveList.disable(false);
+            $("#accordeon-oben").accordion("option", { disabled: false });
             
             highlightPrimitive(true);
         }

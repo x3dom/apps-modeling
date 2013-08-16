@@ -58,7 +58,7 @@ body
 {
 	margin: 5px;
 	float: left;
-	width: 100px;
+	width: 55px;
 	font-family:"Blackadder ITC";
 }
 
@@ -71,14 +71,15 @@ body
 
 .nav li a
 {
-	width: 85px;
-	color: #FFFFFF;
-    height: 10px;
-	text-decoration: none;
-	padding: 11px;
-    padding-right: 9px;
+    width: 40px;
+    color: #FFFFFF;
+    height: 21px;
+    width: 50px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-decoration: none;
     padding-top: 7px;
-	display: block;
+    display: block;
     font-family: Calibri;
     border: solid 1px gray;
     border-radius: 0px;

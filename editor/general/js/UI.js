@@ -95,7 +95,6 @@ function UI(primitiveManager){
                 }
         });
         
-        
         f = $.farbtastic('#picker');
 	var p = $('#picker').css('opacity', 1.0);
 	var selected;
