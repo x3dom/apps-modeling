@@ -177,7 +177,7 @@ function PrimitiveManager(){
      */
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
-        primitiveList[actualID].highlight(false, "");
+        highlightPrimitive(false);
 	if(element === "diffuse"){
             primitiveList[actualID].Material.setAttribute('diffuseColor', rgb);
         }
@@ -193,7 +193,7 @@ function PrimitiveManager(){
         else if(element === "shininess"){
             primitiveList[actualID].Material.setAttribute('shininess', rgb);
         }
-        primitiveList[actualID].highlight(true, "1 1 0");
+        highlightPrimitive(true);
     };
     
     
@@ -292,7 +292,7 @@ function PrimitiveManager(){
             catch(ex){}
         }
         if (highlightOn) {
-            primitiveList[actualID].highlight(true, "1 1 0"); 
+           // primitiveList[actualID].highlight(true, "1 1 0"); 
         }
     };
     
