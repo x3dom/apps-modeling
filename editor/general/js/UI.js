@@ -74,8 +74,6 @@ function UI(primitiveManager){
                               primitiveParameterMap[prim].editorName);
         }
 
-        addLeftbarElement("images/box.jpg", "frei");
-
         // scrollbar for primitives of left bar   		
         $('#divs').slimScroll({
                 height: '99%',
@@ -485,20 +483,27 @@ function UI(primitiveManager){
     {
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
-        divID.innerHTML = "<img src="+img+" width= 60 height= 60 />";
+        divID.innerHTML = "<img src="+img+" width=60 height=60>";
         divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " + defColor + "; border-radius: 5px;");		
 
         divID.setAttribute("onmouseover", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         
-        if(name === "frei")
+        if (name == "Extrusion" || name == "Solid of Revolution")
         {
-            divID.onclick = function(){elementCanvas(name);};	
+            divID.onclick = function() {
+                elementCanvas(name);
+                // for now here, just to test everything
+                primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, 
+                                              primitiveParameterMap[name].parameters);
+            };
      	}
         else
         {
-            divID.onclick = function(){primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, primitiveParameterMap[name].parameters);};	
+            divID.onclick = function() {
+                primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, 
+                                              primitiveParameterMap[name].parameters);};
         }
 
         var divIDinnen = document.createElement("div");
