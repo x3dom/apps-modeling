@@ -96,9 +96,10 @@ function PrimitiveManager(){
         actualID = id;
         primitiveCounter++;
         ui.setMaterial(mat);
+        setDefaultParameters(prim, parameters);
+        
         highlightPrimitive(true);
         highlightBoundingVolume(id, true);
-        setDefaultParameters(prim, parameters);
         ui.clearParameters();
         ui.createParameters(t.Parameters);
     };
@@ -127,8 +128,9 @@ function PrimitiveManager(){
      */
     function setDefaultParameters(primitive, parameters){
         for (var i = 0; i < parameters.length; i++){
-            primitive._x3domNode._vf[parameters[i].x3domName] = parseFloat(parameters[i].value);
-            primitive._x3domNode.fieldChanged(parameters[i].x3domName);
+            //primitive._x3domNode._vf[parameters[i].x3domName] = parseFloat(parameters[i].value);
+            //primitive._x3domNode.fieldChanged(parameters[i].x3domName);
+            primitive.setAttribute(parameters[i].x3domName, parameters[i].value);
         }
     };
     
@@ -267,8 +269,10 @@ function PrimitiveManager(){
         transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
         matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
         
-        var min = x3dom.fields.SFVec3f.parse(primitiveList[id].Parameters.Primitive._x3domNode._mesh._vol.min);
-        var max = x3dom.fields.SFVec3f.parse(primitiveList[id].Parameters.Primitive._x3domNode._mesh._vol.max);
+        var volume = primitiveList[id].Parameters.Primitive._x3domNode.getVolume();
+        
+        var min = x3dom.fields.SFVec3f.parse(volume.min);
+        var max = x3dom.fields.SFVec3f.parse(volume.max);
         if (min.x === 0 && max.x === 0 && min.y === 0 && max.y === 0 && min.z === 0 && max.z === 0){
             min.x = -1; min.y = -1; min.z = -1;
             max.x = 1; max.y = 1; max.z = 1;

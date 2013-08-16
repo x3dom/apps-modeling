@@ -1,8 +1,7 @@
 <PrimitiveParameterMap>
-    <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">        
-    </Primitive>
-    <Primitive editorName="Sphere" x3domName="Sphere" image="images/sphere.jpg">
-        <Parameter editorName="Radius" x3domName="radius">1.0</Parameter>
+    <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
+        <!-- JSON or directly JS would be better suited here, since we need to to define various mapping functions -->
+        <Parameter editorName="XYZ-Length" x3domName="size">2.0,2.0,2.0</Parameter>
     </Primitive>
     <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
         <Parameter editorName="Bottom Radius" x3domName="bottomRadius">1.0</Parameter>
@@ -15,10 +14,23 @@
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
+    <Primitive editorName="Circular Torus" x3domName="Torus" image="images/placeholder.jpg">
+        <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
+        <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
+        <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+    </Primitive>
+    <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/placeholder.jpg">
+        <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
+        <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
+        <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
+    </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
         <Parameter editorName="Diameter" x3domName="diameter">2.0</Parameter>
         <Parameter editorName="Radius" x3domName="radius">0.0</Parameter>
-        <Parameter editorName="Height" x3domName="height">1.0</Parameter> 
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
     </Primitive>
     <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
         <Parameter editorName="DTop" x3domName="dtop">0.4</Parameter>
@@ -37,7 +49,7 @@
         <Parameter editorName="XOff" x3domName="xoff">0.25</Parameter>
         <Parameter editorName="YOff" x3domName="yoff">0.25</Parameter>
     </Primitive>
-    <Primitive editorName="Sloped Cylinder" x3domName="SlopedCylinder" image="images/slopedcylinder.jpg">
+    <Primitive editorName="Slope-Bottom Cylinder" x3domName="SlopedCylinder" image="images/slopedcylinder.jpg">
         <Parameter editorName="Radius" x3domName="radius">1.0</Parameter>
         <Parameter editorName="Height" x3domName="height">2.0</Parameter>
         <Parameter editorName="XTShear" x3domName="xtshear">-15.0</Parameter>
@@ -46,4 +58,16 @@
         <Parameter editorName="YBShear" x3domName="ybshear">35.0</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
+    <Primitive editorName="Nozzle" x3domName="Nozzle" image="images/placeholder.jpg">
+        <Parameter editorName="Height" x3domName="stemHeight">0.8</Parameter>
+        <Parameter editorName="Radius" x3domName="stemRadius">0.5</Parameter>
+        <Parameter editorName="Nozzle Height" x3domName="nozzleHeight">0.2</Parameter>
+        <Parameter editorName="Nozzle Radius" x3domName="nozzleRadius">1.0</Parameter>
+        <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
+    </Primitive>
+    <!-- TODO -->
+    <!--Primitive editorName="Extrusion" x3domName="Extrusion" image="images/placeholder.jpg">
+    </Primitive>
+    <Primitive editorName="Solid of Revolution" x3domName="SolidOfRevolution" image="images/placeholder.jpg">
+    </Primitive-->
 </PrimitiveParameterMap>
