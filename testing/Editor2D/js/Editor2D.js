@@ -18,7 +18,7 @@ Editor2D = function (width, height) {
 	this.clickPosY = 0;
 	this.mousePosX = 0;
 	this.mousePosY = 0;
-	this.pointList = [{x: 0, y: 2}, {x: 2, y: 2}, {x: 3, y: 0}];
+	this.pointList = [];
 	
 	/*
      * Inititialize the full 2D-Editor  
@@ -30,6 +30,9 @@ Editor2D = function (width, height) {
 		
 		//Create Editor 
 		this.editor = this.createEditor();
+		
+		//Create Menu
+		this.menu = this.createMenuBar();
 		
 		//Create Canvas
 		this.canvas = this.createCanvas();
@@ -44,11 +47,16 @@ Editor2D = function (width, height) {
 		//Append canvas to editor
 		this.editor.appendChild(this.canvas);
 		
+		//Append canvas to editor
+		this.editor.appendChild(this.menu);	
+		
 		//Append editor to overlay
 		this.overlay.appendChild(this.editor);
 		
 		//Append overlay to body	
 		document.body.appendChild(this.overlay);
+		
+		this.addPoint();
 	};
 	
 	/*
@@ -101,6 +109,29 @@ Editor2D = function (width, height) {
 	};
 	
 	/*
+     * Create an on screen centered div-container for the editor
+     * @returns {div}
+     */
+	this.createMenuBar = function ()
+	{
+		//Create div-element
+		var menu = document.createElement('div');
+		
+		//Set styles
+		menu.style.width = this.width + 'px';
+		menu.style.top = '-32px';
+		menu.style.left = '17px';
+		menu.style.height = '25px';
+		menu.style.position = 'relative';
+		menu.style.backgroundColor = 'rgba(255, 255, 255, 0.75)';
+		menu.style.borderRadius = '0px 0px 7px 7px';
+		menu.style.zIndex = '10001';
+		
+		//Return element
+		return menu;
+	};
+	
+	/*
      * Create a canvas element for drawing and attach different 
 	 * mouse event listener for interaction 
      * @returns {canvas}
@@ -114,9 +145,11 @@ Editor2D = function (width, height) {
 		canvas.width = this.width;
 		canvas.height = this.height;
 		canvas.style.margin = '15px 0px 0px 15px';
+		canvas.style.padding = '0px';
 		canvas.style.border = '2px solid #CCC';
 		canvas.style.borderRadius = '10px';
 		canvas.style.cursor = 'crosshair';
+		canvas.style.zIndex = '10000';
 		
 		//Add mousewheel handler (Chrome, Safari, Opera)
 		canvas.addEventListener("mousewheel", this.mouseWheelListener);
@@ -132,6 +165,11 @@ Editor2D = function (width, height) {
 		
 		//Add mousemove listener
 		canvas.addEventListener('mousemove', this.mouseMoveListener);
+		
+		//Add contextmenu listener
+		canvas.addEventListener('contextmenu', this.contextMenuListener, false);
+		
+		
 		
 		return canvas;
 	};
@@ -163,7 +201,15 @@ Editor2D = function (width, height) {
 				that.mouseButton = 'LEFT';
 				that.clickPosX = that.mousePosX;
 				that.clickPosY = that.mousePosY;  
-				that.canvas.style.cursor = 'haircross'; 
+				that.canvas.style.cursor = 'haircross';
+				if (that.checkForClosing())
+				{
+					that.closePath();
+				}
+				else
+				{
+					that.addPoint();
+				}	 
 			break;
 			case 2: 
 				that.mouseButton = 'MIDDLE';
@@ -175,7 +221,8 @@ Editor2D = function (width, height) {
 				that.mouseButton = 'RIGHT';
 				that.clickPosX = that.mousePosX;
 				that.clickPosY = that.mousePosY; 
-				that.canvas.style.cursor = 'haircross'; 
+				that.canvas.style.cursor = 'pointer';
+				that.endCreation();
 			break;
 		}
 	};
@@ -196,7 +243,6 @@ Editor2D = function (width, height) {
 			case 'MIDDLE': 
 				that.centerX -= that.clickPosX - that.mousePosX;
 				that.centerY -= that.clickPosY - that.mousePosY;
-
 				break;
 			case 'RIGHT': 
 				break;				
@@ -204,8 +250,16 @@ Editor2D = function (width, height) {
 		
 		if (that.mode == 'CREATE') 
 		{
-			that.pointList[that.pointList.length-1].x = that.mousePosX;
-			that.pointList[that.pointList.length-1].y = that.mousePosY;
+			if (that.checkForClosing())
+			{
+				that.pointList[that.pointList.length-1].x = that.pointList[0].x;
+				that.pointList[that.pointList.length-1].y = that.pointList[0].y;
+			}
+			else
+			{
+				that.pointList[that.pointList.length-1].x = that.mousePosX;
+				that.pointList[that.pointList.length-1].y = that.mousePosY;
+			}
 		}
 		
 		that.draw();
@@ -242,6 +296,17 @@ Editor2D = function (width, height) {
 	};
 	
 	/*
+     * Handle 'contextmenu'-event
+	 * Disables the default contextmenu
+	 * @param {event} the fired mouse-event
+     */
+	this.contextMenuListener = function (evt)
+	{
+		evt.preventDefault();
+		return false;
+	};
+	
+	/*
      * Updates the actual saved mouse position
 	 * @param {event} the fired mouse-event
      */
@@ -250,6 +315,88 @@ Editor2D = function (width, height) {
 		var rect = that.canvas.getBoundingClientRect();
 		that.mousePosX = (evt.clientX - rect.left - this.centerX - 2) / that.gridSize;
 		that.mousePosY = (evt.clientY - rect.top - this.centerY - 2.5) / that.gridSize;	
+	};
+	
+	/*
+     * 
+     */
+	this.endCreation = function()
+	{
+		//Loop over all points
+		if (this.mode == 'CREATE' && this.pointList.length > 3)
+		{
+			//Switch to edit-mode
+			this.mode = 'EDIT';
+			
+			//Delete last point
+			this.pointList.pop();
+		}
+	};
+	
+	/*
+     * @return {boolean} 
+     */
+	this.checkForClosing = function()
+	{
+		//Loop over all points
+		if (this.mode == 'CREATE' && this.pointList.length > 3)
+		{
+			var distance = Math.pow(this.pointList[0].x - this.mousePosX, 2) + Math.pow(this.pointList[0].y - this.mousePosY, 2);
+    		return (distance <= 0.25);
+		}
+	};
+	
+	/*
+     * 
+     */
+	this.closePath = function()
+	{
+		//Check if allowed to close the path
+		if (this.mode == 'CREATE' && this.pointList.length > 3)
+		{
+			//Switch to 'EDIT'-mode
+			this.mode = 'EDIT';
+			
+			//Unselect all points
+			this.unselectPoints();
+		}
+	};
+	
+	/*
+     * 
+     */
+	this.unselectPoints = function()
+	{
+		//Loop over all points
+		for (var p=0; p<this.pointList.length; p++)
+		{
+			this.pointList[p].selected = false;
+		}
+	};
+	
+	/*
+     * Create a new point at actual mouse position
+     */
+	this.addPoint = function()
+	{
+		//Check if mode is CREATE
+		if (this.mode == 'CREATE')
+		{
+			//First unselect all Points
+			this.unselectPoints();
+			
+			//Create new Point
+			var point = {};
+			
+			//Set Point properties
+			point.x = this.mousePosX;
+			point.y = this.mousePosY;
+			point.selected = true;
+			point.type = 0;	
+			
+			//Add point to list
+			this.pointList.push(point);
+		}
 	};
 	
 	/*
@@ -359,12 +506,12 @@ Editor2D = function (width, height) {
 	{
 		//Loop over all points
 		for (var p=0; p<this.pointList.length; p++)
-		{
-			//Start new path for every line
+		{			
+			//Start new path for every point
 			this.context.beginPath();
 			
 			//Set point color
-			this.context.fillStyle = '#2956a8';
+			this.context.fillStyle = (this.pointList[p].selected) ? '#dd3500' : '#2956a8';
 			
 			//Create actual point
 			this.context.arc(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY, this.gridSize/4, 0, Math.PI*2, false); 
