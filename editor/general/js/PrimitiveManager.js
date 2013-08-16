@@ -85,10 +85,6 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
-        // TODO; update GUI elements, this callback is only for testing if values are received
-        function notified(elem, pos) {
-            console.log(elem.getAttribute('id') + ": " + pos.toString());
-        }
         // wrapper for adding moving functionality, last param is callback
         new Moveable(document.getElementById("x3d"), mt, notified);
         
@@ -107,6 +103,19 @@ function PrimitiveManager(){
         ui.createParameters(t.Parameters);
     };
     
+    
+    /*
+     * Callback for handling movement values on mouse interaction
+     * @param {X3DNode} the interacting element
+     * @param {SFVec3f} new translation value
+     */
+    function notified(elem, pos) {
+        var id = elem.getAttribute('id').substr(3);
+        highlightBoundingVolume(id, true);
+        
+        // TODO; update GUI elements appropriately
+        console.log(id + ": " + pos.toString());
+    }
     
     
     /*
