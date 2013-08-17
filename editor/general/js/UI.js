@@ -411,9 +411,24 @@ function UI(primitiveManager){
      */
     this.showInfo = function()
     {
-    	var x3d = document.getElementById("x3d");
-    	x3d.runtime.debug();
+    	document.getElementById("x3d").runtime.debug();
     };
+
+
+    /*
+     * switch between tri and pnt mode
+     */
+    this.togglePoints = function(elem)
+    {
+        if (this.showPnts === undefined)
+            this.showPnts = false;
+
+        document.getElementById('x3d').runtime.togglePoints();
+
+        this.showPnts = !this.showPnts;
+        elem.innerHTML = this.showPnts ? "Faces" : "Points";
+    };
+
     
     
 	/*  

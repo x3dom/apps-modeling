@@ -48,17 +48,14 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         t.setAttribute("scale", "1 1 1");
+
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
         t.Parameters = parameters;
         
         var mt = document.createElement('MatrixTransform');
         mt.setAttribute("id", 'mt_' + id);
-        var transformMat = x3dom.fields.SFMatrix4f.identity();
-        mt.Transformation = {};
-        mt.Transformation.rotationX = 0;
-        mt.Transformation.rotationY = 0;
-        mt.Transformation.rotationZ = 0;
-        var transformString = matrixToString(transformMat);
+        mt.Transformation = { rotationX : 0, rotationY : 0, rotationZ : 0 };
+        var transformString = matrixToString(x3dom.fields.SFMatrix4f.identity());
         mt.setAttribute("matrix", transformString);
 
         // Appearance Node
@@ -69,7 +66,7 @@ function PrimitiveManager(){
         mat.setAttribute("diffuseColor", "#3F7EBD");
         mat.setAttribute("specularColor", "#222222");
         mat.setAttribute("emissiveColor", "#000000");
-        mat.setAttribute("transparency", "0.3");
+        mat.setAttribute("transparency", "0.2");
         mat.setAttribute("shininess", "0.3");
         t.Material = mat;
 
@@ -87,11 +84,11 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
-        // wrapper for adding moving functionality, last param is callback
-        new Moveable(document.getElementById("x3d"), mt, notified);
+        // wrapper for adding moving functionality, last param is callback function
+        new Moveable(document.getElementById("x3d"), t, notified);
         
         primitiveList[id] = t;
-        primitiveList[id].addEventListener("click", function(){primitiveSelected(id);}, false);
+        primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
         addPrimitiveToComboBox(t.IDMap.name);
         setTransformValues(id, HANDLING_MODE);
         
@@ -113,11 +110,15 @@ function PrimitiveManager(){
      * @param {SFVec3f} new translation value
      */
     function notified(elem, pos) {
-        var id = elem.getAttribute('id').substr(3);
+        var id = elem.getAttribute('id');
         highlightBoundingVolume(id, true);
         
-        // TODO; update GUI elements appropriately
-        console.log(id + ": " + pos.toString());
+        // update GUI elements appropriately
+        if (HANDLING_MODE === "translation" && id == actualID) {
+            ui.BBTransX.set(pos.x.toFixed(5));
+            ui.BBTransY.set(pos.y.toFixed(5));
+            ui.BBTransZ.set(pos.z.toFixed(5));
+        }
     }
     
     
@@ -327,7 +328,7 @@ function PrimitiveManager(){
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
 
-        if(HANDLING_MODE === "translation") {
+        if (HANDLING_MODE === "translation" || HANDLING_MODE === "scale") {
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();   
@@ -337,19 +338,12 @@ function PrimitiveManager(){
             MT.Transformation.rotationX = ui.BBTransX.get();
             MT.Transformation.rotationY = ui.BBTransY.get();
             MT.Transformation.rotationZ = ui.BBTransZ.get();
-            //var s = Math.PI / 180;
             var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get());
             var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get());
             var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get());
 
             transformMat = rotX.mult(rotY).mult(rotZ);
             MT.setAttribute("matrix", matrixToString(transformMat));
-        }
-        else {
-            tempValue = ui.BBTransX.get() + " " +
-                        ui.BBTransY.get() + " " +
-                        ui.BBTransZ.get();
-            primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
         
         highlightBoundingVolume(actualID, true);
