@@ -315,6 +315,16 @@ function PrimitiveManager(){
     this.setTransformationValues = function(){
         setTransformValues(actualID, HANDLING_MODE);
     };
+
+
+
+    /*
+     *
+     */
+    this.highlight = function(id, on) {
+        highlightBoundingVolume(id, on);
+        //highlightPrimitive(on);
+    };
     
     
     

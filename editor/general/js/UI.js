@@ -610,7 +610,7 @@ function UI(primitiveManager){
     {
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
-        divID.innerHTML = "<img src="+img+" width=60 height=60>";
+        divID.innerHTML = "<img src='"+img+"' width='100%' height='100%'>";
         divID.setAttribute("style",
             "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " +
                 defColor + "; border-radius: 5px;");
@@ -644,14 +644,14 @@ function UI(primitiveManager){
         var divIDinnen = document.createElement("div");
         divIDinnen.setAttribute("id", name+"_inner");
         divIDinnen.setAttribute("style", "color: " + highlightColor +
-            "; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
+            "; margin-top: -40px; text-align: center;");
         divIDinnen.innerHTML = name;			
 
         divID.appendChild(divIDinnen);
         document.getElementById("divs").appendChild(divID);
     }
-    
-    
+
+
     
     /*
      * Clears all the properties on the right bar
@@ -668,7 +668,7 @@ function UI(primitiveManager){
     
     /*
      * Creates all given parameters and adds it to the right bar
-     * @param {x3dom geometry} geometry geometry where the parameters should be set
+     * @param {x3dom geometry} geometry where the parameters should be set
      * @returns (undefined)
      */
     this.createParameters = function(parameters){
@@ -681,7 +681,8 @@ function UI(primitiveManager){
 
 
     /*
-     * Adds one prameter value to the right bar
+     * Adds one parameter value to the right bar
+     * TODO: only works for SFFloat
      * @param {object} object includes editorName and x3domName of parameter and
      * the value that should be set 
      * @returns (Null)
@@ -691,7 +692,7 @@ function UI(primitiveManager){
         // THINKABOUTME: better add 'editable' flag
         if (object.param.editorName == "-")
             return;
-        
+
         var divID = document.createElement("div");	
         divID.setAttribute("style", "margin-top: 10px;");
 
@@ -709,11 +710,13 @@ function UI(primitiveManager){
 
         $("#"+object.id).spinner({
             step: 0.1,
-            stop:function(e,ui){
-                object.primitive._x3domNode._vf[object.param.x3domName] = 
-                            parseFloat(document.getElementById(object.id).value);
-                object.primitive._x3domNode.fieldChanged(object.param.x3domName);
-                object.param.value = parseFloat(document.getElementById(object.id).value);
+            stop:function(e,ui) {
+                object.primitive.setAttribute(object.param.x3domName,
+                                              document.getElementById(object.id).value);
+                object.param.value = document.getElementById(object.id).value;
+
+                var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+                primitiveManager.highlight(ref, true);
             }
         });
     }
