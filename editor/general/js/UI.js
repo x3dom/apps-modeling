@@ -539,12 +539,12 @@ function UI(primitiveManager){
     this.togglePoints = function(elem)
     {
         if (this.showPnts === undefined)
-            this.showPnts = false;
+            this.showPnts = 0;
 
-        document.getElementById('x3d').runtime.togglePoints();
+        document.getElementById('x3d').runtime.togglePoints(true);
 
-        this.showPnts = !this.showPnts;
-        elem.innerHTML = this.showPnts ? "Faces" : "Points";
+        this.showPnts = ++this.showPnts % 3;
+        elem.innerHTML = (this.showPnts == 0) ? "Points" : ((this.showPnts == 1) ? "Lines": "Faces");
     };
 
     
