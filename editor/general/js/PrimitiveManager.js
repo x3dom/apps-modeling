@@ -393,8 +393,8 @@ function PrimitiveManager(){
             else {
                 var vec = x3dom.fields.SFVec3f.parse(primitiveList[id].attributes[mode].nodeValue);
                 ui.BBTransX.set(vec.x.toFixed(5));
-                ui.BBTransY.set(vec.x.toFixed(5));
-                ui.BBTransZ.set(vec.x.toFixed(5));
+                ui.BBTransY.set(vec.y.toFixed(5));
+                ui.BBTransZ.set(vec.z.toFixed(5));
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
