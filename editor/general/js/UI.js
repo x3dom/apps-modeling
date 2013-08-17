@@ -14,125 +14,7 @@ function UI(primitiveManager){
     var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
     var farbtasticPicker = null;
-
-    // window in xz-plane
-    var minWin = {x: -1, y: -1},
-        maxWin = {x:  1, y:  1};
-
-    var pen_col = "000000";
-    var pen_size = 1;
-
-    // little helpers for calculating window-viewport transformation
-    function setWindow(x0, y0, x1, y1)
-    {
-        if ( (x1 - x0 > 0) && (y1 - y0 > 0) )
-        {
-            minWin.x = x0;
-            minWin.y = y0;
-            maxWin.x = x1;
-            maxWin.y = y1;
-        }
-        else
-            console.log("Error, window size must be greater zero!");
-    }
-
-    function calcWcToDc(canvas, x, y)
-    {
-        var dc = {x: 0, y: 0};
-
-        var nx = (maxWin.x - minWin.x),
-            ny = (maxWin.y - minWin.y);
-        var sx = canvas.width / nx,
-            sy = -canvas.height / ny;
-        var tx = -minWin.x * canvas.width / nx,
-            ty = canvas.height + minWin.y * canvas.height / ny;
-
-        dc.x = sx * x + tx;
-        dc.y = sy * y + ty;
-
-        return dc;
-    }
-
-    function calcCcToWc(canvas, x, y)
-    {
-        var wc = {x: 0, y: 0};
-
-        var nx = (maxWin.x - minWin.x),
-            ny = (maxWin.y - minWin.y);
-        var sx = canvas.width / nx,
-            sy = -canvas.height / ny;
-        var tx = -minWin.x * canvas.width / nx,
-            ty = canvas.height + minWin.y * canvas.height / ny;
-
-        wc.x = (x - tx) / sx;
-        wc.y = (y - ty) / sy;
-
-        return wc;
-    }
-
-    function clearImage(canvas)
-    {
-        // get the 2d drawing context
-        var context = canvas.getContext("2d");
-
-        context.fillStyle = 'rgb(255,255,255)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        context.lineCap = "round";
-        context.lineWidth = pen_size;
-        context.strokeStyle = pen_col;
-    }
-
-    function drawCoordSys(canvas)
-    {
-        var context = canvas.getContext("2d");
-
-        context.strokeStyle = '#f00';
-        context.beginPath();
-
-        var dc = calcWcToDc(canvas, minWin.x, 0);
-        context.moveTo(dc.x, dc.y);
-        dc = calcWcToDc(canvas, maxWin.x, 0);
-        context.lineTo(dc.x, dc.y);
-        context.stroke();
-
-        dc = calcWcToDc(canvas, 0, minWin.y);
-        context.moveTo(dc.x, dc.y);
-        dc = calcWcToDc(canvas, 0, maxWin.y);
-        context.lineTo(dc.x, dc.y);
-
-        context.stroke();
-        context.closePath();
-
-        context.strokeStyle = pen_col;
-    }
-
-    // TODO: remove following code, just for testing draw a little sinus :)
-    function drawSinus(canvas)
-    {
-        var context = canvas.getContext("2d");
-
-        var i = 0, N = canvas.width / 8;
-        var dx = (maxWin.x - minWin.x) / N;
-        var x = minWin.x, y = Math.sin(x);
-
-        context.beginPath();
-        context.strokeStyle = pen_col;
-
-        dc = calcWcToDc(canvas, x, y);
-        context.moveTo(dc.x, dc.y);
-
-        while (++i <= N) {
-            x += dx;
-            y = Math.sin(x);
-
-            dc = calcWcToDc(canvas, x, y);
-            context.lineTo(dc.x, dc.y);
-        }
-
-        context.stroke();
-        context.closePath();
-    }
+    
     
     
     /*
@@ -552,8 +434,13 @@ function UI(primitiveManager){
 	/*  
      * Open UI for the HTML Canvas
      */
-    var elementCanvas = function(name)
+    var elementCanvas = function()
     {
+		var editor2D = new Editor2D();
+		editor2D.show();
+	};
+	
+	/*
 		$("#htmlCanvas").dialog({
             height: 500,
             width: 600,
@@ -576,12 +463,14 @@ function UI(primitiveManager){
         canvas.width = w;
         canvas.height = h;
 
-		/**********************************************/
-        setWindow(-3.5, -1.1, 3.5, 1.1);
-        clearImage(canvas);
-        drawCoordSys(canvas);
-        drawSinus(canvas);      // sin only for testing
-		/**********************************************/
+
+	
+		/**********************************************
+        editor2D.setWindow(-3.5, -1.1, 3.5, 1.1);
+        editor2D.clearImage(canvas);
+        editor2D.drawCoordSys(canvas);
+        editor2D.drawSinus(canvas);      // sin only for testing
+		/**********************************************
 		
 		$("#labelValueX").spinner({
         	stop:function(e,ui){
@@ -628,7 +517,7 @@ function UI(primitiveManager){
         if (name == "Extrusion" || name == "Solid of Revolution")
         {
             divID.onclick = function() {
-                elementCanvas(name);
+                elementCanvas();
                 // for now here, just to test everything
                 primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, 
                                               primitiveParameterMap[name].parameters);

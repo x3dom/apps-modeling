@@ -8,7 +8,6 @@ var controller = new Controller(ui);
 var HANDLING_MODE = "translation";
 
 
-
 window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
