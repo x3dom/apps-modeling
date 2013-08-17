@@ -1,0 +1,10 @@
+.idea
+.project
+_site
+.DS_Store
+*.tmproj
+*.bak
+*.pyc
+*.db
+*~backup~
+*~
