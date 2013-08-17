@@ -25,6 +25,7 @@
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
         <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
