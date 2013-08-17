@@ -13,7 +13,7 @@ function UI(primitiveManager){
     // primitive parameter map to synchronize names between editor and x3dom
     var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
-    var farbtasticPicker;
+    var farbtasticPicker = null;
     
     
     
@@ -44,6 +44,7 @@ function UI(primitiveManager){
         that.BBPrimName = that.newTextProperty("primitiveName");
         that.BBDelete = that.newImageProperty("deletePrimitive");
         that.BBTransX = that.newSpinnerProperty("amountX");
+
         $("#amountX").spinner({
             step: 0.1,
             stop:function(e,ui){
@@ -89,8 +90,10 @@ function UI(primitiveManager){
                 activeHeader: "ui-icon-circle-arrow-s"
         };
 
-            // creation of the accordion on the right bar                        
-        $("#accordeon-oben").accordion({
+        // creation of the accordion on the right bar
+        that.RBAccordion = $("#accordeon-oben");
+
+        that.RBAccordion.accordion({
                 heightStyle: "content",
                 collapsible: false,
                 active: false,
@@ -102,15 +105,15 @@ function UI(primitiveManager){
                     }
                 }
         });
-        that.RBAccordion = $("#accordeon-oben");
+
         that.RBAccordion.disable = function(bool){
             $("#accordeon-oben").accordion("option", { disabled: bool });
         };
         
         farbtasticPicker = $.farbtastic('#picker');
-	var p = $('#picker').css('opacity', 1.0);
-	var selected;
-	$('.colorwell')
+        var p = $('#picker').css('opacity', 1.0);
+        var selected;
+        $('.colorwell')
             .each(function () { farbtasticPicker.linkTo(this); $(this).css('opacity', 1.0); })
             .focus(function() {
                     if (selected) {
@@ -166,16 +169,18 @@ function UI(primitiveManager){
        
        var primitiveParameterMap = [];
        for (var i = 0; i < primitives.length; i++){
-            primitiveParameterMap[primitives[i].getAttribute("editorName")] = {editorName: primitives[i].getAttribute("editorName"), 
-                                                                               x3domName: primitives[i].getAttribute("x3domName"),
-                                                                               image: primitives[i].getAttribute("image"),
-                                                                               parameters : []}; 
+            primitiveParameterMap[primitives[i].getAttribute("editorName")] =
+                 { editorName: primitives[i].getAttribute("editorName"),
+                   x3domName: primitives[i].getAttribute("x3domName"),
+                   image: primitives[i].getAttribute("image"),
+                   parameters : [] };
 
             var parameters = primitives[i].getElementsByTagName("Parameter");
             for (var j = 0; j < parameters.length; j++){
-                primitiveParameterMap[primitives[i].getAttribute("editorName")].parameters.push({editorName: parameters[j].getAttribute("editorName"), 
-                                                                                                 x3domName: parameters[j].getAttribute("x3domName"),
-                                                                                                 value: parameters[j].textContent}); 
+                primitiveParameterMap[primitives[i].getAttribute("editorName")].parameters.push(
+                    { editorName: parameters[j].getAttribute("editorName"),
+                      x3domName: parameters[j].getAttribute("x3domName"),
+                      value: parameters[j].textContent } );
             }
        }
        
@@ -415,14 +420,14 @@ function UI(primitiveManager){
      * Open UI for the HTML Canvas
      */
     elementCanvas = function(name)
-    {        	
+    {
 		$("#htmlCanvas").dialog({
             height: 500,
             width: 600,
             modal: true
         });
         
-        canvasLabeln = document.getElementById("htmlCanvas");
+        var canvasLabeln = document.getElementById("htmlCanvas");
         canvasLabeln.innerHTML = "<canvas id='drawCanvas'> </canvas>" +
 								 "<div id='divLine'></div>" +
 						 		 	"<label>X Value: </label><input id='labelValueX'/>" + 
@@ -431,8 +436,8 @@ function UI(primitiveManager){
 						 	 	 "</div>";
 		
 		/**********************************************/
-		canvas = document.getElementById("drawCanvas");
-		draw = canvas.getContext("2d");
+		var canvas = document.getElementById("drawCanvas");
+		var draw = canvas.getContext("2d");
 		
 		draw.fillStyle = "rgb(255, 0, 0)"; 
 		draw.beginPath();  
@@ -471,11 +476,19 @@ function UI(primitiveManager){
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
         divID.innerHTML = "<img src="+img+" width=60 height=60>";
-        divID.setAttribute("style", "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " + defColor + "; border-radius: 5px;");		
+        divID.setAttribute("style",
+            "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " +
+                defColor + "; border-radius: 5px;");
 
-        divID.setAttribute("onmouseover", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor + "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseover",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseout",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseleave",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
         
         if (name == "Extrusion" || name == "Solid of Revolution")
         {
@@ -495,7 +508,8 @@ function UI(primitiveManager){
 
         var divIDinnen = document.createElement("div");
         divIDinnen.setAttribute("id", name+"_inner");
-        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
+        divIDinnen.setAttribute("style", "color: " + highlightColor +
+            "; margin-top: -40px; margin-bottom: 25px; margin-left: 8px;");
         divIDinnen.innerHTML = name;			
 
         divID.appendChild(divIDinnen);
@@ -579,19 +593,16 @@ function UI(primitiveManager){
      */
     this.setMaterial = function(material){
         if ($("#accordeon-oben").accordion("option", "active") === 1){
-            // setting of emissive color
             var colorfield = document.getElementById("diffuse");
             var color = material.getAttribute("diffuseColor");
             colorfield.focus();
             farbtasticPicker.setColor(color);
 
-            // setting of specular color
             colorfield = document.getElementById("specular");
             color = material.getAttribute("specularColor");
             colorfield.focus();
             farbtasticPicker.setColor(color);
 
-            // setting of diffuse color
             colorfield = document.getElementById("emissive");
             color = material.getAttribute("emissiveColor");
             colorfield.focus();
@@ -609,5 +620,3 @@ function UI(primitiveManager){
     // Starts initialization of all ui components
     var that = this;
 }
-
-

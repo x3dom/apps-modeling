@@ -36,7 +36,8 @@ function PrimitiveManager(){
      */
     this.addPrimitive = function(primitive, parameters){
    
-        if (HANDLING_MODE === "hand") controller.Activate("translation");
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
    
         var id = "primitive_" + primCounter;
         primCounter++;
@@ -46,6 +47,7 @@ function PrimitiveManager(){
         var t = document.createElement('Transform');
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
+        t.setAttribute("scale", "1 1 1");
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
         t.Parameters = parameters;
         
@@ -65,7 +67,7 @@ function PrimitiveManager(){
         // Material Node
         var mat = document.createElement('Material');
         mat.setAttribute("diffuseColor", "#3F7EBD");
-        mat.setAttribute("specularColor", "#000000");
+        mat.setAttribute("specularColor", "#222222");
         mat.setAttribute("emissiveColor", "#000000");
         mat.setAttribute("transparency", "0.3");
         mat.setAttribute("shininess", "0.3");
@@ -128,11 +130,9 @@ function PrimitiveManager(){
      */
     function setDefaultParameters(primitive, parameters){
         for (var i = 0; i < parameters.length; i++){
-            //primitive._x3domNode._vf[parameters[i].x3domName] = parseFloat(parameters[i].value);
-            //primitive._x3domNode.fieldChanged(parameters[i].x3domName);
             primitive.setAttribute(parameters[i].x3domName, parameters[i].value);
         }
-    };
+    }
     
     
     
@@ -142,7 +142,7 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     function matrixToString(transformMat){
-        return transformMat.toString().substring(12, transformMat.toString().length - 2).replace(/\n/g,"");
+        return transformMat.toGL().toString();
     }
     
     
@@ -189,20 +189,11 @@ function PrimitiveManager(){
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
         highlightPrimitive(false);
-	if(element === "diffuse"){
-            primitiveList[actualID].Material.setAttribute('diffuseColor', rgb);
+        if (element == "diffuse" || element == "specular" || element == "emissive") {
+            primitiveList[actualID].Material.setAttribute(element+'Color', rgb);
         }
-	else if(element === "specular"){
-            primitiveList[actualID].Material.setAttribute('specularColor', rgb);
-        }
-	else if(element === "emissive"){
-            primitiveList[actualID].Material.setAttribute('emissiveColor', rgb);
-        }
-        else if(element === "transparency"){
-            primitiveList[actualID].Material.setAttribute('transparency', rgb);
-        }
-        else if(element === "shininess"){
-            primitiveList[actualID].Material.setAttribute('shininess', rgb);
+        if(element == "transparency" || element == "shininess") {
+            primitiveList[actualID].Material.setAttribute(element, rgb);
         }
         highlightPrimitive(true);
     };
@@ -274,10 +265,11 @@ function PrimitiveManager(){
         
         var min = x3dom.fields.SFVec3f.parse(volume.min);
         var max = x3dom.fields.SFVec3f.parse(volume.max);
-        if (min.x === 0 && max.x === 0 && min.y === 0 && max.y === 0 && min.z === 0 && max.z === 0){
+        if (max.subtract(min).length < x3dom.fields.Eps){
             min.x = -1; min.y = -1; min.z = -1;
             max.x = 1; max.y = 1; max.z = 1;
         }
+
         var box = document.getElementById('cpnt');
         box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
                                   min.x+' '+min.y+' '+max.z+', '+
@@ -306,9 +298,10 @@ function PrimitiveManager(){
             catch(ex){}
         }
         if (highlightOn) {
+           //  TODO; shall depend on user preference (highlight/bbox checkboxes)
            // primitiveList[actualID].highlight(true, "1 1 0"); 
         }
-    };
+    }
     
     
     
@@ -329,9 +322,10 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.setTransformationValuesToPrimitive = function() {
+        var MT = primitiveList[actualID].children[0];
+
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
-        
 
         if(HANDLING_MODE === "translation") {
             tempValue = ui.BBTransX.get() + " " +
@@ -340,20 +334,20 @@ function PrimitiveManager(){
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
-            primitiveList[actualID].children[0].Transformation.rotationX = ui.BBTransX.get();
-            primitiveList[actualID].children[0].Transformation.rotationY = ui.BBTransY.get();
-            primitiveList[actualID].children[0].Transformation.rotationZ = ui.BBTransZ.get();
-            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * Math.PI / 180);
-            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * Math.PI / 180);
-            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * Math.PI / 180);
+            MT.Transformation.rotationX = ui.BBTransX.get();
+            MT.Transformation.rotationY = ui.BBTransY.get();
+            MT.Transformation.rotationZ = ui.BBTransZ.get();
+            //var s = Math.PI / 180;
+            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get());
+            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get());
+            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get());
 
-            transformMat = rotX.mult(rotY);
-            transformMat = transformMat.mult(rotZ);
-            primitiveList[actualID].children[0].setAttribute("matrix", matrixToString(transformMat));
+            transformMat = rotX.mult(rotY).mult(rotZ);
+            MT.setAttribute("matrix", matrixToString(transformMat));
         }
         else {
-            tempValue = ui.BBTransX.get() + "," +
-                        ui.BBTransY.get() + "," +
+            tempValue = ui.BBTransX.get() + " " +
+                        ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();
             primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
         }
@@ -389,19 +383,18 @@ function PrimitiveManager(){
      */
     function setTransformValues(id, mode){
         try {
-        var xyz = ""; 
+            var MT = primitiveList[id].children[0];
         
             if (mode === "rotation"){
-                ui.BBTransX.set(primitiveList[id].children[0].Transformation.rotationX);
-                ui.BBTransY.set(primitiveList[id].children[0].Transformation.rotationY);
-                ui.BBTransZ.set(primitiveList[id].children[0].Transformation.rotationZ);
+                ui.BBTransX.set(MT.Transformation.rotationX);
+                ui.BBTransY.set(MT.Transformation.rotationY);
+                ui.BBTransZ.set(MT.Transformation.rotationZ);
             }
             else {
-                (mode === "translation") ? xyz = primitiveList[id].attributes[mode].nodeValue.split(" ") : 
-                                           xyz = primitiveList[id].attributes[mode].nodeValue.split(",");
-                ui.BBTransX.set(xyz[0].substr(0, 5));
-                ui.BBTransY.set(xyz[1].substr(0, 5));
-                ui.BBTransZ.set(xyz[2].substr(0, 5));
+                var vec = x3dom.fields.SFVec3f.parse(primitiveList[id].attributes[mode].nodeValue);
+                ui.BBTransX.set(vec.x.toFixed(5));
+                ui.BBTransY.set(vec.x.toFixed(5));
+                ui.BBTransZ.set(vec.x.toFixed(5));
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
@@ -418,7 +411,9 @@ function PrimitiveManager(){
             
             highlightPrimitive(true);
         }
-        catch(ex){ }
+        catch(ex){
+            console.log(ex);
+        }
     }
     
     

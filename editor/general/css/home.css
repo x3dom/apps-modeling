@@ -194,3 +194,34 @@ body
 {
 	visibility: visible;
 }
+
+
+
+.x3dom-logContainer {
+    bottom: 0px;
+    left: 100px;
+    position: absolute;
+}
+
+#x3dom-state-viewer {
+    display: block;
+    background-color: #323232;
+    color: #C8C8C8;
+    cursor: help;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin: 0 0 2px;
+    opacity: 1;
+    padding: 5px;
+    position: absolute;
+    right: 175px;
+    text-transform: uppercase;
+    border: #000 1px solid;
+    top: 0px;
+    width: 170px;
+    z-index: 1001;
+    text-shadow: 0 !important;
+    -webkit-box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7); /* webkit browser*/
+    -moz-box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7); /* firefox */
+    box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7);
+}
