@@ -388,26 +388,16 @@ function UI(primitiveManager){
        
     
     /*
-     * Show and hide from showStat from x3d-tree
+     * Show or hide stats
      */
     this.showStatistik = function()
     {
-    	var x3d = document.getElementById("x3d");
-    	
-    	if (this.statsOn === undefined)
-    	    this.statsOn = false;
-    	
-    	if (this.statsOn === true)
-    	    x3d.runtime.statistics(false);
-	    else
-	        x3d.runtime.statistics(true);
-	    
-	    this.statsOn = !this.statsOn;
+	    document.getElementById("x3d").runtime.statistics();
     };
     
     
     /*
-     * Show and hide from from showLog from x3d-tree
+     * Show or hide debug log
      */
     this.showInfo = function()
     {
@@ -416,17 +406,12 @@ function UI(primitiveManager){
 
 
     /*
-     * switch between tri and pnt mode
+     * switch between tri, line, pnt mode
      */
     this.togglePoints = function(elem)
     {
-        if (this.showPnts === undefined)
-            this.showPnts = 0;
-
-        document.getElementById('x3d').runtime.togglePoints(true);
-
-        this.showPnts = ++this.showPnts % 3;
-        elem.innerHTML = (this.showPnts == 0) ? "Points" : ((this.showPnts == 1) ? "Lines": "Faces");
+        var showPnts = document.getElementById('x3d').runtime.togglePoints(true);
+        elem.innerHTML = (showPnts == 0) ? "Points" : ((showPnts == 1) ? "Lines": "Faces");
     };
 
     
