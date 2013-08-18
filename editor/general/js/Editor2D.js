@@ -56,6 +56,23 @@ Editor2D = function (width, height) {
 		//Append overlay to body	
 		document.body.appendChild(this.overlay);
 		
+		
+		/* Close 2D Editor with ESC *******************************/
+		var closeEditor = document.getElementById('divOverlay');
+
+		$(document).on( 'keydown', function ( e ) {
+		    if ( e.keyCode === 27 ) 
+		    { // ESC-Taste
+		    	
+		    	if(closeEditor.parentNode != null)
+		    	{
+		    		closeEditor.parentNode.removeChild(closeEditor);
+		    	}
+	        }
+		});
+		/**********************************************************/
+		
+		
 		this.addPoint();
 	};
 	
@@ -112,6 +129,7 @@ Editor2D = function (width, height) {
 	{
 		//Create div-element
 		var overlay = document.createElement('div');
+		overlay.setAttribute('id','divOverlay');
 		
 		//Set styles
 		overlay.style.position = 'fixed';
@@ -124,7 +142,7 @@ Editor2D = function (width, height) {
 		overlay.style.zIndex = '1000000000000000';
 		overlay.style.backgroundColor = 'rgba(90, 90, 90, 0.75)';
 		overlay.style.display = 'none';
-		
+				
 		//Return element
 		return overlay;
 	};
@@ -147,7 +165,7 @@ Editor2D = function (width, height) {
 		editor.style.margin = -(this.height + 30)/1.75 + 'px 0px 0px ' + -(this.width + 30)/2 + 'px';
 		editor.style.backgroundColor = 'rgb(60, 60, 60)';
 		editor.style.borderRadius = '15px';
-		editor.style.boxShadow = '5px 5px 5px #333';
+		editor.style.boxShadow = '5px 5px 5px #333';		
 		
 		//Return element
 		return editor;
