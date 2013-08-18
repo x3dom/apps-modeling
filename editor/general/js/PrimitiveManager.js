@@ -403,7 +403,7 @@ function PrimitiveManager(){
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
             ui.TBPrimitiveList.selectIndex(primitiveList[id].IDMap.cboxNumber);
-            ui.BBTransformMode.set(HANDLING_MODE.toUpperCase() + ':');
+            ui.BBTransformMode.set(HANDLING_MODE.charAt(0).toUpperCase() + HANDLING_MODE.slice(1) + ':');
             
             ui.BBTransX.disable(false);
             ui.BBTransY.disable(false);

@@ -18,7 +18,7 @@
 }
 
 
-#buttonCreateShape
+#buttonCreateShape, #buttonCancelShape
 {
 	float: right;
 	height: 28px;

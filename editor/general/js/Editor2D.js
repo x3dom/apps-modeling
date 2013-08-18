@@ -6,7 +6,7 @@ Editor2D = function (width, height) {
 
 	var that = this;
 
-	this.mode = 'CREATE';
+	this.mode = 'CREATE';   // Create what? Extrusion or SolidOfRevolution?
 	this.mouseButton = 'NONE';
 	
 	this.width = (width !== undefined) ? width : 600;
@@ -19,9 +19,74 @@ Editor2D = function (width, height) {
 	this.mousePosX = 0;
 	this.mousePosY = 0;
 	this.pointList = [];
-	
-	/*
-     * Inititialize the full 2D-Editor  
+
+
+    /// window, given in 3d world coordinates (projected onto xz-plane),
+    /// for mapping from 2d viewport (i.e. canvas) given in pixel coords
+    this.minWin = {x: -1, y: -1};
+    this.maxWin = {x:  1, y:  1};
+
+
+    /// 1st little helper for calculating window-viewport transformation
+    /// --> setting world window to a new range from (x0,y0) to (x1,y1)
+    ///     (if desired crossSection curve shall be outside default range)
+    this.setWindow = function(x0, y0, x1, y1)
+    {
+        if ( (x1 - x0 > 0) && (y1 - y0 > 0) )
+        {
+            this.minWin.x = x0;
+            this.minWin.y = y0;
+            this.maxWin.x = x1;
+            this.maxWin.y = y1;
+        }
+        else
+            console.log("Error, window size must be greater zero!");
+    };
+
+    /// 2nd little helper for calculating window-viewport transformation
+    /// --> mapping 2d coord from world to canvas coordinates
+    ///     (needed for drawing given crossSection)
+    this.calcWcToDc = function(canvas, x, y)
+    {
+        var dc = {x: 0, y: 0};
+
+        var nx = (this.maxWin.x - this.minWin.x),
+            ny = (this.maxWin.y - this.minWin.y);
+        var sx = canvas.width / nx,
+            sy = -canvas.height / ny;
+        var tx = -this.minWin.x * canvas.width / nx,
+            ty = canvas.height + this.minWin.y * canvas.height / ny;
+
+        dc.x = sx * x + tx;
+        dc.y = sy * y + ty;
+
+        return dc;
+    };
+
+    /// 3rd little helper for calculating window-viewport transformation
+    /// --> mapping 2d coord from canvas to world coordinates
+    ///     (needed for setting a new crossSection)
+    this.calcCcToWc = function(canvas, x, y)
+    {
+        var wc = {x: 0, y: 0};
+
+        var nx = (this.maxWin.x - this.minWin.x),
+            ny = (this.maxWin.y - this.minWin.y);
+        var sx = canvas.width / nx,
+            sy = -canvas.height / ny;
+        var tx = -this.minWin.x * canvas.width / nx,
+            ty = canvas.height + this.minWin.y * canvas.height / ny;
+
+        wc.x = (x - tx) / sx;
+        wc.y = (y - ty) / sy;
+
+        return wc;
+    };
+
+
+
+    /*
+     * Initialize the full 2D-Editor
      */
 	this.init = function ()
 	{
@@ -57,14 +122,13 @@ Editor2D = function (width, height) {
 		document.body.appendChild(this.overlay);
 		
 		
-		/* Close 2D Editor with ESC *******************************/
+		/* Close 2D Editor with ESC or button *********************/
 		var closeEditor = document.getElementById('divOverlay');
 
 		$(document).on( 'keydown', function ( e ) {
 		    if ( e.keyCode === 27 ) 
-		    { // ESC-Taste
-		    	
-		    	if(closeEditor.parentNode != null)
+		    {
+		    	if (closeEditor.parentNode != null)
 		    	{
 		    		closeEditor.parentNode.removeChild(closeEditor);
 		    	}
@@ -86,9 +150,19 @@ Editor2D = function (width, height) {
     	});
     	
     	$('#buttonCreateShape').button()
-			.click(function( event ) {
-				event.preventDefault();
-		});
+        .click(function( event ) {
+            event.preventDefault();
+        });
+
+        $('#buttonCancelShape').button()
+            .click(function( event ) {
+                //event.preventDefault();
+
+                if (closeEditor.parentNode != null)
+                {
+                    closeEditor.parentNode.removeChild(closeEditor);
+                }
+            });
 		
 		$('#pointList').button()
 			.click(function( event ) {
@@ -109,10 +183,11 @@ Editor2D = function (width, height) {
 		var controls = document.createElement('div');
 		controls.innerHTML = "<div id='valuContener'><label class='labelValue'>X Value: </label><input id='labelValueX'/>" + 
 						 		"<label class='labelValue' style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
-						 		"<button id='buttonCreateShape'>Create Shape</button>" +
-						 	 "</div></div>";
+                                "<button id='buttonCancelShape'>Cancel</button>" +
+                                "<button id='buttonCreateShape'>Create Shape</button>" +
+						 	 "</div>";
 		
-		//Set styles
+		//Set styles (TODO; put in css file)
 		controls.style.width = this.width;
 		controls.style.top = '25px';
 		controls.style.height = '40px';
@@ -124,7 +199,7 @@ Editor2D = function (width, height) {
 				
 		//Return element
 		return controls;
-	}
+	};
 	
 	
 	/*
@@ -137,7 +212,7 @@ Editor2D = function (width, height) {
 		var overlay = document.createElement('div');
 		overlay.setAttribute('id','divOverlay');
 		
-		//Set styles
+		//Set styles (TODO; put in css file)
 		overlay.style.position = 'fixed';
 		overlay.style.top = '0px';
 		overlay.style.left = '0px';
@@ -145,7 +220,7 @@ Editor2D = function (width, height) {
 		overlay.style.padding = '0px';
 		overlay.style.width = '100%';
 		overlay.style.height = '100%';
-		overlay.style.zIndex = '1000000000000000';
+		overlay.style.zIndex = '100000000';
 		overlay.style.backgroundColor = 'rgba(90, 90, 90, 0.75)';
 		overlay.style.display = 'none';
 				
@@ -162,7 +237,7 @@ Editor2D = function (width, height) {
 		//Create div-element
 		var editor = document.createElement('div');
 		
-		//Set styles
+		//Set styles (TODO; put in css file)
 		editor.style.width = this.width + 30 + 'px';
 		editor.style.height = this.height + 30 + 'px';
 		editor.style.position = 'relative';
@@ -188,7 +263,7 @@ Editor2D = function (width, height) {
 		//Create canvas-element
 		var canvas = document.createElement('canvas');
 		
-		//Set styles
+		//Set styles (TODO; put in css file)
 		canvas.width = this.width;
 		canvas.height = this.height;
 		canvas.style.margin = '15px 0px 0px 15px';
@@ -196,7 +271,7 @@ Editor2D = function (width, height) {
 		canvas.style.border = '2px solid #CCC';
 		canvas.style.borderRadius = '10px';
 		canvas.style.cursor = 'crosshair';
-		canvas.style.zIndex = '1000000000000000';
+		canvas.style.zIndex = '100000000';
 		
 		//Add mousewheel handler (Chrome, Safari, Opera)
 		canvas.addEventListener("mousewheel", this.mouseWheelListener);
@@ -215,7 +290,6 @@ Editor2D = function (width, height) {
 		
 		//Add contextmenu listener
 		canvas.addEventListener('contextmenu', this.contextMenuListener, false);
-		
 		
 		
 		return canvas;
@@ -239,7 +313,7 @@ Editor2D = function (width, height) {
 	this.mouseDownListener = function (evt)
 	{
 		//Update mouse position
-		that.updateMousePos(evt)
+		that.updateMousePos(evt);
 		
 		//Handle different mouse buttons
 		switch (evt.which) 
@@ -281,7 +355,7 @@ Editor2D = function (width, height) {
 	this.mouseMoveListener = function (evt)
 	{
 		//Update mouse position
-		that.updateMousePos(evt)
+		that.updateMousePos(evt);
 		
 		//Handle different mouse buttons
 		switch (that.mouseButton) {
@@ -319,7 +393,7 @@ Editor2D = function (width, height) {
 	this.mouseWheelListener = function (evt)
 	{
 		//Update mouse position
-		that.updateMousePos(evt)
+		that.updateMousePos(evt);
 		
 		//Check for up- or down-scroll
 		if (evt.wheelDelta > 0 || evt.detail > 0) 
@@ -388,9 +462,11 @@ Editor2D = function (width, height) {
 		//Loop over all points
 		if (this.mode == 'CREATE' && this.pointList.length > 3)
 		{
-			var distance = Math.pow(this.pointList[0].x - this.mousePosX, 2) + Math.pow(this.pointList[0].y - this.mousePosY, 2);
+			var distance = Math.pow(this.pointList[0].x - this.mousePosX, 2) +
+                           Math.pow(this.pointList[0].y - this.mousePosY, 2);
     		return (distance <= 0.25);
 		}
+        return false;
 	};
 	
 	/*
@@ -495,7 +571,7 @@ Editor2D = function (width, height) {
 		}
 		
 		//Create horizontal lines bottom from centerpoint
-		for (var y = this.centerY - this.gridSize; y >= 0; y -= this.gridSize) {
+		for (y = this.centerY - this.gridSize; y >= 0; y -= this.gridSize) {
 			this.context.moveTo(0, y);
 			this.context.lineTo(this.width, y);
 		}
@@ -538,8 +614,10 @@ Editor2D = function (width, height) {
 			this.context.strokeStyle = '#CCC';
 			
 			//Create line between the actual and the previous point
-			this.context.moveTo(this.pointList[p-1].x * this.gridSize + this.centerX, this.pointList[p-1].y * this.gridSize + this.centerY);
-			this.context.lineTo(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY);
+			this.context.moveTo(this.pointList[p-1].x * this.gridSize + this.centerX,
+                                this.pointList[p-1].y * this.gridSize + this.centerY);
+			this.context.lineTo(this.pointList[p].x * this.gridSize + this.centerX,
+                                this.pointList[p].y * this.gridSize + this.centerY);
 			
 			//Draw it!
 			this.context.stroke();
@@ -561,7 +639,9 @@ Editor2D = function (width, height) {
 			this.context.fillStyle = (this.pointList[p].selected) ? '#dd3500' : '#2956a8';
 			
 			//Create actual point
-			this.context.arc(this.pointList[p].x * this.gridSize + this.centerX, this.pointList[p].y * this.gridSize + this.centerY, this.gridSize/4, 0, Math.PI*2, false); 
+			this.context.arc(this.pointList[p].x * this.gridSize + this.centerX,
+                             this.pointList[p].y * this.gridSize + this.centerY,
+                             this.gridSize/4, 0, Math.PI*2, false);
 			
 			//Close the path
 			this.context.closePath();
@@ -571,7 +651,7 @@ Editor2D = function (width, height) {
 		}
 	};
 	
-	//Finaly initialize the 2D-Editor
+	//Finally initialize the 2D-Editor
 	this.init();	
 };
 

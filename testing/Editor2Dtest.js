@@ -26,7 +26,7 @@ function Editor2D()
         dc.y = sy * y + ty;
 
         return dc;
-    };
+    }
     
 
     function calcCcToWc(canvas, x, y)
@@ -44,7 +44,7 @@ function Editor2D()
         wc.y = (y - ty) / sy;
 
         return wc;
-    };
+    }
 
 
     // little helpers for calculating window-viewport transformation
