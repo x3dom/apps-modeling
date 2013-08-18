@@ -197,18 +197,18 @@
 			if (evt.wheelDelta > 0 || evt.detail > 0) 
 			{
 				//If allowed increment grid size and redraw it
-				if (that.gridSize < this.options.gridMax) 
+				if (that.gridSize < that.options.gridMax) 
 				{
-					that.gridSize += this.options.gridStep;
+					that.gridSize += that.options.gridStep;
 					that.draw();
 				}
 			} 
 			else 
 			{
 				//If allowed decrement grid size and redraw it
-				if (that.gridSize > this.options.gridMin) 
+				if (that.gridSize > that.options.gridMin) 
 				{
-					that.gridSize -= this.options.gridStep;
+					that.gridSize -= that.options.gridStep;
 					that.draw();
 				}
 			}
