@@ -3,10 +3,10 @@
 	margin: 6px;
 }
 
-#labelValueX, #labelValueZ
+#labelValueX, #labelValueZ, #labelValueHeight
 {
 	float:left;
-	width: 30px;
+	width: 35px;
 	height: 20px;
 }
 

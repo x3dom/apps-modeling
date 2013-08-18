@@ -149,6 +149,12 @@ Editor2D = function (width, height) {
         	}
     	});
     	
+        $('#labelValueHeight').spinner({
+        	stop:function(e,ui){
+            	
+        	}
+    	});
+    	
     	$('#buttonCreateShape').button()
         .click(function( event ) {
             event.preventDefault();
@@ -183,6 +189,7 @@ Editor2D = function (width, height) {
 		var controls = document.createElement('div');
 		controls.innerHTML = "<div id='valuContener'><label class='labelValue'>X Value: </label><input id='labelValueX'/>" + 
 						 		"<label class='labelValue' style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
+						 		"<label class='labelValue' style='margin-left: 10px;'>Height: </label><input id='labelValueHeight'/>" +
                                 "<button id='buttonCancelShape'>Cancel</button>" +
                                 "<button id='buttonCreateShape'>Create Shape</button>" +
 						 	 "</div>";
