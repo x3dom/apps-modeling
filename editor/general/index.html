@@ -8,7 +8,6 @@
     <title>CAD Primitive Editor</title>
 
     <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/dev/x3dom.css"/>
-    <!--script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom-full.js"></script-->
 
     <script type="text/javascript" src="../../../x3dom/src/lang/Array.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/Internals.js"></script>
@@ -82,6 +81,18 @@
     <script type="text/javascript" src="../../../x3dom/src/nodes/Terrain.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/nodes/GeometryEDF.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/util/Moveable.js"></script>
+
+    <script>
+    if (typeof x3dom === "undefined")
+    {
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom-full.js"><\/script>');
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/nodes/GeometryEDF.js"><\/script>');
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/util/Moveable.js"><\/script>');
+    }
+    </script>
 
     <link href="css/standard/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/properties.css"/>
