@@ -121,7 +121,7 @@ Editor2D = function (width, height) {
 		overlay.style.padding = '0px';
 		overlay.style.width = '100%';
 		overlay.style.height = '100%';
-		overlay.style.zIndex = '9999';
+		overlay.style.zIndex = '1000000000000000';
 		overlay.style.backgroundColor = 'rgba(90, 90, 90, 0.75)';
 		overlay.style.display = 'none';
 		
@@ -172,7 +172,7 @@ Editor2D = function (width, height) {
 		canvas.style.border = '2px solid #CCC';
 		canvas.style.borderRadius = '10px';
 		canvas.style.cursor = 'crosshair';
-		canvas.style.zIndex = '10000';
+		canvas.style.zIndex = '1000000000000000';
 		
 		//Add mousewheel handler (Chrome, Safari, Opera)
 		canvas.addEventListener("mousewheel", this.mouseWheelListener);
