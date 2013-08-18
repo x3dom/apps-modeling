@@ -31,8 +31,8 @@ Editor2D = function (width, height) {
 		//Create Editor 
 		this.editor = this.createEditor();
 		
-		//Create Menu
-		this.menu = this.createMenuBar();
+		//Create Controls
+		this.controls = this.createControls();
 		
 		//Create Canvas
 		this.canvas = this.createCanvas();
@@ -44,14 +44,11 @@ Editor2D = function (width, height) {
 		this.context.mozImageSmoothingEnabled = false;
 		this.context.webkitImageSmoothingEnabled = false;
 		
-		//Create controls
-		//this.controls = this.createControls();
-		
 		//Append canvas to editor
 		this.editor.appendChild(this.canvas);
 		
-		//Append canvas to editor
-		this.editor.appendChild(this.menu);	
+		//Append overlay to body
+		this.editor.appendChild(this.controls);
 		
 		//Append editor to overlay
 		this.overlay.appendChild(this.editor);
@@ -66,18 +63,17 @@ Editor2D = function (width, height) {
 	/*
 	 * Create the control-elements
 	 */
-	this.controls = function()
+	this.createControls = function()
 	{
-        var canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<canvas id='drawCanvas'> </canvas>" +
-								 "<div id='divLine'></div>" +
-						 		 	"<label>X Value: </label><input id='labelValueX'/>" + 
-						 		 	"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
-						 		 	"<button id='buttonCreateShape'>Create Shape</button>" +
-						 	 	 "</div>";
-						 	 	 
+		//Create div-element
+		var controls = document.createElement('div');
+		controls.innerHTML = "<label>X Value: </label><input id='labelValueX'/>" + 
+						 		"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
+						 		"<button id='buttonCreateShape'>Create Shape</button>" +
+						 	 "</div>";
+
 		$("#labelValueX").spinner({
-	    	stop:function(e,ui){
+	    stop:function(e,ui){
 	        	
 	    	}
 		});
@@ -92,6 +88,19 @@ Editor2D = function (width, height) {
 			.click(function( event ) {
 				event.preventDefault();
 		});
+		
+		//Set styles
+		controls.style.width = this.width;
+		controls.style.top = '25px';
+		controls.style.height = '40px';
+		controls.style.position = 'relative';
+		controls.style.backgroundColor = 'rgb(60, 60, 60)';
+		controls.style.borderRadius = '7px 7px 7px 7px';
+		controls.style.boxShadow = '5px 5px 5px #333';
+		controls.style.border = '2px solid #CCC';
+				
+		//Return element
+		return controls;
 	}
 	
 	
@@ -135,7 +144,7 @@ Editor2D = function (width, height) {
 		editor.style.position = 'relative';
 		editor.style.top = '50%';
 		editor.style.left = '50%';
-		editor.style.margin = -(this.height + 30)/2 + 'px 0px 0px ' + -(this.width + 30)/2 + 'px';
+		editor.style.margin = -(this.height + 30)/1.75 + 'px 0px 0px ' + -(this.width + 30)/2 + 'px';
 		editor.style.backgroundColor = 'rgb(60, 60, 60)';
 		editor.style.borderRadius = '15px';
 		editor.style.boxShadow = '5px 5px 5px #333';
@@ -144,28 +153,6 @@ Editor2D = function (width, height) {
 		return editor;
 	};
 	
-	/*
-     * Create an on screen centered div-container for the editor
-     * @returns {div}
-     */
-	this.createMenuBar = function ()
-	{
-		//Create div-element
-		var menu = document.createElement('div');
-		
-		//Set styles
-		menu.style.width = this.width + 'px';
-		menu.style.top = '-32px';
-		menu.style.left = '17px';
-		menu.style.height = '25px';
-		menu.style.position = 'relative';
-		menu.style.backgroundColor = 'rgba(255, 255, 255, 0.75)';
-		menu.style.borderRadius = '0px 0px 7px 7px';
-		menu.style.zIndex = '10001';
-		
-		//Return element
-		return menu;
-	};
 	
 	/*
      * Create a canvas element for drawing and attach different 

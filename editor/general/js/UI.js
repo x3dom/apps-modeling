@@ -440,56 +440,7 @@ function UI(primitiveManager){
 		editor2D.show();
 	};
 	
-	/*
-		$("#htmlCanvas").dialog({
-            height: 500,
-            width: 600,
-            modal: true
-        });
-        
-        var canvasLabeln = document.getElementById("htmlCanvas");
-        canvasLabeln.innerHTML = "<canvas id='drawCanvas'> </canvas>" +
-								 "<div id='divLine'></div>" +
-						 		 	"<label>X Value: </label><input id='labelValueX'/>" + 
-						 		 	"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
-						 		 	"<button id='buttonCreateShape'>Create Shape</button>" +
-						 	 	 "</div>";
-
-        var canvas = document.getElementById("drawCanvas");
-        var w = parseFloat(document.defaultView.getComputedStyle(canvas, null).getPropertyValue('width'));
-        var h = parseFloat(document.defaultView.getComputedStyle(canvas, null).getPropertyValue('height'));
-
-        // needed for correct pbuffer resize
-        canvas.width = w;
-        canvas.height = h;
-
-
 	
-		/**********************************************
-        editor2D.setWindow(-3.5, -1.1, 3.5, 1.1);
-        editor2D.clearImage(canvas);
-        editor2D.drawCoordSys(canvas);
-        editor2D.drawSinus(canvas);      // sin only for testing
-		/**********************************************
-		
-		$("#labelValueX").spinner({
-        	stop:function(e,ui){
-            	
-        	}
-    	});
-    	
-        $("#labelValueZ").spinner({
-        	stop:function(e,ui){
-            	
-        	}
-    	});
-    	
-    	$("#buttonCreateShape").button()
-			.click(function( event ) {
-				event.preventDefault();
-		});
-	};  
-    
     
     /*
      * Adds one primitive element to the left bar 

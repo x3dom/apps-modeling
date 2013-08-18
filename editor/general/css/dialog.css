@@ -1,29 +1,17 @@
-#drawCanvas
-{
-	width: 100%;
-	border-radius: 5px 5px 5px 5px; 
-	border: solid 1px #DDDDDD;
-	height: 395px;
-	margin-bottom: 5px;
-}
-
 #labelValueX, #labelValueZ
 {
 	float:left;
 	width: 50px;
 	height: 20px;
+	margin: 6px;
+	padding-left: 15px;
 }
 
 #buttonCreateShape
 {
 	float: right;
 	height: 28px;
+	margin: 6px;
+	padding-right: 15px;
 }
 
-#divLine
-{
-	height:1px;
-	width: 100%;
-	background-color: #DDDDDD;
-	margin-bottom: 7px;
-}
