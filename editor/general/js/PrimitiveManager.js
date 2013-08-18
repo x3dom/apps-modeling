@@ -75,6 +75,11 @@ function PrimitiveManager(){
         mt.appendChild(s);
 
         var prim = document.createElement(primitive);
+        
+        prim.setAttribute("useGeoCache", "false");
+        // set attributes before inserting into live tree to avoid update
+        setDefaultParameters(prim, parameters);
+        
         s.appendChild(prim);
         t.Parameters.Primitive = prim;
 
@@ -95,7 +100,6 @@ function PrimitiveManager(){
         actualID = id;
         primitiveCounter++;
         ui.setMaterial(mat);
-        setDefaultParameters(prim, parameters);
         
         highlightPrimitive(true);
         highlightBoundingVolume(id, true);
