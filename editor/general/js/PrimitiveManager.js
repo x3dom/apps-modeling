@@ -50,8 +50,17 @@ function PrimitiveManager(){
         t.setAttribute("scale", "1 1 1");
 
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
-        t.Parameters = parameters;
-        
+
+        t.Parameters = [];
+        // deep copy of parameters
+        for (var k=0; k<parameters.length; k++) {
+            var aParam = {};
+            for (var partType in parameters[k]) {
+                aParam[partType] = parameters[k][partType];
+            }
+            t.Parameters.push(aParam);
+        }
+
         var mt = document.createElement('MatrixTransform');
         mt.setAttribute("id", 'mt_' + id);
         mt.Transformation = { rotationX : 0, rotationY : 0, rotationZ : 0 };
@@ -82,7 +91,6 @@ function PrimitiveManager(){
         
         s.appendChild(prim);
         t.Parameters.Primitive = prim;
-
         t.Shape = s;
 
         var root = document.getElementById('root');
