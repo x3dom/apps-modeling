@@ -73,6 +73,29 @@ Editor2D = function (width, height) {
 		/**********************************************************/
 		
 		
+		$('#labelValueX').spinner({
+	    stop:function(e,ui){
+	        	
+	    	}
+		});
+    	
+        $('#labelValueZ').spinner({
+        	stop:function(e,ui){
+            	
+        	}
+    	});
+    	
+    	$('#buttonCreateShape').button()
+			.click(function( event ) {
+				event.preventDefault();
+		});
+		
+		$('#pointList').button()
+			.click(function( event ) {
+				event.preventDefault();
+		});
+		
+		
 		this.addPoint();
 	};
 	
@@ -84,27 +107,10 @@ Editor2D = function (width, height) {
 	{
 		//Create div-element
 		var controls = document.createElement('div');
-		controls.innerHTML = "<label>X Value: </label><input id='labelValueX'/>" + 
-						 		"<label style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
+		controls.innerHTML = "<div id='valuContener'><label class='labelValue'>X Value: </label><input id='labelValueX'/>" + 
+						 		"<label class='labelValue' style='margin-left: 10px;'>Z Value: </label><input id='labelValueZ'/>" +
 						 		"<button id='buttonCreateShape'>Create Shape</button>" +
-						 	 "</div>";
-
-		$("#labelValueX").spinner({
-	    stop:function(e,ui){
-	        	
-	    	}
-		});
-    	
-        $("#labelValueZ").spinner({
-        	stop:function(e,ui){
-            	
-        	}
-    	});
-    	
-    	$("#buttonCreateShape").button()
-			.click(function( event ) {
-				event.preventDefault();
-		});
+						 	 "</div></div>";
 		
 		//Set styles
 		controls.style.width = this.width;
