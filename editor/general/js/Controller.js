@@ -50,9 +50,8 @@ function Controller(ui){
      */
     this.setViewpoint = function(point)
     {
-        var vPoint = document.getElementById("viewPoint");
         var runtime = document.getElementById("x3d").runtime;
-        
+
         switch(point) {
             case "front":
             runtime.showAll('negX');
