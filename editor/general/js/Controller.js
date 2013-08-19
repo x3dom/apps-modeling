@@ -54,16 +54,16 @@ function Controller(ui){
 
         switch(point) {
             case "front":
-            runtime.showAll('negX');
-            break;
-            case "back":
-            runtime.showAll('posX');
-            break;
-            case "right":
             runtime.showAll('negZ');
             break;
-            case "left":
+            case "back":
             runtime.showAll('posZ');
+            break;
+            case "right":
+            runtime.showAll('negX');
+            break;
+            case "left":
+            runtime.showAll('posX');
             break;
             case "top":
             runtime.showAll('negY');
