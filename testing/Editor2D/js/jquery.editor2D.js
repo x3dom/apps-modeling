@@ -14,6 +14,7 @@
 			
 			this.mode = 'CREATE';
 			this.mouseButton = 'NONE';
+			this.key = null;
 			this.cursor = 'haircross';
 			
 			this.centerX = this.width / 2;
@@ -22,20 +23,21 @@
 			this.clickPosY = 0;
 			this.mousePosX = 0;
 			this.mousePosY = 0;
-			this.actPoint = 0;
+			this.actPoint = null;
 			this.actOver = null;
 			this.closed = false;
 			this.points = [];
 			
 			this.canvas = canvas;
+			this.canvas.setAttribute('tabindex', '1');
 			this.canvas.width = this.options.width;
 			this.canvas.height = this.options.height;
 			
 			//Add mousewheel handler (Chrome, Safari, Opera)
-			this.canvas.addEventListener("mousewheel", this.mouseWheelListener);
+			this.canvas.addEventListener('mousewheel', this.mouseWheelListener);
 			
 			//Add mousewheel handler (Firefox)
-			this.canvas.addEventListener("DOMMouseScroll", this.mouseWheelListener);
+			this.canvas.addEventListener('DOMMouseScroll', this.mouseWheelListener);
 			
 			//Add mouseup listener
 			this.canvas.addEventListener('mouseup', this.mouseUpListener);
@@ -50,7 +52,13 @@
 			this.canvas.addEventListener('mouseover', this.mouseOverListener, false);
 			
 			//Add mouseout listener
-			this.canvas.addEventListener('mouseout', this.mouseOutListener, false);
+			this.canvas.addEventListener('mouseout', this.mouseOutListener, false);		
+			
+			//Add keydown listener
+			this.canvas.addEventListener('keydown', this.keyDownListener);
+			
+			//Add keyup listener
+			this.canvas.addEventListener('keyup', this.keyUpListener);
 			
 			//Add contextmenu listener
 			this.canvas.addEventListener('contextmenu', this.contextMenuListener, false);
@@ -150,8 +158,9 @@
 					}
 					else if (that.mode == 'EDIT')
 					{
-						that.actPoint.x = that.mousePosX;
-						that.actPoint.y = that.mousePosY;
+						if (that.actPoint != null) {
+							that.actPoint.translate(that.mousePosX, that.mousePosY);
+						}
 					}
 					break;
 				case 'MIDDLE': 
@@ -165,13 +174,11 @@
 					{
 						if (that.checkForClosing())
 						{
-							that.points[that.points.length-1].x = that.points[0].x;
-							that.points[that.points.length-1].y = that.points[0].y;
+							that.points[that.points.length-1].translate(that.points[0].x, that.points[0].y);
 						}
 						else
 						{
-							that.actPoint.x = that.mousePosX;
-							that.actPoint.y = that.mousePosY;
+							that.actPoint.translate(that.mousePosX, that.mousePosY);
 						}
 					}
 					else if (that.mode == 'EDIT') 
@@ -238,7 +245,25 @@
 				that.points.pop();
 				that.draw();
 			}
-		}
+		};
+		
+		/*
+		 * Handle 'keydown'-event
+		 * @param {event} the fired keyboard-event
+		 */
+		this.keyDownListener = function (evt)
+		{
+			that.key = evt.keyCode;
+		};
+		
+		/*
+		 * Handle 'keyup'-event
+		 * @param {event} the fired keyboard-event
+		 */
+		this.keyUpListener = function (evt)
+		{
+			that.key = null;
+		};
 		
 		/*
 		 * Handle 'contextmenu'-event
@@ -264,10 +289,14 @@
 				case 'CREATE':
 					this.cursor = 'haircross';
 					this.canvas.style.cursor = 'haircross';
+					this.actPoint = null;
+					this.actOver = null;
 					break;
 				case 'EDIT':
 					this.cursor = 'default';
 					this.canvas.style.cursor = 'default';
+					this.actPoint = null;
+					this.actOver = null;
 					break;	
 			}
 		};
@@ -322,6 +351,8 @@
 			{
 				this.actOver.selected = true;
 				this.actPoint = this.actOver;
+			} else {
+				this.actPoint = null;
 			}
 		};
 		
@@ -407,8 +438,19 @@
 		{
 			if (this.actPoint.control.length == 0) 
 			{
-				this.actPoint.control.push({x: 0, y: 0, parent: this.actPoint, over: false, selected: false});
-				this.actPoint.control.push({x: 0, y: 0, parent: this.actPoint, over: false, selected: false});
+				var controlPt1 = {x: 0, y: 0, over: false, selected: false, parent: this.actPoint, lock: true};
+				var controlPt2 = {x: 0, y: 0, over: false, selected: false, parent: this.actPoint, lock: true};
+				
+				controlPt1.translate = this.translateControlPoint;
+				controlPt2.translate = this.translateControlPoint;
+				
+				//Cross reference
+				controlPt1.opposite = controlPt2;
+				controlPt2.opposite = controlPt1;
+				
+				//Add it
+				this.actPoint.control.push(controlPt1);
+				this.actPoint.control.push(controlPt2);
 			}
 			
 			var dirVecX = this.mousePosX - this.actPoint.x;
@@ -419,6 +461,42 @@
 			
 			this.actPoint.control[1].x = this.actPoint.x - dirVecX;
 			this.actPoint.control[1].y = this.actPoint.y - dirVecY;
+		};
+		
+		
+		/*
+		 * Create a new point at actual mouse position
+		 */
+		this.translateControlPoint = function(x, y)
+		{
+			if (that.key == 18 || !that.actPoint.lock) //ALT
+			{
+				that.actPoint.x = x;
+				that.actPoint.y = y;
+				that.actPoint.lock = false
+				that.actPoint.opposite.lock = false
+			}
+			else
+			{
+				var dirXOpp = that.actPoint.opposite.x - that.actPoint.opposite.parent.x;
+				var dirYOpp = that.actPoint.opposite.y - that.actPoint.opposite.parent.y;
+				
+				var lengthOpp = Math.sqrt(Math.pow(dirXOpp, 2) + Math.pow(dirYOpp, 2));
+				
+				that.actPoint.x = x;
+				that.actPoint.y = y;
+				
+				var dirX = that.actPoint.x - that.actPoint.parent.x;
+				var dirY = that.actPoint.y - that.actPoint.parent.y;
+				
+				var length = Math.sqrt(Math.pow(dirX, 2) + Math.pow(dirY, 2));
+				
+				var norX = dirX / length;
+				var norY = dirY / length;
+				
+				that.actPoint.opposite.x = that.actPoint.opposite.parent.x - norX * lengthOpp;
+				that.actPoint.opposite.y = that.actPoint.opposite.parent.y - norY * lengthOpp;
+			}
 		};
 		
 		/*
@@ -441,6 +519,22 @@
 				point.control = [];
 				point.over = false;
 				point.selected = true;
+				point.translate = function (x, y) {
+					
+					if(this.control.length != 0) {
+						var dirX = [(this.control[0].x - this.x), (this.control[1].x - this.x)];
+						var dirY = [(this.control[0].y - this.y), (this.control[1].y - this.y)];
+					}
+					
+					this.x = x;
+					this.y = y;
+					
+					for (var c=0; c<this.control.length; c++)
+					{	
+						this.control[c].x = this.x + dirX[c];
+						this.control[c].y = this.y + dirY[c];
+					}
+				};
 				
 				//Add point to list
 				this.points.push(point);
