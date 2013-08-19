@@ -525,15 +525,16 @@ function UI(primitiveManager){
         divID.setAttribute("style", "margin-top: 10px;");
 
         var newLabel = document.createElement("label");
-        newLabel.innerText = object.param.editorName;
+        newLabel.for = object.id;
+        newLabel.innerHTML = object.param.editorName;
 
         var newInput = document.createElement("input");
         newInput.setAttribute("style", "width: 112px;");
         newInput.id = object.id;
         newInput.value= object.param.value;
 
-        newLabel.appendChild(newInput);
-        divID.appendChild(newLabel); 
+        divID.appendChild(newLabel);
+        divID.appendChild(newInput);
         document.getElementById("properties").appendChild(divID);
 
         $("#"+object.id).spinner({
