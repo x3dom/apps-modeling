@@ -3,7 +3,7 @@
 <X3D profile="Immersive" version="3.1" xsd:noNamespaceSchemaLocation="http://www.web3d.org/specifications/x3d-3.1.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"> 
  <Scene>  
  
-  <Transform translation='0 0 3'>    
+  <!--Transform translation='0 0 3'>    
     <Shape>
     <Appearance>
       <Material diffuseColor='1.0 1.0 0.0'></Material>
@@ -19,7 +19,7 @@
     </Appearance>   
         <Sphere radius='0.05'/>
     </Shape>
-  </Transform>
+  </Transform-->
   
   <Transform scale='1 1 3'>  
     <Shape>    
