@@ -242,6 +242,8 @@ function PrimitiveManager(){
         ui.TBPrimitiveList.disable(true);
         ui.RBAccordion.disable(true);
         highlightPrimitive(false);
+        var transform = document.getElementById('cpnt_transform');
+        transform.setAttribute("render", "false");
     }
 
     
@@ -293,7 +295,7 @@ function PrimitiveManager(){
                                   max.x+' '+max.y+' '+max.z+', '+
                                   max.x+' '+max.y+' '+min.z );
         
-        box.setAttribute("render", bool);
+        transform.setAttribute("render", ""+bool);
     }
     
     
@@ -426,6 +428,7 @@ function PrimitiveManager(){
             ui.RBAccordion.disable(false);
             
             highlightPrimitive(true);
+            highlightBoundingVolume(id, true);
         }
         catch(ex){
             console.log(ex);
