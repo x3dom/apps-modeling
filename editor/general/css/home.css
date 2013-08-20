@@ -1,59 +1,3 @@
-body
-{
-	margin: 0px;
-	padding: 0px;
-	font-size: 13px;
-	overflow: hidden;
-}
-
-
-#x3d-view
-{
-	z-index: 0;
-	float:left;
-	margin: 0px;
-	padding: 0px;
-	min-width: 100%;
-	max-width: 100%;
-	min-height: 100%;
-	max-height: 100%;
-	height: 100%;
-	width: 100%;
-	
-	background-image: linear-gradient(bottom, rgb(0,0,0) 0%, rgb(71,71,71) 72%, rgb(71,71,71) 100%, rgb(148,148,148) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(0,0,0) 0%, rgb(71,71,71) 72%, rgb(71,71,71) 100%, rgb(148,148,148) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(0,0,0) 0%, rgb(71,71,71) 72%, rgb(71,71,71) 100%, rgb(148,148,148) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(0,0,0) 0%, rgb(71,71,71) 72%, rgb(71,71,71) 100%, rgb(148,148,148) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(0,0,0) 0%, rgb(71,71,71) 72%, rgb(71,71,71) 100%, rgb(148,148,148) 100%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(41,41,41)),
-		color-stop(0.72, rgb(105,105,105)),
-		color-stop(1, rgb(105,105,105)),
-		color-stop(1, rgb(140,140,140))
-	);
-
-	position:absolute;
-}
-
-
-#x3d
-{
-    z-index: 10;
-	min-width: 100%;
-	max-width: 100%;
-	min-height: 100%;
-	max-height: 100%;
-	width: 100%;
-	height: 100%;	
-}
-
-
-
-
 #accordeon-oben .ui-accordion-content
 {
     padding: 5%;
@@ -64,67 +8,8 @@ body
 }
 
 
-/* DropDown Boxen ***********************************************************************************/
-
-.ObjektList, .Views
-{
-   background: transparent;
-   color: white;
-   width: 150px;
-   padding: 5px;
-   font-size: 12px;
-   line-height: 1;
-   border-radius: 0;
-   height: 34px;
-   -webkit-appearance: none;
-   border:1px solid gray;
-   background: url(../images/down_img.jpg) no-repeat right #333333;
-}
-
-/****************************************************************************************************/
-
-
-
 /*** Linker Slider **********************************************************************************/
 
 #linksSlider .ui-slider-range { background: #000000; }
 
 /****************************************************************************************************/
-
-
-
-#axis
-{
-	visibility: visible;
-}
-
-
-
-.x3dom-logContainer {
-    bottom: 0px;
-    left: 100px;
-    position: absolute;
-}
-
-#x3dom-state-viewer {
-    display: block;
-    background-color: #323232;
-    color: #C8C8C8;
-    cursor: help;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    margin: 0 0 2px;
-    opacity: 1;
-    padding: 5px;
-    position: absolute;
-    right: 175px;
-    text-transform: uppercase;
-    border: #000 1px solid;
-    top: 0px;
-    width: 170px;
-    z-index: 1001;
-    text-shadow: 0 !important;
-    -webkit-box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7); /* webkit browser*/
-    -moz-box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7); /* firefox */
-    box-shadow: 0px 1px 55px rgba(0, 0, 0, 0.7);
-}

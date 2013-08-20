@@ -12,7 +12,49 @@
 	background-image: url(../images/karbon_bg.png);">
 }
 
-/* die 4 Buttons zum Manipulieren *******************************************************************/
+#primitiveList
+{
+	float:left;
+	width: 140px;
+	height: 30px;
+	margin: 5px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+.Views, .ObjektList
+{
+	float:left;
+	width: 125px;
+	height: 30px;
+	margin: 5px;
+	margin-right: 2px;
+	margin-left: 2px;
+    background: transparent;
+   	color: white;
+   	padding: 5px;
+   	font-size: 12px;
+   	line-height: 1;
+   	border-radius: 0;
+   	-webkit-appearance: none;
+   	border:1px solid gray;
+	background: url(../images/down_img.jpg) no-repeat right #333333;
+}
+
+
+/* Die Buttons *******************************************************************/
+
+/* Images */
+#DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; border: solid 1px #fff; }
+#DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 10px; border: solid 1px #fff; }
+#ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; }
+#ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonRotieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+.buttonTop{ float:left; }
+
+.buttonPlane{ margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
+.buttonAxis{ border-right: 2px solid #b1b1b1; height:41px; float:left; }
 
 #ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #DeleteAxis, #DeletePlane
 {
@@ -32,11 +74,11 @@
 	       		 -2px -2px 2px grey;
 }
 
-/****************************************************************************************************/
+/**********************************************************************************/
 
 
 
-/* Menu *********************************************************************************************/
+/* Menu ***************************************************************************/
 
 
 #header
@@ -99,4 +141,4 @@
 	position:relative;
 }
 
-/****************************************************************************************************/
+/**********************************************************************************/

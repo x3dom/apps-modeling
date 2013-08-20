@@ -100,8 +100,11 @@
     <link rel="stylesheet" type="text/css" href="css/dialog.css"/>
     <link rel='stylesheet' type='text/css' href='css/farbtastic.css'/>
     
+    <link rel='stylesheet' type='text/css' href='css/screen.css'/>
+    <link rel='stylesheet' type='text/css' href='css/bottom.css'/>
+    <link rel='stylesheet' type='text/css' href='css/right.css'/>
+    <link rel='stylesheet' type='text/css' href='css/left.css'/>
     <link rel='stylesheet' type='text/css' href='css/top.css'/>
-    
     
     <script type='text/javascript' src="js/jquery-1.9.1.js"></script>
     <script type='text/javascript' src="js/jquery-ui-1.10.3.custom.js"></script>
@@ -115,7 +118,6 @@
     <script type='text/javascript' src="js/Editor2D.js"></script>
 </head>
 
-<body style="position: fixed; height: 100%; overflow: hidden; width: 100%;">
 
 <div id="Oben">
 
@@ -123,28 +125,20 @@
         <ul class="nav">
             <li><a>Debug</a>
                 <ul>
-                    <li>
-                        <a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a>
-                    </li>
+                    <li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a></li>
+                    <li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a></li>
+                    <li><a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 
-    <select id="primitiveList" onchange="primitiveManager.comboBoxChanged(this.selectedIndex);" class="ObjektList"
-            onmouseover="this.style.cursor='pointer';"
-            style="float:left; width: 140px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
+    <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
+        onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
         <option>nothing selected</option>
     </select>
 
-    <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';"
-            style="float:left; width: 125px; height: 30px; margin: 5px; margin-right: 2px; margin-left: 2px;">
+    <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
         <option value='reset'>Reset View</option>
         <option value='all'>Show All</option>
         <option value='upright'>Upright View</option>
@@ -156,34 +150,18 @@
         <option value='bottom'>Show Bottom</option>
     </select>
 
-
-    <div style="margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left;"><img
-            src="images/plane_png.png" id="DeletePlane" onclick="controller.removePlane();"
-            onmouseover="this.style.cursor='pointer';"
-            style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; border: solid 1px #fff;"/>
-    </div>
-    <div style="border-right: 2px solid #b1b1b1; height:41px; float:left;"><img src="images/axis_png.png"
-                                                                                id="DeleteAxis"
-                                                                                onclick="controller.removeAxis();"
-                                                                                onmouseover="this.style.cursor='pointer';"
-                                                                                style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 10px; border: solid 1px #fff;"/>
-    </div>
-    <div style="float:left;"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';"
-                                  onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"
-                                  style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px;"/>
-    </div>
-    <div style="float:left;"><img src="images/verschieben_png.png" id="ButtonVerschieben"
-                                  onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();"
-                                  onmouseover="this.style.cursor='pointer';"
-                                  style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;"/></div>
-    <div style="float:left;"><img src="images/skalieren_png.png" id="ButtonSkalieren"
-                                  onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"
-                                  onmouseover="this.style.cursor='pointer';"
-                                  style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;"/></div>
-    <div style="float:left;"><img src="images/drehen_png.png" id="ButtonRotieren"
-                                  onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"
-                                  onmouseover="this.style.cursor='pointer';"
-                                  style="float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px;"/></div>
+    <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.removePlane();"/></div>
+    <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.removeAxis();"/></div>
+    <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
+                                onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"/></div>
 </div>
 
 
