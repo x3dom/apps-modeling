@@ -16,7 +16,7 @@ function PrimitiveManager(){
     // ui element to get access to the gui elements
     var ui = {};
     
-    
+    var that = this;
     
     /*
      * Adds a new primitive to the working area and stores its reference
@@ -109,8 +109,7 @@ function PrimitiveManager(){
         primitiveCounter++;
         ui.setMaterial(mat);
         
-        highlightPrimitive(true);
-        highlightBoundingVolume(id, true);
+        this.highlight(id, true);
         ui.clearParameters();
         ui.createParameters(t.Parameters);
     };
@@ -123,7 +122,7 @@ function PrimitiveManager(){
      */
     function notified(elem, pos) {
         var id = elem.getAttribute('id');
-        highlightBoundingVolume(id, true);
+        that.highlight(id, true);
         
         // update GUI elements appropriately
         if (HANDLING_MODE === "translation" && id == actualID) {
@@ -201,14 +200,13 @@ function PrimitiveManager(){
      */
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
-        highlightPrimitive(false);
+        highlightPrimitive(null, false);
         if (element == "diffuse" || element == "specular" || element == "emissive") {
             primitiveList[actualID].Material.setAttribute(element+'Color', rgb);
         }
         if(element == "transparency" || element == "shininess") {
             primitiveList[actualID].Material.setAttribute(element, rgb);
         }
-        highlightPrimitive(true);
     };
     
     
@@ -241,9 +239,8 @@ function PrimitiveManager(){
         ui.TBPrimitiveList.selectIndex(0);
         ui.TBPrimitiveList.disable(true);
         ui.RBAccordion.disable(true);
-        highlightPrimitive(false);
-        var transform = document.getElementById('cpnt_transform');
-        transform.setAttribute("render", "false");
+
+        that.highlight(null, false);
     }
 
     
@@ -256,8 +253,8 @@ function PrimitiveManager(){
      */
     function primitiveSelected(id){
         actualID = id;
-        highlightPrimitive(true);
-        highlightBoundingVolume(id, true);
+        that.highlight(id, true);
+
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
@@ -271,30 +268,32 @@ function PrimitiveManager(){
     function highlightBoundingVolume(id, bool){  
         var transform = document.getElementById('cpnt_transform');
         var matrixTransform = document.getElementById('cpnt_matrixTransform');
-        
-        transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
-        transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
-        matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
-        
-        var volume = primitiveList[id].Parameters.Primitive._x3domNode.getVolume();
-        
-        var min = x3dom.fields.SFVec3f.parse(volume.min);
-        var max = x3dom.fields.SFVec3f.parse(volume.max);
-        if (max.subtract(min).length < x3dom.fields.Eps){
-            min.x = -1; min.y = -1; min.z = -1;
-            max.x = 1; max.y = 1; max.z = 1;
+
+        if (id != null) {
+            transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
+            transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
+            matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
+
+            var volume = primitiveList[id].Parameters.Primitive._x3domNode.getVolume();
+
+            var min = x3dom.fields.SFVec3f.parse(volume.min);
+            var max = x3dom.fields.SFVec3f.parse(volume.max);
+            if (max.subtract(min).length < x3dom.fields.Eps){
+                min.x = -1; min.y = -1; min.z = -1;
+                max.x = 1; max.y = 1; max.z = 1;
+            }
+
+            var box = document.getElementById('cpnt');
+            box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
+                                      min.x+' '+min.y+' '+max.z+', '+
+                                      max.x+' '+min.y+' '+max.z+', '+
+                                      max.x+' '+min.y+' '+min.z+', '+
+                                      min.x+' '+max.y+' '+min.z+', '+
+                                      min.x+' '+max.y+' '+max.z+', '+
+                                      max.x+' '+max.y+' '+max.z+', '+
+                                      max.x+' '+max.y+' '+min.z );
         }
 
-        var box = document.getElementById('cpnt');
-        box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
-                                  min.x+' '+min.y+' '+max.z+', '+
-                                  max.x+' '+min.y+' '+max.z+', '+
-                                  max.x+' '+min.y+' '+min.z+', '+
-                                  min.x+' '+max.y+' '+min.z+', '+
-                                  min.x+' '+max.y+' '+max.z+', '+
-                                  max.x+' '+max.y+' '+max.z+', '+
-                                  max.x+' '+max.y+' '+min.z );
-        
         transform.setAttribute("render", ""+bool);
     }
     
@@ -305,16 +304,16 @@ function PrimitiveManager(){
      * @param {type} highlightOn false if all should be dehighlighted
      * @returns {null}
      */
-    function highlightPrimitive(highlightOn){  
-        for (var j = 0; j < primCounter; j++){
-            try {
-                primitiveList["primitive_" + j].highlight(false, "");
+    function highlightPrimitive(id, highlightOn){
+        // TODO FIXME only switch off prevElem and only do something on change
+        for (var key in primitiveList) {
+            if (primitiveList[key]) {
+                primitiveList[key].highlight(false, "1 1 0");
             }
-            catch(ex){}
         }
-        if (highlightOn) {
+        if (highlightOn && primitiveList[actualID]) {
            //  TODO; shall depend on user preference (highlight/bbox checkboxes)
-           // primitiveList[actualID].highlight(true, "1 1 0"); 
+           primitiveList[actualID].highlight(true, "1 1 0");
         }
     }
     
@@ -337,7 +336,7 @@ function PrimitiveManager(){
      */
     this.highlight = function(id, on) {
         highlightBoundingVolume(id, on);
-        //highlightPrimitive(on);
+        highlightPrimitive(id, on);
     };
     
     
@@ -370,7 +369,7 @@ function PrimitiveManager(){
             MT.setAttribute("matrix", matrixToString(transformMat));
         }
         
-        highlightBoundingVolume(actualID, true);
+        this.highlight(actualID, true);
     };
     
     
@@ -426,9 +425,8 @@ function PrimitiveManager(){
             ui.BBDelete.disable(false); 
             ui.TBPrimitiveList.disable(false);
             ui.RBAccordion.disable(false);
-            
-            highlightPrimitive(true);
-            highlightBoundingVolume(id, true);
+
+            that.highlight(id, true);
         }
         catch(ex){
             console.log(ex);
