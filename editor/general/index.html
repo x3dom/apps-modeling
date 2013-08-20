@@ -172,8 +172,6 @@
                 <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
             </p>
         </div>
-    
-    
         <div id="coordinatesValue">
             <p>
                 <label id="transformMode" class="text-slider"> </label>
@@ -190,48 +188,24 @@
 </div>
 
 
-<div id="Rechts" style="position: absolute; right: 0px; height:100%; width: 170px; z-index: 1000;">
-    <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
-
+<div id="Rechts">
+    <div id="rechtInnen">
         <div id="accordeon-oben">
-            
             <h3>Properties</h3>
             <div id="properties"> </div>
 
             <h3>Material Editor</h3>
             <div id="colors">
                 <div id='picker' class='picker'> </div>
-                <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
-                    <div class='colorLabel'>Diffuse</div>
-                    <input type='text' id='diffuse'
-                           style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;"
-                           name='color1' class='colorwell' value='#3F7EBD'
-                           onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
-                    <div class='colorLabel'>Specular</div>
-                    <input type='text' id='specular'
-                           style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;"
-                           name='color2' class='colorwell' value='#000000'
-                           onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
-                    <div class='colorLabel'>Emissive</div>
-                    <input type='text' id='emissive'
-                           style="border: solid 1px gray; border-radius: 5px; margin-left: 0px; padding: 2px; padding-left: 5px;"
-                           name='color3' class='colorwell' value='#000000'
-                           onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
-                    <div class='colorLabel'>Transparency</div>
-                    <input type='text' id='transparency' style="width: 110px;" value='0.3'
-                           onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
-                    <div class='colorLabel'>Shininess</div>
-                    <input type='text' id='shininess' style="width: 110px;" value='0.3'
-                           onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Specular</div><input type='text' id='specular' name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
             </div>
         </div>
     </div>
-    <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';" style="position:absolute;
-            width: 30px; height: 150px; right: 168px; top: 50%; margin-top: -75px; z-index: 100000; background-image: url(images/params.png);"></div>
+    <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';"> </div>
 </div>
 
 
