@@ -1,0 +1,17 @@
+#accordeon-oben
+{
+	width: 160px;
+	height: 100%;
+	margin-bottom: 50px;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+#accordeon-oben .ui-accordion-content
+{
+    padding: 5%;
+    background: #191415;
+    color: #FFFFFF;
+    margin: 0px;
+    margin-bottom: 10px;
+}

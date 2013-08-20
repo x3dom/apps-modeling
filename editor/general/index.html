@@ -96,7 +96,6 @@
 
     <link href="css/standard/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/properties.css"/>
-    <link rel="stylesheet" type="text/css" href="css/home.css"/>
     <link rel="stylesheet" type="text/css" href="css/dialog.css"/>
     <link rel='stylesheet' type='text/css' href='css/farbtastic.css'/>
     
@@ -165,39 +164,24 @@
 </div>
 
 
-<div id="Unten"
-     style="position: absolute; border-radius: 10px 10px 0px 0px; border: solid 2px #fff; border-bottom: none; left: 50%; margin-left: -300px; height: 40px; width: 600px; bottom: 0px; z-index: 10000; background-image: url(images/karbon_bg.png);">
-
-    <div style="float: left; position: fixed; margin-left: 25px;">
-        <p>
-            <label style="color: white; float:left; margin-top: 4px;">Object: </label>
-            <input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount"
-                   value=""
-                   style="width: 90px; float:left; font-weight: bold; border-radius: 5px 0px 0px 5px; margin-top:0px; padding-bottom: 4px; padding-left: 5px; height: 18px; border: 1px solid gray; border-right:none; background-color: #111111;"/>
-            <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();"
-                 onmouseover="this.style.cursor='pointer';"
-                 style="width: 23px; float:right; height: 23px; border: solid 1px gray; border-radius: 0px 5px 5px 0px;"/>
-        </p>
-    </div>
-
-
-    <div style="float: right; margin-right: 25px;">
-        <p>
-            <label id="transformMode" class="text-slider" style="color: white;"> </label>
-
-            <label class="text-slider" style="color: white;">X :</label>
-            <input type="text" id="amountX" onchange="primitiveManager.setTransformationValuesToPrimitive();"
-                   class="amount"/>
-
-            <label class="text-slider" style="color: white;">Y :</label>
-            <input type="text" id="amountY" onchange="primitiveManager.setTransformationValuesToPrimitive();"
-                   class="amount"/>
-
-            <label class="text-slider" style="color: white;">Z :</label>
-            <input type="text" id="amountZ" onchange="primitiveManager.setTransformationValuesToPrimitive();"
-                   class="amount"/>
-        </p>
-    </div>
+<div id="Unten">
+    
+        <div id="objectName">
+            <p>
+                <label class="objectLabel">Object: </label><input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
+                <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
+            </p>
+        </div>
+    
+    
+        <div id="coordinatesValue">
+            <p>
+                <label id="transformMode" class="text-slider"> </label>
+                <label class="text-slider">X :</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">Y :</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>    
+                <label class="text-slider">Z :</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+            </p>
+        </div>
 </div>
 
 
@@ -213,17 +197,14 @@
 <div id="Rechts" style="position: absolute; right: 0px; height:100%; width: 170px; z-index: 1000;">
     <div style="width: 170px; height: 100%; right: 0px; background-image: url(images/karbon_bg.png); border: solid 2px #fff; border-right: none; padding-top: 5px; border-radius: 10px 0px 0px 0px;">
 
-        <div id="accordeon-oben"
-             style="width: 160px; height: 100%; margin-bottom: 50px; margin-left:5px; margin-right:5px;">
+        <div id="accordeon-oben">
+            
             <h3>Properties</h3>
-
-            <div id="properties">
-            </div>
+            <div id="properties"> </div>
 
             <h3>Material Editor</h3>
-
             <div id="colors">
-                <div id='picker' class='picker'></div>
+                <div id='picker' class='picker'> </div>
                 <div class='form-item' style='padding-top:5px; padding-bottom:2px;'>
                     <div class='colorLabel'>Diffuse</div>
                     <input type='text' id='diffuse'
