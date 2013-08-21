@@ -6,21 +6,43 @@
 <link href="css/editor2D.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/jquery.editor2D.js"></script>
+<script type="text/javascript" src="js/editor2D.controller.js"></script>
 <script type="text/javascript">
 	$(function() {
      	//Create Editor2D
-		$('#Editor2D').editor2D();
-		$('#Editor2D').editor2D('reset');
+		$('#Editor2D-Canvas').editor2D();
+		$('#Editor2D-Canvas').on('modechanged', function(evt) {
+			editor2D_Mode(evt.originalEvent.detail.mode);
+		});
+		/*document.getElementById('Editor2D-Canvas').addEventListener('modechanged', function(evt) {
+			editor2D_Mode(evt.detail.mode);
+		});*/
     });
 </script>
 
 
 
 <body>
-	<input type="button" value="Open Editor" onClick="$('#Overlay').css('display', 'block');">
-	<div id="Overlay">
-    	<div id="Editor-Container">
-        	<canvas id="Editor2D" width="600" height="400"></canvas>
+	<input type="button" value="Open Editor" onClick="editor2D_Open();">
+	<div id="Editor2D-Overlay">
+    	<div id="Editor2D-Container">
+        	<canvas id="Editor2D-Canvas" width="600" height="400"></canvas>
+            <div id="Editor2D-Menu">
+            	<div class="Editor2D-Menu-Head"></div>
+            	<div class="Editor2D-Menu-Separator"></div>
+            	<a id="Editor2D-Icon-New" href="javascript:editor2D_New();" title="New"></a>
+                <div class="Editor2D-Menu-Separator"></div>
+                <a id="Editor2D-Icon-Pen" class="Editor2D-Icon-Pen-Active" href="javascript:editor2D_Mode(0);" title="Pen Tool" ></a>
+                <a id="Editor2D-Icon-Pointer" class="Editor2D-Icon-Pointer" href="javascript:editor2D_Mode(1);" title="Pointer Tool"></a>
+                <a id="Editor2D-Icon-Eraser" class="Editor2D-Icon-Eraser" href="javascript:editor2D_Mode(2);" title="Eraser Tool"></a>
+                <div class="Editor2D-Menu-Separator"></div>
+                <a id="Editor2D-Icon-Reset" href="javascript:editor2D_Reset();" title="Reset View"></a>
+                <a id="Editor2D-Icon-Move" class="Editor2D-Icon-Move" href="javascript:editor2D_Mode(3);" title="Move Tool"></a>
+                <a id="Editor2D-Icon-Zoom" class="Editor2D-Icon-Zoom" href="javascript:editor2D_Mode(4);" title="Zoom Tool"></a>
+                <div class="Editor2D-Menu-Separator"></div>
+                <a id="Editor2D-Icon-Abort" href="javascript:editor2D_Close();" title="Abort"></a>
+                <a id="Editor2D-Icon-Accept" href="javascript:$('#Editor2D-Canvas').editor2D('samplePoints');" title="Create"></a>
+            </div>
         </div>
     </div>
 </body>

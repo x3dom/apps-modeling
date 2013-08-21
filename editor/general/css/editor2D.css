@@ -9,7 +9,7 @@
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 9999;
+	z-index: 100000000;
 	background-color: rgba(90, 90, 90, 0.75);
 	display: none;
 }
@@ -33,20 +33,19 @@
 	border: 2px solid #CCC;
 	border-radius: 0px 0px 0px 0px;
 	cursor: url(../images/Editor2D-Pen.png), auto;
-	zIndex: 10000;
+	zIndex: 100000001;
 	outline: none;
 }
 
 #Editor2D-Menu {
 	position: relative;
-	top: -407px;
+	top: -405px;
 	left: 17px;
 	width: 30px;
 	height: 398px;
 	border: 1px solid #646464;
-	zIndex: 10001;
+	zIndex: 100000002;
 	background-color: rgba(204, 204, 204, 1.0);
-	//box-shadow: 5px 0px 0px #333;
 }
 
 .Editor2D-Menu-Head {

@@ -14,6 +14,9 @@ function UI(primitiveManager){
     var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
     var farbtasticPicker = null;
+    // primitive type for 2D-Editor
+    var primitivType = null;
+
     
     
     
@@ -141,6 +144,12 @@ function UI(primitiveManager){
             stop:function(e,ui){
                 primitiveManager.changePrimitiveMaterial("shininess");
             }
+        });
+
+        //Initialize 2D-Editor
+        $('#Editor2D-Canvas').editor2D();
+        $('#Editor2D-Canvas').on('modechanged', function(evt) {
+            that.editor2D_mode(evt.originalEvent.detail.mode);
         });
     }
     
@@ -417,16 +426,114 @@ function UI(primitiveManager){
     
     
 	/*  
-     * Open UI for the HTML Canvas
+     * Show the 2D-Editor
      */
-    var elementCanvas = function()
+    this.editor2D_show = function()
     {
-		var editor2D = new Editor2D();
-		editor2D.show();
+        $('#Editor2D-Canvas').editor2D('clear');
+        $('#Editor2D-Overlay').css('display', 'block');
 	};
-	
-	
-    
+
+    /*
+     * Hide the 2D-Editor
+     */
+    this.editor2D_hide = function()
+    {
+        $('#Editor2D-Overlay').css('display', 'none');
+    };
+
+    /*
+     * Create new drawing area
+     */
+    this.editor2D_new = function()
+    {
+        $('#Editor2D-Canvas').editor2D('clear');
+    }
+
+    /*
+     * Reset 2D-Editor view
+     */
+    this.editor2D_reset = function()
+    {
+        $('#Editor2D-Canvas').editor2D('resetView');
+    }
+
+    /*
+     * Handle 2D-Editors 'modechanged' event
+     */
+    this.editor2D_onModeChanged = function()
+    {
+        $('#Editor2D-Overlay').css('display', 'none');
+    };
+
+    /*
+     * Change 2D-Editors mode
+     */
+    this.editor2D_mode = function(mode)
+    {
+        this.editor2D_resetIcons();
+
+        switch (mode)
+        {
+            case 0:
+                $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen').addClass('Editor2D-Icon-Pen-Active');
+                $('#Editor2D-Canvas').editor2D('changeMode', 0);
+                break;
+            case 1:
+                $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer').addClass('Editor2D-Icon-Pointer-Active');
+                $('#Editor2D-Canvas').editor2D('changeMode', 1);
+                break
+            case 2:
+                $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser').addClass('Editor2D-Icon-Eraser-Active');
+                $('#Editor2D-Canvas').editor2D('changeMode', 2);
+                break;
+            case 3:
+                $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move').addClass('Editor2D-Icon-Move-Active');
+                $('#Editor2D-Canvas').editor2D('changeMode', 3);
+                break;
+            case 4:
+                $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom').addClass('Editor2D-Icon-Zoom-Active');
+                $('#Editor2D-Canvas').editor2D('changeMode', 4);
+                break;
+        }
+    };
+
+    /*
+     * Handle 2D-Editors 'modechanged' event
+     */
+    this.editor2D_create = function()
+    {
+        //Hide editor
+        this.editor2D_hide();
+
+        //Get points
+        var points = $('#Editor2D-Canvas').editor2D('samplePoints');
+
+        console.log(points.toString());
+
+        primitiveParameterMap[primitivType].parameters.push({
+            editorName: "-",
+            x3domName: "crossSection",
+            value: points.toString()
+        });
+
+        primitiveManager.addPrimitive(primitiveParameterMap[primitivType].x3domName,
+            primitiveParameterMap[primitivType].parameters);
+    };
+
+
+    /*
+     * Reset all 2D-Editor icon states
+     */
+    this.editor2D_resetIcons = function()
+    {
+        $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen-Active').addClass('Editor2D-Icon-Pen');
+        $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer-Active').addClass('Editor2D-Icon-Pointer');
+        $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser-Active').addClass('Editor2D-Icon-Eraser');
+        $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move-Active').addClass('Editor2D-Icon-Move');
+        $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom-Active').addClass('Editor2D-Icon-Zoom');
+    };
+
     /*
      * Adds one primitive element to the left bar 
      * @returns (undefined)
@@ -453,13 +560,14 @@ function UI(primitiveManager){
         if (name == "Extrusion" || name == "Solid of Revolution")
         {
             divID.onclick = function() {
-                elementCanvas();
+                that.editor2D_show();
 
+                primitivType = name;
                 // TODO; return somehow all required parameters for creation
                 // (depending if Extrusion or SolidOfRevolution was clicked)
                 // for now, just create a default object to test everything.
-                primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, 
-                                              primitiveParameterMap[name].parameters);
+                //primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName,
+                                              //primitiveParameterMap[name].parameters);
             };
      	}
         else

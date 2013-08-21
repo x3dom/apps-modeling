@@ -86,6 +86,7 @@ function PrimitiveManager(){
         var prim = document.createElement(primitive);
         
         prim.setAttribute("useGeoCache", "false");
+        prim.setAttribute("solid", "false");
         // set attributes before inserting into live tree to avoid update
         setDefaultParameters(prim, parameters);
         

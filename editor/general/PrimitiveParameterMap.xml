@@ -69,12 +69,12 @@
     </Primitive>
     <Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
         <!-- TODO: wrong mapping, only test values, to be overwritten by editor before creation -->
-        <Parameter editorName="-" x3domName="crossSection">0 0, 0 -1, -0.7 -1, -0.7 -0.5, -1 -0.5, -1 0, 0 0</Parameter>
+        <!--Parameter editorName="-" x3domName="crossSection">0 0, 0 -1, -0.7 -1, -0.7 -0.5, -1 -0.5, -1 0, 0 0</Parameter-->
         <Parameter editorName="Spine" x3domName="spine">0 0 0, 0 0.5 0</Parameter><!-- height -->
     </Primitive>
     <Primitive editorName="Solid of Revolution" x3domName="SolidOfRevolution" image="images/solidofrevolution.jpg">
         <!-- TODO: wrong mapping, only test values, to be overwritten by editor before creation -->
-        <Parameter editorName="-" x3domName="crossSection">-0.866 0.5, -0.5 0.866, 0 0.8, 0.5 0.866, 0.866 0.5</Parameter>
+        <!--Parameter editorName="-" x3domName="crossSection">-0.866 0.5, -0.5 0.866, 0 0.8, 0.5 0.866, 0.866 0.5</Parameter-->
         <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
