@@ -1,3 +1,8 @@
+#objectName{ float: left; position: fixed; margin-left: 25px; }
+#coordinatesValue{ float: right; margin-right: 25px; }
+.objectLabel{ color: white; float:left; margin-top: 4px; }
+.text-slider{ color: white; }
+
 #Unten
 {
 	position: absolute;
@@ -37,7 +42,18 @@
 	border-radius: 0px 5px 5px 0px;
 }
 
-#objectName{ float: left; position: fixed; margin-left: 25px; }
-#coordinatesValue{ float: right; margin-right: 25px; }
-.objectLabel{ color: white; float:left; margin-top: 4px; }
-.text-slider{ color: white; }
+.amount
+{
+	width: 35px;
+	margin-left: 5px;
+        padding-bottom: 4px;
+        height: 14px;
+	color: white;
+	font-size:0.9em;
+	background: transparent;
+}
+
+.text-slider
+{
+	margin: 5px;
+}
