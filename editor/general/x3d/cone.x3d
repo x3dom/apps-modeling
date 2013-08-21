@@ -1,8 +1,0 @@
-<x3d>
-	<scene>
-		<shape>
-			<appearance><material diffuseColor='blue'></material></appearance>
-			<cone></cone>
-		</shape>
-	</scene>
-</x3d>

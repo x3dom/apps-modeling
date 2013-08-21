@@ -12,5 +12,10 @@ window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
     primitiveManager.clearTransformationValues();
+    
+    
+    /* Bitte nicht entfernen, ist zum testen, wenn dann auskommentieren */
+    var snapping = new Snapping();
+    snapping.testObject();
 };
 

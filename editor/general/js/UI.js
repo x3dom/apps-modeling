@@ -633,7 +633,6 @@ function UI(primitiveManager){
         divID.setAttribute("style", "margin-top: 10px;");
 
         var newLabel = document.createElement("label");
-        newLabel.for = object.id;
         newLabel.innerHTML = object.param.editorName;
 
         var newInput = document.createElement("input");
