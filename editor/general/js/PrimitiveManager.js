@@ -75,7 +75,7 @@ function PrimitiveManager(){
         mat.setAttribute("diffuseColor", "#3F7EBD");
         mat.setAttribute("specularColor", "#222222");
         mat.setAttribute("emissiveColor", "#000000");
-        mat.setAttribute("transparency", "0.2");
+        mat.setAttribute("transparency", "0.0");
         mat.setAttribute("shininess", "0.3");
         t.Material = mat;
 
@@ -362,9 +362,9 @@ function PrimitiveManager(){
             MT.Transformation.rotationX = ui.BBTransX.get();
             MT.Transformation.rotationY = ui.BBTransY.get();
             MT.Transformation.rotationZ = ui.BBTransZ.get();
-            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get());
-            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get());
-            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get());
+            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * Math.PI / 180);
+            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * Math.PI / 180);
+            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * Math.PI / 180);
 
             transformMat = rotX.mult(rotY).mult(rotZ);
             MT.setAttribute("matrix", matrixToString(transformMat));
