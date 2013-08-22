@@ -1,0 +1,230 @@
+@charset "utf-8";
+/* CSS Document */
+
+#Editor2D-Overlay {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100000000;
+	background-color: rgba(90, 90, 90, 0.75);
+	display: none;
+}
+
+#Editor2D-Container {
+	width: 632px;
+	height: 432px;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	padding: 0;
+	margin: -216px 0px 0px -315px;
+	background-color: rgb(60, 60, 60);
+	border-radius: 5px;
+	box-shadow: 5px 5px 5px #333;
+}
+
+#Editor2D-Canvas {
+	margin: 15px 0px 0px 15px;
+	padding: 0;
+	border: 2px solid #CCC;
+	border-radius: 0px 0px 0px 0px;
+	cursor: url(../images/Editor2D-Pen.png), auto;
+	zIndex: 100000001;
+	outline: none;
+}
+
+#Editor2D-Menu {
+	position: relative;
+	top: -405px;
+	left: 17px;
+	width: 30px;
+	height: 398px;
+	border: 1px solid #646464;
+	zIndex: 100000002;
+	background-color: rgba(204, 204, 204, 1.0);
+}
+
+.Editor2D-Menu-Head {
+	display: block;
+	width: 30px;
+	height: 14px;
+	background: transparent url(../images/Editor2D-Icons.png) -25px -225px no-repeat;
+}
+
+.Editor2D-Menu-Separator {
+	display: block;
+	width: 25px;
+	height: 15px;
+	margin-left: 3px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -225px no-repeat;
+}
+
+#Editor2D-Icon-New {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px 0px no-repeat;
+}
+
+#Editor2D-Icon-New:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px 0px no-repeat;
+}
+
+#Editor2D-Icon-New:active {
+	background: transparent url(../images/Editor2D-Icons.png) -50px 0px no-repeat;
+}
+
+.Editor2D-Icon-Pen {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -25px no-repeat;
+}
+
+.Editor2D-Icon-Pen:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -25px no-repeat;
+}
+
+.Editor2D-Icon-Pen-Active {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -50px -25px no-repeat;
+}
+
+.Editor2D-Icon-Pointer {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -50px no-repeat;
+}
+
+.Editor2D-Icon-Pointer:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -50px no-repeat;
+}
+
+.Editor2D-Icon-Pointer-Active {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -50px -50px no-repeat;
+}
+
+.Editor2D-Icon-Eraser {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -75px no-repeat;
+}
+
+.Editor2D-Icon-Eraser:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -75px no-repeat;
+}
+
+.Editor2D-Icon-Eraser-Active {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -50px -75px no-repeat;
+}
+
+#Editor2D-Icon-Reset {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -100px no-repeat;
+}
+
+#Editor2D-Icon-Reset:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -100px no-repeat;
+}
+
+#Editor2D-Icon-Reset:active {
+	background: transparent url(../images/Editor2D-Icons.png) -50px -100px no-repeat;
+}
+
+.Editor2D-Icon-Move {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -125px no-repeat;
+}
+
+.Editor2D-Icon-Move:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -125px no-repeat;
+}
+
+.Editor2D-Icon-Move-Active {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -50px -125px no-repeat;
+}
+
+.Editor2D-Icon-Zoom {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -150px no-repeat;
+}
+
+.Editor2D-Icon-Zoom:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -150px no-repeat;
+}
+
+.Editor2D-Icon-Zoom-Active {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -50px -150px no-repeat;
+}
+
+#Editor2D-Icon-Accept {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -175px no-repeat;
+}
+
+#Editor2D-Icon-Accept:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -175px no-repeat;
+}
+
+#Editor2D-Icon-Accept:active {
+	background: transparent url(../images/Editor2D-Icons.png) -50px -175px no-repeat;
+}
+
+#Editor2D-Icon-Abort {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) 0px -200px no-repeat;
+}
+
+#Editor2D-Icon-Abort:hover {
+	background: transparent url(../images/Editor2D-Icons.png) -25px -200px no-repeat;
+}
+
+#Editor2D-Icon-Abort:active {
+	background: transparent url(../images/Editor2D-Icons.png) -50px -200px no-repeat;
+}
+
+

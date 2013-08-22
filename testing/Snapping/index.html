@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html;charset=utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+
+    <title>CAD Primitive Editor</title>
+
+    <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/dev/x3dom.css"/>
+
+    <script type="text/javascript" src="../../../x3dom/src/lang/Array.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Internals.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/debug.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/AdaptiveRenderControl.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/DownloadManager.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/RefinementJobManager.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/RefinementJobWorker.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/Properties.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/DoublyLinkedList.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/EarClipping.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/Utils.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/States.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/StateManager.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/BinaryContainerSetup.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/DrawableCollection.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/BVH.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/X3DCanvas.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Runtime.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Main.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Cache.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Texture.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/Shader.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderParts.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderDynamic.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderDynamicMobile.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderComposed.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderNormal.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderPicking.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderPicking24.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderPickingId.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderPickingColor.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderPickingTexcoord.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderFrontgroundTexture.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderBackgroundTexture.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderBackgroundSkyTexture.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderBackgroundCubeTexture.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderShadow.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderShadowRendering.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/shader/ShaderBlur.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/gfx_webgl.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/gfx_flash.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/X3DDocument.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/MatrixMixer.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Viewarea.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/Mesh.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/fields.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/NodeNameSpace.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Core.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Grouping.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Bindable.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Rendering.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Shape.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Lighting.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Followers.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Interpolation.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Time.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Networking.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/EnvironmentalEffects.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Navigation.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Text.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Sound.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Texturing.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Shaders.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Geometry3D.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Texturing3D.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Geospatial.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Geometry2D.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/VolumeRendering.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/CADGeometry.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Terrain.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/GeometryEDF.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/util/Moveable.js"></script>
+
+    <script>
+    if (typeof x3dom === "undefined")
+    {
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom-full.js"><\/script>');
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/nodes/GeometryEDF.js"><\/script>');
+        document.write(
+            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/util/Moveable.js"><\/script>');
+    }
+    </script>
+
+    <link href="css/standard/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dialog.css"/>
+    <link rel='stylesheet' type='text/css' href='css/farbtastic.css'/>
+    <link rel='stylesheet' type='text/css' href='css/editor2D.css'/>
+    
+    <link rel='stylesheet' type='text/css' href='css/screen.css'/>
+    <link rel='stylesheet' type='text/css' href='css/bottom.css'/>
+    <link rel='stylesheet' type='text/css' href='css/right.css'/>
+    <link rel='stylesheet' type='text/css' href='css/left.css'/>
+    <link rel='stylesheet' type='text/css' href='css/top.css'/>
+    
+    <script type='text/javascript' src="js/jquery-1.9.1.js"></script>
+    <script type='text/javascript' src="js/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
+    
+    <script type='text/javascript' src="js/PrimitiveManager.js"></script>
+    <script type='text/javascript' src="js/UI.js"></script>
+    <script type='text/javascript' src="js/Controller.js"></script>
+    <script type='text/javascript' src="js/main.js"></script>
+    <script type='text/javascript' src='js/farbtastic.js'></script>
+    <script type='text/javascript' src="js/jquery.editor2D.js"></script>
+    <script type='text/javascript' src="js/editor2D.controller.js"></script>
+    
+    <!--Bitte nicht entfernen, ist zum testen da-->
+    <script type='text/javascript' src="js/Snapping.js"></script>
+</head>
+
+
+<div id="Oben">
+
+    <div id="header">
+        <ul class="nav">
+            <li><a>Debug</a>
+                <ul>
+                    <li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a></li>
+                    <li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a></li>
+                    <li><a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
+        onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
+        <option>nothing selected</option>
+    </select>
+
+    <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
+        <option value='reset'>Reset View</option>
+        <option value='all'>Show All</option>
+        <option value='upright'>Upright View</option>
+        <option value='front'>Show Front</option>
+        <option value='back'>Show Back</option>
+        <option value='right'>Show Right</option>
+        <option value='left'>Show Left</option>
+        <option value='top'>Show Top</option>
+        <option value='bottom'>Show Bottom</option>
+    </select>
+
+    <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.removePlane();"/></div>
+    <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.removeAxis();"/></div>
+    <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
+                                onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"/></div>
+</div>
+
+
+<div id="Unten">
+    
+        <div id="objectName">
+            <p>
+                <label class="objectLabel">Object: </label><input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
+                <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
+            </p>
+        </div>
+        <div id="coordinatesValue">
+            <p>
+                <label id="transformMode" class="text-slider"> </label>
+                <label class="text-slider">X :</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">Y :</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>    
+                <label class="text-slider">Z :</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+            </p>
+        </div>
+</div>
+
+
+<div id="Links"> <div id="leftBar"> <div id="divs"> </div> </div>
+    <div id="button_Links" onclick="ui.fadeLeft();" onmouseover="this.style.cursor='pointer';"> </div>
+</div>
+
+
+<div id="Rechts">
+    <div id="rechtInnen">
+        <div id="accordeon-oben">
+            <h3>Properties</h3>
+            <div id="properties"> </div>
+
+            <h3>Material Editor</h3>
+            <div id="colors">
+                <div id='picker' class='picker'> </div>
+                <div class='form-item'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Specular</div><input type='text' id='specular' name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+            </div>
+        </div>
+    </div>
+    <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';"> </div>
+</div>
+
+<div id="Editor2D-Overlay">
+    <div id="Editor2D-Container">
+        <canvas id="Editor2D-Canvas" width="600" height="400"></canvas>
+        <div id="Editor2D-Menu">
+            <div class="Editor2D-Menu-Head"></div>
+            <div class="Editor2D-Menu-Separator"></div>
+            <a id="Editor2D-Icon-New" href="javascript:ui.editor2D_new();" title="New"></a>
+            <div class="Editor2D-Menu-Separator"></div>
+            <a id="Editor2D-Icon-Pen" class="Editor2D-Icon-Pen-Active" href="javascript:ui.editor2D_mode(0);" title="Pen Tool" ></a>
+            <a id="Editor2D-Icon-Pointer" class="Editor2D-Icon-Pointer" href="javascript:ui.editor2D_mode(1);" title="Pointer Tool"></a>
+            <a id="Editor2D-Icon-Eraser" class="Editor2D-Icon-Eraser" href="javascript:ui.editor2D_mode(2);" title="Eraser Tool"></a>
+            <div class="Editor2D-Menu-Separator"></div>
+            <a id="Editor2D-Icon-Reset" href="javascript:ui.editor2D_reset();" title="Reset View"></a>
+            <a id="Editor2D-Icon-Move" class="Editor2D-Icon-Move" href="javascript:ui.editor2D_mode(3);" title="Move Tool"></a>
+            <a id="Editor2D-Icon-Zoom" class="Editor2D-Icon-Zoom" href="javascript:ui.editor2D_mode(4);" title="Zoom Tool"></a>
+            <div class="Editor2D-Menu-Separator"></div>
+            <a id="Editor2D-Icon-Abort" href="javascript:ui.editor2D_hide();" title="Abort"></a>
+            <a id="Editor2D-Icon-Accept" href="javascript:ui.editor2D_create();" title="Create"></a>
+        </div>
+    </div>
+</div>
+
+
+<div id="x3d-view">
+    <x3d id="x3d" showStat="false" showLog="false">
+        <scene>
+            <viewpoint id="viewPoint" zNear="0.1" 
+                       position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
+            </viewpoint>
+            <navigationInfo id="navi" type='"EXAMINE" "ANY"'></navigationInfo>
+
+            <transform id="planeId" rotation="1 0 0 -1.571">
+                <Shape id="plane" isPickable="false">
+                    <Appearance>
+                        <Material emissiveColor='0.2 0.2 0.2'></Material>
+                    </Appearance>
+                    <Plane solid="false" size='25 25' primType='LINES' subdivision='50 50'>
+                    </Plane>
+                </Shape>
+            </transform>
+
+            <transform id="axis">
+                <inline url="x3d/axis.x3d"></inline>
+            </transform>
+
+            <transform id="cpnt_transform">
+                <matrixTransform id="cpnt_matrixTransform">
+                    <Shape isPickable="false" DEF="line">
+                        <IndexedLineSet coordIndex="0 1 2 3 0 -1, 4 5 6 7 4 -1, 0 4 -1, 1 5 -1, 2 6 -1, 3 7 -1">
+                            <Coordinate id="cpnt" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0">
+                            </Coordinate>
+                            <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
+                        </IndexedLineSet>
+                    </Shape>
+                </matrixTransform>
+            </transform>
+
+            <transform id="root" translation="0 0 0"></transform>
+        </scene>
+    </x3d>
+</div>
+
+</body>
+</html>

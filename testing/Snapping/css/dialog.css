@@ -1,0 +1,28 @@
+#valuContener
+{
+	margin: 6px;
+}
+
+#labelValueX, #labelValueZ, #labelValueHeight
+{
+	float:left;
+	width: 35px;
+	height: 20px;
+}
+
+
+.labelValue
+{
+	margin-left: 10px;
+	color: #DDDDDD;
+}
+
+
+#buttonCreateShape, #buttonCancelShape
+{
+	float: right;
+	height: 28px;
+	margin-right: 5px;
+}
+
+
