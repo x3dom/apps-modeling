@@ -478,7 +478,7 @@
 			var dirVecX = this.mousePosX - this.actPoint.x;
 			var dirVecY = this.mousePosY - this.actPoint.y;
 			
-			if (Math.abs(dirVecX > 0.25) || Math.abs(dirVecY) > 0.25)
+			if (Math.abs(dirVecX > 0.1) || Math.abs(dirVecY) > 0.1)
 			{
 				if (this.actPoint.control.length == 0) 
 				{
@@ -856,21 +856,64 @@
 		this.samplePoints = function()
 		{
             var points = [];
-            for (var p=0; p<=this.points.length; p++)
+            var point, p0, p1, p2, p3;
+
+            for (var p=0; p<this.points.length; p++)
 			{
-                var idx = (p != this.points.length) ? p : 0;
+                var act = (p != this.points.length) ? p : 0;
+                var next = (p+1 != this.points.length) ? p+1 : 0;
 
-				if (this.points[idx].control.length == 0)
+                console.log("act: " + act + " next: " + next);
+
+				if (this.points[act].control.length == 0 && this.points[next].control.length == 0)
 				{
-                    points.push(this.points[idx].x, this.points[idx].y);
+                    points.push(this.points[act].x, this.points[act].y);
 				}
-				else
+				else if (this.points[act].control.length != 0 && this.points[next].control.length == 0)
 				{
+                    p0 = new x3dom.fields.SFVec2f(this.points[act].x, this.points[act].y);
+                    p1 = new x3dom.fields.SFVec2f(this.points[act].control[0].x, this.points[act].control[0].y);
+                    p2 = new x3dom.fields.SFVec2f(this.points[next].x, this.points[next].y);
+                    p3 = new x3dom.fields.SFVec2f(this.points[next].x, this.points[next].y);
 
+                    for (var t=0; t<1.0-1/32; t+=1/32)
+                    {
+                        point = this.calBezierPoints(t, p0, p1, p2, p3);
+                        points.push(point.x, point.y);
+                    }
 				}
-                console.log(points[p]);
+                else if (this.points[act].control.length == 0 && this.points[next].control.length != 0)
+                {
+                    p0 = new x3dom.fields.SFVec2f(this.points[act].x, this.points[act].y);
+                    p1 = new x3dom.fields.SFVec2f(this.points[act].x, this.points[act].y);
+                    p2 = new x3dom.fields.SFVec2f(this.points[next].control[1].x, this.points[next].control[1].y);
+                    p3 = new x3dom.fields.SFVec2f(this.points[next].x, this.points[next].y);
 
+                    for (var t=0; t<1.0-1/32; t+=1/32)
+                    {
+                        point = this.calBezierPoints(t, p0, p1, p2, p3);
+                        points.push(point.x, point.y);
+                    }
+                }
+                else
+                {
+                    p0 = new x3dom.fields.SFVec2f(this.points[act].x, this.points[act].y);
+                    p1 = new x3dom.fields.SFVec2f(this.points[act].control[0].x, this.points[act].control[0].y);
+                    p2 = new x3dom.fields.SFVec2f(this.points[next].control[1].x, this.points[next].control[1].y);
+                    p3 = new x3dom.fields.SFVec2f(this.points[next].x, this.points[next].y);
+
+                    for (var t=0; t<1.0-1/32; t+=1/32)
+                    {
+                        point = this.calBezierPoints(t, p0, p1, p2, p3);
+                        points.push(point.x, point.y);
+                    }
+                }
 			}
+
+            if (this.closed)
+            {
+                points.push(this.points[0].x, this.points[0].y);
+            }
 
             return points;
 		};

@@ -509,8 +509,6 @@ function UI(primitiveManager){
         //Get points
         var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
-        console.log(points.toString());
-
         primitiveParameterMap[primitivType].parameters.push({
             editorName: "-",
             x3domName: "crossSection",
