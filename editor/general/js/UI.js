@@ -193,7 +193,8 @@ function UI(primitiveManager){
                   value: parameters[j].textContent,
                   type: parameters[j].getAttribute("type"),
                   render: parameters[j].getAttribute("render"),
-                  step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 0.1
+                  step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 
+                                                                       (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0
                 } );
             }
        }
@@ -660,8 +661,15 @@ function UI(primitiveManager){
             $("#"+object.id).spinner({
                 step: object.param.step,
                 stop:function(e,ui) {
-                    object.primitive.setAttribute(object.param.x3domName,
-                                                  document.getElementById(object.id).value);
+                    if (object.param.type === "angle"){
+                        object.primitive.setAttribute(object.param.x3domName,
+                                                      document.getElementById(object.id).value * Math.PI / 180); 
+                    }
+                    else {
+                        object.primitive.setAttribute(object.param.x3domName,
+                                                      document.getElementById(object.id).value);
+                    }
+                    
                     object.param.value = document.getElementById(object.id).value;
 
                     var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh

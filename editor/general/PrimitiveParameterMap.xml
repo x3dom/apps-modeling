@@ -17,14 +17,14 @@
     <Primitive editorName="Circular Torus" x3domName="Torus" image="images/circulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
-        <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
-        <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+        <Parameter type="angle" editorName="Angle" x3domName="angle">180</Parameter>
+        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
         <Parameter render="false" step="1"  editorName="" x3domName="insideOutsideRadius">true</Parameter>
     </Primitive>
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/rectangulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
-        <Parameter step="1.0" editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter type="angle" editorName="Angle" x3domName="angle">160</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
@@ -32,7 +32,7 @@
         <Parameter editorName="Diameter" x3domName="diameter">1.0</Parameter>
         <Parameter editorName="Radius" x3domName="radius">0.0</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
-        <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
     </Primitive>
     <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
         <Parameter editorName="DTop" x3domName="dtop">0.5</Parameter>
@@ -77,7 +77,7 @@
     <Primitive editorName="Solid of Revolution" x3domName="SolidOfRevolution" image="images/solidofrevolution.jpg">
         <!-- TODO: wrong mapping, only test values, to be overwritten by editor before creation -->
         <!--Parameter editorName="-" x3domName="crossSection">-0.866 0.5, -0.5 0.866, 0 0.8, 0.5 0.866, 0.866 0.5</Parameter-->
-        <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter type="angle" editorName="Angle" x3domName="angle">180</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>
 </PrimitiveParameterMap>
