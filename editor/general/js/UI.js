@@ -191,8 +191,8 @@ function UI(primitiveManager){
                 { editorName: parameters[j].getAttribute("editorName"),
                   x3domName: parameters[j].getAttribute("x3domName"),
                   value: parameters[j].textContent,
-                  type: parameters[j].getAttribute("type"),
-                  render: parameters[j].getAttribute("render"),
+                  type: (parameters[j].getAttribute("type") !== null) ? parameters[j].getAttribute("type") : "spinner",
+                  render: (parameters[j].getAttribute("render") !== null) ? parameters[j].getAttribute("render") : "true",
                   step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 
                                                                        (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0
                 } );
