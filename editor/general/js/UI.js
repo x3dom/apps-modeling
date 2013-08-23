@@ -388,7 +388,7 @@ function UI(primitiveManager){
        if (fadeSwitch[1] === 0){
            $("#Rechts").animate(
            {
-               right: "-170px"
+               right: "-190px"
            }, 250);
            fadeSwitch[1]++;
        }
