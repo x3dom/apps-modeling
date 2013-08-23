@@ -104,10 +104,12 @@
     <link rel='stylesheet' type='text/css' href='css/right.css'/>
     <link rel='stylesheet' type='text/css' href='css/left.css'/>
     <link rel='stylesheet' type='text/css' href='css/top.css'/>
+    <link rel='stylesheet' type='text/css' href='css/jquery.switchbutton.css'/>
     
     <script type='text/javascript' src="js/jquery-1.9.1.js"></script>
     <script type='text/javascript' src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
+    <script type='text/javascript' src="js/jquery.slimscroll.min.js"></script>
+    <script type='text/javascript' src="js/jquery.switchbutton.js"></script>
     
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
@@ -234,7 +236,7 @@
 
 <div id="x3d-view">
     <x3d id="x3d" showStat="false" showLog="false">
-        <scene>
+        <scene onbackgroundClicked="document.getElementById('primitiveList').selectedIndex = 0; primitiveManager.comboBoxChanged(0);">
             <viewpoint id="viewPoint" zNear="0.1" 
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
             </viewpoint>
