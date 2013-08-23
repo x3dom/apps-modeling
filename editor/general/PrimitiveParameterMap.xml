@@ -24,7 +24,7 @@
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/rectangulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
-        <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
+        <Parameter step="1.0" editorName="Angle" x3domName="angle">1.57079632679</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
     </Primitive>

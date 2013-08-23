@@ -193,7 +193,7 @@ function UI(primitiveManager){
                   value: parameters[j].textContent,
                   type: parameters[j].getAttribute("type"),
                   render: parameters[j].getAttribute("render"),
-                  step: parameters[j].getAttribute("step")  
+                  step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 0.1
                 } );
             }
        }
