@@ -387,6 +387,8 @@ function PrimitiveManager(){
         else {
             actualID = ui.TBPrimitiveList.idMap(id).id;
             setTransformValues(actualID, HANDLING_MODE);
+            ui.clearParameters();
+            ui.createParameters(primitiveList[actualID].Parameters);
         }
     };
     
