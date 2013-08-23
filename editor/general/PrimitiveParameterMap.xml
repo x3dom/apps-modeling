@@ -13,6 +13,8 @@
         <Parameter editorName="Radius" x3domName="radius">0.5</Parameter>
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter editorName="Show Top" x3domName="top" type="bool">true</Parameter>
+        <Parameter editorName="Show Bottom" x3domName="bottom" type="bool">true</Parameter>
     </Primitive>
     <Primitive editorName="Circular Torus" x3domName="Torus" image="images/circulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
