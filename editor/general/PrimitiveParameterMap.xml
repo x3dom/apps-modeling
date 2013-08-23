@@ -1,7 +1,7 @@
 <PrimitiveParameterMap>
     <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
         <!-- JSON or directly JS would be better suited here, since we need to to define various mapping functions -->
-        <Parameter editorName="XYZ-Length" x3domName="size">1.0,1.0,1.0</Parameter>
+        <Parameter type="vec3" step="0.25" render="true" editorName="Size" x3domName="size">1.0,1.0,1.0</Parameter>
     </Primitive>
     <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
         <Parameter editorName="Bottom Radius" x3domName="bottomRadius">0.5</Parameter>
@@ -19,7 +19,7 @@
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
         <Parameter editorName="Angle" x3domName="angle">1.57079632679</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
-        <Parameter show="true" type="bool, angle(PI / 180), Vec3, Vec2" step="1"  editorName="-" x3domName="insideOutsideRadius">true</Parameter>
+        <Parameter render="false" step="1"  editorName="" x3domName="insideOutsideRadius">true</Parameter>
     </Primitive>
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/rectangulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
@@ -59,6 +59,8 @@
         <Parameter editorName="XBShear" x3domName="xbshear">0.26179</Parameter>
         <Parameter editorName="YBShear" x3domName="ybshear">0</Parameter>
         <Parameter editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter type="bool" editorName="Show Top" x3domName="top">true</Parameter>
+        <Parameter type="bool" editorName="Show Bottom" x3domName="bottom">true</Parameter>
     </Primitive>
     <Primitive editorName="Nozzle" x3domName="Nozzle" image="images/nozzle.jpg">
         <Parameter editorName="Height" x3domName="stemHeight">0.9</Parameter>
