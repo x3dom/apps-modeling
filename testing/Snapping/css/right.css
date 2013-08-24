@@ -1,10 +1,10 @@
-#Rechts{ position: absolute; right: 0px; height:100%; width: 170px; z-index: 1000; }
+#Rechts{ position: absolute; right: 0px; height:100%; width: 190px; z-index: 1000; }
 #transparency, #shininess { width: 110px; }
 .form-item{ padding-top:5px; padding-bottom:2px; }
 
 #rechtInnen
 {
-	width: 170px;
+	width: 190px;
 	height: 100%;
 	right: 0px;
 	background-image: url(../images/karbon_bg.png);
@@ -16,7 +16,7 @@
 
 #accordeon-oben
 {
-	width: 160px;
+	width: 180px;
 	height: 100%;
 	margin-bottom: 50px;
 	margin-left:5px;
@@ -37,7 +37,7 @@
 	position:absolute;
 	width: 30px;
 	height: 150px;
-	right: 168px;
+	right: 188px;
 	top: 50%;
 	margin-top: -75px;
 	z-index: 100000;
@@ -51,4 +51,10 @@
 	margin-left: 0px;
 	padding: 2px;
 	padding-left: 5px;
+}
+
+
+#properties{
+    max-height: 80%; 
+    overflow-y: auto;
 }

@@ -143,7 +143,8 @@ function PrimitiveManager(){
      */
     function setDefaultParameters(primitive, parameters){
         for (var i = 0; i < parameters.length; i++){
-            primitive.setAttribute(parameters[i].x3domName, parameters[i].value);
+            primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ? 
+                (parameters[i].value * Math.PI / 180).toString() : parameters[i].value);
         }
     }
     
@@ -387,6 +388,8 @@ function PrimitiveManager(){
         else {
             actualID = ui.TBPrimitiveList.idMap(id).id;
             setTransformValues(actualID, HANDLING_MODE);
+            ui.clearParameters();
+            ui.createParameters(primitiveList[actualID].Parameters);
         }
     };
     

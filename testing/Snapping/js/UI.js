@@ -147,10 +147,12 @@ function UI(primitiveManager){
         });
 
         //Initialize 2D-Editor
-        $('#Editor2D-Canvas').editor2D();
-        $('#Editor2D-Canvas').on('modechanged', function(evt) {
+        var editor2DCanvas = $('#Editor2D-Canvas');
+        editor2DCanvas.editor2D();
+        editor2DCanvas.on('modechanged', function(evt) {
             that.editor2D_mode(evt.originalEvent.detail.mode);
         });
+
     }
     
     
@@ -179,17 +181,22 @@ function UI(primitiveManager){
        var primitiveParameterMap = [];
        for (var i = 0; i < primitives.length; i++){
             primitiveParameterMap[primitives[i].getAttribute("editorName")] =
-                 { editorName: primitives[i].getAttribute("editorName"),
-                   x3domName: primitives[i].getAttribute("x3domName"),
-                   image: primitives[i].getAttribute("image"),
-                   parameters : [] };
+            { editorName: primitives[i].getAttribute("editorName"),
+              x3domName: primitives[i].getAttribute("x3domName"),
+              image: primitives[i].getAttribute("image"),
+              parameters : [] };
 
             var parameters = primitives[i].getElementsByTagName("Parameter");
             for (var j = 0; j < parameters.length; j++){
                 primitiveParameterMap[primitives[i].getAttribute("editorName")].parameters.push(
-                    { editorName: parameters[j].getAttribute("editorName"),
-                      x3domName: parameters[j].getAttribute("x3domName"),
-                      value: parameters[j].textContent } );
+                { editorName: parameters[j].getAttribute("editorName"),
+                  x3domName: parameters[j].getAttribute("x3domName"),
+                  value: parameters[j].textContent,
+                  type: (parameters[j].getAttribute("type") !== null) ? parameters[j].getAttribute("type") : "spinner",
+                  render: (parameters[j].getAttribute("render") !== null) ? parameters[j].getAttribute("render") : "true",
+                  step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 
+                                                                       (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0
+                } );
             }
        }
        
@@ -382,7 +389,7 @@ function UI(primitiveManager){
        if (fadeSwitch[1] === 0){
            $("#Rechts").animate(
            {
-               right: "-170px"
+               right: "-190px"
            }, 250);
            fadeSwitch[1]++;
        }
@@ -448,7 +455,7 @@ function UI(primitiveManager){
     this.editor2D_new = function()
     {
         $('#Editor2D-Canvas').editor2D('clear');
-    }
+    };
 
     /*
      * Reset 2D-Editor view
@@ -456,7 +463,7 @@ function UI(primitiveManager){
     this.editor2D_reset = function()
     {
         $('#Editor2D-Canvas').editor2D('resetView');
-    }
+    };
 
     /*
      * Handle 2D-Editors 'modechanged' event
@@ -482,7 +489,7 @@ function UI(primitiveManager){
             case 1:
                 $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer').addClass('Editor2D-Icon-Pointer-Active');
                 $('#Editor2D-Canvas').editor2D('changeMode', 1);
-                break
+                break;
             case 2:
                 $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser').addClass('Editor2D-Icon-Eraser-Active');
                 $('#Editor2D-Canvas').editor2D('changeMode', 2);
@@ -509,10 +516,9 @@ function UI(primitiveManager){
         //Get points
         var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
-        console.log(points.toString());
-
         primitiveParameterMap[primitivType].parameters.push({
-            editorName: "-",
+            render: "false",
+            editorName: "Cross Section",
             x3domName: "crossSection",
             value: points.toString()
         });
@@ -618,43 +624,141 @@ function UI(primitiveManager){
 
     /*
      * Adds one parameter value to the right bar
-     * TODO: only works for SFFloat
      * @param {object} object includes editorName and x3domName of parameter and
      * the value that should be set 
      * @returns (Null)
      */
     function addRightbarElement(object)
     {
-        // THINKABOUTME: better add 'editable' flag
-        if (object.param.editorName == "-")
+        if (object.param.render !== null && object.param.render === "false")
             return;
 
         var divID = document.createElement("div");	
-        divID.setAttribute("style", "margin-top: 10px;");
+        divID.setAttribute("style", "float: left; margin-bottom: 10px; border-bottom: 1px solid gray; padding-bottom: 10px;");
+        if (object.param.type==="bool")
+            boolProperty();
+        else if(object.param.type==="vec2")
+            vecProperty(2);
+        else if(object.param.type==="vec3")
+            vecProperty(3);
+        else 
+            normalProperty();
+        
+        
 
-        var newLabel = document.createElement("label");
-        newLabel.innerHTML = object.param.editorName;
+        function normalProperty(){
+            var newLabel = document.createElement("label");
+            newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
+            newLabel.innerHTML = object.param.editorName;
 
-        var newInput = document.createElement("input");
-        newInput.setAttribute("style", "width: 112px;");
-        newInput.id = object.id;
-        newInput.value= object.param.value;
+            var newInput = document.createElement("input");
+            newInput.setAttribute("style", "float: left; width: 100%;");
+            newInput.id = object.id;
+            newInput.value= object.param.value;
+            
+            divID.appendChild(newLabel);
+            divID.appendChild(newInput);
+            document.getElementById("properties").appendChild(divID);
+            
+            $("#"+object.id).spinner({
+                step: object.param.step,
+                stop:function(e,ui) {
+                    if (object.param.type === "angle"){
+                        object.primitive.setAttribute(object.param.x3domName,
+                                                      document.getElementById(object.id).value * Math.PI / 180); 
+                    }
+                    else {
+                        object.primitive.setAttribute(object.param.x3domName,
+                                                      document.getElementById(object.id).value);
+                    }
+                    
+                    object.param.value = document.getElementById(object.id).value;
 
-        divID.appendChild(newLabel);
-        divID.appendChild(newInput);
-        document.getElementById("properties").appendChild(divID);
+                    var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+                    primitiveManager.highlight(ref, true);
+                }
+            });
+        }
+        
+        
+        function boolProperty(){
+            var newLabel = document.createElement("label");
+            newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
+            newLabel.innerHTML = object.param.editorName;
 
-        $("#"+object.id).spinner({
-            step: 0.1,
-            stop:function(e,ui) {
-                object.primitive.setAttribute(object.param.x3domName,
-                                              document.getElementById(object.id).value);
-                object.param.value = document.getElementById(object.id).value;
-
-                var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                primitiveManager.highlight(ref, true);
+            var newInput = document.createElement("input");
+            newInput.setAttribute("style", "float: left; width: 100%;");
+            newInput.id = object.id;
+            newInput.value= object.param.value;
+            
+            divID.appendChild(newLabel);
+            divID.appendChild(newInput);
+            document.getElementById("properties").appendChild(divID);
+            
+            $("#"+object.id).switchButton({
+                checked: object.param.value,
+                width: 58,
+                height: 15,
+                button_width: 29,
+                on_label: 'true',
+                off_label: 'false'
+		})
+		.change(function(){
+                    object.primitive.setAttribute(object.param.x3domName,
+                                                  document.getElementById(object.id).checked);
+                    object.param.value = document.getElementById(object.id).checked;
+		});
+        }
+        
+        
+        
+        function vecProperty(vecSize){
+            var labels = ["X:", "Y:", "Z:"];
+            
+            var newLabel = document.createElement("label");
+            newLabel.setAttribute("style", "float: left; margin-bottom: 5px; width: 100%;");
+            newLabel.innerHTML = object.param.editorName;
+            divID.appendChild(newLabel);
+            
+            for (var i = 0; i < vecSize; i++){
+                var outerDiv = document.createElement("div");
+                outerDiv.setAttribute("style", "float: left; margin-bottom: 5px;");
+                
+                var descLabel = document.createElement("label");
+                descLabel.setAttribute("style", "float: left; width: 25px;");
+                descLabel.innerHTML = labels[i];
+                divID.appendChild(descLabel);
+            
+                var newInput = document.createElement("input");
+                newInput.setAttribute("style", "float: left; width: 80px;");
+                newInput.id = object.id + "_" + i;
+                newInput.value= object.param.value.split(",")[i];
+                outerDiv.appendChild(descLabel);
+                outerDiv.appendChild(newInput);
+                divID.appendChild(outerDiv);
             }
-        });
+
+            document.getElementById("properties").appendChild(divID);
+            
+            for (var i = 0; i < vecSize; i++){
+                $("#"+object.id + "_" + i).spinner({
+                    step: object.param.step,
+                    stop:function(e,ui) {
+                        object.primitive.setAttribute(object.param.x3domName,
+                                                      document.getElementById(object.id + "_0").value + "," +
+                                                      document.getElementById(object.id + "_1").value + "," +
+                                                      document.getElementById(object.id + "_2").value);
+                        object.param.value = document.getElementById(object.id + "_0").value + "," +
+                                             document.getElementById(object.id + "_1").value + "," +
+                                             document.getElementById(object.id + "_2").value;
+
+                        var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+                        primitiveManager.highlight(ref, true);
+                    }
+                });
+            }
+        }
+        
     }
     
     
