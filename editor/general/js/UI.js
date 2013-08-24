@@ -147,8 +147,9 @@ function UI(primitiveManager){
         });
 
         //Initialize 2D-Editor
-        $('#Editor2D-Canvas').editor2D();
-        $('#Editor2D-Canvas').on('modechanged', function(evt) {
+        var editor2DCanvas = $('#Editor2D-Canvas');
+        editor2DCanvas.editor2D();
+        editor2DCanvas.on('modechanged', function(evt) {
             that.editor2D_mode(evt.originalEvent.detail.mode);
         });
 
@@ -454,7 +455,7 @@ function UI(primitiveManager){
     this.editor2D_new = function()
     {
         $('#Editor2D-Canvas').editor2D('clear');
-    }
+    };
 
     /*
      * Reset 2D-Editor view
@@ -462,7 +463,7 @@ function UI(primitiveManager){
     this.editor2D_reset = function()
     {
         $('#Editor2D-Canvas').editor2D('resetView');
-    }
+    };
 
     /*
      * Handle 2D-Editors 'modechanged' event
@@ -488,7 +489,7 @@ function UI(primitiveManager){
             case 1:
                 $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer').addClass('Editor2D-Icon-Pointer-Active');
                 $('#Editor2D-Canvas').editor2D('changeMode', 1);
-                break
+                break;
             case 2:
                 $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser').addClass('Editor2D-Icon-Eraser-Active');
                 $('#Editor2D-Canvas').editor2D('changeMode', 2);
@@ -516,7 +517,8 @@ function UI(primitiveManager){
         var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
         primitiveParameterMap[primitivType].parameters.push({
-            editorName: "-",
+            render: "false",
+            editorName: "Cross Section",
             x3domName: "crossSection",
             value: points.toString()
         });
@@ -622,7 +624,6 @@ function UI(primitiveManager){
 
     /*
      * Adds one parameter value to the right bar
-     * TODO: only works for SFFloat
      * @param {object} object includes editorName and x3domName of parameter and
      * the value that should be set 
      * @returns (Null)
@@ -631,6 +632,7 @@ function UI(primitiveManager){
     {
         if (object.param.render !== null && object.param.render === "false")
             return;
+
         var divID = document.createElement("div");	
         divID.setAttribute("style", "float: left; margin-bottom: 10px; border-bottom: 1px solid gray; padding-bottom: 10px;");
         if (object.param.type==="bool")
@@ -699,7 +701,7 @@ function UI(primitiveManager){
                 height: 15,
                 button_width: 29,
                 on_label: 'true',
-                off_label: 'false',
+                off_label: 'false'
 		})
 		.change(function(){
                     object.primitive.setAttribute(object.param.x3domName,
