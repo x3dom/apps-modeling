@@ -567,13 +567,7 @@ function UI(primitiveManager){
         {
             divID.onclick = function() {
                 that.editor2D_show();
-
                 primitivType = name;
-                // TODO; return somehow all required parameters for creation
-                // (depending if Extrusion or SolidOfRevolution was clicked)
-                // for now, just create a default object to test everything.
-                //primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName,
-                                              //primitiveParameterMap[name].parameters);
             };
      	}
         else

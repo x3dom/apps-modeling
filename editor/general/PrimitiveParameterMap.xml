@@ -110,8 +110,7 @@
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
     </Primitive>
     <Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
-        <!-- TODO: wrong mapping, this should be height in editor (with type SFFloat instead MFVec2f) -->
-        <Parameter editorName="Spine" x3domName="spine">0 0 0, 0 0.5 0</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter type="bool" editorName="Begin Cap" x3domName="beginCap">true</Parameter>
         <Parameter type="bool" editorName="End Cap" x3domName="endCap">true</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>

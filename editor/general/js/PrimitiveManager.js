@@ -73,10 +73,10 @@ function PrimitiveManager(){
         // Material Node
         var mat = document.createElement('Material');
         mat.setAttribute("diffuseColor", "#3F7EBD");
-        mat.setAttribute("specularColor", "#222222");
+        mat.setAttribute("specularColor", "#2A2A2A");
         mat.setAttribute("emissiveColor", "#000000");
         mat.setAttribute("transparency", "0.0");
-        mat.setAttribute("shininess", "0.3");
+        mat.setAttribute("shininess", "0.2");
         t.Material = mat;
 
         app.appendChild(mat);
@@ -85,9 +85,6 @@ function PrimitiveManager(){
 
         var prim = document.createElement(primitive);
         
-        prim.setAttribute("useGeoCache", "false");
-        prim.setAttribute("solid", "false");
-        // set attributes before inserting into live tree to avoid update
         setDefaultParameters(prim, parameters);
         
         s.appendChild(prim);
