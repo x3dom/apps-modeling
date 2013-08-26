@@ -113,7 +113,7 @@
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter type="bool" editorName="Begin Cap" x3domName="beginCap">true</Parameter>
         <Parameter type="bool" editorName="End Cap" x3domName="endCap">true</Parameter>
-        <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">false</Parameter>
+        <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
     </Primitive>
@@ -122,7 +122,7 @@
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
         <Parameter type="angle" editorName="Crease Angle" x3domName="creaseAngle">0</Parameter>
         <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
-        <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">false</Parameter>
+        <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
     </Primitive>

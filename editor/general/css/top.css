@@ -20,22 +20,6 @@
     margin: 5px 2px;
 }
 
-.Views, .ObjektList
-{
-    float:left;
-    width: 125px;
-    height: 30px;
-    margin: 5px 5px;
-    color: white;
-    padding: 5px;
-    font-size: 12px;
-    line-height: 1;
-    border-radius: 0;
-    -webkit-appearance: none;
-    border:1px solid gray;
-    background: url(../images/down_img.jpg) no-repeat right #333333;
-}
-
 
 /* Die Buttons *******************************************************************/
 
@@ -142,4 +126,19 @@
     left: 60px;
 }
 
-/**********************************************************************************/
+.Views, .ObjektList
+{
+    float:left;
+    width: 125px;
+    height: 30px;
+    margin: 5px 5px;
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 0;
+    -webkit-appearance: none;
+    border:1px solid gray;
+    background: url(../images/down_img.jpg) no-repeat right #333333;
+    font-family: Calibri;
+}
