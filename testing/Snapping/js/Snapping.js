@@ -2,7 +2,7 @@
  * 
  */
 function Snapping()
-{
+{	
 	var observer =
 	{
 		angList: {
@@ -41,5 +41,10 @@ function Snapping()
 		{
 			
 		}
+	};
+	
+	this.init = function()
+	{
+		alert("Snapping");
 	};
 }

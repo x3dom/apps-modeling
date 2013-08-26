@@ -119,6 +119,7 @@
     <script type='text/javascript' src="js/jquery.editor2D.js"></script>
     
     <script type='text/javascript' src="js/Snapping.js"></script>
+    <script type='text/javascript' src="js/Bouding.js"></script>
 
 </head>
 
@@ -155,7 +156,7 @@
     </select>
 
     <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.removePlane();"/></div>
+                                onclick="snapping.init();"/></div>
     <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removeAxis();"/></div>
     <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
