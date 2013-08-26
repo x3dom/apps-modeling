@@ -6,7 +6,7 @@
 function PrimitiveManager(){
     
     // List of all created primitives
-    var primitiveList = [];
+    var primitiveList = {};
     // actually active id
     var actualID = "";
     // count of all primitives that were created during this session
@@ -128,9 +128,9 @@ function PrimitiveManager(){
         
         // update GUI elements appropriately
         if (HANDLING_MODE === "translation" && id == actualID) {
-            ui.BBTransX.set(pos.x.toFixed(5));
-            ui.BBTransY.set(pos.y.toFixed(5));
-            ui.BBTransZ.set(pos.z.toFixed(5));
+            ui.BBTransX.set(pos.x.toFixed(3));
+            ui.BBTransY.set(pos.y.toFixed(3));
+            ui.BBTransZ.set(pos.z.toFixed(3));
         }
     }
     
@@ -166,9 +166,9 @@ function PrimitiveManager(){
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
-    this.removeNode = function()
+    this.removeNode = function(force)
     {
-        if (ui.TBPrimitiveList.selectedIndex() !== 0) {
+        if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
             var ot = document.getElementById(actualID);
 
             for (var i = 0; i < ot.childNodes.length; i++) 
@@ -192,6 +192,25 @@ function PrimitiveManager(){
                 }
             }
         }
+    };
+
+
+    /*
+     * Removes all primitives from the DOM and from primitive array
+     */
+    this.removeAllNodes = function()
+    {
+        for (var key in primitiveList) {
+            if (primitiveList[key]) {
+                actualID = key;
+                this.removeNode(true);
+            }
+        }
+
+        primitiveList = {};
+        actualID = "";
+        primCounter = 0;
+        primitiveCounter = 0;
     };
     
     
@@ -345,7 +364,7 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.showBoundingVolumeHighlighting = function(htmlID){
-        boundingVolumeHighlighting === true ? boundingVolumeHighlighting = false : boundingVolumeHighlighting = true;
+        boundingVolumeHighlighting = !boundingVolumeHighlighting;
         if (boundingVolumeHighlighting){
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
             highlightBoundingVolume(actualID, true);
@@ -363,7 +382,7 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.showPrimitiveHighlighting = function(htmlID){
-        primitiveHighlighting === true ? primitiveHighlighting = false : primitiveHighlighting = true; 
+        primitiveHighlighting = !primitiveHighlighting;
         if (primitiveHighlighting){
             highlightPrimitive(actualID, true);
             document.getElementById(htmlID+"_tick").style.visibility = "visible";

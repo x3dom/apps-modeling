@@ -120,8 +120,19 @@
 
 </head>
 
-
+<body>
 <div id="Oben">
+    <div id="fileMenu" class="header">
+        <ul class="nav">
+            <li><a>File</a>
+                <ul>
+                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllNodes();" onmouseover="this.style.cursor='pointer';">New</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Load</a></li>
+                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Save</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
     <div class="header">
         <ul class="nav">
@@ -129,7 +140,7 @@
                 <ul>
                     <li><a href="#" id="onOffStatistic" onclick="ui.showStatistik(this.id);" onmouseover="this.style.cursor='pointer';">Stats</a><img id="onOffStatistic_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
                     <li><a href="#" id="onOffInfo" onclick="ui.showInfo(this.id);" onmouseover="this.style.cursor='pointer';">Log</a><img id="onOffInfo_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
-                    <li><a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
+                    <li><a href="#" id="togglePolyMode" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
                 </ul>
             </li>
         </ul>
@@ -145,19 +156,21 @@
             </li>
         </ul>
     </div>
-    
 
-    <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
-        <option value='reset'>Reset View</option>
-        <option value='all'>Show All</option>
-        <option value='upright'>Upright View</option>
-        <option value='front'>Show Front</option>
-        <option value='back'>Show Back</option>
-        <option value='right'>Show Right</option>
-        <option value='left'>Show Left</option>
-        <option value='top'>Show Top</option>
-        <option value='bottom'>Show Bottom</option>
-    </select>
+
+    <div>
+        <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
+            <option value='reset'>Reset View</option>
+            <option value='all'>Show All</option>
+            <option value='upright'>Upright View</option>
+            <option value='front'>Show Front</option>
+            <option value='back'>Show Back</option>
+            <option value='right'>Show Right</option>
+            <option value='left'>Show Left</option>
+            <option value='top'>Show Top</option>
+            <option value='bottom'>Show Bottom</option>
+        </select>
+    </div>
 
     <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removePlane();"/></div>
@@ -177,7 +190,8 @@
 <div id="Unten">
         <div id="objectName">
             <p>
-                <label class="objectLabel">Object: </label><input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
+                <label class="objectLabel">Object: </label>
+                <input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
                 <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
             </p>
         </div>
