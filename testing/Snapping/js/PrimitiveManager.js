@@ -187,7 +187,7 @@ function PrimitiveManager(){
 
                     clearTransformValues();
                     primitiveCounter--;
-                        break;
+                    break;
                 }
             }
         }
@@ -394,7 +394,6 @@ function PrimitiveManager(){
     };
     
     
-    
     /*
      * Sets the values of the actual selected transformation
      * to the value fields in the bottom bar
@@ -438,7 +437,6 @@ function PrimitiveManager(){
     }
     
     
-    
     /*
      * Sets the name of a primitive to the users defined value
      * @returns {null}
@@ -447,7 +445,6 @@ function PrimitiveManager(){
         ui.TBPrimitiveList.set(primitiveList[actualID].IDMap.cboxNumber, ui.BBPrimName.get());
         primitiveList[actualID].IDMap.name = ui.BBPrimName.get();
     };
-    
     
     
     /*
@@ -464,13 +461,21 @@ function PrimitiveManager(){
     }
     
     
-    
     /*
      * Returns the actually selected primitive 
      * @returns {primitive}
      */
     this.getActualPrimitive = function(){
         return primitiveList[actualID];
+    };
+    
+    
+    /*
+     * Returns the actually selected ID 
+     * @returns {primitive}
+     */
+    this.getActualID = function(){
+    	return actualID;
     };
 }
 
