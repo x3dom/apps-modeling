@@ -127,8 +127,8 @@
         <ul class="nav">
             <li><a>Debug</a>
                 <ul>
-                    <li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a></li>
-                    <li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a></li>
+                    <li><a href="#" id="onOffStatistic" onclick="ui.showStatistik(this.id);" onmouseover="this.style.cursor='pointer';">Stats</a><img id="onOffStatistic_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
+                    <li><a href="#" id="onOffInfo" onclick="ui.showInfo(this.id);" onmouseover="this.style.cursor='pointer';">Log</a><img id="onOffInfo_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
                     <li><a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
                 </ul>
             </li>
@@ -139,8 +139,8 @@
         <ul class="nav">
             <li><a>Highlight</a>
                 <ul>
-                    <li><a href="#" onclick="primitiveManager.showPrimitiveHighlighting();" onmouseover="this.style.cursor='pointer';">Primitive</a></li>
-                    <li><a href="#" onclick="primitiveManager.showBoundingVolumeHighlighting();" onmouseover="this.style.cursor='pointer';">BBox</a></li>
+                    <li><a id="onOffPrimitive" onclick="primitiveManager.showPrimitiveHighlighting(this.id);" onmouseover="this.style.cursor='pointer';">Primitive</a><img id="onOffPrimitive_tick" src="images/tick.png" class="onOffTick" /></li>
+                    <li><a id="onOffBBox" onclick="primitiveManager.showBoundingVolumeHighlighting(this.id);" onmouseover="this.style.cursor='pointer';">BBox</a><img id="onOffBBox_tick" src="images/tick.png" class="onOffTick" /></li>
                 </ul>
             </li>
         </ul>

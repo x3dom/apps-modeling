@@ -344,12 +344,16 @@ function PrimitiveManager(){
      * Toggles the bounding volume highlighting on/off
      * @returns (undefined)
      */
-    this.showBoundingVolumeHighlighting = function(){
+    this.showBoundingVolumeHighlighting = function(htmlID){
         boundingVolumeHighlighting === true ? boundingVolumeHighlighting = false : boundingVolumeHighlighting = true;
-        if (boundingVolumeHighlighting)
+        if (boundingVolumeHighlighting){
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
             highlightBoundingVolume(actualID, true);
-        else 
+        }
+        else {
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
             highlightBoundingVolume(actualID, false);
+        }
     };
     
     
@@ -358,12 +362,16 @@ function PrimitiveManager(){
      * Toggles the primitive highlighting on/off
      * @returns (undefined)
      */
-    this.showPrimitiveHighlighting = function(){
+    this.showPrimitiveHighlighting = function(htmlID){
         primitiveHighlighting === true ? primitiveHighlighting = false : primitiveHighlighting = true; 
-        if (primitiveHighlighting)
+        if (primitiveHighlighting){
             highlightPrimitive(actualID, true);
-        else 
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
+        }
+        else { 
             highlightPrimitive(actualID, false);
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
+        }
     };
 
 

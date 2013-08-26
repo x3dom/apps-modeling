@@ -425,11 +425,20 @@ function UI(primitiveManager){
     }; 
        
     
+    var statisticsTick = false;
+    var infoTick = false;
     /*
      * Show or hide stats
      */
-    this.showStatistik = function()
+    this.showStatistik = function(htmlID)
     {
+        statisticsTick === true ? statisticsTick = false : statisticsTick = true;
+        if (statisticsTick){
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
+        }
+        else {
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
+        }
         document.getElementById("x3d").runtime.statistics();
     };
     
@@ -437,8 +446,15 @@ function UI(primitiveManager){
     /*
      * Show or hide debug log
      */
-    this.showInfo = function()
+    this.showInfo = function(htmlID)
     {
+        infoTick === true ? infoTick = false : infoTick = true;
+        if (infoTick){
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
+        }
+        else {
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
+        }
     	document.getElementById("x3d").runtime.debug();
     };
 
