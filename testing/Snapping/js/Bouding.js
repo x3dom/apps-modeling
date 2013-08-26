@@ -8,11 +8,9 @@ function Bouding()
 	
 	this.init = function()
 	{
-		var getActualID;
 		var selectID = [];
 		
 		selectID = primitiveManager.getIDList();
-		getActualID = primitiveManager.getActualID();
 		
 		for(var i = 0; i < selectID.length; i++)
 		{
@@ -42,10 +40,10 @@ function Bouding()
     	var element = document.getElementById(id);
     	element.appendChild(transform);
     	
-    	//loadJSON();
+    	loadJSON();
     };
     
-    /*
+    
 	function loadJSON()
     {
 	    // json-string laden
@@ -75,5 +73,5 @@ function Bouding()
 	
 		return vHTTPReq.responseText;
 	};
-	*/
+	
 }
