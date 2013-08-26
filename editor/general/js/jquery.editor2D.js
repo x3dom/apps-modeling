@@ -21,6 +21,7 @@
 				pointer: 'url(images/Editor2D-Pointer.png), auto',
 				eraser: 'url(images/Editor2D-Eraser.png), auto',
 				hand: 'url(images/Editor2D-Hand.png), auto',
+				grab: 'url(images/Editor2D-Grab.png), auto',
 				zoom: 'url(images/Editor2D-Zoom.png), auto'
 			};
 			
@@ -128,6 +129,9 @@
 			//Update mouse position
 			that.updateMousePos(evt)
 			
+			evt.preventDefault();
+			evt.stopPropagation();
+			
 			//Handle different mouse buttons
 			switch (evt.which) 
 			{
@@ -135,17 +139,21 @@
 					that.mouseButton = 'LEFT';
 					that.clickPosX = that.mousePosX;
 					that.clickPosY = that.mousePosY;  
-					that.canvas.style.cursor = that.cursor;
+					//that.canvas.style.cursor = that.cursor;
 					if (that.mode == that.modes.EDIT)
 					{
 						that.selectPoint();	
+					} 
+					else if (that.mode == that.modes.MOVE)
+					{
+						that.canvas.style.cursor = that.cursors.grab;
 					}
 				break;
 				case 2: 
 					that.mouseButton = 'MIDDLE';
 					that.clickPosX = that.mousePosX;
 					that.clickPosY = that.mousePosY;
-					that.canvas.style.cursor = that.cursors.hand; 
+					that.canvas.style.cursor = that.cursors.grab; 
 				break;
 				case 3: 
 					that.mouseButton = 'RIGHT';
@@ -184,6 +192,16 @@
 						if (that.actPoint != null) {
 							that.actPoint.translate(that.mousePosX, that.mousePosY);
 						}
+					}
+					else if (that.mode == that.modes.MOVE)
+					{
+						that.centerX -= that.clickPosX - that.mousePosX;
+						that.centerY -= that.clickPosY - that.mousePosY;
+					}
+					else if (that.mode == that.modes.ZOOM)
+					{
+						console.log((that.clickPosY - that.mousePosY) / 10);
+						that.zoom((that.clickPosY - that.mousePosY) / 10);
 					}
 					break;
 				case 'MIDDLE': 
@@ -226,21 +244,11 @@
 			//Check for up- or down-scroll
 			if (evt.wheelDelta > 0 || evt.detail > 0) 
 			{
-				//If allowed increment grid size and redraw it
-				if (that.gridSize < that.options.gridMax) 
-				{
-					that.gridSize += that.options.gridStep;
-					that.draw();
-				}
+				that.zoom(that.options.gridStep);
 			} 
 			else 
 			{
-				//If allowed decrement grid size and redraw it
-				if (that.gridSize > that.options.gridMin) 
-				{
-					that.gridSize -= that.options.gridStep;
-					that.draw();
-				}
+				that.zoom(-that.options.gridStep);
 			}
 		};
 		
@@ -299,6 +307,20 @@
 			return false;
 		};
 		
+		
+		/*
+		 * 
+		 * @param {delta} 
+		 */
+		this.zoom = function (delta) 
+		{
+			//If allowed increment grid size and redraw it
+			if (that.gridSize + delta <= that.options.gridMax && that.gridSize + delta >= that.options.gridMin) 
+			{
+				that.gridSize += delta;
+				that.draw();
+			}
+		}
 		
 		/*
 		 * 
