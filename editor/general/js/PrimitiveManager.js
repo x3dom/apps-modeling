@@ -537,5 +537,20 @@ function PrimitiveManager(){
     this.getActualPrimitive = function(){
         return primitiveList[actualID];
     };
+    
+    
+    
+    /*
+     * Returns a list with all primitives id's 
+     * @returns {List of id's of all primitives}
+     */
+    this.getIDList = function(){
+        var idList = [];
+        for (var key in primitiveList){
+            idList.push(key);
+        }
+        
+        return idList;
+    };
 }
 

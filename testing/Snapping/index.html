@@ -111,54 +111,74 @@
     <script type='text/javascript' src="js/jquery.slimscroll.min.js"></script>
     <script type='text/javascript' src="js/jquery.switchbutton.js"></script>
     
+    <script type='text/javascript' src="js/Snapping.js"></script>
+    <script type='text/javascript' src="js/Bouding.js"></script>
+    
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
     <script type='text/javascript' src="js/Controller.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
     <script type='text/javascript' src='js/farbtastic.js'></script>
     <script type='text/javascript' src="js/jquery.editor2D.js"></script>
-    
-    <script type='text/javascript' src="js/Snapping.js"></script>
-    <script type='text/javascript' src="js/Bouding.js"></script>
 
 </head>
 
-
+<body>
 <div id="Oben">
-
-    <div id="header">
+    <div id="fileMenu" class="header">
         <ul class="nav">
-            <li><a>Debug</a>
+            <li><a>File</a>
                 <ul>
-                    <li><a href="#" onclick="ui.showStatistik();" onmouseover="this.style.cursor='pointer';">Stats</a></li>
-                    <li><a href="#" onclick="ui.showInfo();" onmouseover="this.style.cursor='pointer';">Log</a></li>
-                    <li><a href="#" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
+                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllNodes();" onmouseover="this.style.cursor='pointer';">New</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Load</a></li>
+                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Save</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 
-    <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
-        onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
-        <option>nothing selected</option>
-    </select>
+    <div class="header">
+        <ul class="nav">
+            <li><a>Debug</a>
+                <ul>
+                    <li><a href="#" id="onOffStatistic" onclick="ui.showStatistik(this.id);" onmouseover="this.style.cursor='pointer';">Stats</a><img id="onOffStatistic_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
+                    <li><a href="#" id="onOffInfo" onclick="ui.showInfo(this.id);" onmouseover="this.style.cursor='pointer';">Log</a><img id="onOffInfo_tick" src="images/tick.png" style="visibility: hidden;" class="onOffTick" /></li>
+                    <li><a href="#" id="togglePolyMode" onclick="ui.togglePoints(this);" onmouseover="this.style.cursor='pointer';">Points</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="header">
+        <ul class="nav">
+            <li><a>Highlight</a>
+                <ul>
+                    <li><a id="onOffPrimitive" onclick="primitiveManager.showPrimitiveHighlighting(this.id);" onmouseover="this.style.cursor='pointer';">Primitive</a><img id="onOffPrimitive_tick" src="images/tick.png" class="onOffTick" /></li>
+                    <li><a id="onOffBBox" onclick="primitiveManager.showBoundingVolumeHighlighting(this.id);" onmouseover="this.style.cursor='pointer';">BBox</a><img id="onOffBBox_tick" src="images/tick.png" class="onOffTick" /></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
-    <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
-        <option value='reset'>Reset View</option>
-        <option value='all'>Show All</option>
-        <option value='upright'>Upright View</option>
-        <option value='front'>Show Front</option>
-        <option value='back'>Show Back</option>
-        <option value='right'>Show Right</option>
-        <option value='left'>Show Left</option>
-        <option value='top'>Show Top</option>
-        <option value='bottom'>Show Bottom</option>
-    </select>
+
+    <div>
+        <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
+            <option value='reset'>Reset View</option>
+            <option value='all'>Show All</option>
+            <option value='upright'>Upright View</option>
+            <option value='front'>Show Front</option>
+            <option value='back'>Show Back</option>
+            <option value='right'>Show Right</option>
+            <option value='left'>Show Left</option>
+            <option value='top'>Show Top</option>
+            <option value='bottom'>Show Bottom</option>
+        </select>
+    </div>
 
     <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
-                                onclick="snapping.init();"/></div>
+                                onclick="controller.removePlane();"/></div>
     <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.removeAxis();"/></div>
+                                onclick="bouding.init();"/></div>
     <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
                                 onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"/></div>
     <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
@@ -171,10 +191,10 @@
 
 
 <div id="Unten">
-    
         <div id="objectName">
             <p>
-                <label class="objectLabel">Object: </label><input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
+                <label class="objectLabel">Object: </label>
+                <input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
                 <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
             </p>
         </div>
@@ -189,7 +209,21 @@
 </div>
 
 
-<div id="Links"> <div id="leftBar"> <div id="divs"> </div> </div>
+<div id="Links"> 
+    <div id="leftBar"> 
+        <div id="accordion_left">
+            <h3>Primitives</h3>
+            <div id="divs"> </div>
+            <h3>Tree-View</h3>
+            <div>
+                <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
+                    onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
+                    <option>nothing selected</option>
+                </select>
+            </div>
+        </div>
+        
+    </div>
     <div id="button_Links" onclick="ui.fadeLeft();" onmouseover="this.style.cursor='pointer';"> </div>
 </div>
 
@@ -202,12 +236,12 @@
 
             <h3>Material Editor</h3>
             <div id="colors">
-                <div id='picker' class='picker'> </div>
+                <center><div id='picker' class='picker'> </div></center>
                 <div class='form-item'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Specular</div><input type='text' id='specular' name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3'onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
+                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>         
             </div>
         </div>
     </div>

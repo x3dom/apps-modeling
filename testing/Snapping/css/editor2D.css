@@ -33,7 +33,6 @@
 	border: 2px solid #CCC;
 	border-radius: 0px 0px 0px 0px;
 	cursor: url(../images/Editor2D-Pen.png), auto;
-	zIndex: 100000001;
 	outline: none;
 }
 
@@ -44,7 +43,6 @@
 	width: 30px;
 	height: 398px;
 	border: 1px solid #646464;
-	zIndex: 100000002;
 	background-color: rgba(204, 204, 204, 1.0);
 }
 
@@ -201,6 +199,14 @@
 	height: 25px;
 	margin: 4px 0px 4px 2px;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -175px no-repeat;
+}
+
+#Editor2D-Icon-Accept-Inactive {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -75px -175px no-repeat;
 }
 
 #Editor2D-Icon-Accept:hover {

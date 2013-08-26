@@ -21,6 +21,7 @@
 				pointer: 'url(images/Editor2D-Pointer.png), auto',
 				eraser: 'url(images/Editor2D-Eraser.png), auto',
 				hand: 'url(images/Editor2D-Hand.png), auto',
+				grab: 'url(images/Editor2D-Grab.png), auto',
 				zoom: 'url(images/Editor2D-Zoom.png), auto'
 			};
 			
@@ -42,6 +43,7 @@
 			this.actPoint = null;
 			this.actOver = null;
 			this.closed = false;
+			this.snapToGrid = true;
 			this.points = [];
 			
 			this.canvas = canvas;
@@ -127,6 +129,9 @@
 			//Update mouse position
 			that.updateMousePos(evt)
 			
+			evt.preventDefault();
+			evt.stopPropagation();
+			
 			//Handle different mouse buttons
 			switch (evt.which) 
 			{
@@ -134,17 +139,21 @@
 					that.mouseButton = 'LEFT';
 					that.clickPosX = that.mousePosX;
 					that.clickPosY = that.mousePosY;  
-					that.canvas.style.cursor = that.cursor;
+					//that.canvas.style.cursor = that.cursor;
 					if (that.mode == that.modes.EDIT)
 					{
 						that.selectPoint();	
+					} 
+					else if (that.mode == that.modes.MOVE)
+					{
+						that.canvas.style.cursor = that.cursors.grab;
 					}
 				break;
 				case 2: 
 					that.mouseButton = 'MIDDLE';
 					that.clickPosX = that.mousePosX;
 					that.clickPosY = that.mousePosY;
-					that.canvas.style.cursor = that.cursors.hand; 
+					that.canvas.style.cursor = that.cursors.grab; 
 				break;
 				case 3: 
 					that.mouseButton = 'RIGHT';
@@ -165,6 +174,12 @@
 			//Update mouse position
 			that.updateMousePos(evt);
 			
+			if (that.snapToGrid == true)
+			{
+				that.mousePosX = (Math.abs(that.mousePosX) < 0.15) ? 0 : that.mousePosX;
+				that.mousePosY = (Math.abs(that.mousePosY) < 0.15) ? 0 : that.mousePosY;  
+			}
+			
 			//Handle different mouse buttons
 			switch (that.mouseButton) {
 				case 'LEFT':
@@ -177,6 +192,16 @@
 						if (that.actPoint != null) {
 							that.actPoint.translate(that.mousePosX, that.mousePosY);
 						}
+					}
+					else if (that.mode == that.modes.MOVE)
+					{
+						that.centerX -= that.clickPosX - that.mousePosX;
+						that.centerY -= that.clickPosY - that.mousePosY;
+					}
+					else if (that.mode == that.modes.ZOOM)
+					{
+						console.log((that.clickPosY - that.mousePosY) / 10);
+						that.zoom((that.clickPosY - that.mousePosY) / 10);
 					}
 					break;
 				case 'MIDDLE': 
@@ -219,21 +244,11 @@
 			//Check for up- or down-scroll
 			if (evt.wheelDelta > 0 || evt.detail > 0) 
 			{
-				//If allowed increment grid size and redraw it
-				if (that.gridSize < that.options.gridMax) 
-				{
-					that.gridSize += that.options.gridStep;
-					that.draw();
-				}
+				that.zoom(that.options.gridStep);
 			} 
 			else 
 			{
-				//If allowed decrement grid size and redraw it
-				if (that.gridSize > that.options.gridMin) 
-				{
-					that.gridSize -= that.options.gridStep;
-					that.draw();
-				}
+				that.zoom(-that.options.gridStep);
 			}
 		};
 		
@@ -292,6 +307,20 @@
 			return false;
 		};
 		
+		
+		/*
+		 * 
+		 * @param {delta} 
+		 */
+		this.zoom = function (delta) 
+		{
+			//If allowed increment grid size and redraw it
+			if (that.gridSize + delta <= that.options.gridMax && that.gridSize + delta >= that.options.gridMin) 
+			{
+				that.gridSize += delta;
+				that.draw();
+			}
+		}
 		
 		/*
 		 * 
@@ -863,11 +892,9 @@
                 var act = (p != this.points.length) ? p : 0;
                 var next = (p+1 != this.points.length) ? p+1 : 0;
 
-                console.log("act: " + act + " next: " + next);
-
 				if (this.points[act].control.length == 0 && this.points[next].control.length == 0)
 				{
-                    points.push(this.points[act].x, this.points[act].y);
+					points.push(this.points[act]);
 				}
 				else if (this.points[act].control.length != 0 && this.points[next].control.length == 0)
 				{
@@ -879,7 +906,7 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
 				}
                 else if (this.points[act].control.length == 0 && this.points[next].control.length != 0)
@@ -892,7 +919,7 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
                 }
                 else
@@ -905,17 +932,22 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
                 }
 			}
 
             if (this.closed)
             {
-                points.push(this.points[0].x, this.points[0].y);
+				points.push(this.points[0]);
             }
-
-            return points;
+			
+			if (this.calcArea(points) > 0)
+			{
+				points.reverse();	
+			}
+			
+            return this.convertPoints(points);
 		};
 		
 		this.calBezierPoints = function(t, p0, p1, p2, p3)
@@ -933,6 +965,35 @@
 			
 			return p;
 		};
+		
+		
+		this.calcArea = function(points)
+		{
+			var p1, p2, sum = 0;
+			for(var p=0; p<points.length-1; p++)
+			{ 
+				p1 = points[p];
+				p2 = points[p+1];
+				sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+			}
+			p1 = p2;
+			p2 = points[0];
+			sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+			
+			return sum;
+		}
+		
+		this.convertPoints = function(points)
+		{
+			var pointsStr = [];
+			
+			for(var p=0; p<points.length; p++)
+			{ 
+				pointsStr.push(points[p].x, points[p].y); 
+			}
+			
+			return pointsStr;
+		}
 		
 		
 		//Finaly initialize the editor

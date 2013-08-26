@@ -1,6 +1,6 @@
 <PrimitiveParameterMap>
     <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
-        <Parameter type="vec3" step="0.25" render="true" editorName="Size" x3domName="size">1.0,1.0,1.0</Parameter>
+        <Parameter type="vec3" step="0.25" min="0" render="true" editorName="Size" x3domName="size">1.0,1.0,1.0</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -31,7 +31,7 @@
     <Primitive editorName="Circular Torus" x3domName="Torus" image="images/circulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
-        <Parameter type="angle" editorName="Angle" x3domName="angle">180</Parameter>
+        <Parameter type="angle" min="0" max="360" editorName="Angle" x3domName="angle">180</Parameter>
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
         <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
         <Parameter type="bool" render="false" editorName="Inside/Outside-Radius" x3domName="insideOutsideRadius">true</Parameter>
@@ -42,7 +42,7 @@
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/rectangulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
-        <Parameter type="angle" editorName="Angle" x3domName="angle">180</Parameter>
+        <Parameter type="angle" min="0" max="360" editorName="Angle" x3domName="angle">180</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
         <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
@@ -110,8 +110,7 @@
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
     </Primitive>
     <Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
-        <!-- TODO: wrong mapping, this should be height in editor (with type SFFloat instead MFVec2f) -->
-        <Parameter editorName="Spine" x3domName="spine">0 0 0, 0 0.5 0</Parameter>
+        <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter type="bool" editorName="Begin Cap" x3domName="beginCap">true</Parameter>
         <Parameter type="bool" editorName="End Cap" x3domName="endCap">true</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
