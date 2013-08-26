@@ -9,7 +9,7 @@
 	height: 41px;
 	width: 600px;
 	z-index: 10000;
-	background-image: url(../images/karbon_bg.png);">
+	background-image: url(../images/karbon_bg.png);
 }
 
 #primitiveList
