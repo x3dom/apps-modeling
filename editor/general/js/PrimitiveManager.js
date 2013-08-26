@@ -209,7 +209,7 @@ function PrimitiveManager(){
 
         primitiveList = {};
         actualID = "";
-        primCounter = 0;
+        //primCounter = 0;
         primitiveCounter = 0;
     };
     
