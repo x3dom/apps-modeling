@@ -33,7 +33,6 @@
 	border: 2px solid #CCC;
 	border-radius: 0px 0px 0px 0px;
 	cursor: url(../images/Editor2D-Pen.png), auto;
-	zIndex: 100000001;
 	outline: none;
 }
 
@@ -44,7 +43,6 @@
 	width: 30px;
 	height: 398px;
 	border: 1px solid #646464;
-	zIndex: 100000002;
 	background-color: rgba(204, 204, 204, 1.0);
 }
 
