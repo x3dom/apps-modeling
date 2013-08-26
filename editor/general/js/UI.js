@@ -247,6 +247,10 @@ function UI(primitiveManager){
             $("#" + id).spinner( "option", "disabled", bool );
         };
         
+        obj.step = function(step){
+            $("#" + id).spinner( "option", "step", step );
+        };
+        
         return obj;
     };
     
