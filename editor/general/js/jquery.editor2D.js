@@ -892,11 +892,9 @@
                 var act = (p != this.points.length) ? p : 0;
                 var next = (p+1 != this.points.length) ? p+1 : 0;
 
-                console.log("act: " + act + " next: " + next);
-
 				if (this.points[act].control.length == 0 && this.points[next].control.length == 0)
 				{
-                    points.push(this.points[act].x, this.points[act].y);
+					points.push(this.points[act]);
 				}
 				else if (this.points[act].control.length != 0 && this.points[next].control.length == 0)
 				{
@@ -908,7 +906,7 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
 				}
                 else if (this.points[act].control.length == 0 && this.points[next].control.length != 0)
@@ -921,7 +919,7 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
                 }
                 else
@@ -934,17 +932,22 @@
                     for (var t=0; t<1.0-1/32; t+=1/32)
                     {
                         point = this.calBezierPoints(t, p0, p1, p2, p3);
-                        points.push(point.x, point.y);
+						points.push(point);
                     }
                 }
 			}
 
             if (this.closed)
             {
-                points.push(this.points[0].x, this.points[0].y);
+				points.push(this.points[0]);
             }
-
-            return points;
+			
+			if (this.calcArea(points) > 0)
+			{
+				points.reverse();	
+			}
+			
+            return this.convertPoints(points);
 		};
 		
 		this.calBezierPoints = function(t, p0, p1, p2, p3)
@@ -962,6 +965,35 @@
 			
 			return p;
 		};
+		
+		
+		this.calcArea = function(points)
+		{
+			var p1, p2, sum = 0;
+			for(var p=0; p<points.length-1; p++)
+			{ 
+				p1 = points[p];
+				p2 = points[p+1];
+				sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+			}
+			p1 = p2;
+			p2 = points[0];
+			sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+			
+			return sum;
+		}
+		
+		this.convertPoints = function(points)
+		{
+			var pointsStr = [];
+			
+			for(var p=0; p<points.length; p++)
+			{ 
+				pointsStr.push(points[p].x, points[p].y); 
+			}
+			
+			return pointsStr;
+		}
 		
 		
 		//Finaly initialize the editor

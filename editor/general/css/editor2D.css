@@ -201,6 +201,14 @@
 	background: transparent url(../images/Editor2D-Icons.png) 0px -175px no-repeat;
 }
 
+#Editor2D-Icon-Accept-Inactive {
+	display: block;
+	width: 25px;
+	height: 25px;
+	margin: 4px 0px 4px 2px;
+	background: transparent url(../images/Editor2D-Icons.png) -75px -175px no-repeat;
+}
+
 #Editor2D-Icon-Accept:hover {
 	background: transparent url(../images/Editor2D-Icons.png) -25px -175px no-repeat;
 }
