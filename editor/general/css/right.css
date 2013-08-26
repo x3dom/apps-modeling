@@ -1,60 +1,62 @@
 #Rechts{ position: absolute; right: 0px; height:100%; width: 190px; z-index: 1000; }
-#transparency, #shininess { width: 110px; }
+#transparency, #shininess { width: 130px; }
 .form-item{ padding-top:5px; padding-bottom:2px; }
 
 #rechtInnen
 {
-	width: 190px;
-	height: 100%;
-	right: 0px;
-	background-image: url(../images/karbon_bg.png);
-	border: solid 2px #fff;
-	border-right: none;
-	padding-top: 5px;
-	border-radius: 10px 0px 0px 0px;
+    width: 190px;
+    height: 100%;
+    right: 0px;
+    background-image: url(../images/karbon_bg.png);
+    border: solid 2px #fff;
+    border-right: none;
+    padding-top: 5px;
 }
 
 #accordeon-oben
 {
-	width: 180px;
-	height: 100%;
-	margin-bottom: 50px;
-	margin-left:5px;
-	margin-right:5px;
+    width: 180px;
+    height: 80%;
+    margin-left:5px;
+    margin-right:5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
 }
 
 #accordeon-oben .ui-accordion-content
 {
     padding: 5%;
+    padding-bottom: 10px;
     background: #191415;
     color: #FFFFFF;
     margin: 0px;
-    margin-bottom: 10px;
+    height: 100%;
 }
 
 #button_Rechts
 {
-	position:absolute;
-	width: 30px;
-	height: 150px;
-	right: 188px;
-	top: 50%;
-	margin-top: -75px;
-	z-index: 100000;
-	background-image: url(../images/params.png);
+    position:absolute;
+    width: 30px;
+    height: 150px;
+    right: 188px;
+    top: 50%;
+    margin-top: -75px;
+    z-index: 100000;
+    background-image: url(../images/params.png);
 }
 
 #diffuse, #emissive, #specular
 {
-	border: solid 1px gray;
-	border-radius: 5px;
-	margin-left: 0px;
-	padding: 2px;
-	padding-left: 5px;
+    border: solid 1px gray;
+    border-radius: 5px;
+    margin-left: 0px;
+    padding: 2px;
+    padding-left: 5px;
+    width: 150px;
 }
 
-
-#properties{
-    max-height: 80%; 
-    overflow-y: auto;
+#properties
+{
+    padding-top: 10px;
+    margin-right: 10px;
 }

@@ -85,6 +85,14 @@ function UI(primitiveManager){
                 color: '#FFFFFF',
                 position: 'left'
         });
+        
+        
+        $('#properties').slimScroll({
+            height: '100%',
+            size: '10px',
+            color: '#FFFFFF',
+            position: 'right'
+        });
 
         // symbols of accordion on right bar
         var iconsAccordion = 
