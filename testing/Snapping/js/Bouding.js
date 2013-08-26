@@ -62,11 +62,9 @@ function Bouding()
 		for(var i = 0; i < points.length; i++)
 		{
 			//Zeugen die bounding Points
-			boundingPoint(id, pfad, points[i].toString());	
+			boundingPoint(id, pfad, points[i].toString());
+			console.log(points[i].toString());	
 		}
-		
-		console.log(jsonObj);
-		console.log(points[1]);
     };
 
 	
