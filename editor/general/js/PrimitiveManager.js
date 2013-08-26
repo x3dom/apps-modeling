@@ -15,7 +15,11 @@ function PrimitiveManager(){
     var primitiveCounter = 0;
     // ui element to get access to the gui elements
     var ui = {};
-    
+    // toggle for bounding volume highlighting
+    var boundingVolumeHighlighting = true;
+    // toggle for primitive highlighting
+    var primitiveHighlighting = true;
+    // reference to this object
     var that = this;
     
     /*
@@ -264,6 +268,12 @@ function PrimitiveManager(){
     
     
     
+    /*
+     * Sets the bounding volume parameters for highlighting
+     * @param {string} id primitive id of primitiveList that should be highlighted
+     * @param {bool} bool false if all should be dehighlighted
+     * @returns (undefined)
+     */
     function highlightBoundingVolume(id, bool){  
         var transform = document.getElementById('cpnt_transform');
         var matrixTransform = document.getElementById('cpnt_matrixTransform');
@@ -327,15 +337,46 @@ function PrimitiveManager(){
     this.setTransformationValues = function(){
         setTransformValues(actualID, HANDLING_MODE);
     };
+    
+    
+    
+    /*
+     * Toggles the bounding volume highlighting on/off
+     * @returns (undefined)
+     */
+    this.showBoundingVolumeHighlighting = function(){
+        boundingVolumeHighlighting === true ? boundingVolumeHighlighting = false : boundingVolumeHighlighting = true;
+        if (boundingVolumeHighlighting)
+            highlightBoundingVolume(actualID, true);
+        else 
+            highlightBoundingVolume(actualID, false);
+    };
+    
+    
+    
+    /*
+     * Toggles the primitive highlighting on/off
+     * @returns (undefined)
+     */
+    this.showPrimitiveHighlighting = function(){
+        primitiveHighlighting === true ? primitiveHighlighting = false : primitiveHighlighting = true; 
+        if (primitiveHighlighting)
+            highlightPrimitive(actualID, true);
+        else 
+            highlightPrimitive(actualID, false);
+    };
 
 
 
     /*
-     *
+     * Highlights the primitives with selected highlighting modes
+     * @returns (undefined)
      */
     this.highlight = function(id, on) {
-        highlightBoundingVolume(id, on);
-        highlightPrimitive(id, on);
+        if (boundingVolumeHighlighting)
+            highlightBoundingVolume(id, on);
+        if (primitiveHighlighting)
+            highlightPrimitive(id, on);
     };
     
     

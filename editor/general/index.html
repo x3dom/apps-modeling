@@ -123,7 +123,7 @@
 
 <div id="Oben">
 
-    <div id="header">
+    <div class="header">
         <ul class="nav">
             <li><a>Debug</a>
                 <ul>
@@ -134,6 +134,18 @@
             </li>
         </ul>
     </div>
+    
+    <div class="header">
+        <ul class="nav">
+            <li><a>Highlight</a>
+                <ul>
+                    <li><a href="#" onclick="primitiveManager.showPrimitiveHighlighting();" onmouseover="this.style.cursor='pointer';">Primitive</a></li>
+                    <li><a href="#" onclick="primitiveManager.showBoundingVolumeHighlighting();" onmouseover="this.style.cursor='pointer';">BBox</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
 
     <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
         <option value='reset'>Reset View</option>

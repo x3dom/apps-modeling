@@ -430,7 +430,7 @@ function UI(primitiveManager){
      */
     this.showStatistik = function()
     {
-	    document.getElementById("x3d").runtime.statistics();
+        document.getElementById("x3d").runtime.statistics();
     };
     
     
