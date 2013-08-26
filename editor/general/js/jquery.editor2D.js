@@ -42,6 +42,7 @@
 			this.actPoint = null;
 			this.actOver = null;
 			this.closed = false;
+			this.snapToGrid = true;
 			this.points = [];
 			
 			this.canvas = canvas;
@@ -164,6 +165,12 @@
 		{
 			//Update mouse position
 			that.updateMousePos(evt);
+			
+			if (that.snapToGrid == true)
+			{
+				that.mousePosX = (Math.abs(that.mousePosX) < 0.15) ? 0 : that.mousePosX;
+				that.mousePosY = (Math.abs(that.mousePosY) < 0.15) ? 0 : that.mousePosY;  
+			}
 			
 			//Handle different mouse buttons
 			switch (that.mouseButton) {
