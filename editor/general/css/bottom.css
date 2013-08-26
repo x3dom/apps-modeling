@@ -12,7 +12,7 @@
 	left: 50%;
 	margin-left: -300px;
 	height: 40px;
-	width: 600px;
+	width: 615px;
 	bottom: 0px;
 	z-index: 10000;
 	background-image: url(../images/karbon_bg.png);
@@ -46,8 +46,8 @@
 {
 	width: 35px;
 	margin-left: 5px;
-        padding-bottom: 4px;
-        height: 14px;
+    padding-bottom: 4px;
+    height: 14px;
 	color: white;
 	font-size:0.9em;
 	background: transparent;
@@ -56,4 +56,11 @@
 .text-slider
 {
 	margin: 5px;
+}
+
+.x3dom-logContainer {
+    bottom: 0px;
+    left: 15%;
+    width: 70%;
+    position: absolute;
 }
