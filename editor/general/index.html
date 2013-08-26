@@ -112,6 +112,7 @@
     <script type='text/javascript' src="js/jquery.switchbutton.js"></script>
     
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
+    <script type='text/javascript' src="js/GroupManager.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
     <script type='text/javascript' src="js/Controller.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
@@ -184,6 +185,10 @@
                                 onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"/></div>
     <div class="buttonTop"><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
+                                onclick="groupManager.ungroupSelectedObjects();"/></div>
+    <div class="buttonTop"><img src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
+                                onclick="groupManager.groupSelectedObjects();"/></div>
 </div>
 
 

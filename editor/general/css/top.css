@@ -7,7 +7,7 @@
     left: 50%;
     margin-left: -300px;
     height: 41px;
-    width: 615px;
+    width: 685px;
     z-index: 10000;
     background-image: url(../images/karbon_bg.png);
 }
@@ -30,12 +30,14 @@
 #ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonRotieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonGroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonUngroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 .buttonTop{ float:left; }
 
 .buttonPlane{ margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
 .buttonAxis{ border-right: 2px solid #b1b1b1; height:41px; float:left; }
 
-#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #DeleteAxis, #DeletePlane
+#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #DeleteAxis, #DeletePlane, #ButtonGroup, #ButtonUngroup
 {
     border:1px solid gray;
 }
@@ -45,7 +47,7 @@
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active,
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,

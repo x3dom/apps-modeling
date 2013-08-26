@@ -1,5 +1,7 @@
 // PrimitiveManager handles the adding of new primitives and their behaviour
 var primitiveManager = new PrimitiveManager();
+// GroupManager handles grouping of primitives
+var groupManager = new GroupManager();
 // UI handles all the access to all gui elements
 var ui = new UI(primitiveManager);
 // Controller that handles the activation of the transformation modes
