@@ -116,6 +116,18 @@ function UI(primitiveManager){
                     }
                 }
         });
+        
+        
+        $("#accordion_left").accordion({
+                heightStyle: "content",
+                collapsible: false,
+                active: false,
+                icons: iconsAccordion,
+                activate: function(event, ui) {
+                    
+                }
+        });
+        
 
         that.RBAccordion.disable = function(bool){
             $("#accordeon-oben").accordion("option", { disabled: bool });
@@ -378,7 +390,7 @@ function UI(primitiveManager){
        if (fadeSwitch[0] === 0){
            $("#Links").animate(
            {
-               left: "-87px"
+               left: "-177px"
            }, 250);
            fadeSwitch[0]++;
        }
@@ -560,7 +572,7 @@ function UI(primitiveManager){
         divID.setAttribute("id", name);
         divID.innerHTML = "<img src='"+img+"' width='100%' height='100%'>";
         divID.setAttribute("style",
-            "width: 60px; height: 60px; margin: 5px; margin-left: 17px; border: solid 1px " +
+            "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
                 defColor + "; border-radius: 5px;");
 
         divID.setAttribute("onmouseover",

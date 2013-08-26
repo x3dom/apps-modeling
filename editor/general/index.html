@@ -135,11 +135,6 @@
         </ul>
     </div>
 
-    <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
-        onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
-        <option>nothing selected</option>
-    </select>
-
     <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
         <option value='reset'>Reset View</option>
         <option value='all'>Show All</option>
@@ -185,7 +180,21 @@
 </div>
 
 
-<div id="Links"> <div id="leftBar"> <div id="divs"> </div> </div>
+<div id="Links"> 
+    <div id="leftBar"> 
+        <div id="accordion_left">
+            <h3>Primitives</h3>
+            <div id="divs"> </div>
+            <h3>Tree-View</h3>
+            <div>
+                <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
+                    onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
+                    <option>nothing selected</option>
+                </select>
+            </div>
+        </div>
+        
+    </div>
     <div id="button_Links" onclick="ui.fadeLeft();" onmouseover="this.style.cursor='pointer';"> </div>
 </div>
 

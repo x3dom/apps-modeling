@@ -2,7 +2,7 @@
 
 #leftBar
 {
-	width: 85px;
+	width: 175px;
 	height: 100%;
 	background-image: url(../images/karbon_bg.png);
 	border: solid 2px #fff;
@@ -15,12 +15,36 @@
 
 #button_Links
 {
-	position:absolute;
-	width: 30px;
-	height: 150px;
-	left: 85px;
-	top: 50%;
-	margin-top: -75px;
-	z-index: 100000;
-	background-image: url(../images/primitiv.png);
+    position:absolute;
+    width: 30px;
+    height: 150px;
+    left: 175px;
+    top: 50%;
+    margin-top: -75px;
+    z-index: 100000;
+    background-image: url(../images/primitiv.png);
+}
+
+
+#accordion_left
+{
+    width: 97%;
+    height: 80%;
+}
+
+#accordion_left h3
+{
+    font-size: 14px;
+}
+
+
+#accordion_left .ui-accordion-content
+{
+    padding: 5%;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    background: #191415;
+    color: #FFFFFF;
+    margin: 0px;
+    height: 100%;
 }
