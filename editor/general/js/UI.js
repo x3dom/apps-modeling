@@ -621,8 +621,8 @@ function UI(primitiveManager){
 
         var divIDinnen = document.createElement("div");
         divIDinnen.setAttribute("id", name+"_inner");
-        divIDinnen.setAttribute("style", "color: " + highlightColor +
-            "; margin-top: -40px; text-align: center;");
+        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
+            (name.length > 20 ? "-50" : "-40") + "px; text-align: center;");    // hack
         divIDinnen.innerHTML = name;			
 
         divID.appendChild(divIDinnen);
