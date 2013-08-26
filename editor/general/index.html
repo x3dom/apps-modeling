@@ -191,7 +191,7 @@
 <div id="Unten">
         <div id="objectName">
             <p>
-                <label class="objectLabel">Object: </label>
+                <label for="primitiveName" class="objectLabel">Object:</label>
                 <input type="text" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
                 <img src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
             </p>
@@ -199,9 +199,14 @@
         <div id="coordinatesValue">
             <p>
                 <label id="transformMode" class="text-slider"> </label>
-                <label class="text-slider">X :</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
-                <label class="text-slider">Y :</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>    
-                <label class="text-slider">Z :</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">X:</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+            </p>
+        </div>
+        <div id="snapToWhat">
+            <p>
+                <label for="snapToGrid" class="text-slider">Snap to grid:</label><input class="amount" type="checkbox" id="snapToGrid" value="1.0" />
             </p>
         </div>
 </div>
