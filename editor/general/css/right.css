@@ -11,6 +11,7 @@
     border: solid 2px #fff;
     border-right: none;
     padding-top: 5px;
+    border-radius: 10px 0px 0px 0px;
 }
 
 #accordeon-oben

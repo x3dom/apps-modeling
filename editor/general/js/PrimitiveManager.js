@@ -6,7 +6,7 @@
 function PrimitiveManager(){
     
     // List of all created primitives
-    var primitiveList = [];
+    var primitiveList = {};
     // actually active id
     var actualID = "";
     // count of all primitives that were created during this session
@@ -15,7 +15,11 @@ function PrimitiveManager(){
     var primitiveCounter = 0;
     // ui element to get access to the gui elements
     var ui = {};
-    
+    // toggle for bounding volume highlighting
+    var boundingVolumeHighlighting = true;
+    // toggle for primitive highlighting
+    var primitiveHighlighting = true;
+    // reference to this object
     var that = this;
     
     /*
@@ -124,9 +128,9 @@ function PrimitiveManager(){
         
         // update GUI elements appropriately
         if (HANDLING_MODE === "translation" && id == actualID) {
-            ui.BBTransX.set(pos.x.toFixed(5));
-            ui.BBTransY.set(pos.y.toFixed(5));
-            ui.BBTransZ.set(pos.z.toFixed(5));
+            ui.BBTransX.set(pos.x.toFixed(3));
+            ui.BBTransY.set(pos.y.toFixed(3));
+            ui.BBTransZ.set(pos.z.toFixed(3));
         }
     }
     
@@ -162,9 +166,9 @@ function PrimitiveManager(){
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
-    this.removeNode = function()
+    this.removeNode = function(force)
     {
-        if (ui.TBPrimitiveList.selectedIndex() !== 0) {
+        if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
             var ot = document.getElementById(actualID);
 
             for (var i = 0; i < ot.childNodes.length; i++) 
@@ -188,6 +192,25 @@ function PrimitiveManager(){
                 }
             }
         }
+    };
+
+
+    /*
+     * Removes all primitives from the DOM and from primitive array
+     */
+    this.removeAllNodes = function()
+    {
+        for (var key in primitiveList) {
+            if (primitiveList[key]) {
+                actualID = key;
+                this.removeNode(true);
+            }
+        }
+
+        primitiveList = {};
+        actualID = "";
+        //primCounter = 0;
+        primitiveCounter = 0;
     };
     
     
@@ -264,6 +287,12 @@ function PrimitiveManager(){
     
     
     
+    /*
+     * Sets the bounding volume parameters for highlighting
+     * @param {string} id primitive id of primitiveList that should be highlighted
+     * @param {bool} bool false if all should be dehighlighted
+     * @returns (undefined)
+     */
     function highlightBoundingVolume(id, bool){  
         var transform = document.getElementById('cpnt_transform');
         var matrixTransform = document.getElementById('cpnt_matrixTransform');
@@ -327,15 +356,54 @@ function PrimitiveManager(){
     this.setTransformationValues = function(){
         setTransformValues(actualID, HANDLING_MODE);
     };
+    
+    
+    
+    /*
+     * Toggles the bounding volume highlighting on/off
+     * @returns (undefined)
+     */
+    this.showBoundingVolumeHighlighting = function(htmlID){
+        boundingVolumeHighlighting = !boundingVolumeHighlighting;
+        if (boundingVolumeHighlighting){
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
+            highlightBoundingVolume(actualID, true);
+        }
+        else {
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
+            highlightBoundingVolume(actualID, false);
+        }
+    };
+    
+    
+    
+    /*
+     * Toggles the primitive highlighting on/off
+     * @returns (undefined)
+     */
+    this.showPrimitiveHighlighting = function(htmlID){
+        primitiveHighlighting = !primitiveHighlighting;
+        if (primitiveHighlighting){
+            highlightPrimitive(actualID, true);
+            document.getElementById(htmlID+"_tick").style.visibility = "visible";
+        }
+        else { 
+            highlightPrimitive(actualID, false);
+            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
+        }
+    };
 
 
 
     /*
-     *
+     * Highlights the primitives with selected highlighting modes
+     * @returns (undefined)
      */
     this.highlight = function(id, on) {
-        highlightBoundingVolume(id, on);
-        highlightPrimitive(id, on);
+        if (boundingVolumeHighlighting)
+            highlightBoundingVolume(id, on);
+        if (primitiveHighlighting)
+            highlightPrimitive(id, on);
     };
     
     
@@ -468,6 +536,21 @@ function PrimitiveManager(){
      */
     this.getActualPrimitive = function(){
         return primitiveList[actualID];
+    };
+    
+    
+    
+    /*
+     * Returns a list with all primitives id's 
+     * @returns {List of id's of all primitives}
+     */
+    this.getIDList = function(){
+        var idList = [];
+        for (var key in primitiveList){
+            idList.push(key);
+        }
+        
+        return idList;
     };
 }
 

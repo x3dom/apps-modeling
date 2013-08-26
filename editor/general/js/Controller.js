@@ -20,18 +20,27 @@ function Controller(ui){
             ui.TBTranslate.highlight();
             ui.TBScale.dehighlight();
             ui.TBRotate.dehighlight();
+            ui.BBTransX.step(0.1);
+            ui.BBTransY.step(0.1);
+            ui.BBTransZ.step(0.1);
         }
         else if (mode === "scale"){
             ui.TBHand.dehighlight();
             ui.TBTranslate.dehighlight();
             ui.TBScale.highlight();
             ui.TBRotate.dehighlight();
+            ui.BBTransX.step(0.1);
+            ui.BBTransY.step(0.1);
+            ui.BBTransZ.step(0.1);
         }
         else if (mode === "rotation"){
             ui.TBHand.dehighlight();
             ui.TBTranslate.dehighlight();
             ui.TBScale.dehighlight();
             ui.TBRotate.highlight();
+            ui.BBTransX.step(1.0);
+            ui.BBTransY.step(1.0);
+            ui.BBTransZ.step(1.0);
         }
         else {
             ui.TBHand.highlight();
