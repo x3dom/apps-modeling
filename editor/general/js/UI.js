@@ -192,10 +192,12 @@ function UI(primitiveManager){
                 { editorName: parameters[j].getAttribute("editorName"),
                   x3domName: parameters[j].getAttribute("x3domName"),
                   value: parameters[j].textContent,
+                  min: parameters[j].getAttribute("min"),
+                  max: parameters[j].getAttribute("max"),
                   type: (parameters[j].getAttribute("type") !== null) ? parameters[j].getAttribute("type") : "spinner",
                   render: (parameters[j].getAttribute("render") !== null) ? parameters[j].getAttribute("render") : "true",
                   step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 
-                                                                       (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0
+                                                                       (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0            
                 } );
             }
        }
@@ -639,6 +641,26 @@ function UI(primitiveManager){
             normalProperty();
         
         
+        
+        /*
+         * Clamps value on min and max if required
+         * @param {string} min minimal range of value
+         * @param {string} max maximum range of value
+         * @param {string} value param that shoudl be clamped 
+         * @returns (clamped value)
+         */
+        function clamp(min, max, value){
+            min = parseFloat(min);
+            max = parseFloat(max);
+            if (min !== null && value < min)
+                return min;
+            else if (max !== null && value > max)
+                return max;
+            
+            return value;
+        }
+        
+        
 
         function normalProperty(){
             var newLabel = document.createElement("label");
@@ -656,18 +678,20 @@ function UI(primitiveManager){
             
             $("#"+object.id).spinner({
                 step: object.param.step,
+                min: object.param.min,
+                max: object.param.max,
                 stop:function(e,ui) {
                     if (object.param.type === "angle"){
                         object.primitive.setAttribute(object.param.x3domName,
-                                                      document.getElementById(object.id).value * Math.PI / 180); 
+                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id).value) * Math.PI / 180); 
                     }
                     else {
                         object.primitive.setAttribute(object.param.x3domName,
-                                                      document.getElementById(object.id).value);
+                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id).value));
                     }
                     
-                    object.param.value = document.getElementById(object.id).value;
-
+                    object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
+                    document.getElementById(object.id).value = object.param.value;
                     var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
                     primitiveManager.highlight(ref, true);
                 }
@@ -737,15 +761,21 @@ function UI(primitiveManager){
             for (var i = 0; i < vecSize; i++){
                 $("#"+object.id + "_" + i).spinner({
                     step: object.param.step,
+                    min: object.param.min,
+                    max: object.param.max,
                     stop:function(e,ui) {
                         object.primitive.setAttribute(object.param.x3domName,
-                                                      document.getElementById(object.id + "_0").value + "," +
-                                                      document.getElementById(object.id + "_1").value + "," +
-                                                      document.getElementById(object.id + "_2").value);
-                        object.param.value = document.getElementById(object.id + "_0").value + "," +
-                                             document.getElementById(object.id + "_1").value + "," +
-                                             document.getElementById(object.id + "_2").value;
-
+                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
+                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
+                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value));
+                        object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
+                                             clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
+                                             clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+                        
+                        document.getElementById(object.id + "_0").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value);
+                        document.getElementById(object.id + "_1").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value);
+                        document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+                        
                         var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
                         primitiveManager.highlight(ref, true);
                     }
