@@ -8,16 +8,15 @@ function Bouding()
 	
 	this.init = function()
 	{
-		//var selectID = primitiveManager.getActualID();
-		var selectID = primitiveManager.getActualPrimitive();
+		var getActualID;
+		var selectID = [];
 		
-		if(document.getElementById('bounding'))
+		selectID = primitiveManager.getIDList();
+		getActualID = primitiveManager.getActualID();
+		
+		for(var i = 0; i < selectID.length; i++)
 		{
-			alert("Bounding vorhanden");
-		}
-		else
-		{
-			boundingPoint(selectID);	
+			boundingPoint(selectID[i]);
 		}
 	};
 	
@@ -42,5 +41,5 @@ function Bouding()
     	
     	var element = document.getElementById(id);
     	element.appendChild(transform);
-    }
+    };
 }
