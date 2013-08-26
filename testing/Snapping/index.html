@@ -79,7 +79,7 @@
     <script type="text/javascript" src="../../../x3dom/src/nodes/VolumeRendering.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/nodes/CADGeometry.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/nodes/Terrain.js"></script>
-    <script type="text/javascript" src="../../../x3dom/src/nodes/GeometryEDF.js"></script>
+    <script type="text/javascript" src="../../../x3dom/src/nodes/Geometry3DExt.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/util/Moveable.js"></script>
 
     <script>
@@ -87,10 +87,6 @@
     {
         document.write(
             '<script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom-full.js"><\/script>');
-        document.write(
-            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/nodes/GeometryEDF.js"><\/script>');
-        document.write(
-            '<script type="text/javascript" src="http://www.x3dom.org/x3dom/src/util/Moveable.js"><\/script>');
     }
     </script>
 
@@ -110,11 +106,12 @@
     <script type='text/javascript' src="js/jquery-ui-1.10.3.custom.js"></script>
     <script type='text/javascript' src="js/jquery.slimscroll.min.js"></script>
     <script type='text/javascript' src="js/jquery.switchbutton.js"></script>
-    
-    <script type='text/javascript' src="js/Snapping.js"></script>
+	
+	<script type='text/javascript' src="js/Snapping.js"></script>
     <script type='text/javascript' src="js/Bouding.js"></script>
     
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
+    <script type='text/javascript' src="js/GroupManager.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
     <script type='text/javascript' src="js/Controller.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
@@ -178,7 +175,7 @@
     <div class="buttonPlane"><img src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removePlane();"/></div>
     <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
-                                onclick="bouding.init();"/></div>
+                                onclick="snapping.init();"/></div>
     <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
                                 onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"/></div>
     <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
@@ -187,6 +184,10 @@
                                 onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"/></div>
     <div class="buttonTop"><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"/></div>
+    <div class="buttonTop"><img src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
+                                onclick="groupManager.ungroupSelectedObjects();"/></div>
+    <div class="buttonTop"><img src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
+                                onclick="groupManager.groupSelectedObjects();"/></div>
 </div>
 
 

@@ -41,5 +41,39 @@ function Bouding()
     	
     	var element = document.getElementById(id);
     	element.appendChild(transform);
+    	
+    	//loadJSON();
     };
+    
+    /*
+	function loadJSON()
+    {
+	    // json-string laden
+		var json = GetHttpText("./x3d/TestData/SimpleTube.json");
+		
+		// aus dem string ein Array bilden
+		var jsonObj = JSON.parse(json);
+		
+		console.log(jsonObj);
+    };
+
+	
+	function GetHttpText(url) 
+	{
+		if (window.XMLHttpRequest) 
+		{
+			vHTTPReq = new XMLHttpRequest();
+		}
+		else 
+		{
+			vHTTPReq = new ActiveXObject("Microsoft.XMLHTTP"); // IE 5 / 6
+		}
+	
+		/// get content
+		vHTTPReq.open("GET", url, false);
+		vHTTPReq.send();
+	
+		return vHTTPReq.responseText;
+	};
+	*/
 }

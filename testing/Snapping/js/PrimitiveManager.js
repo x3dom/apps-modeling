@@ -100,7 +100,7 @@ function PrimitiveManager(){
         root.appendChild(t);
         
         // wrapper for adding moving functionality, last param is callback function
-        new Moveable(document.getElementById("x3d"), t, notified);
+        new x3dom.Moveable(document.getElementById("x3d"), t, notified);
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
@@ -170,6 +170,10 @@ function PrimitiveManager(){
     {
         if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
             var ot = document.getElementById(actualID);
+            
+            if (ot._iMove) {
+                ot._iMove.detachHandlers();
+            }
 
             for (var i = 0; i < ot.childNodes.length; i++) 
             {
@@ -551,11 +555,6 @@ function PrimitiveManager(){
         }
         
         return idList;
-    };
-    
-    this.getActualID = function()
-    {
-    	return actualID;
     };
 }
 
