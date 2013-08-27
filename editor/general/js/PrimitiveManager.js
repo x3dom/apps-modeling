@@ -20,9 +20,11 @@ document.onkeyup=function(e){
 function PrimitiveManager(){
     
     // List of all created primitives
-    var primitiveList = {};
+    var primitiveList = [];
     // actually active id
     var actualID = "";
+    // list of all selected primitives (including the first selected one)
+    var selectedPrimitives = [];
     // count of all primitives that were created during this session
     var primCounter = 0;
     // count of actually used primitives on workspace 
@@ -120,17 +122,31 @@ function PrimitiveManager(){
         primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
         addPrimitiveToComboBox(t.IDMap.name);
         setTransformValues(id, HANDLING_MODE);
-        
-        actualID = id;
+
         primitiveCounter++;
-        ui.setMaterial(mat);
-        
-        this.highlight(id, true);
-        ui.clearParameters();
-        ui.createParameters(t.Parameters);
+
+        selectCurrentPrimitive(id);
     };
-    
-    
+
+
+    /*
+     * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
+     * which is affected by transformations and which can be inspected with the UI
+     */
+    function selectCurrentPrimitive(id){
+        if (selectedPrimitives.indexOf(id) === -1)
+        {
+            actualID = id;
+            that.highlight(id, true);
+            selectedPrimitives.push(id);
+
+            ui.clearParameters();
+            ui.createParameters(primitiveList[id].Parameters);
+            ui.setMaterial(primitiveList[id].Material);
+        }
+    };
+
+
     /*
      * Callback for handling movement values on mouse interaction
      * @param {X3DNode} the interacting element
@@ -225,7 +241,7 @@ function PrimitiveManager(){
             }
         }
 
-        primitiveList = {};
+        primitiveList = [];
         actualID = "";
         primitiveCounter = 0;
     };
@@ -293,28 +309,27 @@ function PrimitiveManager(){
     function primitiveSelected(id){
         if (typeof id !== 'undefined')
         {
-            //@todo: not working a.t.m.
-            if (actualID !== "")
+            //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
+            if (actualID === "")
             {
-                actualID = id;
-                that.highlight(id, true);
+                that.selectCurrentPrimitive(id);
 
-                ui.clearParameters();
-                ui.createParameters(primitiveList[id].Parameters);
-                ui.setMaterial(primitiveList[id].Material);
                 if (HANDLING_MODE === "hand")
                     controller.Activate("translation");
                 setTransformValues(id, HANDLING_MODE);
+
+                selectedPrimitives.push(id);
             }
             //if there is already a selected object, check if SHIFT is pressed - if so, add object to selection
-            else
+            else if (keyPressed[16])
             {
-                if (keyPressed[16]) //SHIFT pressed
+                if (selectedPrimitives.indexOf(id) === -1)
                 {
-                    //@todo: make it work
+                    selectedPrimitives.push(id);
                 }
             }
 
+            console.log(selectedPrimitives.length);
         }
         else
         {
@@ -488,10 +503,8 @@ function PrimitiveManager(){
             clearTransformValues();
         }
         else {
-            actualID = ui.TBPrimitiveList.idMap(id).id;
+            selectCurrentPrimitive(ui.TBPrimitiveList.idMap(id).id);
             setTransformValues(actualID, HANDLING_MODE);
-            ui.clearParameters();
-            ui.createParameters(primitiveList[actualID].Parameters);
         }
     };
     

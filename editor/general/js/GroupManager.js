@@ -57,7 +57,7 @@ function Group(name){
 function GroupManager(){
 
     // list of all created groups
-    var groupList = {};
+    var groupList = [];
     // id of the current group, if any
     var currentGroup = null;
     // count of all groups that were created during this session

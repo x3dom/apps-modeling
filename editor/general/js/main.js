@@ -9,7 +9,6 @@ var controller = new Controller(ui);
 // Variable that defines the handling mode
 var HANDLING_MODE = "translation";
 
-
 window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
