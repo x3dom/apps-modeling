@@ -59,6 +59,8 @@ function Snapping()
 		/* ID actual element */
 		var actualID;
 		
+		var distance;
+		
 		/* IDs all elements in view */
 		var objListID = [];
 		
@@ -66,24 +68,54 @@ function Snapping()
 		var pfad = './x3d/JsonFiles/Box.json';
 		
 		actualID = primitiveManager.getActualPrimitive();
-		objListID = primitiveManager.getIDList();
-		
+		objListID = primitiveManager.getIDList();		
 		
 		for(var i = 0; i < objListID.length; i++)
 		{
-			/*
-			 * JSON gibt mir die Punktkoordinaten
-			 * in jeder diese Koordinaten erzeuge ich
-			 * mit boundingPoint eine Bindungskugel
-			 */
 			loadJSON(objListID[i], pfad);
-			
-			console.log(primitiveManager.getPosition(objListID[i]));
 		}
+		
+		
+		/* calculated distance */
+		distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
+		console.log("distance: " + distance);
 	};
 	
-	/* Zeichnet die BoudingPunkte */
-    function boundingPoint(id, pfad, position)
+	
+	/*
+	 * calculate distance
+	 * @return distance between two points
+	 */
+	function pointsDistance(point1, point2)
+	{
+		var distance;
+		
+		var summ = ((point1.x - point2.x) * 2) + ((point1.y - point2.y) * 2) + ((point1.z - point2.z) * 2);
+		
+		console.log("summ: " + summ);
+		
+		if(summ < 0)
+		{
+			summ = summ * (-1);
+			distance = Math.sqrt(summ);
+		}
+		if(summ == 0)
+		{
+			distance = summ;
+		}
+		else
+		{
+			distance = Math.sqrt(summ);
+		}
+		
+		console.log("distance: " + distance);
+		
+		return distance;
+	};
+	
+	
+	/* Draws the direction axis */
+    function positionAxis(id, pfad, position)
     {    	
     	var transform = document.createElement('Transform');
     	var transform_S = document.createElement('Shape');
@@ -105,8 +137,8 @@ function Snapping()
     	element.appendChild(transform);
     };
     
-    /* Zeichnet die Normale */
-    function boundingNormale(id, pfad, position)
+    /* Draws the normal */
+    function directionNormale(id, pfad, position)
     {		
 		/* Cylinder */	
     	var transform = document.createElement('Transform');
@@ -157,27 +189,25 @@ function Snapping()
     
 	function loadJSON(id, pfad)
     {
-	    // json-string laden
+	    // json-string load
 		var json = GetHttpText(pfad);
 		
-		// aus dem string ein Array bilden
+		// make a string from array
 		var jsonObj = eval ('(' + json + ')');
 		
-		// die Arrays koennen dann wie folgt aufgerufen werden points[0]
+		// the array can be accessed as follows points[0]
 		var points = jsonObj.snapPoints;		
 		
 		for(var i = 0; i < points.length-1; i++)
 		{
-			//Zeugen der bounding Points
-			boundingPoint(id, pfad, points[i].toString());
-			//console.log(points[i].toString());
+			// Create direction axis
+			positionAxis(id, pfad, points[i].toString());
 		}
 		
 		for(var i = points.length-1; i < points.length; i++)
 		{
-			//Erzeugt die Normale
-			boundingNormale(id, pfad, points[i].toString());
-			//console.log(points[i].toString());	
+			// Create normale
+			directionNormale(id, pfad, points[i].toString());
 		}
     };
 
