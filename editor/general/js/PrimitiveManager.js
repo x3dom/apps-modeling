@@ -127,6 +127,17 @@ function PrimitiveManager(){
         ui.treeViewer.addElement(id, id);
         selectCurrentPrimitive(id);
     };
+    
+    
+    
+    this.selectPrimitive = function(id){
+        actualID = id;
+        that.highlight(id, true);
+        ui.clearParameters();
+        ui.createParameters(primitiveList[id].Parameters);
+        ui.setMaterial(primitiveList[id].Material);
+        that.setTransformationValues();
+    };
 
 
     /*
@@ -328,7 +339,7 @@ function PrimitiveManager(){
                     selectedPrimitives.push(id);
                 }
             }
-
+            
             console.log(selectedPrimitives.length);
         }
         else
