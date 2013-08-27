@@ -2,7 +2,7 @@
 	<scene>
 		<group>
 			<!-- X arrow and label -->
-            <Transform rotation='0 0 1 -1.57079'>
+            <Transform rotation='0 0 1 -1.57079632679'>
             	<Shape isPickable="false">
                 	<Cylinder DEF='ArrowCylinder' radius='.015' height='25.0' top='false' subdivision="8">
                 	</Cylinder>
@@ -35,7 +35,7 @@
 			
 			
 			<!-- Z arrow and label -->
-            <Transform rotation='1 0 0 1.57079'>                                    
+            <Transform rotation='1 0 0 1.57079632679'>
             	<Shape isPickable="false">
                 	<Cylinder USE='ArrowCylinder'></Cylinder>
                     	<Appearance DEF='Blue'>

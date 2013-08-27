@@ -123,16 +123,16 @@ function Controller(ui){
      */
     this.removePlane = function()
     {
-    	var renderWert = document.getElementById("plane");
+    	var plane = document.getElementById("planeId");
     	
-    	if(renderWert.getAttribute("render") === "true")
+    	if (plane.getAttribute("render") === "true")
     	{
-            renderWert.setAttribute("render", "false");
+            plane.setAttribute("render", "false");
             document.getElementById("DeletePlane").style.border="solid 1px gray";
     	}
     	else
     	{
-            renderWert.setAttribute("render", "true");
+            plane.setAttribute("render", "true");
             document.getElementById("DeletePlane").style.border="solid 1px #fff";
     	}
     };
