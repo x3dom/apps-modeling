@@ -22,9 +22,9 @@ function PrimitiveManager(){
     // List of all created primitives
     var primitiveList = [];
     // actually active id
-    var actualID = "";
+    var currentPrimitiveID = "";
     // list of all selected primitives (including the first selected one)
-    var selectedPrimitives = [];
+    var selectedPrimitiveIDs = [];
     // count of all primitives that were created during this session
     var primCounter = 0;
     // count of actually used primitives on workspace 
@@ -125,7 +125,9 @@ function PrimitiveManager(){
 
         primitiveCounter++;
 
-        selectCurrentPrimitive(id);
+        selectedPrimitiveIDs = [];
+
+        that.selectCurrentPrimitive(id);
     };
 
 
@@ -133,12 +135,12 @@ function PrimitiveManager(){
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
      * which is affected by transformations and which can be inspected with the UI
      */
-    function selectCurrentPrimitive(id){
-        if (selectedPrimitives.indexOf(id) === -1)
+    this.selectCurrentPrimitive = function(id){
+        if (selectedPrimitiveIDs.indexOf(id) === -1)
         {
-            actualID = id;
+            currentPrimitiveID = id;
             that.highlight(id, true);
-            selectedPrimitives.push(id);
+            selectedPrimitiveIDs = [id];
 
             ui.clearParameters();
             ui.createParameters(primitiveList[id].Parameters);
@@ -157,7 +159,7 @@ function PrimitiveManager(){
         that.highlight(id, true);
         
         // update GUI elements appropriately
-        if (HANDLING_MODE === "translation" && id == actualID) {
+        if (HANDLING_MODE === "translation" && id == currentPrimitiveID) {
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
@@ -199,7 +201,7 @@ function PrimitiveManager(){
     this.removeNode = function(force)
     {
         if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
-            var ot = document.getElementById(actualID);
+            var ot = document.getElementById(currentPrimitiveID);
             
             if (ot._iMove) {
                 ot._iMove.detachHandlers();
@@ -211,14 +213,14 @@ function PrimitiveManager(){
                 if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
                 { 
                     ot.removeChild(ot.childNodes[i]);
-                    for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
+                    for (var j = primitiveList[currentPrimitiveID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
                         try {
                             ui.TBPrimitiveList.idMap(j).cboxNumber--;
                         }
                         catch (ex){}
                     }
-                    ui.TBPrimitiveList.remove(primitiveList[actualID].IDMap.cboxNumber);
-                    delete primitiveList[actualID];
+                    ui.TBPrimitiveList.remove(primitiveList[currentPrimitiveID].IDMap.cboxNumber);
+                    delete primitiveList[currentPrimitiveID];
 
                     clearTransformValues();
                     primitiveCounter--;
@@ -236,13 +238,13 @@ function PrimitiveManager(){
     {
         for (var key in primitiveList) {
             if (primitiveList[key]) {
-                actualID = key;
+                currentPrimitiveID = key;
                 this.removeNode(true);
             }
         }
 
         primitiveList = [];
-        actualID = "";
+        currentPrimitiveID = "";
         primitiveCounter = 0;
     };
     
@@ -257,10 +259,10 @@ function PrimitiveManager(){
         var rgb = document.getElementById(element).value;
         highlightPrimitive(null, false);
         if (element == "diffuse" || element == "specular" || element == "emissive") {
-            primitiveList[actualID].Material.setAttribute(element+'Color', rgb);
+            primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
         }
         if(element == "transparency" || element == "shininess") {
-            primitiveList[actualID].Material.setAttribute(element, rgb);
+            primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
         }
     };
     
@@ -301,7 +303,7 @@ function PrimitiveManager(){
     
 
     /*
-     * Will be called if a primitive is selected and should
+     * Will be called if a primitive is picked and should
      * set the values of translation, rotation or scaling
      * @param {type} id name of the primitive's values that should be set
      * @returns {null}
@@ -310,26 +312,27 @@ function PrimitiveManager(){
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
-            if (actualID === "")
+            if (currentPrimitiveID === "" || !keyPressed[16])
             {
                 that.selectCurrentPrimitive(id);
 
                 if (HANDLING_MODE === "hand")
                     controller.Activate("translation");
                 setTransformValues(id, HANDLING_MODE);
-
-                selectedPrimitives.push(id);
             }
-            //if there is already a selected object, check if SHIFT is pressed - if so, add object to selection
+            //if there is already a selected object and SHIFT is pressed, add object to selection
             else if (keyPressed[16])
             {
-                if (selectedPrimitives.indexOf(id) === -1)
+                if (selectedPrimitiveIDs.indexOf(id) === -1)
                 {
-                    selectedPrimitives.push(id);
+                    selectedPrimitiveIDs.push(id);
+
+                    //primitiveList[id].highlight(false, "1 1 0");
+                    //primitiveList[id].highlight(true,  "1 0.5 0");
                 }
             }
-
-            console.log(selectedPrimitives.length);
+            //@todo: debug
+            console.log(selectedPrimitiveIDs.length);
         }
         else
         {
@@ -380,20 +383,19 @@ function PrimitiveManager(){
     
     
     /*
-     * Highlights the actually selected primitive
+     * Highlights the actually selected (primary) primitive
      * @param {type} highlightOn false if all should be dehighlighted
      * @returns {null}
      */
     function highlightPrimitive(id, highlightOn){
-        // TODO FIXME only switch off prevElem and only do something on change
         for (var key in primitiveList) {
             if (primitiveList[key]) {
                 primitiveList[key].highlight(false, "1 1 0");
             }
         }
-        if (highlightOn && primitiveList[actualID]) {
+        if (highlightOn && primitiveList[currentPrimitiveID]) {
            //  TODO; shall depend on user preference (highlight/bbox checkboxes)
-           primitiveList[actualID].highlight(true, "1 1 0");
+           primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
         }
     }
     
@@ -406,7 +408,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setTransformationValues = function(){
-        setTransformValues(actualID, HANDLING_MODE);
+        setTransformValues(currentPrimitiveID, HANDLING_MODE);
     };
     
     
@@ -419,11 +421,11 @@ function PrimitiveManager(){
         boundingVolumeHighlighting = !boundingVolumeHighlighting;
         if (boundingVolumeHighlighting){
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
-            highlightBoundingVolume(actualID, true);
+            highlightBoundingVolume(currentPrimitiveID, true);
         }
         else {
             document.getElementById(htmlID+"_tick").style.visibility = "hidden";
-            highlightBoundingVolume(actualID, false);
+            highlightBoundingVolume(currentPrimitiveID, false);
         }
     };
     
@@ -436,11 +438,11 @@ function PrimitiveManager(){
     this.showPrimitiveHighlighting = function(htmlID){
         primitiveHighlighting = !primitiveHighlighting;
         if (primitiveHighlighting){
-            highlightPrimitive(actualID, true);
+            highlightPrimitive(currentPrimitiveID, true);
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
         }
         else { 
-            highlightPrimitive(actualID, false);
+            highlightPrimitive(currentPrimitiveID, false);
             document.getElementById(htmlID+"_tick").style.visibility = "hidden";
         }
     };
@@ -465,7 +467,7 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.setTransformationValuesToPrimitive = function() {
-        var MT = primitiveList[actualID].children[0];
+        var MT = primitiveList[currentPrimitiveID].children[0];
 
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
@@ -474,7 +476,7 @@ function PrimitiveManager(){
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();   
-            primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
+            primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
             MT.Transformation.rotationX = ui.BBTransX.get();
@@ -488,7 +490,7 @@ function PrimitiveManager(){
             MT.setAttribute("matrix", matrixToString(transformMat));
         }
         
-        this.highlight(actualID, true);
+        this.highlight(currentPrimitiveID, true);
     };
     
     
@@ -504,7 +506,7 @@ function PrimitiveManager(){
         }
         else {
             selectCurrentPrimitive(ui.TBPrimitiveList.idMap(id).id);
-            setTransformValues(actualID, HANDLING_MODE);
+            setTransformValues(currentPrimitiveID, HANDLING_MODE);
         }
     };
     
@@ -559,8 +561,8 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        ui.TBPrimitiveList.set(primitiveList[actualID].IDMap.cboxNumber, ui.BBPrimName.get());
-        primitiveList[actualID].IDMap.name = ui.BBPrimName.get();
+        ui.TBPrimitiveList.set(primitiveList[currentPrimitiveID].IDMap.cboxNumber, ui.BBPrimName.get());
+        primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
     };
     
     
@@ -585,7 +587,7 @@ function PrimitiveManager(){
      * @returns {primitive}
      */
     this.getActualPrimitive = function(){
-        return primitiveList[actualID];
+        return primitiveList[currentPrimitiveID];
     };
 
     /*
@@ -596,7 +598,7 @@ function PrimitiveManager(){
         if (event.button == 2) {
             document.getElementById('primitiveList').selectedIndex = 0;
             primitiveManager.comboBoxChanged(0);
-            actualID = "";
+            currentPrimitiveID = "";
         }
     };
     
