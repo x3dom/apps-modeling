@@ -1,3 +1,17 @@
+//@todo: there is currently no method to query key states in X3DOM (?)
+var keyPressed={};
+
+document.onkeydown=function(e){
+    e = e || window.event;
+    keyPressed[e.keyCode] = true;
+}
+
+document.onkeyup=function(e){
+    e = e || window.event;
+    keyPressed[e.keyCode] = false;
+}
+
+
 /*
  * The PrimitiveManager component handles all the behaviour of all 
  * added primitives of the workspace
@@ -278,15 +292,35 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function primitiveSelected(id){
-        actualID = id;
-        that.highlight(id, true);
+        if (typeof id !== 'undefined')
+        {
+            //@todo: not working a.t.m.
+            if (actualID !== "")
+            {
+                actualID = id;
+                that.highlight(id, true);
 
-        ui.clearParameters();
-        ui.createParameters(primitiveList[id].Parameters);
-        ui.setMaterial(primitiveList[id].Material);
-        if (HANDLING_MODE === "hand")
-            controller.Activate("translation");
-        setTransformValues(id, HANDLING_MODE);
+                ui.clearParameters();
+                ui.createParameters(primitiveList[id].Parameters);
+                ui.setMaterial(primitiveList[id].Material);
+                if (HANDLING_MODE === "hand")
+                    controller.Activate("translation");
+                setTransformValues(id, HANDLING_MODE);
+            }
+            //if there is already a selected object, check if SHIFT is pressed - if so, add object to selection
+            else
+            {
+                if (keyPressed[16]) //SHIFT pressed
+                {
+                    //@todo: make it work
+                }
+            }
+
+        }
+        else
+        {
+            x3dom.debug.logError("primitiveSelected: ID must be specified.");
+        }
     }
     
     
