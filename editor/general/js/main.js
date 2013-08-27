@@ -8,6 +8,9 @@ var ui = new UI(primitiveManager);
 var controller = new Controller(ui);
 // Variable that defines the handling mode
 var HANDLING_MODE = "translation";
+// snapping added
+var snapping = new Snapping();
+
 
 window.onload = function(){
     ui.initialize(); 
