@@ -102,16 +102,16 @@ function UI(primitiveManager){
             fx: { height: "toggle", duration: 500 },
             onFocus: function(node) {
 
-                    // Auto-activate focused node after 1 second
-                    if(node.data.href){
-                            node.scheduleAction("activate", 1000);
-                    }
+                // Auto-activate focused node after 1 second
+                if(node.data.href){
+                    node.scheduleAction("activate", 1000);
+                }
             },
             onBlur: function(node) {
-                    node.scheduleAction("cancel");
+                node.scheduleAction("cancel");
             },
             onActivate: function(node){                                
-                alert(node.data.key);
+                primitiveManager.selectPrimitive(node.data.key);
             }
         });
         
@@ -953,6 +953,12 @@ function UI(primitiveManager){
         var node = getNode(id);
         node.data.title = name;
         node.render();
+    };
+    
+    
+    this.treeViewer.activate = function(id){
+        var node = getNode(id);
+        node.scheduleAction("activate", 1000);
     };
    
 
