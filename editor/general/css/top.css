@@ -47,7 +47,7 @@
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active,
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,

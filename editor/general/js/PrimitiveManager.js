@@ -227,7 +227,6 @@ function PrimitiveManager(){
 
         primitiveList = {};
         actualID = "";
-        //primCounter = 0;
         primitiveCounter = 0;
     };
     
@@ -574,6 +573,47 @@ function PrimitiveManager(){
      */
     this.getActualPrimitive = function(){
         return primitiveList[actualID];
+    };
+
+    /*
+     *
+     */
+    this.deselectObjects = function(event) {
+        // left button 1, middle 4, right 2
+        if (event.button == 2) {
+            document.getElementById('primitiveList').selectedIndex = 0;
+            primitiveManager.comboBoxChanged(0);
+            actualID = "";
+        }
+    };
+    
+    
+    /*
+     * Returns the position of the required primitive 
+     * @returns {SFVec3f}
+     */
+    this.getPosition = function(primitiveID){
+        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("translation"));
+    };
+    
+    
+    
+    /*
+     * Returns the scale of the required primitive 
+     * @returns {SFVec3f}
+     */
+    this.getScale = function(primitiveID){
+        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("scale"));
+    };
+    
+    
+    
+    /*
+     * Returns the rotation of the required primitive 
+     * @returns {SFMatrix4f}
+     */
+    this.getRotation = function(primitiveID){
+        return x3dom.fields.SFMatrix4f.parse(primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
     };
     
     
