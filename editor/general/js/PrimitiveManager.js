@@ -318,6 +318,8 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function primitiveSelected(id){
+        ui.treeViewer.activate(id);
+        
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)

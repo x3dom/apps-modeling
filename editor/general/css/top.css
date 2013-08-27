@@ -16,9 +16,10 @@
 /* Die Buttons *******************************************************************/
 
 /* Images */
-#DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; border: solid 1px #fff; }
-#DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 10px; border: solid 1px #fff; }
-#ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 10px; }
+#DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; border: solid 1px #fff; }
+#DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 5px; border: solid 1px #fff; }
+#SnapPoints{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; margin-right: 0px; }
+#ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; }
 #ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonRotieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
@@ -34,12 +35,12 @@
     border:1px solid gray;
 }
 
-#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover
 {
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,
@@ -58,7 +59,8 @@
 {
     margin: 5px;
     float: left;
-    width: 65px;
+    width: 60px;
+    margin-left: 10px;
     font-family:"Blackadder ITC";
 }
 
@@ -123,11 +125,12 @@
 .Views, .ObjektList
 {
     float:left;
-    width: 125px;
+    width: 111px;
     height: 30px;
-    margin: 5px 5px;
+    margin: 5px;
+    margin-right: 0px;
+    margin-left: 10px;
     color: white;
-    padding: 5px;
     font-size: 12px;
     line-height: 1;
     border-radius: 0;

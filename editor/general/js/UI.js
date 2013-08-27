@@ -101,16 +101,14 @@ function UI(primitiveManager){
             clickFolderMode: 3,
             fx: { height: "toggle", duration: 500 },
             onFocus: function(node) {
-
-                // Auto-activate focused node after 1 second
-                if(node.data.href){
-                    node.scheduleAction("activate", 1000);
-                }
+                node.scheduleAction("cancel");
+                
             },
             onBlur: function(node) {
                 node.scheduleAction("cancel");
             },
-            onActivate: function(node){                                
+            onActivate: function(node){
+                that.treeViewer.activate(node.data.key);
                 primitiveManager.selectPrimitive(node.data.key);
             }
         });
@@ -957,8 +955,10 @@ function UI(primitiveManager){
     
     
     this.treeViewer.activate = function(id){
-        var node = getNode(id);
-        node.scheduleAction("activate", 1000);
+        // Get the DynaTree object instance:
+        var tree = $("#tree").dynatree("getTree");
+        // Use it's class methods:
+        tree.activateKey(id);
     };
    
 
