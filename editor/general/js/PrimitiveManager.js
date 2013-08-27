@@ -545,6 +545,36 @@ function PrimitiveManager(){
     
     
     /*
+     * Returns the position of the required primitive 
+     * @returns {SFVec3f}
+     */
+    this.getPosition = function(primitiveID){
+        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("translation"));
+    };
+    
+    
+    
+    /*
+     * Returns the scale of the required primitive 
+     * @returns {SFVec3f}
+     */
+    this.getScale = function(primitiveID){
+        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("scale"));
+    };
+    
+    
+    
+    /*
+     * Returns the rotation of the required primitive 
+     * @returns {SFMatrix4f}
+     */
+    this.getRotation = function(primitiveID){
+        return x3dom.fields.SFMatrix4f.parse(primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
+    };
+    
+    
+    
+    /*
      * Returns a list with all primitives id's 
      * @returns {List of id's of all primitives}
      */
