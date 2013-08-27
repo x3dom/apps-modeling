@@ -109,6 +109,7 @@
     <script type='text/javascript' src="js/jquery.switchbutton.js"></script>
     <script type="text/javascript" src="js/jquery.dynatree.js"></script>
     
+    <script type='text/javascript' src="js/Snapping.js"></script>
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="js/GroupManager.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
@@ -116,95 +117,6 @@
     <script type='text/javascript' src="js/main.js"></script>
     <script type='text/javascript' src='js/farbtastic.js'></script>
     <script type='text/javascript' src="js/jquery.editor2D.js"></script>
-
-    
-    <script type="text/javascript">
-	$(function(){
-		// --- Initialize sample trees
-		$("#tree").dynatree({
-                        checkbox: true,
-                        selectMode: 3,
-                        clickFolderMode: 3,
-                        fx: { height: "toggle", duration: 500 },
-			onFocus: function(node) {
-				// Auto-activate focused node after 1 second
-				if(node.data.href){
-					node.scheduleAction("activate", 1000);
-				}
-			},
-			onBlur: function(node) {
-				node.scheduleAction("cancel");
-			},
-			onActivate: function(node){                                
-				
-			}
-		});
-	});
-        
-        
-        function addElement(id, text){
-            // This is how we would add tree nodes programatically
-            var rootNode = $("#tree").dynatree("getRoot");
-
-            rootNode.addChild({
-                    title: text,
-                    key: id,
-                    //icon: "primitives.jpg",
-                    select: true,
-                    activate: true
-            });
-        };
-        
-        
-        function addGroup(id, text){
-            // This is how we would add tree nodes programatically
-            var rootNode = $("#tree").dynatree("getRoot");
-            var childNode = rootNode.addChild({
-                    title: text,
-                    key: id,
-                    tooltip: "This folder and all child nodes were added programmatically.",
-                    isFolder: true,
-                    select: true,
-                    selectMode: 3
-            });
-            rootNode.addChild(childNode);
-        }
-        
-        
-        function moveExistableNodeToGroup(node, group){
-            node = getNode(node);
-            group = getNode(group);
-            var title = node.data.title;
-            var id = node.data.key;
-            var select = node.data.select;
-            var icon = node.data.icon;
-            removeNode(id);
-            group.addChild({
-                    title: title,
-                    key: id,
-                    icon: icon,
-                    select: select
-            });
-        }
-        
-        
-        function getNode(id){
-            return $("#tree").dynatree("getTree").getNodeByKey(id);
-        }
-        
-        
-        function removeNode(id){
-            getNode(id).remove();
-        }
-        
-        
-        function rename(id, name){
-            var node = getNode(id);
-            node.data.title = name;
-            node.render();
-        }
-        
-</script>
     
 </head>
 
@@ -245,7 +157,6 @@
         </ul>
     </div>
 
-
     <div>
         <select class="Views" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
             <option value='reset'>Reset View</option>
@@ -264,6 +175,8 @@
                                 onclick="controller.removePlane();"/></div>
     <div class="buttonAxis"><img src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removeAxis();"/></div>
+    <div class="SnapPoints"><img src="" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
+                                onclick="snapping.init();"/></div>
     <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
                                 onclick="controller.Activate('hand'); primitiveManager.clearTransformationValues();"/></div>
     <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
@@ -309,7 +222,7 @@
             <h3>Primitives</h3>
             <div id="divs"> </div>
             <h3>Tree-View</h3>
-            <div>
+            <div id='treeview'>
                 <select id="primitiveList" class="ObjektList" onmouseover="this.style.cursor='pointer';" 
                     onchange="primitiveManager.comboBoxChanged(this.selectedIndex);">
                     <option>nothing selected</option>

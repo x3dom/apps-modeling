@@ -124,10 +124,21 @@ function PrimitiveManager(){
         setTransformValues(id, HANDLING_MODE);
 
         primitiveCounter++;
-
         selectedPrimitiveIDs = [];
 
         that.selectCurrentPrimitive(id);
+        ui.treeViewer.addElement(id, id);
+    };
+    
+    
+    
+    this.selectPrimitive = function(id){
+        actualID = id;
+        that.highlight(id, true);
+        ui.clearParameters();
+        ui.createParameters(primitiveList[id].Parameters);
+        ui.setMaterial(primitiveList[id].Material);
+        that.setTransformationValues();
     };
 
 
@@ -309,6 +320,8 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function primitiveSelected(id){
+        ui.treeViewer.activate(id);
+        
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)

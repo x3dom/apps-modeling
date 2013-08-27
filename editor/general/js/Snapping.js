@@ -56,21 +56,29 @@ function Snapping()
 	
 	this.init = function()
 	{
-		var selectID = [];
+		/* ID actual element */
+		var actualID;
+		
+		/* IDs all elements in view */
+		var objListID = [];
+		
+		/* Json File from primitive */
 		var pfad = './x3d/JsonFiles/Box.json';
 		
-		selectID = primitiveManager.getIDList();
+		actualID = primitiveManager.getActualPrimitive();
+		objListID = primitiveManager.getIDList();
 		
-		for(var i = 0; i < selectID.length; i++)
+		
+		for(var i = 0; i < objListID.length; i++)
 		{
 			/*
 			 * JSON gibt mir die Punktkoordinaten
 			 * in jeder diese Koordinaten erzeuge ich
 			 * mit boundingPoint eine Bindungskugel
 			 */
-			loadJSON(selectID[i], pfad);
+			loadJSON(objListID[i], pfad);
 			
-			console.log(selectID[i] + " " + ui.BBTransX.get() + " " + ui.BBTransY.get() + " " + ui.BBTransZ.get());
+			console.log(primitiveManager.getPosition(objListID[i]));
 		}
 	};
 	
@@ -93,7 +101,7 @@ function Snapping()
     	transform_S.appendChild( transform_S_A );
     	transform.appendChild( transform_S );
     	
-    	var element = document.getElementById(id);
+    	var element = document.getElementById('mt_' + id);
     	element.appendChild(transform);
     };
     
@@ -142,7 +150,7 @@ function Snapping()
     	transform2.appendChild( transform_S2 );
     	
     	
-    	var element = document.getElementById(id);
+    	var element = document.getElementById('mt_' + id);
     	element.appendChild(transform2);
     	element.appendChild(transform);
     };
@@ -162,14 +170,14 @@ function Snapping()
 		{
 			//Zeugen der bounding Points
 			boundingPoint(id, pfad, points[i].toString());
-			console.log(points[i].toString());
+			//console.log(points[i].toString());
 		}
 		
 		for(var i = points.length-1; i < points.length; i++)
 		{
 			//Erzeugt die Normale
 			boundingNormale(id, pfad, points[i].toString());
-			console.log(points[i].toString());	
+			//console.log(points[i].toString());	
 		}
     };
 

@@ -323,32 +323,7 @@ span.dynatree-folder a
 /*	font-weight: bold; */ /* custom */
 }
 
-ul.dynatree-container a:focus,
-span.dynatree-focused a:link  /* @IE */
-{
-	background-color: #EFEBDE; /* gray */
-}
 
-span.dynatree-has-children a
-{
-/*	font-style: oblique; /* custom: */
-}
-
-span.dynatree-expanded a
-{
-}
-
-span.dynatree-selected a
-{
-/*	color: green; */
-	font-style: italic;
-}
-
-span.dynatree-active a
-{
-	border: 1px solid #99DEFD;
-	background-color: #D8F0FA;
-}
 
 /*******************************************************************************
  * Drag'n'drop support
@@ -456,8 +431,6 @@ span.dynatree-drop-target.dynatree-drop-after a
 div#tree {
         background-color: #414141;
 	width: 160px;
-        overflow: hidden;
-        overflow-y: auto; 
         margin-left: -10px;
 }
 ul.dynatree-container {
@@ -468,16 +441,41 @@ ul.dynatree-container {
 ul.dynatree-container a {
         font-family: Calibri;
         font-size: 12px;
+        font-weight: normal;
 	color: white;
         width: 80px;
         overflow: hidden;
 	border: 1px solid transparent;
-	background-color: transparent;
 }
 ul.dynatree-container a:hover {
         border: 1px solid #fff;
         background-color: #616161;
 }
-ul.dynatree-container a:focus, span.dynatree-focused a:link {
-	background-color: #414141;
+
+ul.dynatree-container a:focus,
+span.dynatree-focused a:link  /* @IE */
+{
+	background-color: gray; /* gray */
+        border: solid 1px orange;
+}
+
+span.dynatree-has-children a
+{
+/*	font-style: oblique; /* custom: */
+}
+
+span.dynatree-expanded a
+{
+}
+
+span.dynatree-selected a
+{
+	font-style: italic;
+}
+
+span.dynatree-active a
+{
+	background-color: gray;
+        border: solid 1px orange;
+        border-radius: 2px;
 }

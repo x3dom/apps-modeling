@@ -93,6 +93,34 @@ function UI(primitiveManager){
             color: '#FFFFFF',
             position: 'right'
         });
+        
+        // Inititalization of the treeview
+        $("#tree").dynatree({
+            checkbox: true,
+            selectMode: 3,
+            clickFolderMode: 3,
+            fx: { height: "toggle", duration: 500 },
+            onFocus: function(node) {
+                node.scheduleAction("cancel");
+                
+            },
+            onBlur: function(node) {
+                node.scheduleAction("cancel");
+            },
+            onActivate: function(node){
+                that.treeViewer.activate(node.data.key);
+                primitiveManager.selectPrimitive(node.data.key);
+            }
+        });
+        
+        
+        
+        $('#treeview').slimScroll({
+            height: '100%',
+            size: '10px',
+            color: '#FFFFFF',
+            position: 'right'
+        });
 
         // symbols of accordion on right bar
         var iconsAccordion = 
@@ -855,6 +883,82 @@ function UI(primitiveManager){
 
             document.getElementById("diffuse").focus();
         }
+    };
+    
+    
+    
+    this.treeViewer = {};
+    
+    
+    
+    this.treeViewer.addElement = function(id, text){
+        // This is how we would add tree nodes programatically
+        var rootNode = $("#tree").dynatree("getRoot");
+
+        rootNode.addChild({
+            title: text,
+            key: id,
+            //icon: "primitives.jpg",
+            select: true,
+            activate: true
+        });
+    };
+
+
+    this.treeViewer.addGroup = function(id, text){
+        // This is how we would add tree nodes programatically
+        var rootNode = $("#tree").dynatree("getRoot");
+        var childNode = rootNode.addChild({
+            title: text,
+            key: id,
+            tooltip: "This folder and all child nodes were added programmatically.",
+            isFolder: true,
+            select: true,
+            selectMode: 3
+        });
+        rootNode.addChild(childNode);
+    };
+
+
+    this.treeViewer.moveExistableNodeToGroup = function(node, group){
+        node = getNode(node);
+        group = getNode(group);
+        var title = node.data.title;
+        var id = node.data.key;
+        var select = node.data.select;
+        var icon = node.data.icon;
+        removeNode(id);
+        group.addChild({
+            title: title,
+            key: id,
+            icon: icon,
+            select: select
+        });
+    };
+
+
+    this.treeViewer.getNode = function(id){
+        return $("#tree").dynatree("getTree").getNodeByKey(id);
+    };
+
+
+    this.treeViewer.removeNode = function(id){
+        getNode(id).remove();
+    };
+
+
+    this.treeViewer.rename = function(id, name){
+        var node = getNode(id);
+        node.data.title = name;
+        node.render();
+    };
+    
+    
+    this.treeViewer.activate = function(id){
+        // Get the DynaTree object instance:
+        var tree = $("#tree").dynatree("getTree");
+        // Use it's class methods:
+        tree.activateKey(id);
     };
    
 
