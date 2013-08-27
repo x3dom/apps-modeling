@@ -213,7 +213,6 @@ function PrimitiveManager(){
 
         primitiveList = {};
         actualID = "";
-        //primCounter = 0;
         primitiveCounter = 0;
     };
     
@@ -541,7 +540,18 @@ function PrimitiveManager(){
     this.getActualPrimitive = function(){
         return primitiveList[actualID];
     };
-    
+
+    /*
+     *
+     */
+    this.deselectObjects = function(event) {
+        // left button 1, middle 4, right 2
+        if (event.button == 2) {
+            document.getElementById('primitiveList').selectedIndex = 0;
+            primitiveManager.comboBoxChanged(0);
+            actualID = "";
+        }
+    };
     
     
     /*
