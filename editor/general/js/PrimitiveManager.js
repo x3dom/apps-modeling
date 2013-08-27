@@ -124,7 +124,7 @@ function PrimitiveManager(){
         setTransformValues(id, HANDLING_MODE);
 
         primitiveCounter++;
-
+        ui.treeViewer.addElement(id, id);
         selectCurrentPrimitive(id);
     };
 

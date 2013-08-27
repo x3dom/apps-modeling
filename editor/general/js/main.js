@@ -13,20 +13,5 @@ window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
     primitiveManager.clearTransformationValues();
-    /*for (var i = 0; i < 60; i++){
-        addElement("Element_"+i, "Primitive: "+i);
-    }
-
-    for (var i = 0; i < 2; i++){
-        addGroup("Group_"+i, "Group: "+i);
-    }
-
-    for (var i = 3; i < 15; i++){
-        moveExistableNodeToGroup("Element_"+i, "Group_0");
-    }
-
-    for (var i = 5; i < 8; i++){
-        moveExistableNodeToGroup("Element_"+i, "Group_1");
-    }*/
 };
 

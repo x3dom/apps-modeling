@@ -456,8 +456,6 @@ span.dynatree-drop-target.dynatree-drop-after a
 div#tree {
         background-color: #414141;
 	width: 160px;
-        overflow: hidden;
-        overflow-y: auto; 
         margin-left: -10px;
 }
 ul.dynatree-container {
@@ -468,6 +466,7 @@ ul.dynatree-container {
 ul.dynatree-container a {
         font-family: Calibri;
         font-size: 12px;
+        font-weight: normal;
 	color: white;
         width: 80px;
         overflow: hidden;
