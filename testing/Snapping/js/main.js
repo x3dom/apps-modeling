@@ -9,9 +9,9 @@ var controller = new Controller(ui);
 // Variable that defines the handling mode
 var HANDLING_MODE = "translation";
 
-// snapping and bouding added
+// snapping added
 var snapping = new Snapping();
-var bouding = new Bouding();
+
 
 window.onload = function(){
     ui.initialize(); 
