@@ -17,55 +17,59 @@ function Snapping()
 	var pfad;				/* Json File from primitive */
 	var point1;				/* Element1 */
 	var point2;				/* Element2 */
-	var distance;			/* distance between two points */
-	var currentID;			/* ID actual element */
+	var actualObject;		/* ID actual element */
 	var objListID = [];		/* IDs all elements in view */
-	
-	
+
+
 	/*
 	 * 
 	 */
 	this.init = function()
 	{
 		var pfad = './x3d/JsonFiles/Box.json';
-		objListID = primitiveManager.getIDList();
-        currentID = primitiveManager.getCurrentPrimitive();
+		var objListID = primitiveManager.getIDList();
+
 		
 		/* add points */
 		for(var i = 0; i < objListID.length; i++)
 		{
 			loadJSON(objListID[i], pfad);
+			console.log(objListID[i]);
 		}
 		
 		point1 = primitiveManager.getPosition(objListID[0]);
 		point2 = primitiveManager.getPosition(objListID[1]);
 		
-		snapping.snap();
+		snapping.snap(objListID);
 	};
 	
 	
 	/*
 	 * 
 	 */
-	this.snap = function()
+	this.snap = function(list)
 	{
-		/* calculated distance */
 		distance = pointsDistance(point1, point2);
-	
-		if(actualID == point1)
-		{	
+		actualObject = primitiveManager.getCurrentPrimitive();
+		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
+
+		/*
+		 * Check which item is selected and compared to the other element
+		 */		
+		if(actualObjectID === list[0])
+		{
 			if(distance < 2)
 			{
-				console.log("Snap Element");
-				actualID.setAttribute('translation', '' + point2.x + point2.y + point2.z + '');
+				console.log("Obj1 to Obj2");
+				actualObject.setAttribute('translation', '' + point2.x + point2.y + point2.z + '');
 			}
 		}
 		else
 		{
 			if(distance < 2)
 			{
-				console.log("Snap Element");
-				actualID.setAttribute('translation', '' + point1.x + point1.y + point1.z + '');
+				console.log("Obj2 to Obj1");
+				actualObject.setAttribute('translation', '' + point1.x + point1.y + point1.z + '');
 			}
 		}
 	};
