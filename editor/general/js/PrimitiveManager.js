@@ -61,7 +61,7 @@ function PrimitiveManager(){
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
-     * @returns {Boolean}
+     * @returns {null}
      */
     this.addPrimitive = function(primitive, parameters){
    
@@ -410,7 +410,7 @@ function PrimitiveManager(){
                 transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
                 matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
-                //@todo: does it work like this?
+                //@todo: how does it work?
                 volume = group._x3domNode.getVolume();
             }
             else
@@ -514,8 +514,6 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.updateTransformUIFromPrimitive = function(id, mode){
-        if (!id)
-        console.log("UNDEFINED");
         try {
             var MT = primitiveList[id].children[0];
         

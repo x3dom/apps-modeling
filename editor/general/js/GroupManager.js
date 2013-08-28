@@ -68,6 +68,9 @@ function Group(name){
                 //@todo: debug
                 root.appendChild(prim);
 
+                //@todo: this works! Why doesn't it work with simple DOM manipulation as above?
+                primitiveManager.addPrimitive("Cone", ui.primitiveParameterMap["Cone"].parameters)
+
                 that.objectIDList.push(primID);
             }
         }
