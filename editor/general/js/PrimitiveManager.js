@@ -4,12 +4,12 @@ var keyPressed={};
 document.onkeydown=function(e){
     e = e || window.event;
     keyPressed[e.keyCode] = true;
-}
+};
 
 document.onkeyup=function(e){
     e = e || window.event;
     keyPressed[e.keyCode] = false;
-}
+};
 
 
 /*
@@ -120,14 +120,13 @@ function PrimitiveManager(){
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
-        addPrimitiveToComboBox(t.IDMap.name);
         setTransformValues(id, HANDLING_MODE);
 
         primitiveCounter++;
         selectedPrimitiveIDs = [];
 
         that.selectCurrentPrimitive(id);
-        ui.treeViewer.addElement(id, id);
+        ui.treeViewer.addPrimitive(id, id);
     };
     
     
@@ -138,6 +137,8 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.selectPrimitive = function(id){
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
         currentPrimitiveID = id;
         that.highlight(id, true);
         ui.clearParameters();
@@ -219,7 +220,7 @@ function PrimitiveManager(){
      */  
     this.removeNode = function(force)
     {
-        if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
+        if (currentPrimitiveID !== null || force) {
             var ot = document.getElementById(currentPrimitiveID);
             
             if (ot._iMove) {
@@ -232,18 +233,11 @@ function PrimitiveManager(){
                 if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
                 { 
                     ot.removeChild(ot.childNodes[i]);
-                    for (var j = primitiveList[currentPrimitiveID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
-                        try {
-                            ui.TBPrimitiveList.idMap(j).cboxNumber--;
-                        }
-                        catch (ex){}
-                    }
-                    ui.TBPrimitiveList.remove(primitiveList[currentPrimitiveID].IDMap.cboxNumber);
+                    ui.treeViewer.removeNode(currentPrimitiveID);
                     delete primitiveList[currentPrimitiveID];
 
                     clearTransformValues();
                     primitiveCounter--;
-                        break;
                 }
             }
         }
@@ -312,8 +306,6 @@ function PrimitiveManager(){
         ui.BBPrimName.disable(true);
         ui.BBTransformMode.set("");
         ui.BBDelete.disable(true);
-        ui.TBPrimitiveList.selectIndex(0);
-        ui.TBPrimitiveList.disable(true);
         ui.RBAccordion.disable(true);
 
         that.highlight(null, false);
@@ -517,23 +509,6 @@ function PrimitiveManager(){
     
     
     /*
-     * Handles the synchronization if a primitive is selected at the combobox
-     * @param {type} id identifier of the primitive that should be set to active
-     * @returns {undefined}
-     */
-    this.comboBoxChanged = function(id){
-        if (ui.TBPrimitiveList.selectedIndex() === 0) {
-            clearTransformValues();
-        }
-        else {
-            selectCurrentPrimitive(ui.TBPrimitiveList.idMap(id).id);
-            setTransformValues(currentPrimitiveID, HANDLING_MODE);
-        }
-    };
-    
-    
-    
-    /*
      * Sets the values of the actual selected transformation
      * to the value fields in the bottom bar
      * @param {type} id name of the primitive's values that should be set
@@ -557,7 +532,6 @@ function PrimitiveManager(){
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
-            ui.TBPrimitiveList.selectIndex(primitiveList[id].IDMap.cboxNumber);
             ui.BBTransformMode.set(HANDLING_MODE.charAt(0).toUpperCase() + HANDLING_MODE.slice(1) + ':');
             
             ui.BBTransX.disable(false);
@@ -565,7 +539,6 @@ function PrimitiveManager(){
             ui.BBTransZ.disable(false);
             ui.BBPrimName.disable(false);
             ui.BBDelete.disable(false); 
-            ui.TBPrimitiveList.disable(false);
             ui.RBAccordion.disable(false);
 
             that.highlight(id, true);
@@ -582,25 +555,10 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        ui.TBPrimitiveList.set(primitiveList[currentPrimitiveID].IDMap.cboxNumber, ui.BBPrimName.get());
         primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
+        ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
     };
-    
-    
-    
-    /*
-     * Adds an option field to the select box with the name of a primitive
-     * @param {type} id name of the primitive's values that should be set
-     * @returns {null}
-     */
-    function addPrimitiveToComboBox(id){
-        var option=document.createElement("option");
-        option.Primitive = primitiveList[id];
-        option.text = id;
-        
-        ui.TBPrimitiveList.add(option);
-    }
-    
+
     
     
     /*
@@ -617,8 +575,6 @@ function PrimitiveManager(){
     this.deselectObjects = function(event) {
         // left button 1, middle 4, right 2
         if (event.button === 2) {
-            document.getElementById('primitiveList').selectedIndex = 0;
-            primitiveManager.comboBoxChanged(0);
             currentPrimitiveID = "";
         }
     };

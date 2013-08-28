@@ -41,7 +41,6 @@ function UI(primitiveManager){
         that.TBTranslate = that.newImageProperty("ButtonVerschieben");
         that.TBScale = that.newImageProperty("ButtonSkalieren");
         that.TBRotate = that.newImageProperty("ButtonRotieren");
-        that.TBPrimitiveList = that.newComboBoxProperty("primitiveList");
         that.TBViewpoints = that.newComboBoxProperty("Views");
        
         that.BBPrimName = that.newTextProperty("primitiveName");
@@ -891,7 +890,7 @@ function UI(primitiveManager){
     
     
     
-    this.treeViewer.addElement = function(id, text){
+    this.treeViewer.addPrimitive = function(id, text){
         // This is how we would add tree nodes programatically
         var rootNode = $("#tree").dynatree("getRoot");
 
@@ -943,12 +942,12 @@ function UI(primitiveManager){
 
 
     this.treeViewer.removeNode = function(id){
-        getNode(id).remove();
+        that.treeViewer.getNode(id).remove();
     };
 
 
     this.treeViewer.rename = function(id, name){
-        var node = getNode(id);
+        var node = that.treeViewer.getNode(id);
         node.data.title = name;
         node.render();
     };
