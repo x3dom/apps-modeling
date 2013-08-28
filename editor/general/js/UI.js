@@ -246,16 +246,9 @@ function UI(primitiveManager){
      * @returns {Array}
      */
     function createParameterMap(file){
-        var xhttp;
-        
-        if (window.XMLHttpRequest){
-            xhttp=new XMLHttpRequest();
-        }
-        else {
-            xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhttp.open("GET", file, false);
-        xhttp.send();
+       var xhttp = new XMLHttpRequest();
+       xhttp.open("GET", file, false);
+       xhttp.send();
        
        var xmlDoc = xhttp.responseXML.childNodes[0];
        var primitives = xmlDoc.getElementsByTagName("Primitive");
