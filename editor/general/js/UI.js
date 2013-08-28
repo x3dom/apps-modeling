@@ -235,6 +235,8 @@ function UI(primitiveManager){
             that.editor2D_mode(evt.originalEvent.detail.mode);
         });
 
+        $(document).tooltip();
+
     }
     
     
