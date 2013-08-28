@@ -48,7 +48,7 @@ function UI(primitiveManager){
      * @returns {Null}
      */
     this.initialize = function(){ 
-        initializeUI();
+        this.initializeUI();
         primitiveManager.setUI(that);
     };
     
@@ -58,7 +58,7 @@ function UI(primitiveManager){
      * Initializes all components of the UI of the editor
      * @returns {Null}
      */
-    function initializeUI(){
+    this.initializeUI = function (){
 
         that.TBHand = that.newImageProperty("ButtonHand", true);
         that.TBTranslate = that.newImageProperty("ButtonVerschieben", true);
@@ -252,9 +252,8 @@ function UI(primitiveManager){
         //Initialize 2D-Editor
         var editor2DCanvas = $('#Editor2D-Canvas');
         editor2DCanvas.editor2D();
-        editor2DCanvas.on('modechanged', function(evt) {
-            that.editor2D_mode(evt.originalEvent.detail.mode);
-        });
+        editor2DCanvas.on('modechanged', this.editor2D_onModeChanged);
+        editor2DCanvas.on('readychanged', this.editor2D_onReadyChanged);
 
         $("#DeletePlane").tooltip();
         $("#DeleteAxis").tooltip();
@@ -562,9 +561,13 @@ function UI(primitiveManager){
 	/*  
      * Show the 2D-Editor
      */
-    this.editor2D_show = function()
+    this.editor2D_show = function(mustClosed)
     {
         $('#Editor2D-Canvas').editor2D('clear');
+        $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept').addClass('Editor2D-Icon-Accept-Inactive');
+        $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap').addClass('Editor2D-Icon-Snap-Active');
+        $('#Editor2D-Canvas').editor2D('setSnapToGrid', true);
+        $('#Editor2D-Canvas').editor2D('setMustClosed', mustClosed);
         $('#Editor2D-Overlay').css('display', 'block');
 	};
 
@@ -595,9 +598,43 @@ function UI(primitiveManager){
     /*
      * Handle 2D-Editors 'modechanged' event
      */
-    this.editor2D_onModeChanged = function()
+    this.editor2D_onModeChanged = function(evt)
     {
-        $('#Editor2D-Overlay').css('display', 'none');
+        that.editor2D_mode(evt.originalEvent.detail.mode);
+    };
+
+    /*
+     * Handle 2D-Editors 'readychanged' event
+     */
+    this.editor2D_onReadyChanged = function(evt)
+    {
+        if (evt.originalEvent.detail.ready)
+        {
+            $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept-Inactive').addClass('Editor2D-Icon-Accept');
+        }
+        else
+        {
+            $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept').addClass('Editor2D-Icon-Accept-Inactive');
+        }
+    };
+
+    /*
+     * Toggle Snap to Grid
+     */
+    this.editor2D_toogleSnap = function()
+    {
+        var snapToGrid = $('#Editor2D-Canvas').editor2D('getSnapToGrid');
+
+        if (snapToGrid)
+        {
+            $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap-Active').addClass('Editor2D-Icon-Snap');
+            $('#Editor2D-Canvas').editor2D('setSnapToGrid', false);
+        }
+        else
+        {
+            $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap').addClass('Editor2D-Icon-Snap-Active');
+            $('#Editor2D-Canvas').editor2D('setSnapToGrid', true);
+        }
     };
 
     /*
@@ -637,21 +674,24 @@ function UI(primitiveManager){
      */
     this.editor2D_create = function()
     {
-        //Hide editor
-        this.editor2D_hide();
+        if ( $('#Editor2D-Canvas').editor2D('isReady') )
+        {
+            //Hide editor
+            this.editor2D_hide();
 
-        //Get points
-        var points = $('#Editor2D-Canvas').editor2D('samplePoints');
+            //Get points
+            var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
-        primitiveParameterMap[primitivType].parameters.push({
-            render: "false",
-            editorName: "Cross Section",
-            x3domName: "crossSection",
-            value: points.toString()
-        });
+            primitiveParameterMap[primitivType].parameters.push({
+                render: "false",
+                editorName: "Cross Section",
+                x3domName: "crossSection",
+                value: points.toString()
+            });
 
-        primitiveManager.addPrimitive(primitiveParameterMap[primitivType].x3domName,
-            primitiveParameterMap[primitivType].parameters);
+            primitiveManager.addPrimitive(primitiveParameterMap[primitivType].x3domName,
+                primitiveParameterMap[primitivType].parameters);
+        }
     };
 
 
@@ -693,7 +733,8 @@ function UI(primitiveManager){
         if (name == "Extrusion" || name == "Solid of Revolution")
         {
             divID.onclick = function() {
-                that.editor2D_show();
+                var mustClosed = (name == "Extrusion") ? true : false;
+                that.editor2D_show(mustClosed);
                 primitivType = name;
             };
      	}
