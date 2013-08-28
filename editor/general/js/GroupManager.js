@@ -4,7 +4,7 @@
  */
 function Group(name){
     //list of object IDs
-    this.objectIDList = {};
+    this.objectIDList = [];
 
     //name the group
     if (typeof name === 'undefined')
@@ -13,6 +13,21 @@ function Group(name){
     };
 
 
+
+    /*
+     * Appends a list of object IDs to the current object ID list.
+     * Duplicate entries are avoided.
+     */
+    this.addObjectList(objIDs)
+    {
+        objectIDList = objectIDList.concat(objIDs);
+    };
+
+
+
+    /*
+     * Adds the object with the given id to this group.
+     */
     this.addObject = function(id){
         if (typeof id !== 'undefined')
         {
@@ -29,6 +44,10 @@ function Group(name){
     };
 
 
+
+    /*
+     * Removes the object with the given id from this group.
+     */
     this.removeObject = function(id){
         var idx;
 
@@ -67,20 +86,39 @@ function GroupManager(){
 
 
     this.groupSelectedObjects = function(){
+        var g;
+
         //avoid that two objects belong to the same group:
         //if the user wants to group objects while a group is selected, do nothing
+        if (!ui.groupModeActive())
+        {
+            //put the IDs of the selected objects into a new group
+            //(a default name is assigned to the new group)
+            g = new Group();
+            g.addObjectList(primitiveManager.getSelectedObjectIDs());
 
-        //@todo: make it work
-        //...
+            //put the new group in the list of groups
+            groupList.push(g);
 
-        //collect the IDs of the selected objects
+            //make this the current group
+            currentGroup = g;
 
-        //@todo: make it work
-        //...
+           //enable group mode in the ui
+            ui.toggleGroupMode(true);
+        }
     };
 
+
+
     this.ungroupSelectedObjects = function(){
-        //@todo: make it work
-        console.log("ungroupSelectedObjects: to be implemented.");
+        if (currentGroup){
+            //remove the current group
+            //@todo: make it work
+            //...
+
+        }
+
+        //disable group mode in the ui
+        ui.toggleGroupMode(false);
     };
 };

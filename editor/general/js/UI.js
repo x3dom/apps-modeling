@@ -16,10 +16,33 @@ function UI(primitiveManager){
     var farbtasticPicker = null;
     // primitive type for 2D-Editor
     var primitivType = null;
+    // specifies whether we are in "group mode"
+    // this means that no single primitive, but a group is being transformed etc.
+    var groupMode = false;
 
-    
-    
-    
+    var that = this;
+
+
+    /*
+     * Indicates whether the group mode is currently active (i.e., if we currently handle a group or a single primitive)
+     * @returns {boolean}
+     */
+    this.groupModeActive = function(){
+        return that.groupMode;
+    };
+
+
+
+    /*
+     * Indicates whether the group mode is currently active (i.e., if we currently handle a group or a single primitive)
+     * @returns {null}
+     */
+    this.toggleGroupMode = function(val){
+        that.groupMode = val;
+    };
+
+
+
     /*
      * Initializes the UIComponent
      * @returns {Null}
@@ -51,7 +74,7 @@ function UI(primitiveManager){
         $("#amountX").spinner({
             step: 0.1,
             stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
+                primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
         
@@ -59,7 +82,7 @@ function UI(primitiveManager){
         $("#amountY").spinner({
             step: 0.1,
             stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
+                primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
         
@@ -67,7 +90,7 @@ function UI(primitiveManager){
         $("#amountZ").spinner({
             step: 0.1,
             stop:function(e,ui){
-                primitiveManager.setTransformationValuesToPrimitive();
+                primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
         
@@ -131,7 +154,7 @@ function UI(primitiveManager){
             onActivate: function(node){
                 if (node.isSelected()) {
                     that.treeViewer.activate(node.data.key);
-                    primitiveManager.selectPrimitive(node.data.key);
+                    primitiveManager.selectCurrentPrimitive(node.data.key);
                 }
             }
         });

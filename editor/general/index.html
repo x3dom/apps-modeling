@@ -180,11 +180,11 @@
     <div class="buttonTop"><img src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
                                 onclick="controller.Activate('hand'); primitiveManager.clearSelection();"/></div>
     <div class="buttonTop"><img src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.Activate('translation'); primitiveManager.setTransformationValues();"/></div>
+                                onclick="controller.Activate('translation');"/></div>
     <div class="buttonTop"><img src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.Activate('scale'); primitiveManager.setTransformationValues();"/></div>
+                                onclick="controller.Activate('scale');"/></div>
     <div class="buttonTop"><img src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.Activate('rotation'); primitiveManager.setTransformationValues();"/></div>
+                                onclick="controller.Activate('rotation');"/></div>
     <div class="buttonTop"><img src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="groupManager.ungroupSelectedObjects();"/></div>
     <div class="buttonTop"><img src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
@@ -203,9 +203,9 @@
         <div id="coordinatesValue">
             <p>
                 <!--<label id="transformMode" class="text-slider"> </label>-->
-                <label class="text-slider">X:</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
-                <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
-                <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.setTransformationValuesToPrimitive();"/>
+                <label class="text-slider">X:</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
+                <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
+                <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
             </p>
         </div>
         <div id="snapToWhat">
@@ -277,7 +277,7 @@
 
 <div id="x3d-view">
     <x3d id="x3d" showStat="false" showLog="false">
-        <scene onbackgroundClicked="if (event.button === 4) { primitiveManager.clearSelection(); }">
+        <scene onbackgroundClicked="">
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
             </viewpoint>

@@ -46,9 +46,18 @@ function PrimitiveManager(){
     this.setUI = function(uiElement){
         ui = uiElement;
     };
-    
-    
-    
+
+
+
+    /*
+     * Returns the list of selected primitive IDs
+     */
+    this.getSelectedPrimitiveIDs = function(){
+        return selectedPrimitiveIDs;
+    }
+
+
+
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
@@ -116,11 +125,11 @@ function PrimitiveManager(){
         root.appendChild(t);
         
         // wrapper for adding moving functionality, last param is callback function
-        new x3dom.Moveable(document.getElementById("x3d"), t, notified);
+        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved);
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
-        setTransformValues(id, HANDLING_MODE);
+        that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
         primitiveCounter++;
         selectedPrimitiveIDs = [];
@@ -129,25 +138,7 @@ function PrimitiveManager(){
         ui.treeViewer.addPrimitive(id, id);
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
     };
-    
-    
 
-    /*
-     * Selects the primitive and is triggered from outside
-     * @param {string} id name of the primitive that should be selected
-     * @returns {null}
-     */
-    this.selectPrimitive = function(id){
-        if (HANDLING_MODE === "hand")
-            controller.Activate("translation");
-        currentPrimitiveID = id;
-        that.highlight(id, true);
-        ui.clearParameters();
-        ui.createParameters(primitiveList[id].Parameters);
-        ui.setMaterial(primitiveList[id].Material);
-        that.setTransformationValues();
-    };
-    
     
     
     /*
@@ -178,8 +169,13 @@ function PrimitiveManager(){
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
      * which is affected by transformations and which can be inspected with the UI.
      * Note that this clears the list of selected primitives, only the primary primitive is selected afterwards.
+     * @param {string} id name of the primitive that should be selected
+     * @returns {null}
      */
     this.selectCurrentPrimitive = function(id){
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
+
         currentPrimitiveID = id;
         that.highlight(id, true);
         selectedPrimitiveIDs = [id];
@@ -189,6 +185,9 @@ function PrimitiveManager(){
         ui.setMaterial(primitiveList[id].Material);
 
         ui.treeViewer.activate(id);
+
+        that.enableTransformationUI();
+        that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
     };
 
 
@@ -198,21 +197,24 @@ function PrimitiveManager(){
      * @param {X3DNode} the interacting element
      * @param {SFVec3f} new translation value
      */
-    function notified(elem, pos){
+    function primitiveMoved(elem, pos){
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
+            if (HANDLING_MODE === "translation")
+            {
+                controller.Activate("translation");
+            }
+
             var id = elem.getAttribute('id');
 
             //@todo: is this to expensive? it re-initializes the GUI every time
             that.selectCurrentPrimitive(id);
 
             // update GUI elements appropriately
-            if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
-                ui.BBTransX.set(pos.x.toFixed(3));
-                ui.BBTransY.set(pos.y.toFixed(3));
-                ui.BBTransZ.set(pos.z.toFixed(3));
-            }
+            ui.BBTransX.set(pos.x.toFixed(3));
+            ui.BBTransY.set(pos.y.toFixed(3));
+            ui.BBTransZ.set(pos.z.toFixed(3));
         }
     };
     
@@ -333,7 +335,7 @@ function PrimitiveManager(){
                     controller.Activate("translation");
 					snapping.snap();
 				}
-                setTransformValues(id, HANDLING_MODE);
+                updateTransformUIFromPrimitive(id, HANDLING_MODE);
             }
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
             else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
@@ -433,66 +435,16 @@ function PrimitiveManager(){
            primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
         }
     }
-    
-    
-    
-     
-    /*
-     * Sets the values of the actual selected transformation
-     * to the value fields in the bottom bar
-     * @returns {null}
-     */
-    this.setTransformationValues = function(){
-        setTransformValues(currentPrimitiveID, HANDLING_MODE);
-    };
-    
-    
-    
-    /*
-     * Toggles the bounding volume highlighting on/off
-     * @returns (undefined)
-     */
-    this.showBoundingVolumeHighlighting = function(htmlID){
-        boundingVolumeHighlighting = !boundingVolumeHighlighting;
-        if (boundingVolumeHighlighting){
-            document.getElementById(htmlID+"_tick").style.visibility = "visible";
-            highlightBoundingVolume(currentPrimitiveID, true);
-        }
-        else {
-            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
-            highlightBoundingVolume(currentPrimitiveID, false);
-        }
-    };
-    
-    
-    
-    /*
-     * Toggles the primitive highlighting on/off
-     * @returns (undefined)
-     */
-    this.showPrimitiveHighlighting = function(htmlID){
-        primitiveHighlighting = !primitiveHighlighting;
-        if (primitiveHighlighting){
-            highlightPrimitive(currentPrimitiveID, true);
-            document.getElementById(htmlID+"_tick").style.visibility = "visible";
-        }
-        else { 
-            highlightPrimitive(currentPrimitiveID, false);
-            document.getElementById(htmlID+"_tick").style.visibility = "hidden";
-        }
-    };
 
 
 
     /*
-     * Highlights the primitives with selected highlighting modes
+     * Highlights the selected primitive
      * @returns (undefined)
      */
     this.highlight = function(id, on) {
-        if (boundingVolumeHighlighting)
-            highlightBoundingVolume(id, on);
-        if (primitiveHighlighting)
-            highlightPrimitive(id, on);
+        highlightBoundingVolume(id, on);
+        highlightPrimitive(id, on);
     };
     
     
@@ -501,7 +453,7 @@ function PrimitiveManager(){
      * 
      * @returns {undefined}
      */
-    this.setTransformationValuesToPrimitive = function() {
+    this.updatePrimitiveTransformFromUI = function() {
         var MT = primitiveList[currentPrimitiveID].children[0];
 
         var tempValue = "";
@@ -537,7 +489,9 @@ function PrimitiveManager(){
      * @param {type} mode type of transformation 
      * @returns {null}
      */
-    function setTransformValues(id, mode){
+    this.updateTransformUIFromPrimitive = function(id, mode){
+        if (!id)
+        console.log("UNDEFINED");
         try {
             var MT = primitiveList[id].children[0];
         
@@ -609,11 +563,21 @@ function PrimitiveManager(){
     
     
     /*
-     * Returns the actually selected primitive 
+     * Returns the currently selected primitive
      * @returns {primitive}
      */
     this.getCurrentPrimitive = function(){
         return primitiveList[currentPrimitiveID];
+    };
+
+
+
+    /*
+     * Returns the ID of the currently selected primitive
+     * @returns {primitive}
+     */
+    this.getCurrentPrimitiveID = function(){
+        return currentPrimitiveID;
     };
 
 
@@ -649,8 +613,8 @@ function PrimitiveManager(){
     
     
     /*
-     * Returns a list with all primitives id's 
-     * @returns {List of id's of all primitives}
+     * Returns a list with all primitives IDs
+     * @returns {List of IDs of all primitives}
      */
     this.getIDList = function(){
         var idList = [];

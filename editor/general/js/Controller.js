@@ -12,7 +12,12 @@ function Controller(ui){
      * @returns {Null}
      */
     this.Activate = function(mode){
-        
+        //@todo: make sure to also "activate" the corresponding button
+        //(since this function can also be triggered from the application:
+        // dragging an object around automatically leads to translation mode)
+
+        var currPrimID;
+
         HANDLING_MODE = mode;
         
         if (mode === "translation"){
@@ -47,6 +52,13 @@ function Controller(ui){
             ui.TBTranslate.dehighlight();
             ui.TBScale.dehighlight();
             ui.TBRotate.dehighlight();
+        }
+
+        currPrimID = primitiveManager.getCurrentPrimitiveID();
+
+        if (currPrimID !== "")
+        {
+            primitiveManager.updateTransformUIFromPrimitive(currPrimID, HANDLING_MODE);
         }
     };
     
