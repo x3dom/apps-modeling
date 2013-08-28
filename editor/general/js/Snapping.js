@@ -1,84 +1,73 @@
 /*
  * 
  */
+
+/* set und get der Position der Elemente
+ui.BBTransX.set(pos.x.toFixed(3));
+ui.BBTransY.set(pos.y.toFixed(3));
+ui.BBTransZ.set(pos.z.toFixed(3));
+
+ui.BBTransX.get();
+ui.BBTransY.get();
+ui.BBTransZ.get();   
+*/
+	
 function Snapping()
 {	
-	var observer =
-	{
-		angList: {
-			observerList: []
-		},
-		
-		subscribe: function(fn, type)
-		{
-			type = type || 'observerList';
-			
-			if(typeof this.angList[type] === 'undefined')
-			{
-				this.angList[type] = [];	
-			}
-			
-			this.angList[type].push(fn);
-		},
-		
-		unsubscribe: function(fn, type)
-		{
-			var subType = type || 'observerList',
-				angList = this.angList[subType],
-				max = angList.length,
-				i;
-			
-			for(i = 0; i < max; i+=1)
-			{
-				if(angList[i] === fn)
-				{
-					angList.splice(i, 1);
-				}
-			}
-		},
-		
-		publish: function(fn, type)
-		{
-			
-		}
-	};
+	var pfad;				/* Json File from primitive */
+	var point1;				/* Element1 */
+	var point2;				/* Element2 */
+	var distance;			/* distance between two points */
+	var actualID;			/* ID actual element */
+	var objListID = [];		/* IDs all elements in view */
 	
 	
-	/* set und get der Position der Elemente
-    ui.BBTransX.set(pos.x.toFixed(3));
-    ui.BBTransY.set(pos.y.toFixed(3));
-    ui.BBTransZ.set(pos.z.toFixed(3));
-
-    ui.BBTransX.get();
-    ui.BBTransY.get();
-    ui.BBTransZ.get();   
-	*/
-	
+	/*
+	 * 
+	 */
 	this.init = function()
 	{
-		/* ID actual element */
-		var actualID;
-		
-		var distance;
-		
-		/* IDs all elements in view */
-		var objListID = [];
-		
-		/* Json File from primitive */
 		var pfad = './x3d/JsonFiles/Box.json';
+		objListID = primitiveManager.getIDList();
+		actualID = primitiveManager.getActualPrimitive();	
 		
-		actualID = primitiveManager.getActualPrimitive();
-		objListID = primitiveManager.getIDList();		
-		
+		/* add points */
 		for(var i = 0; i < objListID.length; i++)
 		{
 			loadJSON(objListID[i], pfad);
 		}
 		
+		point1 = primitiveManager.getPosition(objListID[0]);
+		point2 = primitiveManager.getPosition(objListID[1]);
 		
+		snapping.snap();
+	};
+	
+	
+	/*
+	 * 
+	 */
+	this.snap = function()
+	{
 		/* calculated distance */
-		distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
-		console.log("distance: " + distance);
+		distance = pointsDistance(point1, point2);
+	
+		if(actualID == point1)
+		{	
+			if(distance < 2)
+			{
+				console.log("Snap Element");
+				actualID.setAttribute('translation', '' + point2.x + point2.y + point2.z + '');
+			}
+		}
+		else
+		{
+			if(distance < 2)
+			{
+				console.log("Snap Element");
+				actualID.setAttribute('translation', '' + point1.x + point1.y + point1.z + '');
+			}
+		}
 	};
 	
 	
@@ -91,8 +80,6 @@ function Snapping()
 		var distance;
 		
 		var summ = ((point1.x - point2.x) * 2) + ((point1.y - point2.y) * 2) + ((point1.z - point2.z) * 2);
-		
-		console.log("summ: " + summ);
 		
 		if(summ < 0)
 		{
@@ -136,6 +123,7 @@ function Snapping()
     	var element = document.getElementById('mt_' + id);
     	element.appendChild(transform);
     };
+    
     
     /* Draws the normal */
     function directionNormale(id, pfad, position)
@@ -186,6 +174,7 @@ function Snapping()
     	element.appendChild(transform2);
     	element.appendChild(transform);
     };
+    
     
 	function loadJSON(id, pfad)
     {
