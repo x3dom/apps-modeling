@@ -13,10 +13,20 @@ function Snapping()
 		var pfad = './x3d/JsonFiles/Box.json';
 		var objListID = primitiveManager.getIDList();
 		
-		/* add points */
-		for(var i = 0; i < objListID.length; i++)
+		if(document.getElementById('snapPoint'))
 		{
-			loadJSON(objListID[i], pfad);
+			for(var i = 0; i < objListID.length; i++)
+			{
+				primitiveManager.removeSnapNode();
+			}
+		}
+		else
+		{
+			/* add points */
+			for(var i = 0; i < objListID.length; i++)
+			{
+				loadJSON(objListID[i], pfad);
+			}
 		}
 	};
 	
@@ -91,7 +101,7 @@ function Snapping()
     	transform_S_A_M_S.setAttribute('radius', '0.025');
     	transform_S_A_M.setAttribute('diffuseColor', '#000000');
     	transform.setAttribute('translation', translation);
-    	transform.setAttribute('class', 'snapPoint_' + id);
+    	transform.setAttribute('id', 'snapPoint');
     	
     	transform_S_A.appendChild( transform_S_A_M );
     	transform_S.appendChild( transform_S_A_M_S );

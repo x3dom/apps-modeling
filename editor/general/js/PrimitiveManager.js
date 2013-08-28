@@ -454,7 +454,7 @@ function PrimitiveManager(){
         }
 
         transform.setAttribute("render", "" + bool);
-    }
+    };
 
 
 
@@ -540,7 +540,11 @@ function PrimitiveManager(){
             }
 			
 			/* voruebergehend uebergeben der vorhandene Listenelemente */
-			snapping.snap(primitiveManager.getIDList());
+			/* dieser Aufruf wird in eine andere Datei verlagert */
+			if(document.getElementById('snapPoint'))
+			{
+				snapping.snap(primitiveManager.getIDList());
+			}
 			
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
         }
@@ -562,7 +566,7 @@ function PrimitiveManager(){
         ui.BBPrimName.disable(false);
         ui.BBDelete.disable(false);
         ui.RBAccordion.disable(false);
-    }
+    };
 
 
 
