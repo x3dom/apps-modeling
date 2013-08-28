@@ -131,15 +131,21 @@ function PrimitiveManager(){
     };
     
     
-    
+
+    /*
+     * Selects the primitive and is triggered from outside
+     * @param {string} id name of the primitive that should be selected
+     * @returns {null}
+     */
     this.selectPrimitive = function(id){
-        actualID = id;
+        currentPrimitiveID = id;
         that.highlight(id, true);
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
         that.setTransformationValues();
     };
+
 
 
     /*
@@ -160,6 +166,7 @@ function PrimitiveManager(){
     };
 
 
+
     /*
      * Callback for handling movement values on mouse interaction
      * @param {X3DNode} the interacting element
@@ -170,12 +177,13 @@ function PrimitiveManager(){
         that.highlight(id, true);
         
         // update GUI elements appropriately
-        if (HANDLING_MODE === "translation" && id == currentPrimitiveID) {
+        if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
         }
     }
+    
     
     
     /*
@@ -269,10 +277,10 @@ function PrimitiveManager(){
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
         highlightPrimitive(null, false);
-        if (element == "diffuse" || element == "specular" || element == "emissive") {
+        if (element === "diffuse" || element === "specular" || element === "emissive") {
             primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
         }
-        if(element == "transparency" || element == "shininess") {
+        if(element === "transparency" || element === "shininess") {
             primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
         }
     };
@@ -365,7 +373,7 @@ function PrimitiveManager(){
         var transform = document.getElementById('cpnt_transform');
         var matrixTransform = document.getElementById('cpnt_matrixTransform');
 
-        if (id != null) {
+        if (id !== null) {
             transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
             transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
             matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
@@ -608,7 +616,7 @@ function PrimitiveManager(){
      */
     this.deselectObjects = function(event) {
         // left button 1, middle 4, right 2
-        if (event.button == 2) {
+        if (event.button === 2) {
             document.getElementById('primitiveList').selectedIndex = 0;
             primitiveManager.comboBoxChanged(0);
             currentPrimitiveID = "";
