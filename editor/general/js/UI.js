@@ -46,6 +46,7 @@ function UI(primitiveManager){
         that.BBPrimName = that.newTextProperty("primitiveName");
         that.BBDelete = that.newImageProperty("deletePrimitive");
         that.BBTransX = that.newSpinnerProperty("amountX");
+        that.BBSnap = that.newImageProperty("snapSwitchButton");
 
         $("#amountX").spinner({
             step: 0.1,
@@ -70,7 +71,6 @@ function UI(primitiveManager){
             }
         });
         
-        that.BBTransformMode = that.newLabelProperty("transformMode");
         
         for (var prim in primitiveParameterMap){
             addLeftbarElement(primitiveParameterMap[prim].image, 
@@ -134,6 +134,17 @@ function UI(primitiveManager){
                     primitiveManager.selectPrimitive(node.data.key);
                 }
             }
+        });
+        
+        
+        $("#snapToGrid").switchButton({
+            checked: false,
+            width: 20,
+            height: 13,
+            button_width: 10,
+            on_label: 'Snap to grid',
+            off_label: 'Snap off'
+            }).change(function(){
         });
         
         

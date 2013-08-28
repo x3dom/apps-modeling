@@ -311,6 +311,7 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     function clearTransformValues(){
+        ui.BBSnap.disable(true);
         ui.BBTransX.set("");
         ui.BBTransX.disable(true);
         ui.BBTransY.set("");
@@ -319,10 +320,9 @@ function PrimitiveManager(){
         ui.BBTransZ.disable(true);
         ui.BBPrimName.set("");
         ui.BBPrimName.disable(true);
-        ui.BBTransformMode.set("");
         ui.BBDelete.disable(true);
         ui.RBAccordion.disable(true);
-
+        
         that.highlight(null, false);
     }
 
@@ -557,8 +557,7 @@ function PrimitiveManager(){
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
-            ui.BBTransformMode.set(HANDLING_MODE.charAt(0).toUpperCase() + HANDLING_MODE.slice(1) + ':');
-            
+            ui.BBSnap.disable(false);
             ui.BBTransX.disable(false);
             ui.BBTransY.disable(false);
             ui.BBTransZ.disable(false);
