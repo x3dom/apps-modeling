@@ -15,7 +15,7 @@ var snapping = new Snapping();
 window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
-    primitiveManager.clearTransformationValues();
+    primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");
 };
 

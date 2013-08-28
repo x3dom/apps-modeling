@@ -174,7 +174,7 @@ function UI(primitiveManager){
                 activate: function(event, ui) {
                     if (ui.newHeader.text() === "Material Editor"){
                         document.getElementById("diffuse").focus();
-                        that.setMaterial(primitiveManager.getActualPrimitive().Material);
+                        that.setMaterial(primitiveManager.getCurrentPrimitive().Material);
                     }
                 }
         });

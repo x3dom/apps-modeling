@@ -18,7 +18,7 @@ function Snapping()
 	var point1;				/* Element1 */
 	var point2;				/* Element2 */
 	var distance;			/* distance between two points */
-	var actualID;			/* ID actual element */
+	var currentID;			/* ID actual element */
 	var objListID = [];		/* IDs all elements in view */
 	
 	
@@ -29,7 +29,7 @@ function Snapping()
 	{
 		var pfad = './x3d/JsonFiles/Box.json';
 		objListID = primitiveManager.getIDList();
-		actualID = primitiveManager.getActualPrimitive();	
+        currentID = primitiveManager.getCurrentPrimitive();
 		
 		/* add points */
 		for(var i = 0; i < objListID.length; i++)

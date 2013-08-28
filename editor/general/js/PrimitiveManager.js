@@ -163,6 +163,18 @@ function PrimitiveManager(){
 
 
     /*
+     * Clears the current selection and disables the UI elements for transformation editing.
+     */
+    this.clearSelection = function() {
+        currentPrimitiveID = "";
+        that.highlight(null, false);
+
+        this.disableTransformationUI();
+    };
+
+
+
+    /*
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
      * which is affected by transformations and which can be inspected with the UI.
      * Note that this clears the list of selected primitives, only the primary primitive is selected afterwards.
@@ -186,24 +198,28 @@ function PrimitiveManager(){
      * @param {X3DNode} the interacting element
      * @param {SFVec3f} new translation value
      */
-    function notified(elem, pos) {
-        var id = elem.getAttribute('id');
+    function notified(elem, pos){
+        //if SHIFT is pressed, do nothing (-> group selection)
+        if (!keyPressed[16])
+        {
+            var id = elem.getAttribute('id');
 
-        //@todo: is this to expensive? it re-initializes the GUI every time
-        that.selectCurrentPrimitive(id);
+            //@todo: is this to expensive? it re-initializes the GUI every time
+            that.selectCurrentPrimitive(id);
 
-        // update GUI elements appropriately
-        if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
-            ui.BBTransX.set(pos.x.toFixed(3));
-            ui.BBTransY.set(pos.y.toFixed(3));
-            ui.BBTransZ.set(pos.z.toFixed(3));
+            // update GUI elements appropriately
+            if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
+                ui.BBTransX.set(pos.x.toFixed(3));
+                ui.BBTransY.set(pos.y.toFixed(3));
+                ui.BBTransZ.set(pos.z.toFixed(3));
+            }
         }
     };
     
     
     
     /*
-     * Sets the default values of a new primitive to the propertie fields of the
+     * Sets the default values of a new primitive to the property fields of the
      * right bars accordion
      * @param {Primitive} primitive the primitive where the default values should be set
      * @param {Parameters} parameters the parameters that should be set to primitive as default
@@ -293,40 +309,8 @@ function PrimitiveManager(){
             primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
         }
     };
-    
-    
-    
-    /*
-     * Clears the value fields of the transformation
-     * @returns {undefined}
-     */
-    this.clearTransformationValues = function(){
-        clearTransformValues();
-    };
-    
-    
-    
-    /*
-     * Clears the value fields of the transformation
-     * @returns {undefined}
-     */
-    function clearTransformValues(){
-        ui.BBSnap.disable(true);
-        ui.BBTransX.set("");
-        ui.BBTransX.disable(true);
-        ui.BBTransY.set("");
-        ui.BBTransY.disable(true);
-        ui.BBTransZ.set("");
-        ui.BBTransZ.disable(true);
-        ui.BBPrimName.set("");
-        ui.BBPrimName.disable(true);
-        ui.BBDelete.disable(true);
-        ui.RBAccordion.disable(true);
-        
-        that.highlight(null, false);
-    }
 
-    
+
 
     /*
      * Will be called if a primitive is picked and should
@@ -361,8 +345,8 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    primitiveList[id].highlight(false, "1 1   0");
-                    primitiveList[id].highlight(true,  "1 0.5 0");
+                    primitiveList[id].highlight(false, "1 1 0");
+                    primitiveList[id].highlight(true,  "1 1 0");
                 }
                 //remove from selection
                 else
@@ -371,9 +355,19 @@ function PrimitiveManager(){
 
                     primitiveList[id].highlight(false, "1 1   0");
                 }
+
+                //if we started to group primitives, disable the transformation UI
+                if (selectedPrimitiveIDs.length === 2)
+                {
+                    that.disableTransformationUI();
+                }
             }
-            //@todo: debug
-            console.log(selectedPrimitiveIDs.length);
+
+            //if we stopped to group primitives, enable the transformation UI
+            if (selectedPrimitiveIDs.length === 1)
+            {
+                that.enableTransformationUI();
+            }
         }
         else
         {
@@ -560,23 +554,49 @@ function PrimitiveManager(){
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
-            ui.BBSnap.disable(false);
-            ui.BBTransX.disable(false);
-            ui.BBTransY.disable(false);
-            ui.BBTransZ.disable(false);
-            ui.BBPrimName.disable(false);
-            ui.BBDelete.disable(false); 
-            ui.RBAccordion.disable(false);
-
-            that.highlight(id, true);
         }
         catch(ex){
             console.log(ex);
         }
+    };
+
+
+
+    /*
+     * Enables the transformation UI elements.
+     */
+    this.enableTransformationUI = function(){
+        ui.BBSnap.disable(false);
+        ui.BBTransX.disable(false);
+        ui.BBTransY.disable(false);
+        ui.BBTransZ.disable(false);
+        ui.BBPrimName.disable(false);
+        ui.BBDelete.disable(false);
+        ui.RBAccordion.disable(false);
     }
-    
-    
-    
+
+
+
+    /*
+     * Clears the value fields of the transformation
+     * @returns {undefined}
+     */
+    this.disableTransformationUI = function(){
+        ui.BBSnap.disable(true);
+        ui.BBTransX.set("");
+        ui.BBTransX.disable(true);
+        ui.BBTransY.set("");
+        ui.BBTransY.disable(true);
+        ui.BBTransZ.set("");
+        ui.BBTransZ.disable(true);
+        ui.BBPrimName.set("");
+        ui.BBPrimName.disable(true);
+        ui.BBDelete.disable(true);
+        ui.RBAccordion.disable(true);
+    };
+
+
+
     /*
      * Sets the name of a primitive to the users defined value
      * @returns {null}
@@ -592,22 +612,12 @@ function PrimitiveManager(){
      * Returns the actually selected primitive 
      * @returns {primitive}
      */
-    this.getActualPrimitive = function(){
+    this.getCurrentPrimitive = function(){
         return primitiveList[currentPrimitiveID];
     };
 
-    /*
-     *
-     */
-    this.deselectObjects = function(event) {
-        // left button 1, middle 4, right 2
-        if (event.button === 4) {
-            clearTransformValues();
-            currentPrimitiveID = "";
-        }
-    };
-    
-    
+
+
     /*
      * Returns the position of the required primitive 
      * @returns {SFVec3f}
