@@ -60,16 +60,16 @@ function UI(primitiveManager){
      */
     function initializeUI(){
 
-        that.TBHand = that.newImageProperty("ButtonHand");
-        that.TBTranslate = that.newImageProperty("ButtonVerschieben");
-        that.TBScale = that.newImageProperty("ButtonSkalieren");
-        that.TBRotate = that.newImageProperty("ButtonRotieren");
+        that.TBHand = that.newImageProperty("ButtonHand", true);
+        that.TBTranslate = that.newImageProperty("ButtonVerschieben", true);
+        that.TBScale = that.newImageProperty("ButtonSkalieren", true);
+        that.TBRotate = that.newImageProperty("ButtonRotieren", true);
         that.TBViewpoints = that.newComboBoxProperty("Views");
        
         that.BBPrimName = that.newTextProperty("primitiveName");
         that.BBDelete = that.newImageProperty("deletePrimitive");
         that.BBTransX = that.newSpinnerProperty("amountX");
-        that.BBSnap = that.newImageProperty("snapSwitchButton");
+        that.BBSnap = that.newImageProperty("snapSwitchButton", false);
 
         $("#amountX").spinner({
             step: 0.1,
@@ -258,6 +258,11 @@ function UI(primitiveManager){
             that.editor2D_mode(evt.originalEvent.detail.mode);
         });
 
+        $("#DeletePlane").tooltip();
+        $("#DeleteAxis").tooltip();
+        
+        
+
     }
     
     
@@ -269,16 +274,9 @@ function UI(primitiveManager){
      * @returns {Array}
      */
     function createParameterMap(file){
-        var xhttp;
-        
-        if (window.XMLHttpRequest){
-            xhttp=new XMLHttpRequest();
-        }
-        else {
-            xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhttp.open("GET", file, false);
-        xhttp.send();
+       var xhttp = new XMLHttpRequest();
+       xhttp.open("GET", file, false);
+       xhttp.send();
        
        var xmlDoc = xhttp.responseXML.childNodes[0];
        var primitives = xmlDoc.getElementsByTagName("Primitive");
@@ -395,7 +393,8 @@ function UI(primitiveManager){
      * @param {id} identifier in the html document where the value should be get/set
      * @returns {property with getter and setter}
      */
-    this.newImageProperty = function(id){
+    this.newImageProperty = function(id, toolTip){
+        
         var obj = {};
 
         obj.get = function(){
@@ -419,6 +418,9 @@ function UI(primitiveManager){
             else document.getElementById(id).style.opacity="1.0";
             document.getElementById(id).disabled = bool;
         };
+        
+        if (toolTip)
+            $("#"+id).tooltip();
         
         return obj;
     };
