@@ -345,7 +345,10 @@ function PrimitiveManager(){
                 that.selectCurrentPrimitive(id);
 
                 if (HANDLING_MODE === "hand")
+				{
                     controller.Activate("translation");
+					snapping.snap();
+				}
                 setTransformValues(id, HANDLING_MODE);
             }
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
