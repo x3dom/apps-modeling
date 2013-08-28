@@ -132,7 +132,7 @@ function UI(primitiveManager){
                 if (node.isSelected()) {
                     that.treeViewer.activate(node.data.key);
                     primitiveManager.selectPrimitive(node.data.key);
-                }   
+                }
             }
         });
         
@@ -937,7 +937,8 @@ function UI(primitiveManager){
             tooltip: "This folder and all child nodes were added programmatically.",
             isFolder: true,
             select: true,
-            selectMode: 3
+            selectMode: 3,
+            expand: true
         });
         rootNode.addChild(childNode);
     };
@@ -955,7 +956,8 @@ function UI(primitiveManager){
             title: title,
             key: id,
             icon: icon,
-            select: select
+            select: select,
+            activate: true
         });
     };
 
