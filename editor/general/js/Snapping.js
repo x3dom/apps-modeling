@@ -1,8 +1,6 @@
 function Snapping()
 {	
 	var pfad;				/* Json File from primitive */
-	var point1;				/* Element1 */
-	var point2;				/* Element2 */
 	var points;				/* save the JSON Points */
 	var actualObject;		/* Object actual element */
 	var actualObjectID;		/* ID actual object */
@@ -20,12 +18,13 @@ function Snapping()
 	{		
 		var pfad = './x3d/JsonFiles/Box.json';
 		var objListID = primitiveManager.getIDList();
+		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
 		
-		if(document.getElementById('snapPoint'))
+		if(document.getElementById('snapPoint_' + actualObjectID))
 		{
 			for(var i = 0; i < objListID.length; i++)
 			{
-				primitiveManager.removeSnapNode();
+				primitiveManager.removeSnapNode('snapPoint_' + objListID[i]);
 			}
 		}
 		else
@@ -43,48 +42,45 @@ function Snapping()
 	 * Snap the Element
 	 */
 	this.snap = function(objListID, normalePoint)
-	{
-		point1 = primitiveManager.getPosition(objListID[0]);
-		point2 = primitiveManager.getPosition(objListID[1]);
-		
+	{	
 		actualObject = primitiveManager.getCurrentPrimitive();
 		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
-			
+		distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
+		
 		console.log("Abstand: " + distance);
 		
-		var normale_x = normalePoint[0][0].toString();
-		var normale_y = normalePoint[0][1].toString();
-		var normale_z = normalePoint[0][2].toString();
+		var normale_x = normalePoint[0][0] * 2;
+		var normale_y = normalePoint[0][1];
+		var normale_z = normalePoint[0][2];
 		
+		var pointPosition1_x = primitiveManager.getPosition(objListID[0]).x + normale_x.valueOf();
+		var pointPosition1_y = primitiveManager.getPosition(objListID[0]).y + normale_y.valueOf();
+		var pointPosition1_z = primitiveManager.getPosition(objListID[0]).z + normale_z.valueOf();
 		
-		pointPosition1_x = point1.x + normale_x;
-		pointPosition1_y = point1.x + normale_y;
-		pointPosition1_z = point1.x + normale_z;
-		
-		pointPosition2_x = point1.x + normale_x;
-		pointPosition2_y = point1.x + normale_y;
-		pointPosition2_z = point1.x + normale_z;
-		
+		var pointPosition2_x = primitiveManager.getPosition(objListID[1]).x + normale_x.valueOf();
+		var pointPosition2_y = primitiveManager.getPosition(objListID[1]).y + normale_y.valueOf();
+		var pointPosition2_z = primitiveManager.getPosition(objListID[1]).z + normale_z.valueOf();
 		
 		/*
 		 * Check which item is selected and compared to the other element
-		 */		
+		 */	
+		 
 		if(actualObjectID == objListID[0])
 		{
-			if(distance < 2)
+			if(distance < 2.0)
 			{
-				actualObject.setAttribute('translation', '' + pointPosition2_x + pointPosition2_y + pointPosition2_z + '');
-				distance = pointsDistance(point1, point2);
+				actualObject.setAttribute('translation', '' + pointPosition2_x.toFixed(3) + pointPosition2_y.toFixed(3) + pointPosition2_z.toFixed(3) + '');
+				distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
 				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
-				console.log("Point1: " + primitiveManager.getPosition(objListID[1]));
+				console.log("Point2: " + primitiveManager.getPosition(objListID[1]));
 			}
 		}
 		else
 		{
-			if(distance < 2)
+			if(distance < 2.0)
 			{
-				actualObject.setAttribute('translation', '' + pointPosition1_x + pointPosition1_y + pointPosition1_z + '');
-				distance = pointsDistance(point1, point2);
+				actualObject.setAttribute('translation', '' + pointPosition1_x.toFixed(3) + pointPosition1_y.toFixed(3) + pointPosition1_z.toFixed(3) + '');
+				distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
 				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
 				console.log("Point1: " + primitiveManager.getPosition(objListID[1]));
 			}
@@ -107,7 +103,7 @@ function Snapping()
 		if (distanceTemp < 0) { distance = distanceTemp * -1;};
 		distance = Math.sqrt(distanceTemp);
 		
-		return distance;
+		return distance.toFixed(3);
 	};
 	
 	
@@ -123,7 +119,7 @@ function Snapping()
     	transform_S_A_M_S.setAttribute('radius', '0.025');
     	transform_S_A_M.setAttribute('diffuseColor', '#000000');
     	transform.setAttribute('translation', translation);
-    	transform.setAttribute('id', 'snapPoint');
+    	transform.setAttribute('id', 'snapPoint_' + id);
     	
     	transform_S_A.appendChild( transform_S_A_M );
     	transform_S.appendChild( transform_S_A_M_S );

@@ -251,9 +251,9 @@ function PrimitiveManager(){
      * Removes snapNode
      * @returns {undefined}
      */  
-    this.removeSnapNode = function()
+    this.removeSnapNode = function(id)
     {
-    	var snapPoint = document.getElementById('snapPoint');
+    	var snapPoint = document.getElementById(id);
     	snapPoint.parentNode.removeChild(snapPoint);
     };
 	
@@ -541,7 +541,7 @@ function PrimitiveManager(){
 			
 			/* voruebergehend uebergeben der vorhandene Listenelemente */
 			/* dieser Aufruf wird in eine andere Datei verlagert */
-			if(document.getElementById('snapPoint'))
+			if(document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitive ().id))
 			{
 				snapping.snap(primitiveManager.getIDList(), snapping.points());
 			}
