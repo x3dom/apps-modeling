@@ -601,7 +601,8 @@ function PrimitiveManager(){
      */
     this.deselectObjects = function(event) {
         // left button 1, middle 4, right 2
-        if (event.button === 2) {
+        if (event.button === 4) {
+            clearTransformValues();
             currentPrimitiveID = "";
         }
     };
