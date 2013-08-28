@@ -158,7 +158,7 @@ function PrimitiveManager(){
      */
     this.clearSelection = function() {
         currentPrimitiveID = "";
-        that.highlight(null, false);
+        that.highlightCurrentPrimitive(false);
 
         this.disableTransformationUI();
     };
@@ -177,7 +177,7 @@ function PrimitiveManager(){
             controller.Activate("translation");
 
         currentPrimitiveID = id;
-        that.highlight(id, true);
+        that.highlightCurrentPrimitive(true);
         selectedPrimitiveIDs = [id];
 
         ui.clearParameters();
@@ -303,7 +303,7 @@ function PrimitiveManager(){
      */
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
-        highlightPrimitive(null, false);
+        that.highlightCurrentPrimitive(false);
         if (element === "diffuse" || element === "specular" || element === "emissive") {
             primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
         }
@@ -416,25 +416,6 @@ function PrimitiveManager(){
 
         transform.setAttribute("render", ""+bool);
     }
-    
-    
-    
-    /*
-     * Highlights the actually selected (primary) primitive
-     * @param {type} highlightOn false if all should be dehighlighted
-     * @returns {null}
-     */
-    function highlightPrimitive(id, highlightOn){
-        for (var key in primitiveList) {
-            if (primitiveList[key]) {
-                primitiveList[key].highlight(false, "1 1 0");
-            }
-        }
-        if (highlightOn && primitiveList[currentPrimitiveID]) {
-           //  TODO; shall depend on user preference (highlight/bbox checkboxes)
-           primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
-        }
-    }
 
 
 
@@ -442,9 +423,18 @@ function PrimitiveManager(){
      * Highlights the selected primitive
      * @returns (undefined)
      */
-    this.highlight = function(id, on) {
-        highlightBoundingVolume(id, on);
-        highlightPrimitive(id, on);
+    this.highlightCurrentPrimitive = function(on) {
+        if (currentPrimitiveID !== "")
+        {
+            highlightBoundingVolume(currentPrimitiveID, on);
+
+            for (var key in primitiveList) {
+                if (primitiveList[key]) {
+                    primitiveList[key].highlight(false, "1 1 0");
+                }
+            }
+            primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
+        }
     };
     
     

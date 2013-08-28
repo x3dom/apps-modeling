@@ -137,9 +137,7 @@ function UI(primitiveManager){
                         primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
                         if (tempNode.isActive()){
                             if (tempNode.isSelected())
-                                primitiveManager.highlight(tempNode.data.key, true);
-                            else 
-                                primitiveManager.highlight(tempNode.data.key, false);
+                                primitiveManager.highlightCurrentPrimitive(true);
                         }
                     }
                 }
@@ -820,7 +818,7 @@ function UI(primitiveManager){
                     object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
                     document.getElementById(object.id).value = object.param.value;
                     var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                    primitiveManager.highlight(ref, true);
+                    primitiveManager.highlightCurrentPrimitive(true);
                 }
             });
         }
@@ -904,7 +902,7 @@ function UI(primitiveManager){
                         document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
                         
                         var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                        primitiveManager.highlight(ref, true);
+                        primitiveManager.highlightCurrentPrimitive(true);
                     }
                 });
             }
