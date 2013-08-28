@@ -543,7 +543,7 @@ function PrimitiveManager(){
 			/* dieser Aufruf wird in eine andere Datei verlagert */
 			if(document.getElementById('snapPoint'))
 			{
-				snapping.snap(primitiveManager.getIDList());
+				snapping.snap(primitiveManager.getIDList(), snapping.points());
 			}
 			
             ui.BBPrimName.set(primitiveList[id].IDMap.name);

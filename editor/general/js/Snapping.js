@@ -3,10 +3,18 @@ function Snapping()
 	var pfad;				/* Json File from primitive */
 	var point1;				/* Element1 */
 	var point2;				/* Element2 */
+	var points;				/* save the JSON Points */
 	var actualObject;		/* Object actual element */
 	var actualObjectID;		/* ID actual object */
 	var objListID = [];		/* IDs all elements in view */
 	
+	
+	/* wird in primitiveManager benutzt um die Normale */
+	/* als Parameter zu uebergeben */
+	this.points = function()
+	{
+		return points;
+	};
 	
 	this.init = function()
 	{		
@@ -32,20 +40,32 @@ function Snapping()
 	
 	
 	/*
-	 * 
+	 * Snap the Element
 	 */
-	this.snap = function(objListID)
+	this.snap = function(objListID, normalePoint)
 	{
 		point1 = primitiveManager.getPosition(objListID[0]);
 		point2 = primitiveManager.getPosition(objListID[1]);
-			
-		distance = pointsDistance(point1, point2);
 		
 		actualObject = primitiveManager.getCurrentPrimitive();
 		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
 			
 		console.log("Abstand: " + distance);
-
+		
+		var normale_x = normalePoint[0][0].toString();
+		var normale_y = normalePoint[0][1].toString();
+		var normale_z = normalePoint[0][2].toString();
+		
+		
+		pointPosition1_x = point1.x + normale_x;
+		pointPosition1_y = point1.x + normale_y;
+		pointPosition1_z = point1.x + normale_z;
+		
+		pointPosition2_x = point1.x + normale_x;
+		pointPosition2_y = point1.x + normale_y;
+		pointPosition2_z = point1.x + normale_z;
+		
+		
 		/*
 		 * Check which item is selected and compared to the other element
 		 */		
@@ -53,18 +73,20 @@ function Snapping()
 		{
 			if(distance < 2)
 			{
-				actualObject.setAttribute('translation', '' + point2.x + point2.y + point2.z + '');
+				actualObject.setAttribute('translation', '' + pointPosition2_x + pointPosition2_y + pointPosition2_z + '');
 				distance = pointsDistance(point1, point2);
-				console.log("IF-Abstand: " + distance);
+				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
+				console.log("Point1: " + primitiveManager.getPosition(objListID[1]));
 			}
 		}
 		else
 		{
 			if(distance < 2)
 			{
-				actualObject.setAttribute('translation', '' + point1.x + point1.y + point1.z + '');
+				actualObject.setAttribute('translation', '' + pointPosition1_x + pointPosition1_y + pointPosition1_z + '');
 				distance = pointsDistance(point1, point2);
-				console.log("ELSE-Abstand: " + distance);
+				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
+				console.log("Point1: " + primitiveManager.getPosition(objListID[1]));
 			}
 		}
 	};
@@ -121,7 +143,7 @@ function Snapping()
 		var jsonObj = eval ('(' + json + ')');
 		
 		// the array can be accessed as follows points[0]
-		var points = jsonObj.snapPoints;		
+		points = jsonObj.snapPoints;		
 		
 		// Create point
 		point(id, pfad, points[0].toString());
