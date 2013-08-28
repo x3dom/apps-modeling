@@ -13,7 +13,7 @@ var snapping = new Snapping();
 
 
 window.onload = function(){
-    ui.initialize(); 
+    ui.initialize();
     controller.Activate("hand");
     primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");

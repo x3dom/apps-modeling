@@ -54,14 +54,14 @@ function PrimitiveManager(){
      */
     this.getSelectedPrimitiveIDs = function(){
         return selectedPrimitiveIDs;
-    }
+    };
 
 
 
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
-     * @returns {Boolean}
+     * @returns {null}
      */
     this.addPrimitive = function(primitive, parameters){
    
@@ -159,6 +159,7 @@ function PrimitiveManager(){
     this.clearSelection = function() {
         currentPrimitiveID = "";
         that.highlightCurrentPrimitive(false);
+        that.highlightCurrentBoundingVolume(false);
 
         this.disableTransformationUI();
     };
@@ -246,6 +247,16 @@ function PrimitiveManager(){
     }
     
     
+	/* 
+     * Removes snapNode
+     * @returns {undefined}
+     */  
+    this.removeSnapNode = function()
+    {
+    	var snapPoint = document.getElementById('snapPoint');
+    	snapPoint.parentNode.removeChild(snapPoint);
+    };
+	
     
     /* 
      * Removes a primitive from the DOM and from primitive array
@@ -253,6 +264,7 @@ function PrimitiveManager(){
      */  
     this.removeNode = function(force)
     {
+        //@todo: what does 'force'?!?
         if (currentPrimitiveID !== null || force) {
             var ot = document.getElementById(currentPrimitiveID);
             
@@ -269,10 +281,12 @@ function PrimitiveManager(){
                     ui.treeViewer.removeNode(currentPrimitiveID);
                     delete primitiveList[currentPrimitiveID];
 
-                    clearTransformValues();
+                    that.clearSelection();
                     primitiveCounter--;
                 }
             }
+
+            root.removeChild(ot);
         }
     };
 
@@ -380,30 +394,55 @@ function PrimitiveManager(){
     
     
     /*
-     * Sets the bounding volume parameters for highlighting
-     * @param {string} id primitive id of primitiveList that should be highlighted
+     * Computes the bounding volume parameters for highlighting, and toggles its visibility.
      * @param {bool} bool false if all should be dehighlighted
      * @returns (undefined)
      */
-    function highlightBoundingVolume(id, bool){  
-        var transform = document.getElementById('cpnt_transform');
-        var matrixTransform = document.getElementById('cpnt_matrixTransform');
+    this.highlightCurrentBoundingVolume = function(bool){
+        var transform, matrixTransform;
+        var group;
+        var volume;
+        var min, max;
+        var box;
 
-        if (id !== null) {
-            transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
-            transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
-            matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
+        transform = document.getElementById('cpnt_transform');
 
-            var volume = primitiveList[id].Parameters.Primitive._x3domNode.getVolume();
+        if (currentPrimitiveID !== "")
+        {
+            matrixTransform = document.getElementById('cpnt_matrixTransform');
 
-            var min = x3dom.fields.SFVec3f.parse(volume.min);
-            var max = x3dom.fields.SFVec3f.parse(volume.max);
-            if (max.subtract(min).length < x3dom.fields.Eps){
-                min.x = -1; min.y = -1; min.z = -1;
-                max.x = 1; max.y = 1; max.z = 1;
+            if (ui.groupModeActive())
+            {
+                //@todo: testing, continue implementation
+                group = groupManager.getCurrentGroup();
+
+                transform.setAttribute("translation",  group.getTransformNode().getAttribute("translation"));
+                transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
+                matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+
+                //@todo: how does it work?
+                volume = group._x3domNode.getVolume();
+            }
+            else
+            {
+                transform.setAttribute("translation",  primitiveList[currentPrimitiveID].getAttribute("translation"));
+                transform.setAttribute("scale",        primitiveList[currentPrimitiveID].getAttribute("scale"));
+                matrixTransform.setAttribute("matrix", primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
+
+                volume = primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
             }
 
-            var box = document.getElementById('cpnt');
+            min = x3dom.fields.SFVec3f.parse(volume.min);
+            max = x3dom.fields.SFVec3f.parse(volume.max);
+
+            //if min/max are (near to) equal, use standard unit box
+            if (max.subtract(min).length < x3dom.fields.Eps)
+            {
+                min.x = -1; min.y = -1; min.z = -1;
+                max.x = 1;  max.y = 1;  max.z = 1;
+            }
+
+            box = document.getElementById('cpnt');
             box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
                                       min.x+' '+min.y+' '+max.z+', '+
                                       max.x+' '+min.y+' '+max.z+', '+
@@ -414,22 +453,27 @@ function PrimitiveManager(){
                                       max.x+' '+max.y+' '+min.z );
         }
 
-        transform.setAttribute("render", ""+bool);
-    }
+        transform.setAttribute("render", "" + bool);
+    };
 
 
 
     /*
-     * Highlights the selected primitive
+     * Highlights or un-highlights the currently selected primitive (if any)
+     * @param {bool} on specifies whether highlighting should be active
      * @returns (undefined)
      */
     this.highlightCurrentPrimitive = function(on) {
         if (currentPrimitiveID !== "")
         {
-            highlightBoundingVolume(currentPrimitiveID, on);
+            //update the bounding volume, or hide it
+            that.highlightCurrentBoundingVolume(on);
 
-            for (var key in primitiveList) {
-                if (primitiveList[key]) {
+            //un-highlight all primitives, then highlight the current primitive
+            for (var key in primitiveList)
+            {
+                if (primitiveList[key])
+                {
                     primitiveList[key].highlight(false, "1 1 0");
                 }
             }
@@ -480,8 +524,6 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.updateTransformUIFromPrimitive = function(id, mode){
-        if (!id)
-        console.log("UNDEFINED");
         try {
             var MT = primitiveList[id].children[0];
         
@@ -496,7 +538,14 @@ function PrimitiveManager(){
                 ui.BBTransY.set(vec.y.toFixed(5));
                 ui.BBTransZ.set(vec.z.toFixed(5));
             }
-
+			
+			/* voruebergehend uebergeben der vorhandene Listenelemente */
+			/* dieser Aufruf wird in eine andere Datei verlagert */
+			if(document.getElementById('snapPoint'))
+			{
+				snapping.snap(primitiveManager.getIDList());
+			}
+			
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
         }
         catch(ex){
@@ -517,7 +566,7 @@ function PrimitiveManager(){
         ui.BBPrimName.disable(false);
         ui.BBDelete.disable(false);
         ui.RBAccordion.disable(false);
-    }
+    };
 
 
 
@@ -573,6 +622,19 @@ function PrimitiveManager(){
 
 
     /*
+     * Returns primitive with the given ID, if any
+     * @returns {primitive}
+     */
+    this.getPrimitiveByID = function(id){
+        if (id)
+        {
+            return primitiveList[id];
+        }
+    };
+
+
+
+    /*
      * Returns the position of the required primitive 
      * @returns {SFVec3f}
      */
@@ -599,9 +661,9 @@ function PrimitiveManager(){
     this.getRotation = function(primitiveID){
         return x3dom.fields.SFMatrix4f.parse(primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
     };
-    
-    
-    
+
+
+
     /*
      * Returns a list with all primitives IDs
      * @returns {List of IDs of all primitives}

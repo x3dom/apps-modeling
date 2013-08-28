@@ -3,13 +3,43 @@
  * This includes, for instance, the ids of the objects as well as the group's name.
  */
 function Group(name){
+    var that = this;
+
     //list of object IDs
     this.objectIDList = [];
-
     //name the group
+    this.name = "";
+    //group, transform and matrixTransform nodes, which represents this group inside the scene graph
+    this.groupNode           = document.createElement("Group");
+    this.transformNode       = document.createElement("Transform");
+    this.matrixTransformNode = document.createElement("MatrixTransform");
+
+    //@todo: debug
+    //document.getElementById('root').appendChild(this.groupNode);
+    this.groupNode.appendChild(this.transformNode);
+    this.transformNode.appendChild(this.matrixTransformNode);
+
     if (typeof name === 'undefined')
     {
-        this.name = "group_" + groupCounter++;
+        this.name = "group_" + groupManager.groupCounter++;
+    };
+
+
+
+    this.getGroupNode = function(){
+        return that.groupNode;
+    };
+
+
+
+    this.getTransformNode = function(){
+        return that.transformNode;
+    };
+
+
+
+    this.getMatrixTransformNode = function(){
+        return that.matrixTransformNode;
     };
 
 
@@ -18,9 +48,32 @@ function Group(name){
      * Appends a list of object IDs to the current object ID list.
      * Duplicate entries are avoided.
      */
-    this.addObjectList(objIDs)
-    {
-        objectIDList = objectIDList.concat(objIDs);
+    this.addObjectList = function(objIDs){
+        var root;
+        var i, primID, prim;
+
+        root = document.getElementById('root');
+
+        //move all new object IDs into this group
+        for (i = 0; i < objIDs.length; ++i)
+        {
+            primID = objIDs[i];
+
+            if (that.objectIDList.indexOf(primID) === -1)
+            {
+                prim = primitiveManager.getPrimitiveByID(primID);
+
+                root.removeChild(prim);
+                //that.matrixTransformNode.appendChild(prim);
+                //@todo: debug
+                root.appendChild(prim);
+
+                //@todo: this works! Why doesn't it work with simple DOM manipulation as above?
+                primitiveManager.addPrimitive("Cone", ui.primitiveParameterMap["Cone"].parameters)
+
+                that.objectIDList.push(primID);
+            }
+        }
     };
 
 
@@ -29,6 +82,7 @@ function Group(name){
      * Adds the object with the given id to this group.
      */
     this.addObject = function(id){
+        //@todo: integrate this method into addObjectList
         if (typeof id !== 'undefined')
         {
             //check whether the object is inside the list - if so, do nothing
@@ -49,6 +103,8 @@ function Group(name){
      * Removes the object with the given id from this group.
      */
     this.removeObject = function(id){
+        //@todo: DOM manipulations
+
         var idx;
 
         if (typeof id !== 'undefined')
@@ -76,13 +132,26 @@ function Group(name){
 function GroupManager(){
 
     // list of all created groups
-    var groupList = [];
-    // id of the current group, if any
-    var currentGroup = null;
+    this.groupList = [];
+    // current group, if any
+    this.currentGroup = null;
     // count of all groups that were created during this session
-    var groupCounter = 0;
+    this.groupCounter = 0;
     // reference to this object
     var that = this;
+
+
+
+    this.getCurrentGroup = function(){
+        return that.currentGroup;
+    };
+
+
+
+    this.setCurrentGroup = function(g){
+        that.currentGroup = g;
+    };
+
 
 
     this.groupSelectedObjects = function(){
@@ -95,14 +164,13 @@ function GroupManager(){
             //put the IDs of the selected objects into a new group
             //(a default name is assigned to the new group)
             g = new Group();
-            g.addObjectList(primitiveManager.getSelectedObjectIDs());
+            g.addObjectList(primitiveManager.getSelectedPrimitiveIDs());
 
             //put the new group in the list of groups
-            groupList.push(g);
+            that.groupList.push(g);
 
             //make this the current group
-            currentGroup = g;
-
+            that.currentGroup = g;
            //enable group mode in the ui
             ui.toggleGroupMode(true);
         }

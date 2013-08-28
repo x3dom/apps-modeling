@@ -11,7 +11,7 @@ function UI(primitiveManager){
     // highlight color of all ui elements
     var highlightColor = "#fff";
     // primitive parameter map to synchronize names between editor and x3dom
-    var primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
+    this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
     var farbtasticPicker = null;
     // primitive type for 2D-Editor
@@ -39,6 +39,14 @@ function UI(primitiveManager){
      */
     this.toggleGroupMode = function(val){
         that.groupMode = val;
+
+        //current group might become null
+        if (val){
+            primitiveManager.enableTransformationUI();
+        }
+        else {
+            groupManager.setCurrentGroup(null);
+        }
     };
 
 
@@ -95,9 +103,9 @@ function UI(primitiveManager){
         });
         
         
-        for (var prim in primitiveParameterMap){
-            addLeftbarElement(primitiveParameterMap[prim].image, 
-                              primitiveParameterMap[prim].editorName);
+        for (var prim in that.primitiveParameterMap){
+            addLeftbarElement(that.primitiveParameterMap[prim].image,
+                              that.primitiveParameterMap[prim].editorName);
         }
 
         // scrollbar for primitives of left bar   		
@@ -682,16 +690,15 @@ function UI(primitiveManager){
             //Get points
             var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
-            primitiveParameterMap[primitivType].parameters.push({
-                render: "false",
-                editorName: "Cross Section",
-                x3domName: "crossSection",
-                value: points.toString()
-            });
+        that.primitiveParameterMap[primitivType].parameters.push({
+            render: "false",
+            editorName: "Cross Section",
+            x3domName: "crossSection",
+            value: points.toString()
+        });
 
-            primitiveManager.addPrimitive(primitiveParameterMap[primitivType].x3domName,
-                primitiveParameterMap[primitivType].parameters);
-        }
+        primitiveManager.addPrimitive(that.primitiveParameterMap[primitivType].x3domName,
+            that.primitiveParameterMap[primitivType].parameters);
     };
 
 
@@ -741,8 +748,8 @@ function UI(primitiveManager){
         else
         {
             divID.onclick = function() {
-                primitiveManager.addPrimitive(primitiveParameterMap[name].x3domName, 
-                                              primitiveParameterMap[name].parameters);};
+                primitiveManager.addPrimitive(that.primitiveParameterMap[name].x3domName,
+                                              that.primitiveParameterMap[name].parameters);};
         }
 
         var divIDinnen = document.createElement("div");
