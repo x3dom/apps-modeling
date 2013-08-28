@@ -4,12 +4,12 @@ var keyPressed={};
 document.onkeydown=function(e){
     e = e || window.event;
     keyPressed[e.keyCode] = true;
-}
+};
 
 document.onkeyup=function(e){
     e = e || window.event;
     keyPressed[e.keyCode] = false;
-}
+};
 
 
 /*
@@ -22,9 +22,9 @@ function PrimitiveManager(){
     // List of all created primitives
     var primitiveList = [];
     // actually active id
-    var actualID = "";
+    var currentPrimitiveID = "";
     // list of all selected primitives (including the first selected one)
-    var selectedPrimitives = [];
+    var selectedPrimitiveIDs = [];
     // count of all primitives that were created during this session
     var primCounter = 0;
     // count of actually used primitives on workspace 
@@ -120,42 +120,65 @@ function PrimitiveManager(){
         
         primitiveList[id] = t;
         primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
-        addPrimitiveToComboBox(t.IDMap.name);
         setTransformValues(id, HANDLING_MODE);
 
         primitiveCounter++;
-        ui.treeViewer.addElement(id, id);
-        selectCurrentPrimitive(id);
+        selectedPrimitiveIDs = [];
+
+        that.selectCurrentPrimitive(id);
+        ui.treeViewer.addPrimitive(id, id);
+        ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
     };
     
     
-    
+
+    /*
+     * Selects the primitive and is triggered from outside
+     * @param {string} id name of the primitive that should be selected
+     * @returns {null}
+     */
     this.selectPrimitive = function(id){
-        actualID = id;
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
+        currentPrimitiveID = id;
         that.highlight(id, true);
         ui.clearParameters();
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
         that.setTransformationValues();
     };
+    
+    
+    
+    /*
+     * Sets the visibility of a primitive
+     * @param {string} id name of the primitive
+     * @param {bool} bool visibility that should be set (true: visible)
+     * @returns {null}
+     */
+    this.setPrimitiveVisibility = function(id, bool){
+        primitiveList[id].setAttribute("render", bool);
+    };
+
 
 
     /*
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
-     * which is affected by transformations and which can be inspected with the UI
+     * which is affected by transformations and which can be inspected with the UI.
+     * Note that this clears the list of selected primitives, only the primary primitive is selected afterwards.
      */
-    function selectCurrentPrimitive(id){
-        if (selectedPrimitives.indexOf(id) === -1)
-        {
-            actualID = id;
-            that.highlight(id, true);
-            selectedPrimitives.push(id);
+    this.selectCurrentPrimitive = function(id){
+        currentPrimitiveID = id;
+        that.highlight(id, true);
+        selectedPrimitiveIDs = [id];
 
-            ui.clearParameters();
-            ui.createParameters(primitiveList[id].Parameters);
-            ui.setMaterial(primitiveList[id].Material);
-        }
+        ui.clearParameters();
+        ui.createParameters(primitiveList[id].Parameters);
+        ui.setMaterial(primitiveList[id].Material);
+
+        ui.treeViewer.activate(id);
     };
+
 
 
     /*
@@ -165,15 +188,18 @@ function PrimitiveManager(){
      */
     function notified(elem, pos) {
         var id = elem.getAttribute('id');
-        that.highlight(id, true);
-        
+
+        //@todo: is this to expensive? it re-initializes the GUI every time
+        that.selectCurrentPrimitive(id);
+
         // update GUI elements appropriately
-        if (HANDLING_MODE === "translation" && id == actualID) {
+        if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
         }
-    }
+    };
+    
     
     
     /*
@@ -209,8 +235,8 @@ function PrimitiveManager(){
      */  
     this.removeNode = function(force)
     {
-        if (ui.TBPrimitiveList.selectedIndex() !== 0 || force) {
-            var ot = document.getElementById(actualID);
+        if (currentPrimitiveID !== null || force) {
+            var ot = document.getElementById(currentPrimitiveID);
             
             if (ot._iMove) {
                 ot._iMove.detachHandlers();
@@ -222,18 +248,11 @@ function PrimitiveManager(){
                 if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
                 { 
                     ot.removeChild(ot.childNodes[i]);
-                    for (var j = primitiveList[actualID].IDMap.cboxNumber + 1; j < (primCounter + 1); j++){
-                        try {
-                            ui.TBPrimitiveList.idMap(j).cboxNumber--;
-                        }
-                        catch (ex){}
-                    }
-                    ui.TBPrimitiveList.remove(primitiveList[actualID].IDMap.cboxNumber);
-                    delete primitiveList[actualID];
+                    ui.treeViewer.removeNode(currentPrimitiveID);
+                    delete primitiveList[currentPrimitiveID];
 
                     clearTransformValues();
                     primitiveCounter--;
-                        break;
                 }
             }
         }
@@ -247,13 +266,13 @@ function PrimitiveManager(){
     {
         for (var key in primitiveList) {
             if (primitiveList[key]) {
-                actualID = key;
+                currentPrimitiveID = key;
                 this.removeNode(true);
             }
         }
 
         primitiveList = [];
-        actualID = "";
+        currentPrimitiveID = "";
         primitiveCounter = 0;
     };
     
@@ -267,11 +286,11 @@ function PrimitiveManager(){
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
         highlightPrimitive(null, false);
-        if (element == "diffuse" || element == "specular" || element == "emissive") {
-            primitiveList[actualID].Material.setAttribute(element+'Color', rgb);
+        if (element === "diffuse" || element === "specular" || element === "emissive") {
+            primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
         }
-        if(element == "transparency" || element == "shininess") {
-            primitiveList[actualID].Material.setAttribute(element, rgb);
+        if(element === "transparency" || element === "shininess") {
+            primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
         }
     };
     
@@ -302,8 +321,6 @@ function PrimitiveManager(){
         ui.BBPrimName.disable(true);
         ui.BBTransformMode.set("");
         ui.BBDelete.disable(true);
-        ui.TBPrimitiveList.selectIndex(0);
-        ui.TBPrimitiveList.disable(true);
         ui.RBAccordion.disable(true);
 
         that.highlight(null, false);
@@ -312,37 +329,48 @@ function PrimitiveManager(){
     
 
     /*
-     * Will be called if a primitive is selected and should
+     * Will be called if a primitive is picked and should
      * set the values of translation, rotation or scaling
      * @param {type} id name of the primitive's values that should be set
      * @returns {null}
      */
     function primitiveSelected(id){
-        ui.treeViewer.activate(id);
-        
+        var idx;
+
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
-            if (actualID === "")
+            if (selectedPrimitiveIDs.length === 0 || !keyPressed[16])
             {
                 that.selectCurrentPrimitive(id);
 
                 if (HANDLING_MODE === "hand")
                     controller.Activate("translation");
                 setTransformValues(id, HANDLING_MODE);
-
-                selectedPrimitives.push(id);
             }
-            //if there is already a selected object, check if SHIFT is pressed - if so, add object to selection
-            else if (keyPressed[16])
+            //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
+            else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
             {
-                if (selectedPrimitives.indexOf(id) === -1)
+                idx = selectedPrimitiveIDs.indexOf(id);
+
+                //add to selection
+                if (idx === -1)
                 {
-                    selectedPrimitives.push(id);
+                    selectedPrimitiveIDs.push(id);
+
+                    primitiveList[id].highlight(false, "1 1   0");
+                    primitiveList[id].highlight(true,  "1 0.5 0");
+                }
+                //remove from selection
+                else
+                {
+                    selectedPrimitiveIDs.splice(idx, 1);
+
+                    primitiveList[id].highlight(false, "1 1   0");
                 }
             }
-            
-            console.log(selectedPrimitives.length);
+            //@todo: debug
+            console.log(selectedPrimitiveIDs.length);
         }
         else
         {
@@ -362,7 +390,7 @@ function PrimitiveManager(){
         var transform = document.getElementById('cpnt_transform');
         var matrixTransform = document.getElementById('cpnt_matrixTransform');
 
-        if (id != null) {
+        if (id !== null) {
             transform.setAttribute("translation", primitiveList[id].getAttribute("translation"));
             transform.setAttribute("scale", primitiveList[id].getAttribute("scale"));
             matrixTransform.setAttribute("matrix", primitiveList[id].children[0].getAttribute("matrix"));
@@ -393,20 +421,19 @@ function PrimitiveManager(){
     
     
     /*
-     * Highlights the actually selected primitive
+     * Highlights the actually selected (primary) primitive
      * @param {type} highlightOn false if all should be dehighlighted
      * @returns {null}
      */
     function highlightPrimitive(id, highlightOn){
-        // TODO FIXME only switch off prevElem and only do something on change
         for (var key in primitiveList) {
             if (primitiveList[key]) {
                 primitiveList[key].highlight(false, "1 1 0");
             }
         }
-        if (highlightOn && primitiveList[actualID]) {
+        if (highlightOn && primitiveList[currentPrimitiveID]) {
            //  TODO; shall depend on user preference (highlight/bbox checkboxes)
-           primitiveList[actualID].highlight(true, "1 1 0");
+           primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
         }
     }
     
@@ -419,7 +446,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setTransformationValues = function(){
-        setTransformValues(actualID, HANDLING_MODE);
+        setTransformValues(currentPrimitiveID, HANDLING_MODE);
     };
     
     
@@ -432,11 +459,11 @@ function PrimitiveManager(){
         boundingVolumeHighlighting = !boundingVolumeHighlighting;
         if (boundingVolumeHighlighting){
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
-            highlightBoundingVolume(actualID, true);
+            highlightBoundingVolume(currentPrimitiveID, true);
         }
         else {
             document.getElementById(htmlID+"_tick").style.visibility = "hidden";
-            highlightBoundingVolume(actualID, false);
+            highlightBoundingVolume(currentPrimitiveID, false);
         }
     };
     
@@ -449,11 +476,11 @@ function PrimitiveManager(){
     this.showPrimitiveHighlighting = function(htmlID){
         primitiveHighlighting = !primitiveHighlighting;
         if (primitiveHighlighting){
-            highlightPrimitive(actualID, true);
+            highlightPrimitive(currentPrimitiveID, true);
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
         }
         else { 
-            highlightPrimitive(actualID, false);
+            highlightPrimitive(currentPrimitiveID, false);
             document.getElementById(htmlID+"_tick").style.visibility = "hidden";
         }
     };
@@ -478,7 +505,7 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.setTransformationValuesToPrimitive = function() {
-        var MT = primitiveList[actualID].children[0];
+        var MT = primitiveList[currentPrimitiveID].children[0];
 
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
@@ -487,7 +514,7 @@ function PrimitiveManager(){
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();   
-            primitiveList[actualID].setAttribute(HANDLING_MODE, tempValue);
+            primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
             MT.Transformation.rotationX = ui.BBTransX.get();
@@ -501,24 +528,7 @@ function PrimitiveManager(){
             MT.setAttribute("matrix", matrixToString(transformMat));
         }
         
-        this.highlight(actualID, true);
-    };
-    
-    
-    
-    /*
-     * Handles the synchronization if a primitive is selected at the combobox
-     * @param {type} id identifier of the primitive that should be set to active
-     * @returns {undefined}
-     */
-    this.comboBoxChanged = function(id){
-        if (ui.TBPrimitiveList.selectedIndex() === 0) {
-            clearTransformValues();
-        }
-        else {
-            selectCurrentPrimitive(ui.TBPrimitiveList.idMap(id).id);
-            setTransformValues(actualID, HANDLING_MODE);
-        }
+        this.highlight(currentPrimitiveID, true);
     };
     
     
@@ -547,7 +557,6 @@ function PrimitiveManager(){
             }
 
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
-            ui.TBPrimitiveList.selectIndex(primitiveList[id].IDMap.cboxNumber);
             ui.BBTransformMode.set(HANDLING_MODE.charAt(0).toUpperCase() + HANDLING_MODE.slice(1) + ':');
             
             ui.BBTransX.disable(false);
@@ -555,7 +564,6 @@ function PrimitiveManager(){
             ui.BBTransZ.disable(false);
             ui.BBPrimName.disable(false);
             ui.BBDelete.disable(false); 
-            ui.TBPrimitiveList.disable(false);
             ui.RBAccordion.disable(false);
 
             that.highlight(id, true);
@@ -572,25 +580,10 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        ui.TBPrimitiveList.set(primitiveList[actualID].IDMap.cboxNumber, ui.BBPrimName.get());
-        primitiveList[actualID].IDMap.name = ui.BBPrimName.get();
+        primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
+        ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
     };
-    
-    
-    
-    /*
-     * Adds an option field to the select box with the name of a primitive
-     * @param {type} id name of the primitive's values that should be set
-     * @returns {null}
-     */
-    function addPrimitiveToComboBox(id){
-        var option=document.createElement("option");
-        option.Primitive = primitiveList[id];
-        option.text = id;
-        
-        ui.TBPrimitiveList.add(option);
-    }
-    
+
     
     
     /*
@@ -598,7 +591,7 @@ function PrimitiveManager(){
      * @returns {primitive}
      */
     this.getActualPrimitive = function(){
-        return primitiveList[actualID];
+        return primitiveList[currentPrimitiveID];
     };
 
     /*
@@ -606,10 +599,8 @@ function PrimitiveManager(){
      */
     this.deselectObjects = function(event) {
         // left button 1, middle 4, right 2
-        if (event.button == 2) {
-            document.getElementById('primitiveList').selectedIndex = 0;
-            primitiveManager.comboBoxChanged(0);
-            actualID = "";
+        if (event.button === 2) {
+            currentPrimitiveID = "";
         }
     };
     

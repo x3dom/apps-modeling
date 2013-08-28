@@ -16,5 +16,6 @@ window.onload = function(){
     ui.initialize(); 
     controller.Activate("hand");
     primitiveManager.clearTransformationValues();
+    ui.treeViewer.addGroup("Scene", "Scene");
 };
 

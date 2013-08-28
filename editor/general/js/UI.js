@@ -41,7 +41,6 @@ function UI(primitiveManager){
         that.TBTranslate = that.newImageProperty("ButtonVerschieben");
         that.TBScale = that.newImageProperty("ButtonSkalieren");
         that.TBRotate = that.newImageProperty("ButtonRotieren");
-        that.TBPrimitiveList = that.newComboBoxProperty("primitiveList");
         that.TBViewpoints = that.newComboBoxProperty("Views");
        
         that.BBPrimName = that.newTextProperty("primitiveName");
@@ -104,12 +103,36 @@ function UI(primitiveManager){
                 node.scheduleAction("cancel");
                 
             },
+            onSelect: function(select, node) { 
+                function recursiveSelection(tempNode){
+                    if (tempNode.data.isFolder){
+                        for (var i = 0; i < tempNode.childList.length; i++){
+                            recursiveSelection(tempNode.childList[i]);
+                        }
+                    }
+                    else {
+                        primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
+                        if (tempNode.isActive()){
+                            if (tempNode.isSelected())
+                                primitiveManager.highlight(tempNode.data.key, true);
+                            else 
+                                primitiveManager.highlight(tempNode.data.key, false);
+                        }
+                    }
+                }
+                
+                recursiveSelection(node);
+                if (!node.data.isFolder)
+                    primitiveManager.setPrimitiveVisibility(node.data.key, select);
+            },
             onBlur: function(node) {
                 node.scheduleAction("cancel");
             },
             onActivate: function(node){
-                that.treeViewer.activate(node.data.key);
-                primitiveManager.selectPrimitive(node.data.key);
+                if (node.isSelected()) {
+                    that.treeViewer.activate(node.data.key);
+                    primitiveManager.selectPrimitive(node.data.key);
+                }
             }
         });
         
@@ -891,7 +914,7 @@ function UI(primitiveManager){
     
     
     
-    this.treeViewer.addElement = function(id, text){
+    this.treeViewer.addPrimitive = function(id, text){
         // This is how we would add tree nodes programatically
         var rootNode = $("#tree").dynatree("getRoot");
 
@@ -914,25 +937,27 @@ function UI(primitiveManager){
             tooltip: "This folder and all child nodes were added programmatically.",
             isFolder: true,
             select: true,
-            selectMode: 3
+            selectMode: 3,
+            expand: true
         });
         rootNode.addChild(childNode);
     };
 
 
     this.treeViewer.moveExistableNodeToGroup = function(node, group){
-        node = getNode(node);
-        group = getNode(group);
+        node = that.treeViewer.getNode(node);
+        group = that.treeViewer.getNode(group);
         var title = node.data.title;
         var id = node.data.key;
         var select = node.data.select;
         var icon = node.data.icon;
-        removeNode(id);
+        that.treeViewer.removeNode(id);
         group.addChild({
             title: title,
             key: id,
             icon: icon,
-            select: select
+            select: select,
+            activate: true
         });
     };
 
@@ -943,12 +968,12 @@ function UI(primitiveManager){
 
 
     this.treeViewer.removeNode = function(id){
-        getNode(id).remove();
+        that.treeViewer.getNode(id).remove();
     };
 
 
     this.treeViewer.rename = function(id, name){
-        var node = getNode(id);
+        var node = that.treeViewer.getNode(id);
         node.data.title = name;
         node.render();
     };
