@@ -541,9 +541,14 @@ function PrimitiveManager(){
 			
 			/* voruebergehend uebergeben der vorhandene Listenelemente */
 			/* dieser Aufruf wird in eine andere Datei verlagert */
-			if(document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitive ().id))
+			if(document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitive().id)) /* wenn snap gedrueckt wird */
 			{
-				snapping.snap(primitiveManager.getIDList(), snapping.points());
+				var objListID = primitiveManager.getIDList();
+				
+				if(objListID.length > 1)
+				{
+					snapping.snap(objListID, snapping.points());
+				}
 			}
 			
             ui.BBPrimName.set(primitiveList[id].IDMap.name);

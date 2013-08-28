@@ -30,9 +30,12 @@ function Snapping()
 		else
 		{
 			/* add points */
-			for(var i = 0; i < objListID.length; i++)
+			if(objListID.length > 1)
 			{
-				loadJSON(objListID[i], pfad);
+				for(var i = 0; i < objListID.length; i++)
+				{
+					loadJSON(objListID[i], pfad);
+				}
 			}
 		}
 	};
@@ -108,23 +111,53 @@ function Snapping()
 	
 	
 	/* Draws point */
-    function point(id, pfad, translation)
+    function point(id, pfad, translation, rotation)
     {    	
     	var transform = document.createElement('Transform');
-    	var transform_S = document.createElement('Shape');
-    	var transform_S_A = document.createElement('Appearance');
-    	var transform_S_A_M = document.createElement('Material');    	
-    	var transform_S_A_M_S = document.createElement('Sphere');
+		var transform_Appearance = document.createElement('Appearance');
+		var transform_Material = document.createElement('Material');    	
+		transform_Material.setAttribute('diffuseColor', '#000000');    	
     	
-    	transform_S_A_M_S.setAttribute('radius', '0.025');
-    	transform_S_A_M.setAttribute('diffuseColor', '#000000');
+    	
+    	var transformSphere = document.createElement('Transform');
+    	var ShapeSphere = document.createElement('Shape');
+	    var Sphere = document.createElement('Sphere');
+	    Sphere.setAttribute('radius', '0.025');
+	    	
+    	var transformCylinder = document.createElement('Transform');
+    	var ShapeCylinder = document.createElement('Shape');
+    	var Cylinder = document.createElement('Cylinder');
+    	transformCylinder.setAttribute('translation', '2 0 0');
+    	transformCylinder.setAttribute('rotation', '1 0 0 -1.57079');
+    	Cylinder.setAttribute('radius', '0.005');
+    	Cylinder.setAttribute('height', '0.5');
+    	
+    	var transformCone = document.createElement('Transform');
+    	var ShapeCone = document.createElement('Shape');
+    	var Cone = document.createElement('Cone');
+    	transformCone.setAttribute('translation', '0.5 0 0');
+    	transformCone.setAttribute('rotation', '1 0 0 -1.57079');
+    	Cone.setAttribute('height', '0.07');
+    	Cone.setAttribute('bottomRadius', '0.05');
+   	
+    
+    	transform_Appearance.appendChild( transform_Material );
+    	
+    	ShapeSphere.appendChild( transform_Appearance );
+    	ShapeCylinder.appendChild( transform_Appearance );
+    	ShapeCone.appendChild( transform_Appearance );
+    	
+    	ShapeSphere.appendChild( Sphere );
+    	ShapeCylinder.appendChild( Cylinder );
+    	ShapeCone.appendChild( Cone );
+    	
+    	transform.appendChild( ShapeSphere );
+    	transform.appendChild( ShapeCylinder );
+    	transform.appendChild( ShapeCone );
+    	
     	transform.setAttribute('translation', translation);
     	transform.setAttribute('id', 'snapPoint_' + id);
     	
-    	transform_S_A.appendChild( transform_S_A_M );
-    	transform_S.appendChild( transform_S_A_M_S );
-    	transform_S.appendChild( transform_S_A );
-    	transform.appendChild( transform_S );
     	
     	var element = document.getElementById('mt_' + id);
     	element.appendChild(transform);
