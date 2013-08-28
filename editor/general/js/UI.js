@@ -97,7 +97,7 @@ function UI(primitiveManager){
         $("#tree").dynatree({
             checkbox: true,
             selectMode: 3,
-            clickFolderMode: 3,
+            clickFolderMode: 1,
             fx: { height: "toggle", duration: 500 },
             onFocus: function(node) {
                 node.scheduleAction("cancel");
