@@ -61,7 +61,7 @@ function PrimitiveManager(){
     /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
-     * @returns {Boolean}
+     * @returns {null}
      */
     this.addPrimitive = function(primitive, parameters){
    
@@ -159,6 +159,7 @@ function PrimitiveManager(){
     this.clearSelection = function() {
         currentPrimitiveID = "";
         that.highlightCurrentPrimitive(false);
+        that.highlightCurrentBoundingVolume(false);
 
         this.disableTransformationUI();
     };
@@ -263,6 +264,7 @@ function PrimitiveManager(){
      */  
     this.removeNode = function(force)
     {
+        //@todo: what does 'force'?!?
         if (currentPrimitiveID !== null || force) {
             var ot = document.getElementById(currentPrimitiveID);
             
@@ -279,10 +281,12 @@ function PrimitiveManager(){
                     ui.treeViewer.removeNode(currentPrimitiveID);
                     delete primitiveList[currentPrimitiveID];
 
-                    clearTransformValues();
+                    that.clearSelection();
                     primitiveCounter--;
                 }
             }
+
+            root.removeChild(ot);
         }
     };
 
@@ -401,27 +405,32 @@ function PrimitiveManager(){
         var min, max;
         var box;
 
+        transform = document.getElementById('cpnt_transform');
+
         if (currentPrimitiveID !== "")
         {
-            transform       = document.getElementById('cpnt_transform');
             matrixTransform = document.getElementById('cpnt_matrixTransform');
 
             if (ui.groupModeActive())
             {
+                //@todo: testing, continue implementation
                 group = groupManager.getCurrentGroup();
 
                 transform.setAttribute("translation",  group.getTransformNode().getAttribute("translation"));
                 transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
                 matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+
+                //@todo: how does it work?
+                volume = group._x3domNode.getVolume();
             }
             else
             {
                 transform.setAttribute("translation",  primitiveList[currentPrimitiveID].getAttribute("translation"));
                 transform.setAttribute("scale",        primitiveList[currentPrimitiveID].getAttribute("scale"));
                 matrixTransform.setAttribute("matrix", primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
-            }
 
-            volume = primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
+                volume = primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
+            }
 
             min = x3dom.fields.SFVec3f.parse(volume.min);
             max = x3dom.fields.SFVec3f.parse(volume.max);
@@ -515,8 +524,6 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.updateTransformUIFromPrimitive = function(id, mode){
-        if (!id)
-        console.log("UNDEFINED");
         try {
             var MT = primitiveList[id].children[0];
         
