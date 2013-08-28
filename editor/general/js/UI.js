@@ -39,6 +39,14 @@ function UI(primitiveManager){
      */
     this.toggleGroupMode = function(val){
         that.groupMode = val;
+
+        //current group might become null
+        if (val){
+            primitiveManager.enableTransformationUI();
+        }
+        else {
+            groupManager.setCurrentGroup(null);
+        }
     };
 
 
