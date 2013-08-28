@@ -104,7 +104,7 @@ function UI(primitiveManager){
         
         
         for (var prim in that.primitiveParameterMap){
-            addLeftbarElement(that.primitiveParameterMap[prim].image,
+            this.addLeftbarElement(that.primitiveParameterMap[prim].image,
                               that.primitiveParameterMap[prim].editorName);
         }
 
@@ -680,396 +680,380 @@ function UI(primitiveManager){
     /*
      * Handle 2D-Editors 'modechanged' event
      */
-    this.editor2D_create = function()
-    {
-        if ( $('#Editor2D-Canvas').editor2D('isReady') )
-        {
+    this.editor2D_create = function () {
+        if ($('#Editor2D-Canvas').editor2D('isReady')) {
             //Hide editor
             this.editor2D_hide();
 
             //Get points
             var points = $('#Editor2D-Canvas').editor2D('samplePoints');
 
-        that.primitiveParameterMap[primitivType].parameters.push({
-            render: "false",
-            editorName: "Cross Section",
-            x3domName: "crossSection",
-            value: points.toString()
-        });
-
-        primitiveManager.addPrimitive(that.primitiveParameterMap[primitivType].x3domName,
-            that.primitiveParameterMap[primitivType].parameters);
-    };
-
-
-    /*
-     * Reset all 2D-Editor icon states
-     */
-    this.editor2D_resetIcons = function()
-    {
-        $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen-Active').addClass('Editor2D-Icon-Pen');
-        $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer-Active').addClass('Editor2D-Icon-Pointer');
-        $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser-Active').addClass('Editor2D-Icon-Eraser');
-        $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move-Active').addClass('Editor2D-Icon-Move');
-        $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom-Active').addClass('Editor2D-Icon-Zoom');
-    };
-
-    /*
-     * Adds one primitive element to the left bar 
-     * @returns (undefined)
-     */
-    function addLeftbarElement(img, name)
-    {
-        var divID = document.createElement("div");
-        divID.setAttribute("id", name);
-        divID.innerHTML = "<img src='"+img+"' width='100%' height='100%'>";
-        divID.setAttribute("style",
-            "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
-                defColor + "; border-radius: 5px;");
-
-        divID.setAttribute("onmouseover",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseout",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseleave",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        
-        if (name == "Extrusion" || name == "Solid of Revolution")
-        {
-            divID.onclick = function() {
-                var mustClosed = (name == "Extrusion") ? true : false;
-                that.editor2D_show(mustClosed);
-                primitivType = name;
-            };
-     	}
-        else
-        {
-            divID.onclick = function() {
-                primitiveManager.addPrimitive(that.primitiveParameterMap[name].x3domName,
-                                              that.primitiveParameterMap[name].parameters);};
-        }
-
-        var divIDinnen = document.createElement("div");
-        divIDinnen.setAttribute("id", name+"_inner");
-        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
-            (name.length > 20 ? "-50" : "-40") + "px; text-align: center;");    // hack
-        divIDinnen.innerHTML = name;			
-
-        divID.appendChild(divIDinnen);
-        document.getElementById("divs").appendChild(divID);
-    }
-
-
-    
-    /*
-     * Clears all the properties on the right bar
-     * @returns (undefined)
-     */
-    this.clearParameters = function(){
-        var properties = document.getElementById("properties");
-        for (var i = (properties.children.length - 1); i >= 0 ; i--){
-            properties.removeChild(properties.children[i]);
-        }
-    };
-    
-    
-    
-    /*
-     * Creates all given parameters and adds it to the right bar
-     * @param {x3dom geometry} geometry where the parameters should be set
-     * @returns (undefined)
-     */
-    this.createParameters = function(parameters){
-        for (var i = 0; i < parameters.length; i++){
-            addRightbarElement({param: parameters[i], id: "property_" + i, primitive: parameters.Primitive});
-        }
-    };
-    
-
-
-
-    /*
-     * Adds one parameter value to the right bar
-     * @param {object} object includes editorName and x3domName of parameter and
-     * the value that should be set 
-     * @returns (Null)
-     */
-    function addRightbarElement(object)
-    {
-        if (object.param.render !== null && object.param.render === "false")
-            return;
-
-        var divID = document.createElement("div");	
-        divID.setAttribute("style", "float: left; margin-bottom: 10px; border-bottom: 1px solid gray; padding-bottom: 10px;");
-        if (object.param.type==="bool")
-            boolProperty();
-        else if(object.param.type==="vec2")
-            vecProperty(2);
-        else if(object.param.type==="vec3")
-            vecProperty(3);
-        else 
-            normalProperty();
-        
-        
-        
-        /*
-         * Clamps value on min and max if required
-         * @param {string} min minimal range of value
-         * @param {string} max maximum range of value
-         * @param {string} value param that shoudl be clamped 
-         * @returns (clamped value)
-         */
-        function clamp(min, max, value){
-            min = parseFloat(min);
-            max = parseFloat(max);
-            if (min !== null && value < min)
-                return min;
-            else if (max !== null && value > max)
-                return max;
-            
-            return value;
-        }
-        
-        
-
-        function normalProperty(){
-            var newLabel = document.createElement("label");
-            newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
-            newLabel.innerHTML = object.param.editorName;
-
-            var newInput = document.createElement("input");
-            newInput.setAttribute("style", "float: left; width: 100%;");
-            newInput.id = object.id;
-            newInput.value= object.param.value;
-            
-            divID.appendChild(newLabel);
-            divID.appendChild(newInput);
-            document.getElementById("properties").appendChild(divID);
-            
-            $("#"+object.id).spinner({
-                step: object.param.step,
-                min: object.param.min,
-                max: object.param.max,
-                stop:function(e,ui) {
-                    if (object.param.type === "angle"){
-                        object.primitive.setAttribute(object.param.x3domName,
-                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id).value) * Math.PI / 180); 
-                    }
-                    else {
-                        object.primitive.setAttribute(object.param.x3domName,
-                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id).value));
-                    }
-                    
-                    object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
-                    document.getElementById(object.id).value = object.param.value;
-                    var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                    primitiveManager.highlightCurrentPrimitive(true);
-                }
+            that.primitiveParameterMap[primitivType].parameters.push({
+                render: "false",
+                editorName: "Cross Section",
+                x3domName: "crossSection",
+                value: points.toString()
             });
-        }
-        
-        
-        function boolProperty(){
-            var newLabel = document.createElement("label");
-            newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
-            newLabel.innerHTML = object.param.editorName;
 
-            var newInput = document.createElement("input");
-            newInput.setAttribute("style", "float: left; width: 100%;");
-            newInput.id = object.id;
-            newInput.value= object.param.value;
-            
-            divID.appendChild(newLabel);
-            divID.appendChild(newInput);
-            document.getElementById("properties").appendChild(divID);
-            
-            $("#"+object.id).switchButton({
-                checked: object.param.value,
-                width: 58,
-                height: 15,
-                button_width: 29,
-                on_label: 'true',
-                off_label: 'false'
-		})
-		.change(function(){
-                    object.primitive.setAttribute(object.param.x3domName,
-                                                  document.getElementById(object.id).checked);
-                    object.param.value = document.getElementById(object.id).checked;
-		});
+            primitiveManager.addPrimitive(that.primitiveParameterMap[primitivType].x3domName,
+                that.primitiveParameterMap[primitivType].parameters);
         }
-        
-        
-        
-        function vecProperty(vecSize){
-            var labels = ["X:", "Y:", "Z:"];
-            
-            var newLabel = document.createElement("label");
-            newLabel.setAttribute("style", "float: left; margin-bottom: 5px; width: 100%;");
-            newLabel.innerHTML = object.param.editorName;
-            divID.appendChild(newLabel);
-            
-            for (var i = 0; i < vecSize; i++){
-                var outerDiv = document.createElement("div");
-                outerDiv.setAttribute("style", "float: left; margin-bottom: 5px;");
-                
-                var descLabel = document.createElement("label");
-                descLabel.setAttribute("style", "float: left; width: 25px;");
-                descLabel.innerHTML = labels[i];
-                divID.appendChild(descLabel);
-            
-                var newInput = document.createElement("input");
-                newInput.setAttribute("style", "float: left; width: 80px;");
-                newInput.id = object.id + "_" + i;
-                newInput.value= object.param.value.split(",")[i];
-                outerDiv.appendChild(descLabel);
-                outerDiv.appendChild(newInput);
-                divID.appendChild(outerDiv);
+    };
+
+
+        /*
+         * Reset all 2D-Editor icon states
+         */
+        this.editor2D_resetIcons = function () {
+            $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen-Active').addClass('Editor2D-Icon-Pen');
+            $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer-Active').addClass('Editor2D-Icon-Pointer');
+            $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser-Active').addClass('Editor2D-Icon-Eraser');
+            $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move-Active').addClass('Editor2D-Icon-Move');
+            $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom-Active').addClass('Editor2D-Icon-Zoom');
+        };
+
+        /*
+         * Adds one primitive element to the left bar
+         * @returns (undefined)
+         */
+        this.addLeftbarElement = function(img, name) {
+            var divID = document.createElement("div");
+            divID.setAttribute("id", name);
+            divID.innerHTML = "<img src='" + img + "' width='100%' height='100%'>";
+            divID.setAttribute("style",
+                "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
+                    defColor + "; border-radius: 5px;");
+
+            divID.setAttribute("onmouseover",
+                "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
+                    "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+            divID.setAttribute("onmouseout",
+                "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                    "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+            divID.setAttribute("onmouseleave",
+                "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                    "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+
+            if (name == "Extrusion" || name == "Solid of Revolution") {
+                divID.onclick = function () {
+                    var mustClosed = (name == "Extrusion") ? true : false;
+                    that.editor2D_show(mustClosed);
+                    primitivType = name;
+                };
+            }
+            else {
+                divID.onclick = function () {
+                    primitiveManager.addPrimitive(that.primitiveParameterMap[name].x3domName,
+                        that.primitiveParameterMap[name].parameters);
+                };
             }
 
-            document.getElementById("properties").appendChild(divID);
-            
-            for (var i = 0; i < vecSize; i++){
-                $("#"+object.id + "_" + i).spinner({
+            var divIDinnen = document.createElement("div");
+            divIDinnen.setAttribute("id", name + "_inner");
+            divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
+                (name.length > 20 ? "-50" : "-40") + "px; text-align: center;");    // hack
+            divIDinnen.innerHTML = name;
+
+            divID.appendChild(divIDinnen);
+            document.getElementById("divs").appendChild(divID);
+        }
+
+
+        /*
+         * Clears all the properties on the right bar
+         * @returns (undefined)
+         */
+        this.clearParameters = function () {
+            var properties = document.getElementById("properties");
+            for (var i = (properties.children.length - 1); i >= 0; i--) {
+                properties.removeChild(properties.children[i]);
+            }
+        };
+
+
+        /*
+         * Creates all given parameters and adds it to the right bar
+         * @param {x3dom geometry} geometry where the parameters should be set
+         * @returns (undefined)
+         */
+        this.createParameters = function (parameters) {
+            for (var i = 0; i < parameters.length; i++) {
+                this.addRightbarElement({param: parameters[i], id: "property_" + i, primitive: parameters.Primitive});
+            }
+        };
+
+
+        /*
+         * Adds one parameter value to the right bar
+         * @param {object} object includes editorName and x3domName of parameter and
+         * the value that should be set
+         * @returns (Null)
+         */
+        this.addRightbarElement = function(object) {
+            if (object.param.render !== null && object.param.render === "false")
+                return;
+
+            var divID = document.createElement("div");
+            divID.setAttribute("style", "float: left; margin-bottom: 10px; border-bottom: 1px solid gray; padding-bottom: 10px;");
+            if (object.param.type === "bool")
+                boolProperty();
+            else if (object.param.type === "vec2")
+                vecProperty(2);
+            else if (object.param.type === "vec3")
+                vecProperty(3);
+            else
+                normalProperty();
+
+
+            /*
+             * Clamps value on min and max if required
+             * @param {string} min minimal range of value
+             * @param {string} max maximum range of value
+             * @param {string} value param that shoudl be clamped
+             * @returns (clamped value)
+             */
+            function clamp(min, max, value) {
+                min = parseFloat(min);
+                max = parseFloat(max);
+                if (min !== null && value < min)
+                    return min;
+                else if (max !== null && value > max)
+                    return max;
+
+                return value;
+            }
+
+
+            function normalProperty() {
+                var newLabel = document.createElement("label");
+                newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
+                newLabel.innerHTML = object.param.editorName;
+
+                var newInput = document.createElement("input");
+                newInput.setAttribute("style", "float: left; width: 100%;");
+                newInput.id = object.id;
+                newInput.value = object.param.value;
+
+                divID.appendChild(newLabel);
+                divID.appendChild(newInput);
+                document.getElementById("properties").appendChild(divID);
+
+                $("#" + object.id).spinner({
                     step: object.param.step,
                     min: object.param.min,
                     max: object.param.max,
-                    stop:function(e,ui) {
-                        object.primitive.setAttribute(object.param.x3domName,
-                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
-                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
-                                                      clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value));
-                        object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
-                                             clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
-                                             clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
-                        
-                        document.getElementById(object.id + "_0").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value);
-                        document.getElementById(object.id + "_1").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value);
-                        document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
-                        
+                    stop: function (e, ui) {
+                        if (object.param.type === "angle") {
+                            object.primitive.setAttribute(object.param.x3domName,
+                                clamp(object.param.min, object.param.max, document.getElementById(object.id).value) * Math.PI / 180);
+                        }
+                        else {
+                            object.primitive.setAttribute(object.param.x3domName,
+                                clamp(object.param.min, object.param.max, document.getElementById(object.id).value));
+                        }
+
+                        object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
+                        document.getElementById(object.id).value = object.param.value;
                         var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
                         primitiveManager.highlightCurrentPrimitive(true);
                     }
                 });
             }
+
+
+            function boolProperty() {
+                var newLabel = document.createElement("label");
+                newLabel.setAttribute("style", "float: left; width: 100%; margin-bottom: 5px;");
+                newLabel.innerHTML = object.param.editorName;
+
+                var newInput = document.createElement("input");
+                newInput.setAttribute("style", "float: left; width: 100%;");
+                newInput.id = object.id;
+                newInput.value = object.param.value;
+
+                divID.appendChild(newLabel);
+                divID.appendChild(newInput);
+                document.getElementById("properties").appendChild(divID);
+
+                $("#" + object.id).switchButton({
+                    checked: object.param.value,
+                    width: 58,
+                    height: 15,
+                    button_width: 29,
+                    on_label: 'true',
+                    off_label: 'false'
+                })
+                    .change(function () {
+                        object.primitive.setAttribute(object.param.x3domName,
+                            document.getElementById(object.id).checked);
+                        object.param.value = document.getElementById(object.id).checked;
+                    });
+            }
+
+
+            function vecProperty(vecSize) {
+                var labels = ["X:", "Y:", "Z:"];
+
+                var newLabel = document.createElement("label");
+                newLabel.setAttribute("style", "float: left; margin-bottom: 5px; width: 100%;");
+                newLabel.innerHTML = object.param.editorName;
+                divID.appendChild(newLabel);
+
+                for (var i = 0; i < vecSize; i++) {
+                    var outerDiv = document.createElement("div");
+                    outerDiv.setAttribute("style", "float: left; margin-bottom: 5px;");
+
+                    var descLabel = document.createElement("label");
+                    descLabel.setAttribute("style", "float: left; width: 25px;");
+                    descLabel.innerHTML = labels[i];
+                    divID.appendChild(descLabel);
+
+                    var newInput = document.createElement("input");
+                    newInput.setAttribute("style", "float: left; width: 80px;");
+                    newInput.id = object.id + "_" + i;
+                    newInput.value = object.param.value.split(",")[i];
+                    outerDiv.appendChild(descLabel);
+                    outerDiv.appendChild(newInput);
+                    divID.appendChild(outerDiv);
+                }
+
+                document.getElementById("properties").appendChild(divID);
+
+                for (var i = 0; i < vecSize; i++) {
+                    $("#" + object.id + "_" + i).spinner({
+                        step: object.param.step,
+                        min: object.param.min,
+                        max: object.param.max,
+                        stop: function (e, ui) {
+                            object.primitive.setAttribute(object.param.x3domName,
+                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
+                                    clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
+                                    clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value));
+                            object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
+                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
+                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+
+                            document.getElementById(object.id + "_0").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value);
+                            document.getElementById(object.id + "_1").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value);
+                            document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+
+                            var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+                            primitiveManager.highlightCurrentPrimitive(true);
+                        }
+                    });
+                }
+            }
         }
-        
-    }
-    
-    
-    
-    /*
-     * Sets all parameters of a material to the material editor on the right bar
-     * @param {material} material includes diffuse, specular, emissive color, 
-     * shininess and transparency
-     * @returns (Null)
-     */
-    this.setMaterial = function(material){
-        if ($("#accordeon-oben").accordion("option", "active") === 1){
-            var colorfield = document.getElementById("diffuse");
-            var color = material.getAttribute("diffuseColor");
-            colorfield.focus();
-            farbtasticPicker.setColor(color);
-
-            colorfield = document.getElementById("specular");
-            color = material.getAttribute("specularColor");
-            colorfield.focus();
-            farbtasticPicker.setColor(color);
-
-            colorfield = document.getElementById("emissive");
-            color = material.getAttribute("emissiveColor");
-            colorfield.focus();
-            farbtasticPicker.setColor(color);
-
-            document.getElementById("transparency").value = material.getAttribute("transparency");
-            document.getElementById("shininess").value = material.getAttribute("shininess");
-
-            document.getElementById("diffuse").focus();
-        }
-    };
-    
-    
-    
-    this.treeViewer = {};
-    
-    
-    
-    this.treeViewer.addPrimitive = function(id, text){
-        // This is how we would add tree nodes programatically
-        var rootNode = $("#tree").dynatree("getRoot");
-
-        rootNode.addChild({
-            title: text,
-            key: id,
-            //icon: "primitives.jpg",
-            select: true,
-            activate: true
-        });
-    };
 
 
-    this.treeViewer.addGroup = function(id, text){
-        // This is how we would add tree nodes programatically
-        var rootNode = $("#tree").dynatree("getRoot");
-        var childNode = rootNode.addChild({
-            title: text,
-            key: id,
-            tooltip: "This folder and all child nodes were added programmatically.",
-            isFolder: true,
-            select: true,
-            selectMode: 3,
-            expand: true
-        });
-        rootNode.addChild(childNode);
-    };
+        /*
+         * Sets all parameters of a material to the material editor on the right bar
+         * @param {material} material includes diffuse, specular, emissive color,
+         * shininess and transparency
+         * @returns (Null)
+         */
+        this.setMaterial = function (material) {
+            if ($("#accordeon-oben").accordion("option", "active") === 1) {
+                var colorfield = document.getElementById("diffuse");
+                var color = material.getAttribute("diffuseColor");
+                colorfield.focus();
+                farbtasticPicker.setColor(color);
+
+                colorfield = document.getElementById("specular");
+                color = material.getAttribute("specularColor");
+                colorfield.focus();
+                farbtasticPicker.setColor(color);
+
+                colorfield = document.getElementById("emissive");
+                color = material.getAttribute("emissiveColor");
+                colorfield.focus();
+                farbtasticPicker.setColor(color);
+
+                document.getElementById("transparency").value = material.getAttribute("transparency");
+                document.getElementById("shininess").value = material.getAttribute("shininess");
+
+                document.getElementById("diffuse").focus();
+            }
+        };
 
 
-    this.treeViewer.moveExistableNodeToGroup = function(node, group){
-        node = that.treeViewer.getNode(node);
-        group = that.treeViewer.getNode(group);
-        var title = node.data.title;
-        var id = node.data.key;
-        var select = node.data.select;
-        var icon = node.data.icon;
-        that.treeViewer.removeNode(id);
-        group.addChild({
-            title: title,
-            key: id,
-            icon: icon,
-            select: select,
-            activate: true
-        });
-    };
+        this.treeViewer = {};
 
 
-    this.treeViewer.getNode = function(id){
-        return $("#tree").dynatree("getTree").getNodeByKey(id);
-    };
+        this.treeViewer.addPrimitive = function (id, text) {
+            // This is how we would add tree nodes programatically
+            var rootNode = $("#tree").dynatree("getRoot");
+
+            rootNode.addChild({
+                title: text,
+                key: id,
+                //icon: "primitives.jpg",
+                select: true,
+                activate: true
+            });
+        };
 
 
-    this.treeViewer.removeNode = function(id){
-        that.treeViewer.getNode(id).remove();
-    };
+        this.treeViewer.addGroup = function (id, text) {
+            // This is how we would add tree nodes programatically
+            var rootNode = $("#tree").dynatree("getRoot");
+            var childNode = rootNode.addChild({
+                title: text,
+                key: id,
+                tooltip: "This folder and all child nodes were added programmatically.",
+                isFolder: true,
+                select: true,
+                selectMode: 3,
+                expand: true
+            });
+            rootNode.addChild(childNode);
+        };
 
 
-    this.treeViewer.rename = function(id, name){
-        var node = that.treeViewer.getNode(id);
-        node.data.title = name;
-        node.render();
-    };
-    
-    
-    this.treeViewer.activate = function(id){
-        // Get the DynaTree object instance:
-        var tree = $("#tree").dynatree("getTree");
-        // Use it's class methods:
-        tree.activateKey(id);
-    };
-   
+        this.treeViewer.moveExistableNodeToGroup = function (node, group) {
+            node = that.treeViewer.getNode(node);
+            group = that.treeViewer.getNode(group);
+            var title = node.data.title;
+            var id = node.data.key;
+            var select = node.data.select;
+            var icon = node.data.icon;
+            that.treeViewer.removeNode(id);
+            group.addChild({
+                title: title,
+                key: id,
+                icon: icon,
+                select: select,
+                activate: true
+            });
+        };
 
-    
-    // Starts initialization of all ui components
-    var that = this;
+
+        this.treeViewer.getNode = function (id) {
+            return $("#tree").dynatree("getTree").getNodeByKey(id);
+        };
+
+
+        this.treeViewer.removeNode = function (id) {
+            that.treeViewer.getNode(id).remove();
+        };
+
+
+        this.treeViewer.rename = function (id, name) {
+            var node = that.treeViewer.getNode(id);
+            node.data.title = name;
+            node.render();
+        };
+
+
+        this.treeViewer.activate = function (id) {
+            // Get the DynaTree object instance:
+            var tree = $("#tree").dynatree("getTree");
+            // Use it's class methods:
+            tree.activateKey(id);
+        };
+
+
+        // Starts initialization of all ui components
+        var that = this;
+
 }
