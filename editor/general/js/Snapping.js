@@ -17,7 +17,8 @@ function Snapping()
 	var pfad;				/* Json File from primitive */
 	var point1;				/* Element1 */
 	var point2;				/* Element2 */
-	var actualObject;		/* ID actual element */
+	var actualObject;		/* Object actual element */
+	var actualObjectID;		/* ID actual object */
 	var objListID = [];		/* IDs all elements in view */
 
 
@@ -105,8 +106,8 @@ function Snapping()
 	};
 	
 	
-	/* Draws the direction axis */
-    function positionAxis(id, pfad, position)
+	/* Draws point */
+    function point(id, pfad, translation)
     {    	
     	var transform = document.createElement('Transform');
     	var transform_S = document.createElement('Shape');
@@ -116,8 +117,8 @@ function Snapping()
     	
     	transform_S_A_M_S.setAttribute('radius', '0.025');
     	transform_S_A_M.setAttribute('diffuseColor', '#3FFFFF');
-    	transform.setAttribute('translation', position);
-    	transform.setAttribute('id', 'boundingPoint');
+    	transform.setAttribute('translation', translation);
+    	transform.setAttribute('id', 'snapPoint');
     	
     	transform_S_A.appendChild( transform_S_A_M );
     	transform_S.appendChild( transform_S_A_M_S );
@@ -129,8 +130,8 @@ function Snapping()
     };
     
     
-    /* Draws the normal */
-    function directionNormale(id, pfad, position)
+    /* Draws the normaleaxis and directionaxis */
+    function axis(id, pfad, translationCyl, translationCone, rotation, heightA)
     {		
 		/* Cylinder */	
     	var transform = document.createElement('Transform');
@@ -140,12 +141,12 @@ function Snapping()
     	var transform_S_A_M_S = document.createElement('Cylinder');
     	
     	transform_S_A_M_S.setAttribute('radius', '0.005');
-    	transform_S_A_M_S.setAttribute('height', '1.0');
+    	transform_S_A_M_S.setAttribute('height', heightA);
     	    	    	
     	transform_S_A_M.setAttribute('diffuseColor', '#3FFFFF');
-    	transform.setAttribute('rotation', '0 0 1 -1.57079');
-    	transform.setAttribute('translation', position);
-    	transform.setAttribute('id', 'normale');
+    	transform.setAttribute('rotation', rotation);
+    	transform.setAttribute('translation', translationCyl);
+    	transform.setAttribute('id', 'axisNormale');
 
     	transform_S_A.appendChild( transform_S_A_M );
     	transform_S.appendChild( transform_S_A_M_S );    	
@@ -164,9 +165,9 @@ function Snapping()
     	transform_S_A_M_S2.setAttribute('bottomRadius', '0.05');
     	    	    	
     	transform_S_A_M2.setAttribute('diffuseColor', '#3FFFFF');
-    	transform2.setAttribute('rotation', '0 0 1 -1.57079');
-    	transform2.setAttribute('translation', '1.5 0 0');
-    	transform2.setAttribute('id', 'normale');
+    	transform2.setAttribute('rotation', rotation);
+    	transform2.setAttribute('translation', translationCone);
+    	transform2.setAttribute('id', 'axisNormale');
 
     	transform_S_A2.appendChild( transform_S_A_M2 );
     	transform_S2.appendChild( transform_S_A_M_S2 );    	
@@ -191,17 +192,12 @@ function Snapping()
 		// the array can be accessed as follows points[0]
 		var points = jsonObj.snapPoints;		
 		
-		for(var i = 0; i < points.length-1; i++)
-		{
-			// Create direction axis
-			positionAxis(id, pfad, points[i].toString());
-		}
+		// Create point
+		point(id, pfad, points[0].toString());
 		
-		for(var i = points.length-1; i < points.length; i++)
-		{
-			// Create normale
-			directionNormale(id, pfad, points[i].toString());
-		}
+		// create axis
+		axis(id, pfad, points[1].toString(), points[2].toString(), points[3].toString(), 1);
+		axis(id, pfad, points[4].toString(), points[5].toString(), points[6].toString(), 1);
     };
 
 	
