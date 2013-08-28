@@ -54,7 +54,7 @@ function PrimitiveManager(){
      */
     this.getSelectedPrimitiveIDs = function(){
         return selectedPrimitiveIDs;
-    }
+    };
 
 
 
@@ -246,6 +246,16 @@ function PrimitiveManager(){
     }
     
     
+	/* 
+     * Removes snapNode
+     * @returns {undefined}
+     */  
+    this.removeSnapNode = function()
+    {
+    	var snapPoint = document.getElementById('snapPoint');
+    	snapPoint.parentNode.removeChild(snapPoint);
+    };
+	
     
     /* 
      * Removes a primitive from the DOM and from primitive array
