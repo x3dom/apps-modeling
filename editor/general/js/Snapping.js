@@ -1,17 +1,3 @@
-/*
- * 
- */
-
-/* set und get der Position der Elemente
-ui.BBTransX.set(pos.x.toFixed(3));
-ui.BBTransY.set(pos.y.toFixed(3));
-ui.BBTransZ.set(pos.z.toFixed(3));
-
-ui.BBTransX.get();
-ui.BBTransY.get();
-ui.BBTransZ.get();   
-*/
-	
 function Snapping()
 {	
 	var pfad;				/* Json File from primitive */
@@ -22,34 +8,15 @@ function Snapping()
 	var objListID = [];		/* IDs all elements in view */
 	
 	
-	/*
-	 * 
-	 */
 	this.init = function()
 	{		
 		var pfad = './x3d/JsonFiles/Box.json';
 		var objListID = primitiveManager.getIDList();
 		
-			
-		/* remove axis */		
-		if(document.getElementById('snapPoint'))
+		/* add points */
+		for(var i = 0; i < objListID.length; i++)
 		{
-			alert("hier");
-			primitiveManager.removeSnapNode();
-		}		
-		
-		else
-		{			
-			/* add points */
-			for(var i = 0; i < objListID.length; i++)
-			{
-				loadJSON(objListID[i], pfad);
-			}
-			
-			point1 = primitiveManager.getPosition(objListID[0]);
-			point2 = primitiveManager.getPosition(objListID[1]);
-			
-			snapping.snap();
+			loadJSON(objListID[i], pfad);
 		}
 	};
 	
@@ -57,13 +24,17 @@ function Snapping()
 	/*
 	 * 
 	 */
-	this.snap = function()
+	this.snap = function(objListID)
 	{
+		point1 = primitiveManager.getPosition(objListID[0]);
+		point2 = primitiveManager.getPosition(objListID[1]);
+			
 		distance = pointsDistance(point1, point2);
+		
 		actualObject = primitiveManager.getCurrentPrimitive();
 		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
-		
-		console.log("Abstand davor: " + distance);
+			
+		console.log("Abstand: " + distance);
 
 		/*
 		 * Check which item is selected and compared to the other element

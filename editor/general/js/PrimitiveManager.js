@@ -538,7 +538,10 @@ function PrimitiveManager(){
                 ui.BBTransY.set(vec.y.toFixed(5));
                 ui.BBTransZ.set(vec.z.toFixed(5));
             }
-
+			
+			/* voruebergehend uebergeben der vorhandene Listenelemente */
+			snapping.snap(primitiveManager.getIDList());
+			
             ui.BBPrimName.set(primitiveList[id].IDMap.name);
         }
         catch(ex){
