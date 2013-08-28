@@ -127,6 +127,7 @@ function PrimitiveManager(){
 
         that.selectCurrentPrimitive(id);
         ui.treeViewer.addPrimitive(id, id);
+        ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
     };
     
     
@@ -145,6 +146,18 @@ function PrimitiveManager(){
         ui.createParameters(primitiveList[id].Parameters);
         ui.setMaterial(primitiveList[id].Material);
         that.setTransformationValues();
+    };
+    
+    
+    
+    /*
+     * Sets the visibility of a primitive
+     * @param {string} id name of the primitive
+     * @param {bool} bool visibility that should be set (true: visible)
+     * @returns {null}
+     */
+    this.setPrimitiveVisibility = function(id, bool){
+        primitiveList[id].setAttribute("render", bool);
     };
 
 

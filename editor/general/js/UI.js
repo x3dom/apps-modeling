@@ -103,12 +103,36 @@ function UI(primitiveManager){
                 node.scheduleAction("cancel");
                 
             },
+            onSelect: function(select, node) { 
+                function recursiveSelection(tempNode){
+                    if (tempNode.data.isFolder){
+                        for (var i = 0; i < tempNode.childList.length; i++){
+                            recursiveSelection(tempNode.childList[i]);
+                        }
+                    }
+                    else {
+                        primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
+                        if (tempNode.isActive()){
+                            if (tempNode.isSelected())
+                                primitiveManager.highlight(tempNode.data.key, true);
+                            else 
+                                primitiveManager.highlight(tempNode.data.key, false);
+                        }
+                    }
+                }
+                
+                recursiveSelection(node);
+                if (!node.data.isFolder)
+                    primitiveManager.setPrimitiveVisibility(node.data.key, select);
+            },
             onBlur: function(node) {
                 node.scheduleAction("cancel");
             },
             onActivate: function(node){
-                that.treeViewer.activate(node.data.key);
-                primitiveManager.selectPrimitive(node.data.key);
+                if (node.isSelected()) {
+                    that.treeViewer.activate(node.data.key);
+                    primitiveManager.selectPrimitive(node.data.key);
+                }   
             }
         });
         
@@ -920,13 +944,13 @@ function UI(primitiveManager){
 
 
     this.treeViewer.moveExistableNodeToGroup = function(node, group){
-        node = getNode(node);
-        group = getNode(group);
+        node = that.treeViewer.getNode(node);
+        group = that.treeViewer.getNode(group);
         var title = node.data.title;
         var id = node.data.key;
         var select = node.data.select;
         var icon = node.data.icon;
-        removeNode(id);
+        that.treeViewer.removeNode(id);
         group.addChild({
             title: title,
             key: id,
