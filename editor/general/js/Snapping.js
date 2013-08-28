@@ -29,16 +29,18 @@ function Snapping()
 	{
 		var pfad = './x3d/JsonFiles/Box.json';
 		objListID = primitiveManager.getIDList();
-		currentID = primitiveManager.getCurrentPrimitive();
-		point1 = primitiveManager.getPosition(objListID[0]);
-		point2 = primitiveManager.getPosition(objListID[1]);
-		
+        currentID = primitiveManager.getCurrentPrimitive();
 		
 		/* add points */
 		for(var i = 0; i < objListID.length; i++)
 		{
 			loadJSON(objListID[i], pfad);
 		}
+		
+		point1 = primitiveManager.getPosition(objListID[0]);
+		point2 = primitiveManager.getPosition(objListID[1]);
+		
+		snapping.snap();
 	};
 	
 	
@@ -49,10 +51,22 @@ function Snapping()
 	{
 		/* calculated distance */
 		distance = pointsDistance(point1, point2);
-		
-		if(distance < 1.2)
+	
+		if(actualID == point1)
+		{	
+			if(distance < 2)
+			{
+				console.log("Snap Element");
+				actualID.setAttribute('translation', '' + point2.x + point2.y + point2.z + '');
+			}
+		}
+		else
 		{
-			console.log("Snap Element");	
+			if(distance < 2)
+			{
+				console.log("Snap Element");
+				actualID.setAttribute('translation', '' + point1.x + point1.y + point1.z + '');
+			}
 		}
 	};
 	
