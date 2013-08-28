@@ -175,15 +175,17 @@ function PrimitiveManager(){
      */
     function notified(elem, pos) {
         var id = elem.getAttribute('id');
-        that.highlight(id, true);
-        
+
+        //@todo: is this to expensive? it re-initializes the GUI every time
+        that.selectCurrentPrimitive(id);
+
         // update GUI elements appropriately
         if (HANDLING_MODE === "translation" && id === currentPrimitiveID) {
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
         }
-    }
+    };
     
     
     
@@ -334,11 +336,11 @@ function PrimitiveManager(){
                 setTransformValues(id, HANDLING_MODE);
             }
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
-            else if (keyPressed[16])
+            else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
             {
                 idx = selectedPrimitiveIDs.indexOf(id);
 
-                //add
+                //add to selection
                 if (idx === -1)
                 {
                     selectedPrimitiveIDs.push(id);
@@ -346,7 +348,7 @@ function PrimitiveManager(){
                     primitiveList[id].highlight(false, "1 1   0");
                     primitiveList[id].highlight(true,  "1 0.5 0");
                 }
-                //remove
+                //remove from selection
                 else
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
