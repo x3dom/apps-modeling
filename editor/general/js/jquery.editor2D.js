@@ -43,6 +43,8 @@
 			this.actPoint = null;
 			this.actOver = null;
 			this.closed = false;
+            this.mustClosed = true;
+            this.ready = false;
 			this.snapToGrid = true;
 			this.points = [];
 			
@@ -110,6 +112,7 @@
 						{
 							that.addPoint();
 						}
+                        that.checkIfReady();
 					}
 				break;
 				case 2: //MIDDLE
@@ -148,6 +151,12 @@
 					{
 						that.canvas.style.cursor = that.cursors.grab;
 					}
+                    else if (that.mode == that.modes.ERASE)
+                    {
+                        that.selectPoint();
+                        that.removePoint();
+                        that.checkIfReady();
+                    }
 				break;
 				case 2: 
 					that.mouseButton = 'MIDDLE';
@@ -176,8 +185,11 @@
 			
 			if (that.snapToGrid == true)
 			{
-				that.mousePosX = (Math.abs(that.mousePosX) < 0.15) ? 0 : that.mousePosX;
-				that.mousePosY = (Math.abs(that.mousePosY) < 0.15) ? 0 : that.mousePosY;  
+                var mouseRndX = Math.round( that.mousePosX );
+                var mouseRndY = Math.round( that.mousePosY );
+
+                that.mousePosX = (Math.abs(mouseRndX - that.mousePosX) <= 0.15) ? mouseRndX : that.mousePosX;
+                that.mousePosY = (Math.abs(mouseRndY - that.mousePosY) <= 0.15) ? mouseRndY : that.mousePosY;
 			}
 			
 			//Handle different mouse buttons
@@ -200,7 +212,6 @@
 					}
 					else if (that.mode == that.modes.ZOOM)
 					{
-						console.log((that.clickPosY - that.mousePosY) / 10);
 						that.zoom((that.clickPosY - that.mousePosY) / 10);
 					}
 					break;
@@ -224,8 +235,12 @@
 					}
 					else if (that.mode == that.modes.EDIT) 
 					{
-						that.checkOverOut();
+						that.checkOverOut(true);
 					}
+                    else if (that.mode == that.modes.ERASE)
+                    {
+                        that.checkOverOut(false);
+                    }
 					break;				
 			}
 			
@@ -386,7 +401,7 @@
 		this.endCreation = function()
 		{
 			//Loop over all points
-			if (this.mode == this.modes.CREATE && this.points.length > 3)
+			if (!this.mustClosed && this.mode == this.modes.CREATE && this.points.length > 3)
 			{
 				//Switch to edit-mode
 				this.mode = this.modes.EDIT;
@@ -401,13 +416,29 @@
 		 */
 		this.checkForClosing = function()
 		{
-			//Loop over all points
 			if (this.mode == this.modes.CREATE && this.points.length > 3)
 			{
 				var distance = Math.pow(this.points[0].x - this.mousePosX, 2) + Math.pow(this.points[0].y - this.mousePosY, 2);
 				return (distance <= 0.25);
 			}
 		};
+
+        /*
+         * Check if the shape is ready to create
+         */
+        this.checkIfReady = function()
+        {
+            if ((this.mustClosed && this.closed) || (!this.mustClosed && this.points.length > 3) )
+            {
+                this.ready = true;
+                this.canvas.dispatchEvent(new CustomEvent('readychanged', {bubbles: false, cancelable: true, detail: {ready: this.ready}}));
+            }
+            else
+            {
+                this.ready = false;
+                this.canvas.dispatchEvent(new CustomEvent('readychanged', {bubbles: false, cancelable: true, detail: {ready: this.ready}}));
+            }
+        };
 		
 		/*
 		 * @return {boolean} 
@@ -427,7 +458,7 @@
 		/*
 		 * @return {boolean} 
 		 */
-		this.checkOverOut = function()
+		this.checkOverOut = function(withControlPoints)
 		{
 			for (var p=0; p<this.points.length; p++)
 			{
@@ -443,22 +474,25 @@
 					this.points[p].over = false;
 					this.actOver = null;
 				}
-				
-				for (var c=0; c<this.points[p].control.length; c++)
-				{
-					var distance = Math.pow(this.points[p].control[c].x - this.mousePosX, 2) + Math.pow(this.points[p].control[c].y - this.mousePosY, 2);
-					if (distance <= 0.02)
-					{
-						this.points[p].control[c].over = true;
-						this.actOver = this.points[p].control[c];
-						return;
-					}
-					else
-					{
-						this.points[p].control[c].over = false;
-						this.actOver = null;
-					}
-				}
+
+                if (withControlPoints)
+                {
+                    for (var c=0; c<this.points[p].control.length; c++)
+                    {
+                        var distance = Math.pow(this.points[p].control[c].x - this.mousePosX, 2) + Math.pow(this.points[p].control[c].y - this.mousePosY, 2);
+                        if (distance <= 0.02)
+                        {
+                            this.points[p].control[c].over = true;
+                            this.actOver = this.points[p].control[c];
+                            return;
+                        }
+                        else
+                        {
+                            this.points[p].control[c].over = false;
+                            this.actOver = null;
+                        }
+                    }
+                }
 			}
 		};
 		
@@ -614,6 +648,30 @@
 				this.actPoint = point;
 			}
 		};
+
+        /*
+         * Remove actual point
+         */
+        this.removePoint = function()
+        {
+            if(this.actPoint != null)
+            {
+                for (var p=0; p<this.points.length; p++)
+                {
+                    if (this.points[p] == this.actPoint)
+                    {
+                        this.points.splice(p, 1);
+                        this.actPoint = null;
+
+                        if (this.points.length < 3)
+                        {
+                            this.closed = false;
+                        }
+                    }
+                }
+                //this.unselectPoints();
+            }
+        }
 		
 		/*
 		 * Clear the canvas and draw the grid, points and lines
@@ -944,7 +1002,7 @@
 			
 			if (this.calcArea(points) > 0)
 			{
-				points.reverse();	
+				points.reverse();
 			}
 			
             return this.convertPoints(points);
@@ -976,9 +1034,13 @@
 				p2 = points[p+1];
 				sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
 			}
-			p1 = p2;
-			p2 = points[0];
-			sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+
+            if (!this.closed)
+            {
+                p1 = p2;
+                p2 = points[0];
+                sum = sum + ((p1.x * p2.y) - (p1.y * p2.x));
+            }
 			
 			return sum;
 		}
@@ -1009,6 +1071,7 @@
 			this.gridSize = 30;
 			this.closed = false;
 			this.changeMode(this.modes.CREATE);
+            this.checkIfReady();
 			this.draw();
 		},
 		
@@ -1023,6 +1086,26 @@
         getPoints: function()
         {
             return this.points;
+        },
+
+        getSnapToGrid: function()
+        {
+            return this.snapToGrid;
+        },
+
+        setSnapToGrid: function(value)
+        {
+            this.snapToGrid = value;
+        },
+
+        setMustClosed: function(value)
+        {
+            this.mustClosed = value;
+        },
+
+        isReady: function()
+        {
+            return this.ready;
         }
 	};
 
@@ -1073,7 +1156,7 @@
 		selectColor: '#FFF'
 	};
 
-    $.fn.editor2D.getters = ['samplePoints'];
+    $.fn.editor2D.getters = ['samplePoints', 'getSnapToGrid', 'isReady'];
 	
 
 	

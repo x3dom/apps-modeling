@@ -66,6 +66,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px 0px no-repeat;
 }
 
@@ -82,6 +83,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -25px no-repeat;
 }
 
@@ -94,6 +96,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -50px -25px no-repeat;
 }
 
@@ -102,6 +105,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -50px no-repeat;
 }
 
@@ -114,6 +118,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -50px -50px no-repeat;
 }
 
@@ -122,6 +127,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -75px no-repeat;
 }
 
@@ -134,22 +140,33 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -50px -75px no-repeat;
 }
 
-#Editor2D-Icon-Reset {
+.Editor2D-Icon-Snap {
 	display: block;
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -100px no-repeat;
 }
 
-#Editor2D-Icon-Reset:hover {
+.Editor2D-Icon-Snap-Active {
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 4px 0px 4px 2px;
+    cursor: default;
+    background: transparent url(../images/Editor2D-Icons.png) -50px -100px no-repeat;
+}
+
+.Editor2D-Icon-Snap:hover {
 	background: transparent url(../images/Editor2D-Icons.png) -25px -100px no-repeat;
 }
 
-#Editor2D-Icon-Reset:active {
+.Editor2D-Icon-Snap:active {
 	background: transparent url(../images/Editor2D-Icons.png) -50px -100px no-repeat;
 }
 
@@ -158,6 +175,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -125px no-repeat;
 }
 
@@ -170,6 +188,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -50px -125px no-repeat;
 }
 
@@ -178,6 +197,7 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -150px no-repeat;
 }
 
@@ -190,46 +210,50 @@
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -50px -150px no-repeat;
 }
 
-#Editor2D-Icon-Accept {
+.Editor2D-Icon-Accept {
 	display: block;
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -175px no-repeat;
 }
 
-#Editor2D-Icon-Accept-Inactive {
+.Editor2D-Icon-Accept-Inactive {
 	display: block;
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) -75px -175px no-repeat;
 }
 
-#Editor2D-Icon-Accept:hover {
+.Editor2D-Icon-Accept:hover {
 	background: transparent url(../images/Editor2D-Icons.png) -25px -175px no-repeat;
 }
 
-#Editor2D-Icon-Accept:active {
+.Editor2D-Icon-Accept:active {
 	background: transparent url(../images/Editor2D-Icons.png) -50px -175px no-repeat;
 }
 
-#Editor2D-Icon-Abort {
+.Editor2D-Icon-Abort {
 	display: block;
 	width: 25px;
 	height: 25px;
 	margin: 4px 0px 4px 2px;
+    cursor: default;
 	background: transparent url(../images/Editor2D-Icons.png) 0px -200px no-repeat;
 }
 
-#Editor2D-Icon-Abort:hover {
+.Editor2D-Icon-Abort:hover {
 	background: transparent url(../images/Editor2D-Icons.png) -25px -200px no-repeat;
 }
 
-#Editor2D-Icon-Abort:active {
+.Editor2D-Icon-Abort:active {
 	background: transparent url(../images/Editor2D-Icons.png) -50px -200px no-repeat;
 }
 
