@@ -151,19 +151,19 @@ function PrimitiveManager(){
 
     /*
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
-     * which is affected by transformations and which can be inspected with the UI
+     * which is affected by transformations and which can be inspected with the UI.
+     * Note that this clears the list of selected primitives, only the primary primitive is selected afterwards.
      */
     this.selectCurrentPrimitive = function(id){
-        if (selectedPrimitiveIDs.indexOf(id) === -1)
-        {
-            currentPrimitiveID = id;
-            that.highlight(id, true);
-            selectedPrimitiveIDs = [id];
+        currentPrimitiveID = id;
+        that.highlight(id, true);
+        selectedPrimitiveIDs = [id];
 
-            ui.clearParameters();
-            ui.createParameters(primitiveList[id].Parameters);
-            ui.setMaterial(primitiveList[id].Material);
-        }
+        ui.clearParameters();
+        ui.createParameters(primitiveList[id].Parameters);
+        ui.setMaterial(primitiveList[id].Material);
+
+        ui.treeViewer.activate(id);
     };
 
 
@@ -320,12 +320,12 @@ function PrimitiveManager(){
      * @returns {null}
      */
     function primitiveSelected(id){
-        ui.treeViewer.activate(id);
-        
+        var idx;
+
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
-            if (currentPrimitiveID === "" || !keyPressed[16])
+            if (selectedPrimitiveIDs.length === 0 || !keyPressed[16])
             {
                 that.selectCurrentPrimitive(id);
 
@@ -333,15 +333,25 @@ function PrimitiveManager(){
                     controller.Activate("translation");
                 setTransformValues(id, HANDLING_MODE);
             }
-            //if there is already a selected object and SHIFT is pressed, add object to selection
+            //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
             else if (keyPressed[16])
             {
-                if (selectedPrimitiveIDs.indexOf(id) === -1)
+                idx = selectedPrimitiveIDs.indexOf(id);
+
+                //add
+                if (idx === -1)
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    //primitiveList[id].highlight(false, "1 1 0");
-                    //primitiveList[id].highlight(true,  "1 0.5 0");
+                    primitiveList[id].highlight(false, "1 1   0");
+                    primitiveList[id].highlight(true,  "1 0.5 0");
+                }
+                //remove
+                else
+                {
+                    selectedPrimitiveIDs.splice(idx, 1);
+
+                    primitiveList[id].highlight(false, "1 1   0");
                 }
             }
             //@todo: debug
