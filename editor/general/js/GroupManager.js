@@ -63,6 +63,10 @@ function Group(name){
                 prim = primitiveManager.getPrimitiveByID(primID);
 
                 root.removeChild(prim);
+
+                //important - otherwise, the backend graph is not rebuilt
+                removeX3DOMBackendGraph(prim);
+
                 that.matrixTransformNode.appendChild(prim);
 
                 that.objectIDList.push(primID);
