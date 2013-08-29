@@ -72,13 +72,16 @@ function UI(primitiveManager){
         that.TBTranslate = that.newImageProperty("ButtonVerschieben", true);
         that.TBScale = that.newImageProperty("ButtonSkalieren", true);
         that.TBRotate = that.newImageProperty("ButtonRotieren", true);
-        that.TBViewpoints = that.newComboBoxProperty("Views");
+        that.TBGroup = that.newImageProperty("ButtonGroup", true);
+        that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
+        that.TBSnap = that.newImageProperty("SnapPoints", true);
+        that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
        
-        that.BBPrimName = that.newTextProperty("primitiveName");
-        that.BBDelete = that.newImageProperty("deletePrimitive");
-        that.BBTransX = that.newSpinnerProperty("amountX");
-        that.BBSnap = that.newImageProperty("snapSwitchButton", false);
+        that.BBPrimName = that.newTextProperty("primitiveName", true);
+        that.BBDelete = that.newImageProperty("deletePrimitive", true);
+        that.BBSnap = that.newImageProperty("snapSwitchButton", true);
 
+        that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
             step: 0.1,
             stop:function(e,ui){
@@ -265,10 +268,7 @@ function UI(primitiveManager){
 
         $("#DeletePlane").tooltip();
         $("#DeleteAxis").tooltip();
-        
-        
-
-    }
+    };
     
     
     
@@ -349,7 +349,7 @@ function UI(primitiveManager){
      * @param {id} identifier in the html document where the value should be get/set
      * @returns {property with getter and setter}
      */
-    this.newTextProperty = function(id){
+    this.newTextProperty = function(id, toolTip){
         var obj = {};
 
         obj.get = function(){
@@ -365,6 +365,9 @@ function UI(primitiveManager){
             else document.getElementById(id).style.opacity="1.0";
             document.getElementById(id).disabled = bool;
         };
+        
+        if (toolTip)
+            $("#"+id).tooltip();
         
         return obj;
     };
@@ -437,7 +440,7 @@ function UI(primitiveManager){
      * @param {id} identifier in the html document where the value should be get/set
      * @returns {property with getter and setter}
      */
-    this.newComboBoxProperty = function(id){
+    this.newComboBoxProperty = function(id, toolTip){
         var obj = {};
 
         obj.get = function(index){
@@ -473,6 +476,9 @@ function UI(primitiveManager){
         obj.remove = function(index){
             document.getElementById(id).remove(index);
         };
+        
+        if (toolTip)
+            $("#"+id).tooltip();
         
         return obj;
     };
@@ -1000,7 +1006,6 @@ function UI(primitiveManager){
             var childNode = rootNode.addChild({
                 title: text,
                 key: id,
-                tooltip: "This folder and all child nodes were added programmatically.",
                 isFolder: true,
                 select: true,
                 selectMode: 3,
