@@ -7,7 +7,7 @@
     <!-- only one comment -->
     <title>CAD Primitive Editor</title>
 
-    <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/dev/x3dom.css"/>
+    <link rel="stylesheet" type="text/css" href="css/x3dom.css"/>
 
     <script type="text/javascript" src="../../../x3dom/src/lang/Array.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/Internals.js"></script>
@@ -86,7 +86,7 @@
     if (typeof x3dom === "undefined")
     {
         document.write(
-            '<script type="text/javascript" src="http://www.x3dom.org/download/dev/x3dom-full.js"><\/script>');
+            '<script type="text/javascript" src="js/x3dom-full.js"><\/script>');
     }
     </script>
 
@@ -124,11 +124,10 @@
 <div id="Oben">
     <div id="fileMenu" class="header">
         <ul class="nav">
-            <li><a>File</a>
+            <li><a>Server</a>
                 <ul>
-                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllNodes();" onmouseover="this.style.cursor='pointer';">New</a></li>
-                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Load</a></li>
-                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Save</a></li>
+                    <li><a href="#" id="newFile"  onmouseover="this.style.cursor='pointer';">Fetch ...</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Store ...</a></li>
                 </ul>
             </li>
         </ul>
