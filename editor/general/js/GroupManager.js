@@ -49,28 +49,12 @@ function Group(name){
      */
     this.addObjectList = function(objIDs){
         var root;
-        var i, primID, prim;
-
-        root = document.getElementById('root');
+        var i;
 
         //move all new object IDs into this group
         for (i = 0; i < objIDs.length; ++i)
         {
-            primID = objIDs[i];
-
-            if (that.objectIDList.indexOf(primID) === -1)
-            {
-                prim = primitiveManager.getPrimitiveByID(primID);
-
-                root.removeChild(prim);
-
-                //important - otherwise, the backend graph is not rebuilt
-                removeX3DOMBackendGraph(prim);
-
-                that.matrixTransformNode.appendChild(prim);
-
-                that.objectIDList.push(primID);
-            }
+            addObject(objIDs[i]);
         }
     };
 
@@ -80,13 +64,23 @@ function Group(name){
      * Adds the object with the given id to this group.
      */
     this.addObject = function(id){
-        //@todo: integrate this method into addObjectList
+        var prim;
+
         if (typeof id !== 'undefined')
         {
             //check whether the object is inside the list - if so, do nothing
-            if (objectIDList.indexOf(id) === -1)
+            if (that.objectIDList.indexOf(id) === -1)
             {
-                objectIDList.push(id);
+                prim = primitiveManager.getPrimitiveByID(primID);
+
+                document.getElementById('root').removeChild(prim);
+
+                //important - otherwise, the backend graph is not properly rebuilt after insertion
+                removeX3DOMBackendGraph(prim);
+
+                that.matrixTransformNode.appendChild(prim);
+
+                that.objectIDList.push(id);
             }
         }
         else
