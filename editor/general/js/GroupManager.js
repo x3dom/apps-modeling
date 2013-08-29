@@ -112,6 +112,15 @@ function Group(name){
             if (idx === -1)
             {
                 objectIDList.splice(idx, 1);
+
+                /*
+                that.groupNode.removeChild(prim);
+
+                //important - otherwise, the backend graph is not properly rebuilt after insertion
+                removeX3DOMBackendGraph(prim);
+
+                document.getElementById('root').appendChild(prim);
+                */
             }
         }
         else
