@@ -54,7 +54,7 @@ function Group(name){
         //move all new object IDs into this group
         for (i = 0; i < objIDs.length; ++i)
         {
-            addObject(objIDs[i]);
+            that.addObject(objIDs[i]);
         }
     };
 
@@ -71,7 +71,7 @@ function Group(name){
             //check whether the object is inside the list - if so, do nothing
             if (that.objectIDList.indexOf(id) === -1)
             {
-                prim = primitiveManager.getPrimitiveByID(primID);
+                prim = primitiveManager.getPrimitiveByID(id);
 
                 document.getElementById('root').removeChild(prim);
 
