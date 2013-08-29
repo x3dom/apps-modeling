@@ -174,8 +174,13 @@ function GroupManager(){
 
             //make this the current group
             that.currentGroup = g;
-           //enable group mode in the ui
+
+            //enable group mode in the ui
             ui.toggleGroupMode(true);
+
+            //this is necessary in order to properly initialize the group's bounding box
+            that.currentGroup.getTransformNode()._x3domNode.nodeChanged();
+            primitiveManager.highlightCurrentBoundingVolume(true);
         }
     };
 
@@ -190,6 +195,6 @@ function GroupManager(){
         }
 
         //disable group mode in the ui
-        //ui.toggleGroupMode(false);
+        ui.toggleGroupMode(false);
     };
 };

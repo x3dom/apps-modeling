@@ -76,7 +76,9 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.addPrimitive = function(primitive, parameters){
-   
+
+        ui.toggleGroupMode(false);
+
         if (HANDLING_MODE === "hand")
             controller.Activate("translation");
    
