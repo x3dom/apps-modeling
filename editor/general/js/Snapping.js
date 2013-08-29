@@ -25,6 +25,8 @@ function Snapping()
 			for(var i = 0; i < objListID.length; i++)
 			{
 				primitiveManager.removeSnapNode('snapPoint_' + objListID[i]);
+                                document.getElementById("SnapPoints").style.border="solid 1px gray";
+                                document.getElementById("SnapPoints").src = "images/magnet_off.png";
 			}
 		}
 		else
@@ -36,6 +38,8 @@ function Snapping()
 				{
 					loadJSON(objListID[i], pfad);
 				}
+                                document.getElementById("SnapPoints").style.border="solid 1px #fff";
+                                document.getElementById("SnapPoints").src = "images/magnet_on.png";
 			}
 		}
 	};
