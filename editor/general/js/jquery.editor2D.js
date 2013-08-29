@@ -259,11 +259,11 @@
 			//Check for up- or down-scroll
 			if (evt.wheelDelta > 0 || evt.detail > 0) 
 			{
-				that.zoom(that.options.gridStep);
+				that.zoom(that.options.zoomStep);
 			} 
 			else 
 			{
-				that.zoom(-that.options.gridStep);
+				that.zoom(-that.options.zoomStep);
 			}
 		};
 		
@@ -330,7 +330,7 @@
 		this.zoom = function (delta) 
 		{
 			//If allowed increment grid size and redraw it
-			if (that.gridSize + delta <= that.options.gridMax && that.gridSize + delta >= that.options.gridMin) 
+			if (that.gridSize + delta <= that.options.zoomMax && that.gridSize + delta >= that.options.zoomMin) 
 			{
 				that.gridSize += delta;
 				that.draw();
@@ -392,7 +392,7 @@
 		{
 			var rect = that.canvas.getBoundingClientRect();
 			that.mousePosX = (evt.clientX - rect.left - this.centerX - 2) / that.gridSize;
-			that.mousePosY = (evt.clientY - rect.top - this.centerY - 2.5) / that.gridSize;	
+			that.mousePosY = (evt.clientY - rect.top - this.centerY - 2.5) / that.gridSize;
 		};
 		
 		/*
@@ -1051,7 +1051,7 @@
 			
 			for(var p=0; p<points.length; p++)
 			{ 
-				pointsStr.push(points[p].x, points[p].y); 
+				pointsStr.push(points[p].x * this.options.gridStep, points[p].y * this.options.gridStep);
 			}
 			
 			return pointsStr;
@@ -1146,9 +1146,10 @@
     	width: 600,
     	height: 400,
 		gridSize: 30,
-		gridMin: 10,
-		gridMax: 100,
-		gridStep: 5,
+		zoomMin: 10,
+		zoomMax: 100,
+		zoomStep: 5,
+        gridStep: 0.5,
 		gridColor: '#CCC',
 		lineColor: '#00A8FF',
 		handleColor: '#00A8FF',
