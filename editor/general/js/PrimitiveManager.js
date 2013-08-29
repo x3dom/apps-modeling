@@ -428,7 +428,9 @@ function PrimitiveManager(){
                 matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
                 //@todo: how does it work?
-                volume = group._x3domNode.getVolume();
+                //volume = group._x3domNode.getVolume();
+                //@todo: debug
+                return;
             }
             else
             {
@@ -494,8 +496,27 @@ function PrimitiveManager(){
      * 
      * @returns {undefined}
      */
+    //@todo: this function is not very beautiful at the moment:
+    //          - actually, some of this is UI functionality
+    //          - with groups, this is not only about "primitives" any more
     this.updatePrimitiveTransformFromUI = function() {
-        var MT = that.primitiveList[currentPrimitiveID].children[0];
+        var group;
+        var MT;
+
+        //GROUP MODE
+        if (ui.groupModeActive())
+        {
+            group = groupManager.getCurrentGroup()
+
+            MT = group.getMatrixTransformNode();
+
+            ui.BBPrimName.set(groupManager.getCurrentGroupID());
+        }
+        //PRIMITIVE MODE
+        else
+        {
+            that.primitiveList[currentPrimitiveID].children[0];
+        }
 
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
@@ -504,7 +525,17 @@ function PrimitiveManager(){
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();
-            that.primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
+
+            //GROUP MODE
+            if (ui.groupModeActive())
+            {
+               group.getTransformNode().setAttribute(HANDLING_MODE, tempValue);
+            }
+            //PRIMITIVE MODE
+            else
+            {
+                that.primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
+            }
         }
         else if (HANDLING_MODE === "rotation") {
             MT.Transformation.rotationX = ui.BBTransX.get();
@@ -518,7 +549,7 @@ function PrimitiveManager(){
             MT.setAttribute("matrix", matrixToString(transformMat));
         }
         
-        this.highlightCurrentPrimitive(true);
+        this.highlightCurrentBoundingVolume(true);
     };
     
     
