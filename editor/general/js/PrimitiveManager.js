@@ -371,7 +371,7 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
 
-                    that.primitiveList[id].highlight(false, "1 1   0");
+                    that.primitiveList[id].highlight(false, "1 1 0");
                 }
 
                 //if we started to group primitives, disable the transformation UI
@@ -513,7 +513,7 @@ function PrimitiveManager(){
             MT.setAttribute("matrix", matrixToString(transformMat));
         }
         
-        this.highlight(currentPrimitiveID, true);
+        this.highlightCurrentPrimitive(true);
     };
     
     
@@ -525,6 +525,9 @@ function PrimitiveManager(){
      * @param {type} mode type of transformation 
      * @returns {null}
      */
+    //@todo: this function is not very beautiful at the moment:
+    //          - actually, some of this is UI functionality
+    //          - with groups, this is not only about "primitives" any more
     this.updateTransformUIFromPrimitive = function(id, mode){
         try {
             if (typeof id !== 'undefined' && id !== "")
@@ -587,13 +590,13 @@ function PrimitiveManager(){
      */
     this.disableTransformationUI = function(){
         ui.BBSnap.disable(true);
-        ui.BBTransX.set("");
+        //ui.BBTransX.set("");
         ui.BBTransX.disable(true);
-        ui.BBTransY.set("");
+        //ui.BBTransY.set("");
         ui.BBTransY.disable(true);
-        ui.BBTransZ.set("");
+        //ui.BBTransZ.set("");
         ui.BBTransZ.disable(true);
-        ui.BBPrimName.set("");
+        //ui.BBPrimName.set("");
         ui.BBPrimName.disable(true);
         ui.BBDelete.disable(true);
         ui.RBAccordion.disable(true);
