@@ -14,8 +14,7 @@ function Group(name){
     this.transformNode       = document.createElement("Transform");
     this.matrixTransformNode = document.createElement("MatrixTransform");
 
-    //@todo: debug
-    //document.getElementById('root').appendChild(this.groupNode);
+    document.getElementById('root').appendChild(this.groupNode);
     this.groupNode.appendChild(this.transformNode);
     this.transformNode.appendChild(this.matrixTransformNode);
 
@@ -64,12 +63,7 @@ function Group(name){
                 prim = primitiveManager.getPrimitiveByID(primID);
 
                 root.removeChild(prim);
-                //that.matrixTransformNode.appendChild(prim);
-                //@todo: debug
-                root.appendChild(prim);
-
-                //@todo: this works! Why doesn't it work with simple DOM manipulation as above?
-                primitiveManager.addPrimitive("Cone", ui.primitiveParameterMap["Cone"].parameters)
+                that.matrixTransformNode.appendChild(prim);
 
                 that.objectIDList.push(primID);
             }

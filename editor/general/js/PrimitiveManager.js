@@ -1,3 +1,14 @@
+/*
+ * Creates a string from SFMatrix4f that can be set on MatrixTransform
+ * @param {SFMatrix4f} transformMat matrix that should be converted to a string
+ * @returns (undefined)
+ */
+function matrixToString(transformMat){
+    return transformMat.toGL().toString();
+}
+
+
+
 //@todo: there is currently no method to query key states in X3DOM (?)
 var keyPressed={};
 
@@ -12,6 +23,7 @@ document.onkeyup=function(e){
 };
 
 
+
 /*
  * The PrimitiveManager component handles all the behaviour of all 
  * added primitives of the workspace
@@ -20,7 +32,7 @@ document.onkeyup=function(e){
 function PrimitiveManager(){
     
     // List of all created primitives
-    var primitiveList = [];
+    this.primitiveList = [];
     // actually active id
     var currentPrimitiveID = "";
     // list of all selected primitives (including the first selected one)
@@ -114,7 +126,7 @@ function PrimitiveManager(){
 
         var prim = document.createElement(primitive);
         
-        setDefaultParameters(prim, parameters);
+        that.setDefaultParameters(prim, parameters);
         
         s.appendChild(prim);
         t.Parameters.Primitive = prim;
@@ -127,8 +139,8 @@ function PrimitiveManager(){
         // wrapper for adding moving functionality, last param is callback function
         new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved);
         
-        primitiveList[id] = t;
-        primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
+        that.primitiveList[id] = t;
+        that.primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
         primitiveCounter++;
@@ -148,7 +160,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveVisibility = function(id, bool){
-        primitiveList[id].setAttribute("render", bool);
+        that.primitiveList[id].setAttribute("render", bool);
     };
 
 
@@ -182,8 +194,8 @@ function PrimitiveManager(){
         selectedPrimitiveIDs = [id];
 
         ui.clearParameters();
-        ui.createParameters(primitiveList[id].Parameters);
-        ui.setMaterial(primitiveList[id].Material);
+        ui.createParameters(that.primitiveList[id].Parameters);
+        ui.setMaterial(that.primitiveList[id].Material);
 
         ui.treeViewer.activate(id);
 
@@ -228,23 +240,13 @@ function PrimitiveManager(){
      * @param {Parameters} parameters the parameters that should be set to primitive as default
      * @returns (undefined)
      */
-    function setDefaultParameters(primitive, parameters){
+    this.setDefaultParameters = function(primitive, parameters){
         for (var i = 0; i < parameters.length; i++){
             primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ? 
                 (parameters[i].value * Math.PI / 180).toString() : parameters[i].value);
         }
     }
-    
-    
-    
-    /*
-     * Creates a string from SFMatrix4f that can be set on MatrixTransform
-     * @param {SFMatrix4f} transformMat matrix that should be converted to a string
-     * @returns (undefined)
-     */
-    function matrixToString(transformMat){
-        return transformMat.toGL().toString();
-    }
+
     
     
 	/* 
@@ -279,7 +281,7 @@ function PrimitiveManager(){
                 { 
                     ot.removeChild(ot.childNodes[i]);
                     ui.treeViewer.removeNode(currentPrimitiveID);
-                    delete primitiveList[currentPrimitiveID];
+                    delete that.primitiveList[currentPrimitiveID];
 
                     that.clearSelection();
                     primitiveCounter--;
@@ -296,14 +298,14 @@ function PrimitiveManager(){
      */
     this.removeAllNodes = function()
     {
-        for (var key in primitiveList) {
-            if (primitiveList[key]) {
+        for (var key in that.primitiveList) {
+            if (that.primitiveList[key]) {
                 currentPrimitiveID = key;
                 this.removeNode(true);
             }
         }
 
-        primitiveList = [];
+        that.primitiveList = [];
         currentPrimitiveID = "";
         primitiveCounter = 0;
     };
@@ -319,10 +321,10 @@ function PrimitiveManager(){
         var rgb = document.getElementById(element).value;
         that.highlightCurrentPrimitive(false);
         if (element === "diffuse" || element === "specular" || element === "emissive") {
-            primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
+            that.primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
         }
         if(element === "transparency" || element === "shininess") {
-            primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
+            that. primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
         }
     };
 
@@ -361,15 +363,15 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    primitiveList[id].highlight(false, "1 1 0");
-                    primitiveList[id].highlight(true,  "1 1 0");
+                    that.primitiveList[id].highlight(false, "1 1 0");
+                    that.primitiveList[id].highlight(true,  "1 1 0");
                 }
                 //remove from selection
                 else
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
 
-                    primitiveList[id].highlight(false, "1 1   0");
+                    that.primitiveList[id].highlight(false, "1 1   0");
                 }
 
                 //if we started to group primitives, disable the transformation UI
@@ -425,11 +427,11 @@ function PrimitiveManager(){
             }
             else
             {
-                transform.setAttribute("translation",  primitiveList[currentPrimitiveID].getAttribute("translation"));
-                transform.setAttribute("scale",        primitiveList[currentPrimitiveID].getAttribute("scale"));
-                matrixTransform.setAttribute("matrix", primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
+                transform.setAttribute("translation",  that.primitiveList[currentPrimitiveID].getAttribute("translation"));
+                transform.setAttribute("scale",        that.primitiveList[currentPrimitiveID].getAttribute("scale"));
+                matrixTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
 
-                volume = primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
+                volume = that.primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
             }
 
             min = x3dom.fields.SFVec3f.parse(volume.min);
@@ -470,14 +472,14 @@ function PrimitiveManager(){
             that.highlightCurrentBoundingVolume(on);
 
             //un-highlight all primitives, then highlight the current primitive
-            for (var key in primitiveList)
+            for (var key in that.primitiveList)
             {
-                if (primitiveList[key])
+                if (that.primitiveList[key])
                 {
-                    primitiveList[key].highlight(false, "1 1 0");
+                    that.primitiveList[key].highlight(false, "1 1 0");
                 }
             }
-            primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
+            that.primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
         }
     };
     
@@ -488,7 +490,7 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.updatePrimitiveTransformFromUI = function() {
-        var MT = primitiveList[currentPrimitiveID].children[0];
+        var MT = that.primitiveList[currentPrimitiveID].children[0];
 
         var tempValue = "";
         var transformMat = x3dom.fields.SFMatrix4f.identity();
@@ -496,8 +498,8 @@ function PrimitiveManager(){
         if (HANDLING_MODE === "translation" || HANDLING_MODE === "scale") {
             tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
-                        ui.BBTransZ.get();   
-            primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
+                        ui.BBTransZ.get();
+            that.primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
         }
         else if (HANDLING_MODE === "rotation") {
             MT.Transformation.rotationX = ui.BBTransX.get();
@@ -525,7 +527,7 @@ function PrimitiveManager(){
      */
     this.updateTransformUIFromPrimitive = function(id, mode){
         try {
-            var MT = primitiveList[id].children[0];
+            var MT = that.primitiveList[id].children[0];
         
             if (mode === "rotation"){
                 ui.BBTransX.set(MT.Transformation.rotationX);
@@ -533,7 +535,7 @@ function PrimitiveManager(){
                 ui.BBTransZ.set(MT.Transformation.rotationZ);
             }
             else {
-                var vec = x3dom.fields.SFVec3f.parse(primitiveList[id].attributes[mode].nodeValue);
+                var vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[mode].nodeValue);
                 ui.BBTransX.set(vec.x.toFixed(5));
                 ui.BBTransY.set(vec.y.toFixed(5));
                 ui.BBTransZ.set(vec.z.toFixed(5));
@@ -551,7 +553,7 @@ function PrimitiveManager(){
 				}
 			}
 			
-            ui.BBPrimName.set(primitiveList[id].IDMap.name);
+            ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
         }
         catch(ex){
             console.log(ex);
@@ -600,7 +602,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.setPrimitiveName = function() {
-        primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
+        that.primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
         ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
     };
 
@@ -611,7 +613,7 @@ function PrimitiveManager(){
      * @returns {primitive}
      */
     this.getCurrentPrimitive = function(){
-        return primitiveList[currentPrimitiveID];
+        return that.primitiveList[currentPrimitiveID];
     };
 
 
@@ -633,7 +635,7 @@ function PrimitiveManager(){
     this.getPrimitiveByID = function(id){
         if (id)
         {
-            return primitiveList[id];
+            return that.primitiveList[id];
         }
     };
 
@@ -644,7 +646,7 @@ function PrimitiveManager(){
      * @returns {SFVec3f}
      */
     this.getPosition = function(primitiveID){
-        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("translation"));
+        return x3dom.fields.SFVec3f.parse(that.primitiveList[primitiveID].getAttribute("translation"));
     };
     
     
@@ -654,7 +656,7 @@ function PrimitiveManager(){
      * @returns {SFVec3f}
      */
     this.getScale = function(primitiveID){
-        return x3dom.fields.SFVec3f.parse(primitiveList[primitiveID].getAttribute("scale"));
+        return x3dom.fields.SFVec3f.parse(that.primitiveList[primitiveID].getAttribute("scale"));
     };
     
     
@@ -664,7 +666,7 @@ function PrimitiveManager(){
      * @returns {SFMatrix4f}
      */
     this.getRotation = function(primitiveID){
-        return x3dom.fields.SFMatrix4f.parse(primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
+        return x3dom.fields.SFMatrix4f.parse(that.primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
     };
 
 
@@ -675,7 +677,7 @@ function PrimitiveManager(){
      */
     this.getIDList = function(){
         var idList = [];
-        for (var key in primitiveList){
+        for (var key in that.primitiveList){
             idList.push(key);
         }
         
