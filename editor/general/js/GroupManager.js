@@ -62,6 +62,7 @@ function Group(name){
 
     /*
      * Adds the object with the given id to this group.
+     * Duplicate entries are avoided.
      */
     this.addObject = function(id){
         var prim;
@@ -79,6 +80,10 @@ function Group(name){
                 removeX3DOMBackendGraph(prim);
 
                 that.matrixTransformNode.appendChild(prim);
+
+                //after deletion of the backend graph, the highlight property got lost
+                prim.highlight(false, "1 1 0");
+                prim.highlight(true,  "1 1 0");
 
                 that.objectIDList.push(id);
             }

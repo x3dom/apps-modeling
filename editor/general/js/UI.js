@@ -43,6 +43,7 @@ function UI(primitiveManager){
         //current group might become null
         if (val){
             primitiveManager.enableTransformationUI();
+            primitiveManager.updateTransformUIFromPrimitive();
         }
         else {
             groupManager.setCurrentGroup(null);
