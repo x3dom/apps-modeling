@@ -145,6 +145,12 @@ function GroupManager(){
 
 
 
+    this.getCurrentGroupID = function(){
+        return that.currentGroup.name;
+    };
+
+
+
     this.setCurrentGroup = function(g){
         that.currentGroup = g;
     };

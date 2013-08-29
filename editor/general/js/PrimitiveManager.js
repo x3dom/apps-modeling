@@ -174,6 +174,7 @@ function PrimitiveManager(){
         that.highlightCurrentBoundingVolume(false);
 
         this.disableTransformationUI();
+        ui.RBAccordion.disable(true);
     };
 
 
@@ -200,6 +201,8 @@ function PrimitiveManager(){
         ui.treeViewer.activate(id);
 
         that.enableTransformationUI();
+        ui.RBAccordion.disable(false);
+
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
     };
 
@@ -378,6 +381,7 @@ function PrimitiveManager(){
                 if (selectedPrimitiveIDs.length === 2)
                 {
                     that.disableTransformationUI();
+                    ui.RBAccordion.disable(true);
                 }
             }
 
@@ -385,6 +389,7 @@ function PrimitiveManager(){
             if (selectedPrimitiveIDs.length === 1)
             {
                 that.enableTransformationUI();
+                ui.RBAccordion.disable(false);
             }
         }
         else
@@ -528,42 +533,72 @@ function PrimitiveManager(){
     //@todo: this function is not very beautiful at the moment:
     //          - actually, some of this is UI functionality
     //          - with groups, this is not only about "primitives" any more
+    //          - better assume that we have no parameters, but we only handle the "current" primitive or group
     this.updateTransformUIFromPrimitive = function(id, mode){
         try {
-            if (typeof id !== 'undefined' && id !== "")
-            {
-                var MT = that.primitiveList[id].children[0];
+            var interactionMode = HANDLING_MODE;
 
-                if (mode === "rotation"){
-                    ui.BBTransX.set(MT.Transformation.rotationX);
-                    ui.BBTransY.set(MT.Transformation.rotationY);
-                    ui.BBTransZ.set(MT.Transformation.rotationZ);
-                }
-                else {
-                    var vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[mode].nodeValue);
-                    ui.BBTransX.set(vec.x.toFixed(5));
-                    ui.BBTransY.set(vec.y.toFixed(5));
-                    ui.BBTransZ.set(vec.z.toFixed(5));
-                }
+            var MT;
+            var group;
+            var vec;
+
+            //GROUP MODE
+            if (ui.groupModeActive())
+            {
+                group = groupManager.getCurrentGroup()
+
+                MT = group.getMatrixTransformNode();
+
+                ui.BBPrimName.set(groupManager.getCurrentGroupID());
+            }
+            //PRIMITIVE MODE
+            else
+            {
+                MT = that.primitiveList[id].children[0];
 
                 ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
-
-                //will be moved to snapping js file
-                //----
-                if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
-                {
-                    var objListID = primitiveManager.getIDList();
-
-                    if(objListID.length > 1)
-                    {
-                        snapping.snap(objListID, snapping.points());
-                    }
-                }
-                //----
             }
-        }
+
+            if (interactionMode === "rotation")
+            {
+                //@todo: make this work for group mode
+                ui.BBTransX.set(MT.Transformation.rotationX);
+                ui.BBTransY.set(MT.Transformation.rotationY);
+                ui.BBTransZ.set(MT.Transformation.rotationZ);
+            }
+            else
+            {
+                //GROUP MODE
+                if (ui.groupModeActive())
+                {
+                    vec = x3dom.fields.SFVec3f.parse(group.getTransformNode().getAttribute(interactionMode));
+                }
+                //PRIMITIVE MODE
+                else
+                {
+                    vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[interactionMode].nodeValue);
+                }
+
+                ui.BBTransX.set(vec.x.toFixed(5));
+                ui.BBTransY.set(vec.y.toFixed(5));
+                ui.BBTransZ.set(vec.z.toFixed(5));
+            }
+
+            //will be moved to snapping js file
+            //----
+            if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
+            {
+                var objListID = primitiveManager.getIDList();
+
+                if(objListID.length > 1)
+                {
+                    snapping.snap(objListID, snapping.points());
+                }
+            }
+            //----
+       }
         catch(ex){
-            console.log(ex);
+            console.log("Exception in function updateTransformUIFromPrimitive:" + ex);
         }
     };
 
@@ -579,7 +614,6 @@ function PrimitiveManager(){
         ui.BBTransZ.disable(false);
         ui.BBPrimName.disable(false);
         ui.BBDelete.disable(false);
-        ui.RBAccordion.disable(false);
     };
 
 
@@ -599,7 +633,6 @@ function PrimitiveManager(){
         //ui.BBPrimName.set("");
         ui.BBPrimName.disable(true);
         ui.BBDelete.disable(true);
-        ui.RBAccordion.disable(true);
     };
 
 
@@ -608,9 +641,19 @@ function PrimitiveManager(){
      * Sets the name of a primitive to the users defined value
      * @returns {null}
      */
+    //@todo: this function is not very beautiful at the moment:
+    //          - actually, some of this is UI functionality
+    //          - with groups, this is not only about "primitives" any more
     this.setPrimitiveName = function() {
-        that.primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
-        ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
+        if (ui.groupModeActive())
+        {
+            //@todo: implement
+        }
+        else
+        {
+            that.primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
+            ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
+        }
     };
 
     
