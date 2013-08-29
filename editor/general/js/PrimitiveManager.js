@@ -527,33 +527,37 @@ function PrimitiveManager(){
      */
     this.updateTransformUIFromPrimitive = function(id, mode){
         try {
-            var MT = that.primitiveList[id].children[0];
-        
-            if (mode === "rotation"){
-                ui.BBTransX.set(MT.Transformation.rotationX);
-                ui.BBTransY.set(MT.Transformation.rotationY);
-                ui.BBTransZ.set(MT.Transformation.rotationZ);
+            if (typeof id !== 'undefined' && id !== "")
+            {
+                var MT = that.primitiveList[id].children[0];
+
+                if (mode === "rotation"){
+                    ui.BBTransX.set(MT.Transformation.rotationX);
+                    ui.BBTransY.set(MT.Transformation.rotationY);
+                    ui.BBTransZ.set(MT.Transformation.rotationZ);
+                }
+                else {
+                    var vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[mode].nodeValue);
+                    ui.BBTransX.set(vec.x.toFixed(5));
+                    ui.BBTransY.set(vec.y.toFixed(5));
+                    ui.BBTransZ.set(vec.z.toFixed(5));
+                }
+
+                ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
+
+                //will be moved to snapping js file
+                //----
+                if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
+                {
+                    var objListID = primitiveManager.getIDList();
+
+                    if(objListID.length > 1)
+                    {
+                        snapping.snap(objListID, snapping.points());
+                    }
+                }
+                //----
             }
-            else {
-                var vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[mode].nodeValue);
-                ui.BBTransX.set(vec.x.toFixed(5));
-                ui.BBTransY.set(vec.y.toFixed(5));
-                ui.BBTransZ.set(vec.z.toFixed(5));
-            }
-			
-			/* voruebergehend uebergeben der vorhandene Listenelemente */
-			/* dieser Aufruf wird in eine andere Datei verlagert */
-			if(document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitive().id)) /* wenn snap gedrueckt wird */
-			{
-				var objListID = primitiveManager.getIDList();
-				
-				if(objListID.length > 1)
-				{
-					snapping.snap(objListID, snapping.points());
-				}
-			}
-			
-            ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
         }
         catch(ex){
             console.log(ex);
