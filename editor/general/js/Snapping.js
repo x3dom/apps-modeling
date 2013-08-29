@@ -54,11 +54,11 @@ function Snapping()
 		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
 		distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
 		
-		console.log("Abstand: " + distance);
+		//console.log("Abstand: " + distance);
 		
-		var normale_x = normalePoint[0][0];
-		var normale_y = normalePoint[0][1];
-		var normale_z = normalePoint[0][2];
+		var normale_x = normalePoint[0][0] * 2;
+		var normale_y = normalePoint[0][1] * 2;
+		var normale_z = normalePoint[0][2] * 2;
 		
 		var pointPosition1_x = primitiveManager.getPosition(objListID[0]).x + normale_x.valueOf();
 		var pointPosition1_y = primitiveManager.getPosition(objListID[0]).y + normale_y.valueOf();
@@ -74,9 +74,12 @@ function Snapping()
 			if(distance < 2.0)
 			{
 				actualObject.setAttribute('translation', '' + pointPosition2_x + ' ' + pointPosition2_y + ' ' + pointPosition2_z + '');
+				
+				/*
 				distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
 				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
 				console.log("Point2: " + primitiveManager.getPosition(objListID[1]));
+				*/
 			}
 		}
 		else
@@ -84,9 +87,12 @@ function Snapping()
 			if(distance < 2.0)
 			{
 				actualObject.setAttribute('translation', '' + pointPosition1_x + ' ' + pointPosition1_y + ' ' + pointPosition1_z + '');
+				
+				/*
 				distance = pointsDistance(primitiveManager.getPosition(objListID[0]), primitiveManager.getPosition(objListID[1]));
 				console.log("Point1: " + primitiveManager.getPosition(objListID[0]));
 				console.log("Point2: " + primitiveManager.getPosition(objListID[1]));
+				*/
 			}
 		}
 	};
@@ -113,7 +119,12 @@ function Snapping()
 	
 	/* Draws point */
     function point(id, pfad, translation, rotation)
-    {    	
+    {   
+    	var transform = document.createElement('Transform'); 
+    	transform.setAttribute('id', 'snapPoint_' + id);
+    	var element = document.getElementById('mt_' + id);
+    	element.appendChild(transform);	
+    	/*
     	var transform = document.createElement('Transform');
 		var transform_Appearance = document.createElement('Appearance');
 		var transform_Material = document.createElement('Material');    	
@@ -162,6 +173,7 @@ function Snapping()
     	
     	var element = document.getElementById('mt_' + id);
     	element.appendChild(transform);
+    	*/
     };
     
 	function loadJSON(id, pfad)
