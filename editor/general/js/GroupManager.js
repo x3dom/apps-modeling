@@ -14,8 +14,7 @@ function Group(name){
     this.transformNode       = document.createElement("Transform");
     this.matrixTransformNode = document.createElement("MatrixTransform");
 
-    //@todo: debug
-    //document.getElementById('root').appendChild(this.groupNode);
+    document.getElementById('root').appendChild(this.groupNode);
     this.groupNode.appendChild(this.transformNode);
     this.transformNode.appendChild(this.matrixTransformNode);
 
@@ -50,29 +49,12 @@ function Group(name){
      */
     this.addObjectList = function(objIDs){
         var root;
-        var i, primID, prim;
-
-        root = document.getElementById('root');
+        var i;
 
         //move all new object IDs into this group
         for (i = 0; i < objIDs.length; ++i)
         {
-            primID = objIDs[i];
-
-            if (that.objectIDList.indexOf(primID) === -1)
-            {
-                prim = primitiveManager.getPrimitiveByID(primID);
-
-                root.removeChild(prim);
-                //that.matrixTransformNode.appendChild(prim);
-                //@todo: debug
-                root.appendChild(prim);
-
-                //@todo: this works! Why doesn't it work with simple DOM manipulation as above?
-                primitiveManager.addPrimitive("Cone", ui.primitiveParameterMap["Cone"].parameters)
-
-                that.objectIDList.push(primID);
-            }
+            addObject(objIDs[i]);
         }
     };
 
@@ -82,13 +64,23 @@ function Group(name){
      * Adds the object with the given id to this group.
      */
     this.addObject = function(id){
-        //@todo: integrate this method into addObjectList
+        var prim;
+
         if (typeof id !== 'undefined')
         {
             //check whether the object is inside the list - if so, do nothing
-            if (objectIDList.indexOf(id) === -1)
+            if (that.objectIDList.indexOf(id) === -1)
             {
-                objectIDList.push(id);
+                prim = primitiveManager.getPrimitiveByID(primID);
+
+                document.getElementById('root').removeChild(prim);
+
+                //important - otherwise, the backend graph is not properly rebuilt after insertion
+                removeX3DOMBackendGraph(prim);
+
+                that.matrixTransformNode.appendChild(prim);
+
+                that.objectIDList.push(id);
             }
         }
         else

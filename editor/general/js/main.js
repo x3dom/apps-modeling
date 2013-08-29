@@ -19,3 +19,18 @@ window.onload = function(){
     ui.treeViewer.addGroup("Scene", "Scene");
 };
 
+
+//utility function - we need it if we want to move an X3DOM object inside the DOM
+//in that case, the X3DOM backend graph needs to be cleared, it then gets rebuilt after re-insertion
+function removeX3DOMBackendGraph(domNode)
+{
+    var children = domNode.childNodes;
+    var i;
+
+    for (i = 0; i < children.length; ++i)
+    {
+        removeX3DOMBackendGraph(children[i]);
+    }
+
+    domNode._x3domNode = null;
+}
