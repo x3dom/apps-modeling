@@ -14,9 +14,9 @@ function Group(name){
     this.transformNode       = document.createElement("Transform");
     this.matrixTransformNode = document.createElement("MatrixTransform");
 
-    document.getElementById('root').appendChild(this.groupNode);
-    this.groupNode.appendChild(this.transformNode);
+    document.getElementById('root').appendChild(this.transformNode);
     this.transformNode.appendChild(this.matrixTransformNode);
+    this.matrixTransformNode.appendChild(this.groupNode);
 
     if (typeof name === 'undefined')
     {
@@ -79,7 +79,7 @@ function Group(name){
                 //important - otherwise, the backend graph is not properly rebuilt after insertion
                 removeX3DOMBackendGraph(prim);
 
-                that.matrixTransformNode.appendChild(prim);
+                that.groupNode.appendChild(prim);
 
                 //after deletion of the backend graph, the highlight property got lost
                 prim.highlight(false, "1 1 0");
@@ -182,7 +182,7 @@ function GroupManager(){
 
 
     this.ungroupSelectedObjects = function(){
-        if (currentGroup){
+        if (that.currentGroup){
             //remove the current group
             //@todo: make it work
             //...
@@ -190,6 +190,6 @@ function GroupManager(){
         }
 
         //disable group mode in the ui
-        ui.toggleGroupMode(false);
+        //ui.toggleGroupMode(false);
     };
 };

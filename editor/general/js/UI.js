@@ -44,6 +44,7 @@ function UI(primitiveManager){
         if (val){
             primitiveManager.enableTransformationUI();
             primitiveManager.updateTransformUIFromPrimitive();
+            primitiveManager.highlightCurrentBoundingVolume();
         }
         else {
             groupManager.setCurrentGroup(null);

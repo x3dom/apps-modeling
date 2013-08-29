@@ -402,7 +402,7 @@ function PrimitiveManager(){
     
     /*
      * Computes the bounding volume parameters for highlighting, and toggles its visibility.
-     * @param {bool} bool false if all should be dehighlighted
+     * @param {bool} bool parameter to show or to hide the bounding box
      * @returns (undefined)
      */
     this.highlightCurrentBoundingVolume = function(bool){
@@ -418,6 +418,7 @@ function PrimitiveManager(){
         {
             matrixTransform = document.getElementById('cpnt_matrixTransform');
 
+            //GROUP MODE
             if (ui.groupModeActive())
             {
                 //@todo: testing, continue implementation
@@ -428,10 +429,9 @@ function PrimitiveManager(){
                 matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
                 //@todo: how does it work?
-                //volume = group._x3domNode.getVolume();
-                //@todo: debug
-                return;
+                volume = group.getGroupNode()._x3domNode.getVolume();
             }
+            //PRIMITIVE MODE
             else
             {
                 transform.setAttribute("translation",  that.primitiveList[currentPrimitiveID].getAttribute("translation"));
@@ -538,6 +538,7 @@ function PrimitiveManager(){
             }
         }
         else if (HANDLING_MODE === "rotation") {
+            //@todo: make this work for group mode
             MT.Transformation.rotationX = ui.BBTransX.get();
             MT.Transformation.rotationY = ui.BBTransY.get();
             MT.Transformation.rotationZ = ui.BBTransZ.get();
