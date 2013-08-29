@@ -146,7 +146,7 @@
         </ul>
     </div>
     
-    <div class="header">
+    <!--<div class="header">
         <ul class="nav">
             <li><a>Highlight</a>
                 <ul>
@@ -155,7 +155,7 @@
                 </ul>
             </li>
         </ul>
-    </div>
+    </div>-->
 
     <div>
         <select id="Viewpoints" class="Views" title="Viewpoint of camera can be chosen" onchange="controller.setViewpoint(value);" onmouseover="this.style.cursor='pointer';">
@@ -171,20 +171,20 @@
         </select>
     </div>
 
-    <div class="buttonPlane"><img title="Toggles raster plane on/off" src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
+    <div class="leftBorder"><img title="Toggles raster plane on/off" src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removePlane();"/></div>
-    <div class="buttonAxis"><img title="Toggles axis cross on/off" src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
+    <div class="rightBorder"><img title="Toggles axis cross on/off" src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removeAxis();"/></div>
-    <div class="SnapPoints"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
-                                onclick="snapping.init();"/></div>
-    <div class="buttonTop"><img title="Activates navigation mode and deselects all primitives" src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
+    <div class="leftBorder"><img title="Activates navigation mode and deselects all primitives" src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
                                 onclick="controller.Activate('hand'); primitiveManager.clearSelection();"/></div>
     <div class="buttonTop"><img title="Activates translation mode of selected primitives" src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('translation');"/></div>
     <div class="buttonTop"><img title="Activates scaling mode of selected primitives"  src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('scale');"/></div>
-    <div class="buttonTop"><img title="Activates rotation mode of selected primitives" src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
+    <div class="rightBorder"><img title="Activates rotation mode of selected primitives" src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('rotation');"/></div>
+    <div class="leftBorder"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
+                                onclick="snapping.init();"/></div>
     <div class="buttonTop"><img title="Creates a group of the selected primitives" src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="groupManager.groupSelectedObjects();"/></div>
     <div class="buttonTop"><img title="Ungroups a selected group" src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
