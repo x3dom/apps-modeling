@@ -292,24 +292,26 @@ function UI(primitiveManager){
        
        var primitiveParameterMap = [];
        for (var i = 0; i < primitives.length; i++){
-            primitiveParameterMap[primitives[i].getAttribute("editorName")] =
-            { editorName: primitives[i].getAttribute("editorName"),
-              x3domName: primitives[i].getAttribute("x3domName"),
-              image: primitives[i].getAttribute("image"),
+            var currPrim = primitives[i];
+            primitiveParameterMap[currPrim.getAttribute("editorName")] =
+            { editorName: currPrim.getAttribute("editorName"),
+              x3domName: currPrim.getAttribute("x3domName"),
+              image: currPrim.getAttribute("image"),
               parameters : [] };
 
-            var parameters = primitives[i].getElementsByTagName("Parameter");
+            var parameters = currPrim.getElementsByTagName("Parameter");
             for (var j = 0; j < parameters.length; j++){
-                primitiveParameterMap[primitives[i].getAttribute("editorName")].parameters.push(
-                { editorName: parameters[j].getAttribute("editorName"),
-                  x3domName: parameters[j].getAttribute("x3domName"),
-                  value: parameters[j].textContent,
-                  min: parameters[j].getAttribute("min"),
-                  max: parameters[j].getAttribute("max"),
-                  type: (parameters[j].getAttribute("type") !== null) ? parameters[j].getAttribute("type") : "spinner",
-                  render: (parameters[j].getAttribute("render") !== null) ? parameters[j].getAttribute("render") : "true",
-                  step: (parameters[j].getAttribute("step") !== null) ? parameters[j].getAttribute("step") : 
-                                                                       (parameters[j].getAttribute("type") !== "angle") ? 0.1 : 1.0            
+                var currParam = parameters[j];
+                primitiveParameterMap[currPrim.getAttribute("editorName")].parameters.push(
+                { editorName: currParam.getAttribute("editorName"),
+                  x3domName: currParam.getAttribute("x3domName"),
+                  value: currParam.textContent,
+                  min: currParam.getAttribute("min"),
+                  max: currParam.getAttribute("max"),
+                  type: (currParam.getAttribute("type") !== null) ? currParam.getAttribute("type") : "spinner",
+                  render: (currParam.getAttribute("render") !== null) ? currParam.getAttribute("render") : "true",
+                  step: (currParam.getAttribute("step") !== null) ? currParam.getAttribute("step") :
+                                            (currParam.getAttribute("type") !== "angle") ? 0.1 : 1.0
                 } );
             }
        }
@@ -328,11 +330,11 @@ function UI(primitiveManager){
         var obj = {};
 
         obj.get = function(){
-            return document.getElementById(id).value;
+            return $("#" + id).spinner("value");
         };
         
         obj.set = function(value){
-            document.getElementById(id).value = value;
+            $("#" + id).spinner("value", value);
         };
         
         obj.disable = function(bool){

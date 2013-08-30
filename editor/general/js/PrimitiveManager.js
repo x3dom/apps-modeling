@@ -12,7 +12,6 @@ function matrixToString(transformMat){
 //@todo: there is currently no method to query key states in X3DOM (?)
 var keyPressed={};
 
-
 document.addEventListener('keydown', function (e) {
     e = e || window.event;
     keyPressed[e.keyCode] = true;
@@ -140,12 +139,13 @@ function PrimitiveManager(){
         root.appendChild(t);
         
         // wrapper for adding moving functionality, last param is callback function
-        // TODO: last param shall be grid size
+        // TODO: last param shall be grid size for snapping
         new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);
         
         that.primitiveList[id] = t;
         that.primitiveList[id].addEventListener("mousedown",
-            function(){ primitiveSelected(id); }, false);
+            function(){ primitiveSelected(id); },
+        false);
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
         primitiveCounter++;
@@ -218,26 +218,20 @@ function PrimitiveManager(){
      * @param {X3DNode} the interacting element
      * @param {SFVec3f} new translation value
      */
-    function primitiveMoved(elem, pos){
+    function primitiveMoved(elem, pos) {
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
-            if (HANDLING_MODE === "translation")
-            {
-                controller.Activate("translation");
-            }
-
-            var id = elem.getAttribute('id');
-
-            //@todo: is this to expensive? it re-initializes the GUI every time
-            that.selectCurrentPrimitive(id);
+            currentPrimitiveID = elem.getAttribute('id');
+            that.highlightCurrentBoundingVolume(true);
 
             // update GUI elements appropriately
+            // TODO; this is still  _very_ slow in Safari, seems to trigger something else
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
         }
-    };
+    }
     
     
     
@@ -248,10 +242,11 @@ function PrimitiveManager(){
      * @param {Parameters} parameters the parameters that should be set to primitive as default
      * @returns (undefined)
      */
-    this.setDefaultParameters = function(primitive, parameters){
+    this.setDefaultParameters = function(primitive, parameters) {
+        var s = Math.PI / 180;
         for (var i = 0; i < parameters.length; i++){
             primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ? 
-                (parameters[i].value * Math.PI / 180).toString() : parameters[i].value);
+                (parameters[i].value * s).toString() : parameters[i].value);
         }
     };
 
@@ -295,7 +290,7 @@ function PrimitiveManager(){
                 }
             }
 
-            root.removeChild(ot);
+            document.getElementById('root').removeChild(ot);
         }
     };
 
