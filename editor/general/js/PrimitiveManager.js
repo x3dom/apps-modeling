@@ -12,15 +12,16 @@ function matrixToString(transformMat){
 //@todo: there is currently no method to query key states in X3DOM (?)
 var keyPressed={};
 
-document.onkeydown=function(e){
+
+document.addEventListener('keydown', function (e) {
     e = e || window.event;
     keyPressed[e.keyCode] = true;
-};
+}, true);
 
-document.onkeyup=function(e){
+document.addEventListener('keyup', function (e) {
     e = e || window.event;
     keyPressed[e.keyCode] = false;
-};
+}, true);
 
 
 
@@ -139,10 +140,12 @@ function PrimitiveManager(){
         root.appendChild(t);
         
         // wrapper for adding moving functionality, last param is callback function
-        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved);
+        // TODO: last param shall be grid size
+        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);
         
         that.primitiveList[id] = t;
-        that.primitiveList[id].addEventListener("mousedown", function(){primitiveSelected(id);}, false);
+        that.primitiveList[id].addEventListener("mousedown",
+            function(){ primitiveSelected(id); }, false);
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
         primitiveCounter++;
@@ -250,7 +253,7 @@ function PrimitiveManager(){
             primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ? 
                 (parameters[i].value * Math.PI / 180).toString() : parameters[i].value);
         }
-    }
+    };
 
     
     
@@ -269,10 +272,9 @@ function PrimitiveManager(){
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
-    this.removeNode = function(force)
+    this.removeNode = function()
     {
-        //@todo: what does 'force'?!?
-        if (currentPrimitiveID !== null || force) {
+        if (currentPrimitiveID) {
             var ot = document.getElementById(currentPrimitiveID);
             
             if (ot._iMove) {
@@ -306,7 +308,7 @@ function PrimitiveManager(){
         for (var key in that.primitiveList) {
             if (that.primitiveList[key]) {
                 currentPrimitiveID = key;
-                this.removeNode(true);
+                this.removeNode();
             }
         }
 
@@ -356,7 +358,8 @@ function PrimitiveManager(){
                     controller.Activate("translation");
 					snapping.snap();
 				}
-                updateTransformUIFromPrimitive(id, HANDLING_MODE);
+
+                that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
             }
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
             else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
@@ -517,7 +520,7 @@ function PrimitiveManager(){
         //PRIMITIVE MODE
         else
         {
-            that.primitiveList[currentPrimitiveID].children[0];
+            //that.primitiveList[currentPrimitiveID].children[0];
         }
 
         var tempValue = "";
@@ -544,9 +547,10 @@ function PrimitiveManager(){
             MT.Transformation.rotationX = ui.BBTransX.get();
             MT.Transformation.rotationY = ui.BBTransY.get();
             MT.Transformation.rotationZ = ui.BBTransZ.get();
-            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * Math.PI / 180);
-            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * Math.PI / 180);
-            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * Math.PI / 180);
+            var s = Math.PI / 180;
+            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * s);
+            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * s);
+            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * s);
 
             transformMat = rotX.mult(rotY).mult(rotZ);
             MT.setAttribute("matrix", matrixToString(transformMat));
@@ -630,7 +634,7 @@ function PrimitiveManager(){
                 }
             }
             //----
-       }
+        }
         catch(ex){
             console.log("Exception in function updateTransformUIFromPrimitive:" + ex);
         }
@@ -717,9 +721,11 @@ function PrimitiveManager(){
      * @returns {primitive}
      */
     this.getPrimitiveByID = function(id){
-        if (id)
-        {
+        if (id) {
             return that.primitiveList[id];
+        }
+        else {
+            return null;
         }
     };
 
@@ -768,4 +774,3 @@ function PrimitiveManager(){
         return idList;
     };
 }
-

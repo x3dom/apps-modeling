@@ -237,7 +237,9 @@ function UI(primitiveManager){
             .focus(function() {
                     if (selected) {
                       $(selected).css('opacity', 1.0).removeClass('colorwell-selected');
-                      $(selected).onchange = function() { alert("HUHU"); };
+                      $(selected).onchange = function() {
+                          //
+                      };
                     }
                     farbtasticPicker.linkTo(this);
                     p.css('opacity', 1);
@@ -577,13 +579,13 @@ function UI(primitiveManager){
 	/*  
      * Show the 2D-Editor
      */
-    this.editor2D_show = function(mustClosed)
+    this.editor2D_show = function(mustBeClosed)
     {
         $('#Editor2D-Canvas').editor2D('clear');
         $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept').addClass('Editor2D-Icon-Accept-Inactive');
         $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap').addClass('Editor2D-Icon-Snap-Active');
         $('#Editor2D-Canvas').editor2D('setSnapToGrid', true);
-        $('#Editor2D-Canvas').editor2D('setMustClosed', mustClosed);
+        $('#Editor2D-Canvas').editor2D('setMustClosed', mustBeClosed);
         $('#Editor2D-Overlay').css('display', 'block');
 	};
 
@@ -744,8 +746,8 @@ function UI(primitiveManager){
 
             if (name == "Extrusion" || name == "Solid of Revolution") {
                 divID.onclick = function () {
-                    var mustClosed = (name == "Extrusion") ? true : false;
-                    that.editor2D_show(mustClosed);
+                    var mustBeClosed = (name == "Extrusion");
+                    that.editor2D_show(mustBeClosed);
                     primitivType = name;
                 };
             }
@@ -817,7 +819,7 @@ function UI(primitiveManager){
              * Clamps value on min and max if required
              * @param {string} min minimal range of value
              * @param {string} max maximum range of value
-             * @param {string} value param that shoudl be clamped
+             * @param {string} value param that should be clamped
              * @returns (clamped value)
              */
             function clamp(min, max, value) {
@@ -1058,9 +1060,4 @@ function UI(primitiveManager){
             // Use it's class methods:
             tree.activateKey(id);
         };
-
-
-        // Starts initialization of all ui components
-        var that = this;
-
 }
