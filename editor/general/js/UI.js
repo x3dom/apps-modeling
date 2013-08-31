@@ -28,7 +28,7 @@ function UI(primitiveManager){
      * @returns {boolean}
      */
     this.groupModeActive = function(){
-        return that.groupMode;
+        return groupMode;
     };
 
 
@@ -38,7 +38,7 @@ function UI(primitiveManager){
      * @returns {null}
      */
     this.toggleGroupMode = function(val){
-        that.groupMode = val;
+        groupMode = val;
 
         //current group might become null
         if (val){

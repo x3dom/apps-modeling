@@ -47,6 +47,8 @@ function PrimitiveManager(){
     var boundingVolumeHighlighting = true;
     // toggle for primitive highlighting
     var primitiveHighlighting = true;
+    // highlight color
+    var highlightCol = "1 1 0";
     // reference to this object
     var that = this;
     
@@ -259,7 +261,8 @@ function PrimitiveManager(){
     this.removeSnapNode = function(id)
     {
     	var snapPoint = document.getElementById(id);
-    	snapPoint.parentNode.removeChild(snapPoint);
+        if (snapPoint && snapPoint.parentNode)
+    	    snapPoint.parentNode.removeChild(snapPoint);
     };
 	
     
@@ -351,7 +354,6 @@ function PrimitiveManager(){
                 if (HANDLING_MODE === "hand")
 				{
                     controller.Activate("translation");
-					snapping.snap();
 				}
 
                 that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
@@ -366,15 +368,15 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    that.primitiveList[id].highlight(false, "1 1 0");
-                    that.primitiveList[id].highlight(true,  "1 1 0");
+                    that.primitiveList[id].highlight(false, highlightCol);
+                    that.primitiveList[id].highlight(true,  highlightCol);
                 }
                 //remove from selection
                 else
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
 
-                    that.primitiveList[id].highlight(false, "1 1 0");
+                    that.primitiveList[id].highlight(false, highlightCol);
                 }
 
                 //if we started to group primitives, disable the transformation UI
@@ -406,52 +408,39 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.highlightCurrentBoundingVolume = function(bool){
-        var transform, matrixTransform;
-        var group;
-        var volume;
-        var min, max;
-        var box;
+        var volume = null;
+        var transform = document.getElementById('cpnt_transform');
+        var matrixTransform = document.getElementById('cpnt_matrixTransform');
 
-        transform = document.getElementById('cpnt_transform');
-
-        if (currentPrimitiveID !== "")
+        //GROUP MODE
+        if (ui.groupModeActive())
         {
-            matrixTransform = document.getElementById('cpnt_matrixTransform');
+            //@todo: testing, continue implementation
+            var group = groupManager.getCurrentGroup();
 
-            //GROUP MODE
-            if (ui.groupModeActive())
-            {
-                //@todo: testing, continue implementation
-                group = groupManager.getCurrentGroup();
+            transform.setAttribute("translation",  group.getTransformNode().getAttribute("translation"));
+            transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
+            matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
-                transform.setAttribute("translation",  group.getTransformNode().getAttribute("translation"));
-                transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
-                matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+            //@todo: how does it work? (-> see Core.js)
+            volume = group.getGroupNode()._x3domNode.getVolume();
+        }
+        //PRIMITIVE MODE
+        else if (currentPrimitiveID !== "")
+        {
+            transform.setAttribute("translation",  that.primitiveList[currentPrimitiveID].getAttribute("translation"));
+            transform.setAttribute("scale",        that.primitiveList[currentPrimitiveID].getAttribute("scale"));
+            matrixTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
 
-                //@todo: how does it work?
-                volume = group.getGroupNode()._x3domNode.getVolume();
-            }
-            //PRIMITIVE MODE
-            else
-            {
-                transform.setAttribute("translation",  that.primitiveList[currentPrimitiveID].getAttribute("translation"));
-                transform.setAttribute("scale",        that.primitiveList[currentPrimitiveID].getAttribute("scale"));
-                matrixTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
+            volume = that.primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
+        }
 
-                volume = that.primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
-            }
+        if (volume)
+        {
+            var min = x3dom.fields.SFVec3f.copy(volume.min);
+            var max = x3dom.fields.SFVec3f.copy(volume.max);
 
-            min = x3dom.fields.SFVec3f.parse(volume.min);
-            max = x3dom.fields.SFVec3f.parse(volume.max);
-
-            //if min/max are (near to) equal, use standard unit box
-            if (max.subtract(min).length < x3dom.fields.Eps)
-            {
-                min.x = -1; min.y = -1; min.z = -1;
-                max.x = 1;  max.y = 1;  max.z = 1;
-            }
-
-            box = document.getElementById('cpnt');
+            var box = document.getElementById('cpnt');
             box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
                                       min.x+' '+min.y+' '+max.z+', '+
                                       max.x+' '+min.y+' '+max.z+', '+
@@ -461,7 +450,6 @@ function PrimitiveManager(){
                                       max.x+' '+max.y+' '+max.z+', '+
                                       max.x+' '+max.y+' '+min.z );
         }
-
         transform.setAttribute("render", "" + bool);
     };
 
@@ -483,10 +471,10 @@ function PrimitiveManager(){
             {
                 if (that.primitiveList[key])
                 {
-                    that.primitiveList[key].highlight(false, "1 1 0");
+                    that.primitiveList[key].highlight(false, highlightCol);
                 }
             }
-            that.primitiveList[currentPrimitiveID].highlight(true, "1 1 0");
+            that.primitiveList[currentPrimitiveID].highlight(true, highlightCol);
         }
     };
     
@@ -506,7 +494,7 @@ function PrimitiveManager(){
         //GROUP MODE
         if (ui.groupModeActive())
         {
-            group = groupManager.getCurrentGroup()
+            group = groupManager.getCurrentGroup();
 
             MT = group.getMatrixTransformNode();
 
@@ -567,72 +555,67 @@ function PrimitiveManager(){
     //          - actually, some of this is UI functionality
     //          - with groups, this is not only about "primitives" any more
     //          - better assume that we have no parameters, but we only handle the "current" primitive or group
-    this.updateTransformUIFromPrimitive = function(id, mode){
-        try {
-            var interactionMode = HANDLING_MODE;
+    this.updateTransformUIFromPrimitive = function(id, mode) {
+        var interactionMode = HANDLING_MODE;
+        var MT;
+        var group;
+        var vec;
 
-            var MT;
-            var group;
-            var vec;
+        //GROUP MODE
+        if (ui.groupModeActive())
+        {
+            group = groupManager.getCurrentGroup();
 
+            MT = group.getMatrixTransformNode();
+
+            ui.BBPrimName.set(groupManager.getCurrentGroupID());
+        }
+        //PRIMITIVE MODE
+        else
+        {
+            MT = that.primitiveList[id].children[0];
+
+            ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
+        }
+
+        if (interactionMode === "rotation")
+        {
+            //@todo: make this work for group mode
+            ui.BBTransX.set(MT.Transformation.rotationX);
+            ui.BBTransY.set(MT.Transformation.rotationY);
+            ui.BBTransZ.set(MT.Transformation.rotationZ);
+        }
+        else
+        {
             //GROUP MODE
             if (ui.groupModeActive())
             {
-                group = groupManager.getCurrentGroup()
-
-                MT = group.getMatrixTransformNode();
-
-                ui.BBPrimName.set(groupManager.getCurrentGroupID());
+                vec = x3dom.fields.SFVec3f.parse(group.getTransformNode().getAttribute(interactionMode));
             }
             //PRIMITIVE MODE
             else
             {
-                MT = that.primitiveList[id].children[0];
-
-                ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
+                vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[interactionMode].nodeValue);
             }
 
-            if (interactionMode === "rotation")
-            {
-                //@todo: make this work for group mode
-                ui.BBTransX.set(MT.Transformation.rotationX);
-                ui.BBTransY.set(MT.Transformation.rotationY);
-                ui.BBTransZ.set(MT.Transformation.rotationZ);
-            }
-            else
-            {
-                //GROUP MODE
-                if (ui.groupModeActive())
-                {
-                    vec = x3dom.fields.SFVec3f.parse(group.getTransformNode().getAttribute(interactionMode));
-                }
-                //PRIMITIVE MODE
-                else
-                {
-                    vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[interactionMode].nodeValue);
-                }
-
-                ui.BBTransX.set(vec.x.toFixed(5));
-                ui.BBTransY.set(vec.y.toFixed(5));
-                ui.BBTransZ.set(vec.z.toFixed(5));
-            }
-
-            //will be moved to snapping js file
-            //----
-            if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
-            {
-                var objListID = primitiveManager.getIDList();
-
-                if(objListID.length > 1)
-                {
-                    snapping.snap(objListID, snapping.points());
-                }
-            }
-            //----
+            ui.BBTransX.set(vec.x.toFixed(3));
+            ui.BBTransY.set(vec.y.toFixed(3));
+            ui.BBTransZ.set(vec.z.toFixed(3));
         }
-        catch(ex){
-            console.log("Exception in function updateTransformUIFromPrimitive:" + ex);
+
+        //will be moved to snapping js file
+        //----
+        if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
+        {
+            var objListID = primitiveManager.getIDList();
+
+            if (objListID.length > 1)
+            {
+                snapping.snap(objListID, snapping.points());
+                that.highlightCurrentBoundingVolume(true);
+            }
         }
+        //----
     };
 
 

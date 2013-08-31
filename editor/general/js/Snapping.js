@@ -14,8 +14,9 @@ function Snapping()
 	this.init = function()
 	{		
 		var i, pfad = './x3d/JsonFiles/Box.json';
-		var objListID = primitiveManager.getIDList();   // IDs of all elements in view
-		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
+		// IDs of all elements in view (TODO: recreate on change)
+		var objListID = primitiveManager.getIDList();
+		actualObjectID = primitiveManager.getCurrentPrimitive().id;
 
 		if(document.getElementById('snapPoint_' + actualObjectID))
 		{
@@ -48,7 +49,7 @@ function Snapping()
 	this.snap = function(objListID, normalePoint)
 	{	
 		actualObject = primitiveManager.getCurrentPrimitive();
-		actualObjectID = primitiveManager.getCurrentPrimitive ().id;
+		actualObjectID = actualObject.id;
 
         var point1 = primitiveManager.getPosition(objListID[0]);
         var point2 = primitiveManager.getPosition(objListID[1]);
@@ -65,9 +66,9 @@ function Snapping()
 		{
 			if(distance < 2.0)
 			{
-                var pointPosition2_x = point2.x + normale_x.valueOf();
-                var pointPosition2_y = point2.y + normale_y.valueOf();
-                var pointPosition2_z = point2.z + normale_z.valueOf();
+                var pointPosition2_x = point2.x + normale_x;
+                var pointPosition2_y = point2.y + normale_y;
+                var pointPosition2_z = point2.z + normale_z;
 
 				actualObject.setAttribute('translation', pointPosition2_x + ' ' + pointPosition2_y + ' ' + pointPosition2_z);
 			}
@@ -76,9 +77,9 @@ function Snapping()
 		{
 			if(distance < 2.0)
 			{
-                var pointPosition1_x = point1.x + normale_x.valueOf();
-                var pointPosition1_y = point1.y + normale_y.valueOf();
-                var pointPosition1_z = point1.z + normale_z.valueOf();
+                var pointPosition1_x = point1.x + normale_x;
+                var pointPosition1_y = point1.y + normale_y;
+                var pointPosition1_z = point1.z + normale_z;
 
 				actualObject.setAttribute('translation', pointPosition1_x + ' ' + pointPosition1_y + ' ' + pointPosition1_z);
 			}
@@ -86,7 +87,7 @@ function Snapping()
 	};
 	
 	
-	/* Draws point */
+	// Draws point
     function point(id, pfad, translation, rotation)
     {
     	var transform = document.createElement('Transform'); 
@@ -107,7 +108,7 @@ function Snapping()
 		points = jsonObj.snapPoints;		
 		
 		// Create point
-		point(id, pfad, points[0].toString());
+		point(id, pfad, points[0].toString(), "0 0 1 0");
     }
 
 	

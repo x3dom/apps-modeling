@@ -2,7 +2,7 @@
  * Group class. A Group object contains all information about a Group of objects.
  * This includes, for instance, the ids of the objects as well as the group's name.
  */
-function Group(name){
+function Group(name) {
     var that = this;
 
     //list of object IDs
@@ -21,8 +21,7 @@ function Group(name){
     if (typeof name === 'undefined')
     {
         this.name = "group_" + groupManager.groupCounter++;
-    };
-
+    }
 
 
     this.getGroupNode = function(){
@@ -106,6 +105,7 @@ function Group(name){
 
         if (typeof id !== 'undefined')
         {
+            // TODO: variable objectIDList is undefined here, pass as param
             idx = objectIDList.indexOf(id);
 
             //if there is an object with the given ID in the list, remove it - else, do nothing
@@ -128,14 +128,14 @@ function Group(name){
             x3dom.debug.logError("Cannot remove object from group: ID must be specified.");
         }
     };
-};
+}
 
 
 /*
  * The GroupManager component handles all grouping functionality.
  * @returns {GroupManager}
  */
-function GroupManager(){
+function GroupManager() {
 
     // list of all created groups
     this.groupList = [];
@@ -165,17 +165,19 @@ function GroupManager(){
     };
 
 
+    this.primitiveMoved = function(elem, pos) {
+        primitiveManager.highlightCurrentBoundingVolume(true);
+    };
+
 
     this.groupSelectedObjects = function(){
-        var g;
-
         //avoid that two objects belong to the same group:
         //if the user wants to group objects while a group is selected, do nothing
         if (!ui.groupModeActive())
         {
             //put the IDs of the selected objects into a new group
             //(a default name is assigned to the new group)
-            g = new Group();
+            var g = new Group();
             g.addObjectList(primitiveManager.getSelectedPrimitiveIDs());
 
             //put the new group in the list of groups
@@ -188,8 +190,11 @@ function GroupManager(){
             ui.toggleGroupMode(true);
 
             //this is necessary in order to properly initialize the group's bounding box
-            that.currentGroup.getTransformNode()._x3domNode.nodeChanged();
+            var t = that.currentGroup.getTransformNode();
+            t._x3domNode.nodeChanged();
             primitiveManager.highlightCurrentBoundingVolume(true);
+
+            new x3dom.Moveable(document.getElementById("x3d"), t, this.primitiveMoved, 1);
         }
     };
 
@@ -206,4 +211,4 @@ function GroupManager(){
         //disable group mode in the ui
         ui.toggleGroupMode(false);
     };
-};
+}
