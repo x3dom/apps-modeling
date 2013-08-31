@@ -8,7 +8,7 @@ function SnappingArray()
 };
 
 // Specifies the length of the list
-SnappingArray.prototype.Length = function()
+SnappingArray.prototype.ArrayLength = function()
 {
 	return this.snapArray.length;
 };
@@ -18,6 +18,20 @@ SnappingArray.prototype.ClearArray = function()
 {
 	// Set empty
 	this.snapArray = [];	
+};
+
+// Returns the index number of an object
+SnappingArray.prototype.GetIndexNummer = function( object )
+{
+	// Indicates where the object is
+	var index = this.snapArray.indexOf( object );
+
+	if( index >= 0 )
+	{
+		return index;
+	}
+	
+	return -1;
 };
 
 // Give object from the index point
