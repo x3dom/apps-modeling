@@ -29,7 +29,6 @@ function SnapJSON()
 				{
 					snapPoints.push(jsonObj.snapPoints[i]);
 				}
-				alert(snapPoints);
 				return snapPoints;
 				break;
 				
@@ -38,7 +37,6 @@ function SnapJSON()
 				{
 					normale.push(jsonObj.normale[i]);
 				}
-				alert(normale);	
 				return normale;
 				break;
 			

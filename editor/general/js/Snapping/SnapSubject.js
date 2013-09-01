@@ -7,10 +7,10 @@ function SnapSubject()
 }
 
 // reports the event context to all Objects
-SnapSubject.prototype.report = function( context )
+SnapSubject.prototype.Report = function( context )
 {
 	var count = this.observers.ArrayLength();
-	
+	alert("hier");
 	for(var i = 0; i < count; i++)
 	{
 		this.observers.GetArrayObject(i).Update( context );

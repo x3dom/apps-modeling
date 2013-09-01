@@ -2,13 +2,76 @@
 <html>
     <head>
         <script type='text/javascript' src="SnapJSON.js"></script>
+        <script type='text/javascript' src="SnapSubject.js"></script>
+        <script type='text/javascript' src="SnapInherits.js"></script>
+        <script type='text/javascript' src="SnapObserver.js"></script>
+        <script type='text/javascript' src="SnappingArray.js"></script>
+         
         
+        <script>
+            window.onload = function()
+            {
+                var snapSubject = new SnapSubject();
+                var snapObserver = new SnapObserver();
+                my(snapSubject, snapObserver);
+            };
+            
+            function my(snapSubject, snapObserver)
+            {
+                var cont = document.getElementById('MainContainer');      
+                var mainCheck  = document.getElementById('MainCheckBox');
+                
+                document.getElementById('BtnAdd').onclick = function(){snapSubject.AddObserver();};
+               
+                SnapInherits(snapSubject, mainCheck);
+                mainCheck["onclick"] = new Function("mainCheck.Report(mainCheck.checked)");
+                
+                var check  = document.createElement("INPUT");
+                check.type = 'checkbox';
+                
+                SnapInherits(snapObserver, check);              
+                check.Update = function(value)
+                {
+                    this.checked = value;
+                };
+                
+                mainCheck.AddObserver(check);
+                cont.appendChild(check);
+            }
+        </script>
+        
+        
+        <!--
         <script>            
             window.onload = function()
             {
                 var snapJ = new SnapJSON();
-                snapJ.getJSON('apps-modeling/editor/general/x3d/JsonFiles', 'Box', 'snapPoints');   
+                var result = snapJ.getJSON('apps-modeling/editor/general/x3d/JsonFiles', 'Box', 'snapPoints');
+                
+                for(var i = 0; i < result.length; i++)
+                {
+                    console.log(result[i]);
+                }   
             };
         </script>
+        -->
     </head>
+    
+        <body bgcolor="#ff9900">
+        <table width="100%" border="0">
+            <tr>
+                <td align="center"><INPUT style="color: #ff9900" id="BtnAdd" type="button" value='Insert a new "Observer" checkbox'>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" width="100%">Observable/Subject<INPUT id="MainCheckBox" type="checkbox" name="MainCheckBox">Checkbox</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <div id="MainContainer"></div>
+                </td>
+            </tr>
+        </table>        
+    </body>
+    
 </html>
