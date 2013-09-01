@@ -5,7 +5,7 @@ function SnappingArray()
 {
 	// Object List, first empty
 	this.snapArray = [];
-};
+}
 
 // Specifies the length of the list
 SnappingArray.prototype.ArrayLength = function()
