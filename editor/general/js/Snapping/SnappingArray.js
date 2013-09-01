@@ -38,7 +38,7 @@ SnappingArray.prototype.GetArrayObject = function( index )
 
 // This object will be added to the list
 SnappingArray.prototype.SetArrayObject = function( object )
-{
+{	
 	return this.snapArray.push( object );
 };
 
