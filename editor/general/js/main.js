@@ -20,6 +20,7 @@ window.onload = function(){
 
 //utility function - we need it if we want to move an X3DOM object inside the DOM
 //in that case, the X3DOM backend graph needs to be cleared, it then gets rebuilt after re-insertion
+// TODO: this does not trigger any internal cleanups, better also call removeChild on DOM node first
 function removeX3DOMBackendGraph(domNode)
 {
     var children = domNode.childNodes;

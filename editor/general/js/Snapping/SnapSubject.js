@@ -4,7 +4,7 @@
 function SnapSubject()
 {
 	this.observers = new SnappingArray();
-};
+}
 
 // reports the event context to all Objects
 SnapSubject.prototype.report = function( context )
@@ -17,7 +17,7 @@ SnapSubject.prototype.report = function( context )
 	}
 };
 
-// Add nuew Observer Element
+// Add new Observer Element
 SnapSubject.prototype.AddObserver = function( observer )
 {
 	if( !observer.Update )

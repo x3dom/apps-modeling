@@ -5,10 +5,9 @@ function SnapInherits( base, extension )
 {
 	for( var property in base )
 	{
-		try
+        if (base.hasOwnProperty(property))
 		{
 			extension[property] = base[property];
 		}
-		catch( warning ){}
 	}
 }

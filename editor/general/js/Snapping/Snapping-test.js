@@ -1,8 +1,8 @@
-/*function Snapping()
+function Snapping()
 {
-	var points;				/* save the JSON Points 
-	var actualObject;		/* Object actual element 
-	var actualObjectID;		/* ID actual object 
+	var points;				// save the JSON Points
+	var actualObject;		// Object actual element
+	var actualObjectID;		// ID actual object
 	
 	
 	// used in primitiveManager for passing through normal (TODO; where?)
@@ -29,7 +29,7 @@
 		}
 		else
 		{
-			/* add points *
+			// add points
 			if(objListID.length > 1)
 			{
 				for(i = 0; i < objListID.length; i++)
@@ -43,9 +43,7 @@
 	};
 	
 	
-	/*
-	 * Snap the Element
-	 *
+	// Snap the Element
 	this.snap = function(objListID, normalePoint)
 	{	
 		actualObject = primitiveManager.getCurrentPrimitive();
@@ -123,4 +121,3 @@
 		return vHTTPReq.responseText;
 	}
 }
-*/
