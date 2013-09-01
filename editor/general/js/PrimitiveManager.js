@@ -140,6 +140,26 @@ function PrimitiveManager(){
         t.appendChild(mt);
         root.appendChild(t);
         
+        
+        // Snapping temporary test
+        if(element = document.getElementById(id))
+        {
+        	//Subject is observed
+	        SnapInherits(new SnapSubject(), element);       
+			element["onclick"] = new Function("element.Report('ich Bewege mich')");
+				 		
+	 		//Observer what makes Subject
+			SnapInherits(new SnapObserver(), element);
+	        element.Update = function(value)
+	        {
+	        	console.log(value);
+	        };
+	        
+	        //Added to Observer list
+	        element.AddObserver(element);
+        }
+        
+        
         // wrapper for adding moving functionality, last param is callback function
         // TODO: last param shall be grid size for snap-to-grid
         new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);

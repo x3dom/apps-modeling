@@ -10,7 +10,7 @@ function SnapSubject()
 SnapSubject.prototype.Report = function( context )
 {
 	var count = this.observers.ArrayLength();
-	alert("hier");
+	
 	for(var i = 0; i < count; i++)
 	{
 		this.observers.GetArrayObject(i).Update( context );

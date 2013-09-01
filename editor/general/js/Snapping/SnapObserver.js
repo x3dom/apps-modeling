@@ -3,8 +3,8 @@
  */
 function SnapObserver()
 {
-	this.Update = function( params )
+	this.Update = function( value )
 	{
-		//
+		return value;
 	};
 }
