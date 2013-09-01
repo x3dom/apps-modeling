@@ -5,7 +5,7 @@ function SnappingArray()
 {
 	// Object List, first empty
 	this.snapArray = [];
-};
+}
 
 // Specifies the length of the list
 SnappingArray.prototype.ArrayLength = function()
@@ -21,17 +21,9 @@ SnappingArray.prototype.ClearArray = function()
 };
 
 // Returns the index number of an object
-SnappingArray.prototype.GetIndexNummer = function( object )
+SnappingArray.prototype.GetIndexNumber = function( object )
 {
-	// Indicates where the object is
-	var index = this.snapArray.indexOf( object );
-
-	if( index >= 0 )
-	{
-		return index;
-	}
-	
-	return -1;
+	return this.snapArray.indexOf( object );
 };
 
 // Give object from the index point
@@ -41,8 +33,7 @@ SnappingArray.prototype.GetArrayObject = function( index )
 	{
 		return this.snapArray[ index ];
 	}
-	
-	return -1;
+    return null;
 };
 
 // This object will be added to the list
@@ -55,11 +46,9 @@ SnappingArray.prototype.SetArrayObject = function( object )
 SnappingArray.prototype.RemoveArrayObject = function ( object )
 {
 	// Indicates where the object is
-	var index = this.snapArray.indexOf( object );
-	
-	
-	var list_count = this.snapArray.length;
+	var index = this.GetIndexNumber( object );
 
+	var list_count = this.snapArray.length;
 	
 	if(list_count > 0 && index > -1 && index < this.snapArray.length )
 	{
@@ -74,9 +63,7 @@ SnappingArray.prototype.RemoveArrayObject = function ( object )
 				break;
 			
 			default:
-				var head = this.snapArray.slice( 0, index );
-				var tail = this.snapArray.slice( index + 1 );
-				this.snapArray = head.concat( tail );
+				this.snapArray.splice(index, 1);
 				break;	
 		}
 	}

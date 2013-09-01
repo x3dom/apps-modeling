@@ -141,7 +141,7 @@ function PrimitiveManager(){
         root.appendChild(t);
         
         // wrapper for adding moving functionality, last param is callback function
-        // TODO: last param shall be grid size for snapping
+        // TODO: last param shall be grid size for snap-to-grid
         new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);
         
         that.primitiveList[id] = t;
@@ -300,6 +300,7 @@ function PrimitiveManager(){
 
     /*
      * Removes all primitives from the DOM and from primitive array
+     * TODO/FIXME: why was "New" option removed from UI?
      */
     this.removeAllNodes = function()
     {
@@ -605,6 +606,7 @@ function PrimitiveManager(){
 
         //will be moved to snapping js file
         //----
+        /*
         if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
         {
             var objListID = primitiveManager.getIDList();
@@ -615,6 +617,7 @@ function PrimitiveManager(){
                 that.highlightCurrentBoundingVolume(true);
             }
         }
+        */
         //----
     };
 
