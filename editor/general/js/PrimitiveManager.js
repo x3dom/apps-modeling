@@ -144,7 +144,7 @@ function PrimitiveManager(){
         
         // wrapper for adding moving functionality, last param is callback function
         // TODO: last param shall be grid size for snap-to-grid
-        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);
+        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, controller.getGridSize());
         
         that.primitiveList[id] = t;
         that.primitiveList[id].addEventListener("mousedown",
@@ -332,6 +332,19 @@ function PrimitiveManager(){
         that.primitiveList = [];
         currentPrimitiveID = "";
         primitiveCounter = 0;
+    };
+
+
+    this.updateGridSize = function(size)
+    {
+        for (var key in that.primitiveList) {
+            if (that.primitiveList[key]) {
+                var ot = document.getElementById(currentPrimitiveID);
+                if (ot && ot._iMove) {
+                    ot._iMove.setGridSize(size);
+                }
+            }
+        }
     };
     
     

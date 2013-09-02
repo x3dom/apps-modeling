@@ -194,7 +194,8 @@ function GroupManager() {
             t._x3domNode.nodeChanged();
             primitiveManager.highlightCurrentBoundingVolume(true);
 
-            new x3dom.Moveable(document.getElementById("x3d"), t, this.primitiveMoved, 1);
+            new x3dom.Moveable(document.getElementById("x3d"), t, this.primitiveMoved, controller.getGridSize());
+            // TODO: updateGridSize if button was clicked afterwards...
         }
     };
 
