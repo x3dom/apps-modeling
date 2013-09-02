@@ -76,12 +76,13 @@ function UI(primitiveManager){
         that.TBRotate = that.newImageProperty("ButtonRotieren", true);
         that.TBGroup = that.newImageProperty("ButtonGroup", true);
         that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
+        that.TBSnapToGrid = that.newImageProperty("ButtonSnapToGrid", true);
         that.TBSnap = that.newImageProperty("SnapPoints", true);
         that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
        
         that.BBPrimName = that.newTextProperty("primitiveName", true);
         that.BBDelete = that.newImageProperty("deletePrimitive", true);
-        that.BBSnap = that.newImageProperty("snapSwitchButton", true);
+        that.BBClone = that.newImageProperty("clonePrimitiveGroup", true);
 
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
@@ -641,7 +642,7 @@ function UI(primitiveManager){
     /*
      * Toggle Snap to Grid
      */
-    this.editor2D_toogleSnap = function()
+    this.editor2D_toggleSnap = function()
     {
         var snapToGrid = $('#Editor2D-Canvas').editor2D('getSnapToGrid');
 

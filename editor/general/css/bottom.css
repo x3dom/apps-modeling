@@ -1,6 +1,6 @@
 #objectName{ float: left; margin-left: 5px; margin-right: 5px; }
 #coordinatesValue{ float: right; margin-right: 5px; }
-.objectLabel{ color: white; float:left; margin-top: 4px; }
+.objectLabel{ color: white; float:left; margin-top: 4px; margin-right: 5px; }
 
 #Unten
 {
@@ -10,6 +10,8 @@
 	border-bottom: none;
 	left: 50%;
 	margin-left: -342px;
+        padding-left: 10px;
+        padding-right: 10px;
 	height: 40px;
 	width: 685px;
 	bottom: 0px;
@@ -19,7 +21,7 @@
 
 #primitiveName
 {
-	width: 90px;
+	width: 120px;
 	float:left;
 	font-weight: bold;
 	border-radius: 5px 0px 0px 5px;
@@ -35,11 +37,23 @@
 #deletePrimitive
 {
 	width: 23px;
-	float:right;
+	float: left;
 	height: 23px;
 	border: solid 1px gray;
 	border-radius: 0px 5px 5px 0px;
 }
+
+
+#clonePrimitiveGroup
+{
+	width: 23px;
+	float: left;
+	height: 23px;
+	border: solid 1px gray;
+        border-right: none;
+}
+
+
 
 .amount
 {

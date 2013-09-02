@@ -190,7 +190,9 @@
                                 onclick="controller.Activate('scale');"/></div>
     <div class="rightBorder"><img title="Activates rotation mode of selected primitives" src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('rotation');"/></div>
-    <div class="leftBorder"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
+    <div class="leftBorder"><img title="Snaps/Unsnaps the selected primitive to grid during translation" src="images/snapGrid_off.png" id="ButtonSnapToGrid" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.snapPrimitiveToGrid();"/></div>
+    <div class="buttonTop"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
                                 onclick="snapping.init();"/></div>
     <div class="buttonTop"><img title="Creates a group of the selected primitives" src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="groupManager.groupSelectedObjects();"/></div>
@@ -204,6 +206,7 @@
             <p>
                 <label for="primitiveName" class="objectLabel">Object:</label>
                 <input type="text" title="Name of the selected primitive. Can be renamed in this field" id="primitiveName" onchange="primitiveManager.setPrimitiveName();" class="amount" value=""/>
+                <img title="Clones the selected primitive/group" src="images/clonePrimitiveGroup.png" id="clonePrimitiveGroup" onclick="primitiveManager.clonePrimitiveGroup()" onmouseover="this.style.cursor='pointer';"/>
                 <img title="Removes the selected primitive" src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
             </p>
         </div>
@@ -214,10 +217,6 @@
                 <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
                 <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
             </p>
-        </div>
-        <div id="snapToWhat">
-                <!--<label for="snapToGrid" class="text-slider">Snap to grid:</label><input class="amount" type="checkbox" id="snapToGrid" value="1.0" />-->
-                <div title="Snaps the primitive to raster grid or unsnaps it" id="snapSwitchButton" style="float:left; border: solid 1px gray; border-radius: 5px; padding: 3px; padding-left: 10px; padding-right: 10px; margin-top: 13px; margin-left: 13px;"><input type="checkbox" id="snapToGrid" /></div>
         </div>
 </div>
 
@@ -271,7 +270,7 @@
             <a id="Editor2D-Icon-Pointer" class="Editor2D-Icon-Pointer" href="javascript:ui.editor2D_mode(1);" title="Pointer Tool"></a>
             <a id="Editor2D-Icon-Eraser" class="Editor2D-Icon-Eraser" href="javascript:ui.editor2D_mode(2);" title="Eraser Tool"></a>
             <div class="Editor2D-Menu-Separator"></div>
-            <a id="Editor2D-Icon-Snap" class="Editor2D-Icon-Snap-Active" href="javascript:ui.editor2D_toogleSnap();" title="Snap to Grid"></a>
+            <a id="Editor2D-Icon-Snap" class="Editor2D-Icon-Snap-Active" href="javascript:ui.editor2D_toggleSnap();" title="Snap to Grid"></a>
             <a id="Editor2D-Icon-Move" class="Editor2D-Icon-Move" href="javascript:ui.editor2D_mode(3);" title="Move Tool"></a>
             <a id="Editor2D-Icon-Zoom" class="Editor2D-Icon-Zoom" href="javascript:ui.editor2D_mode(4);" title="Zoom Tool"></a>
             <div class="Editor2D-Menu-Separator"></div>

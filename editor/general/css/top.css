@@ -18,13 +18,14 @@
 /* Images */
 #DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; border: solid 1px #fff; }
 #DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 0px; border: solid 1px #fff; }
-#SnapPoints{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; margin-right: 5px; border: solid 1px gray; }
+#SnapPoints{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; border: solid 1px gray; }
 #ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-right: 5px; margin-left: 5px; }
 #ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonRotieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-right: 0px; }
 #ButtonGroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonUngroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonSnapToGrid{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; margin-right: 5px; border: solid 1px gray; }
 .buttonTop{ float:left; }
 
 .buttonPlane{ margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
@@ -33,17 +34,17 @@
 .leftBorder{ margin-left: 5px; padding-left: 5px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
 .rightBorder{ padding-right: 5px; height:41px; float:left; }
 
-#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #ButtonGroup, #ButtonUngroup
+#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #ButtonGroup, #ButtonUngroup, #ButtonSnapToGrid
 {
     border:1px solid gray;
 }
 
-#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover, #ButtonGroup:hover, #ButtonUngroup:hover
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover, #ButtonGroup:hover, #ButtonUngroup:hover, #ButtonSnapToGrid:hover
 {
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active, #ButtonSnapToGrid:active
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,

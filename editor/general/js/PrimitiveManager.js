@@ -93,6 +93,8 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         t.setAttribute("scale", "1 1 1");
+        
+        t.PrimType = primitive;
 
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
 
@@ -142,7 +144,7 @@ function PrimitiveManager(){
         
         // wrapper for adding moving functionality, last param is callback function
         // TODO: last param shall be grid size for snap-to-grid
-        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, 1);
+        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, controller.getGridSize());
         
         that.primitiveList[id] = t;
         that.primitiveList[id].addEventListener("mousedown",
@@ -156,7 +158,27 @@ function PrimitiveManager(){
         that.selectCurrentPrimitive(id);
         ui.treeViewer.addPrimitive(id, id);
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
+        
+        return that.primitiveList[id];
     };
+    
+    
+    
+    /*
+     * Clones a primitive with all it's parameters
+     * @returns {null}
+     */
+    this.clonePrimitiveGroup = function(){
+        var primitiveToClone = that.primitiveList[currentPrimitiveID];
+        var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].PrimType, that.primitiveList[currentPrimitiveID].Parameters);
+        clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
+        clone.setAttribute("scale", primitiveToClone.getAttribute("scale"));
+        clone.IDMap.name = "clone_" + primitiveToClone.IDMap.name;
+        that.updateTransformUIFromPrimitive(currentPrimitiveID, HANDLING_MODE);
+        ui.treeViewer.rename(currentPrimitiveID, clone.IDMap.name);
+        that.highlightCurrentBoundingVolume(true);
+    };
+    
 
     
     
@@ -314,6 +336,19 @@ function PrimitiveManager(){
         that.primitiveList = [];
         currentPrimitiveID = "";
         primitiveCounter = 0;
+    };
+
+
+    this.updateGridSize = function(size)
+    {
+        for (var key in that.primitiveList) {
+            if (that.primitiveList[key]) {
+                var ot = document.getElementById(currentPrimitiveID);
+                if (ot && ot._iMove) {
+                    ot._iMove.setGridSize(size);
+                }
+            }
+        }
     };
     
     
@@ -627,12 +662,12 @@ function PrimitiveManager(){
      * Enables the transformation UI elements.
      */
     this.enableTransformationUI = function(){
-        ui.BBSnap.disable(false);
         ui.BBTransX.disable(false);
         ui.BBTransY.disable(false);
         ui.BBTransZ.disable(false);
         ui.BBPrimName.disable(false);
         ui.BBDelete.disable(false);
+        ui.BBClone.disable(false);
     };
 
 
@@ -642,7 +677,6 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.disableTransformationUI = function(){
-        ui.BBSnap.disable(true);
         //ui.BBTransX.set("");
         ui.BBTransX.disable(true);
         //ui.BBTransY.set("");
@@ -652,6 +686,7 @@ function PrimitiveManager(){
         //ui.BBPrimName.set("");
         ui.BBPrimName.disable(true);
         ui.BBDelete.disable(true);
+        ui.BBClone.disable(true);
     };
 
 
