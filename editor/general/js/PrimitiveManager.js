@@ -254,6 +254,8 @@ function PrimitiveManager(){
             ui.BBTransX.set(pos.x.toFixed(3));
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
+            
+            snapping.init();
         }
     }
     
@@ -637,22 +639,6 @@ function PrimitiveManager(){
             ui.BBTransY.set(vec.y.toFixed(3));
             ui.BBTransZ.set(vec.z.toFixed(3));
         }
-
-        //will be moved to snapping js file
-        //----
-        /*
-        if (document.getElementById('snapPoint_' + primitiveManager.getCurrentPrimitiveID()))
-        {
-            var objListID = primitiveManager.getIDList();
-
-            if (objListID.length > 1)
-            {
-                snapping.snap(objListID, snapping.points());
-                that.highlightCurrentBoundingVolume(true);
-            }
-        }
-        */
-        //----
     };
 
 
