@@ -324,7 +324,6 @@ function PrimitiveManager(){
 
     /*
      * Removes all primitives from the DOM and from primitive array
-     * TODO/FIXME: why was "New" option removed from UI?
      */
     this.removeAllNodes = function()
     {

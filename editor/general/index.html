@@ -132,10 +132,11 @@
 <div id="Oben">
     <div id="fileMenu" class="header">
         <ul class="nav">
-            <li><a>Server</a>
+            <li><a>Scene</a>
                 <ul>
-                    <li><a href="#" id="newFile"  onmouseover="this.style.cursor='pointer';">Fetch ...</a></li>
-                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Store ...</a></li>
+                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllNodes()" onmouseover="this.style.cursor='pointer';">New</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Fetch...</a></li>
+                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Store...</a></li>
                 </ul>
             </li>
         </ul>
