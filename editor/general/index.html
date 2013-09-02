@@ -190,7 +190,9 @@
                                 onclick="controller.Activate('scale');"/></div>
     <div class="rightBorder"><img title="Activates rotation mode of selected primitives" src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('rotation');"/></div>
-    <div class="leftBorder"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
+    <div class="leftBorder"><img title="Snaps/Unsnaps the selected primitive to grid during translation" src="images/snapGrid_off.png" id="ButtonSnapToGrid" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.snapPrimitiveToGrid();"/></div>
+    <div class="buttonTop"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
                                 onclick="snapping.init();"/></div>
     <div class="buttonTop"><img title="Creates a group of the selected primitives" src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="groupManager.groupSelectedObjects();"/></div>
@@ -214,10 +216,6 @@
                 <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
                 <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
             </p>
-        </div>
-        <div id="snapToWhat">
-                <!--<label for="snapToGrid" class="text-slider">Snap to grid:</label><input class="amount" type="checkbox" id="snapToGrid" value="1.0" />-->
-                <div title="Snaps the primitive to raster grid or unsnaps it" id="snapSwitchButton" style="float:left; border: solid 1px gray; border-radius: 5px; padding: 3px; padding-left: 10px; padding-right: 10px; margin-top: 13px; margin-left: 13px;"><input type="checkbox" id="snapToGrid" /></div>
         </div>
 </div>
 

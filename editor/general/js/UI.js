@@ -76,12 +76,12 @@ function UI(primitiveManager){
         that.TBRotate = that.newImageProperty("ButtonRotieren", true);
         that.TBGroup = that.newImageProperty("ButtonGroup", true);
         that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
+        that.TBSnapToGrid = that.newImageProperty("ButtonSnapToGrid", true);
         that.TBSnap = that.newImageProperty("SnapPoints", true);
         that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
        
         that.BBPrimName = that.newTextProperty("primitiveName", true);
         that.BBDelete = that.newImageProperty("deletePrimitive", true);
-        that.BBSnap = that.newImageProperty("snapSwitchButton", true);
 
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({

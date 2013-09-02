@@ -627,7 +627,6 @@ function PrimitiveManager(){
      * Enables the transformation UI elements.
      */
     this.enableTransformationUI = function(){
-        ui.BBSnap.disable(false);
         ui.BBTransX.disable(false);
         ui.BBTransY.disable(false);
         ui.BBTransZ.disable(false);
@@ -642,7 +641,6 @@ function PrimitiveManager(){
      * @returns {undefined}
      */
     this.disableTransformationUI = function(){
-        ui.BBSnap.disable(true);
         //ui.BBTransX.set("");
         ui.BBTransX.disable(true);
         //ui.BBTransY.set("");

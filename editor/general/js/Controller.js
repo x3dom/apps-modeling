@@ -148,6 +148,25 @@ function Controller(ui){
             document.getElementById("DeletePlane").style.border="solid 1px #fff";
     	}
     };
+    
+    
+    
+    this.snapPrimitiveToGrid = function(){
+        var snapToGridButton = document.getElementById("ButtonSnapToGrid");
+    	
+    	if (snapToGridButton.getAttribute("render") === "true")
+    	{
+            snapToGridButton.setAttribute("render", "false");
+            document.getElementById("ButtonSnapToGrid").style.border="solid 1px gray";
+            document.getElementById("ButtonSnapToGrid").src="images/snapGrid_off.png";
+    	}
+    	else
+    	{
+            snapToGridButton.setAttribute("render", "true");
+            document.getElementById("ButtonSnapToGrid").style.border="solid 1px #fff";
+            document.getElementById("ButtonSnapToGrid").src="images/snapGrid_on.png";
+    	}
+    };
 }
 
 
