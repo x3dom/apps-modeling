@@ -171,8 +171,9 @@ function PrimitiveManager(){
     this.clonePrimitiveGroup = function(){
         var primitiveToClone = that.primitiveList[currentPrimitiveID];
         var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].PrimType, that.primitiveList[currentPrimitiveID].Parameters);
-        
-       // clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
+        clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
+        clone.setAttribute("scale", primitiveToClone.getAttribute("scale"));
+        that.highlightCurrentBoundingVolume(true);
     };
     
 
