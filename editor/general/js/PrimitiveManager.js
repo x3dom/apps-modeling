@@ -173,6 +173,8 @@ function PrimitiveManager(){
         var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].PrimType, that.primitiveList[currentPrimitiveID].Parameters);
         clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
         clone.setAttribute("scale", primitiveToClone.getAttribute("scale"));
+        clone.IDMap.name = "Clone_" + primitiveToClone.IDMap.name;
+        that.updateTransformUIFromPrimitive(currentPrimitiveID, HANDLING_MODE);
         that.highlightCurrentBoundingVolume(true);
     };
     
