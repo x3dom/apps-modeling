@@ -642,7 +642,7 @@ function UI(primitiveManager){
     /*
      * Toggle Snap to Grid
      */
-    this.editor2D_toogleSnap = function()
+    this.editor2D_toggleSnap = function()
     {
         var snapToGrid = $('#Editor2D-Canvas').editor2D('getSnapToGrid');
 

@@ -166,6 +166,18 @@ function Controller(ui){
             document.getElementById("ButtonSnapToGrid").style.border="solid 1px #fff";
             document.getElementById("ButtonSnapToGrid").src="images/snapGrid_on.png";
     	}
+
+        primitiveManager.updateGridSize(this.getGridSize());
+    };
+
+
+    /*
+     * Gets grid size or 0 if no snapping
+     */
+    this.getGridSize = function()
+    {
+        var snapToGrid = (document.getElementById("ButtonSnapToGrid").getAttribute("render") === "true");
+        return (snapToGrid == true) ? 1 : 0;     // TODO; user-definable grid size?
     };
 }
 
