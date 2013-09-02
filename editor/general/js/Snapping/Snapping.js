@@ -3,10 +3,46 @@
  */
 function Snapping()
 {
+	// ist snapping starting?
+	var snappingBool = false;
+
+
+	/*
+	 * Starts the ability to snapping
+	 */
 	this.init = function()
 	{
 		setSnapping();
 	};
+	
+	
+	/*
+	 * For the button on the top bar, checks whether set or not
+	 */
+	this.startSnapping = function()
+	{
+		if(snapping.getIsSnapping() == false){ snapping.setIsSnapping( true ); }
+		else{ snapping.setIsSnapping( false ); }
+	};
+	
+	
+	/*
+	 * Set snapping on or off
+	 */
+	this.setIsSnapping = function( value )
+	{
+		snappingBool = value;
+	};
+	
+	
+	/*
+	 * Give condition of snapping
+	 */
+	this.getIsSnapping = function()
+	{
+		return snappingBool;
+	};
+	
 	
     /*
      * Observers properties are added to any existing element
@@ -21,7 +57,7 @@ function Snapping()
     	var snapSubject = new SnapSubject();
     	
 	    if(elementList.length != null)
-	    {
+	    {	    	
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
 	    		element = document.getElementById(elementList[i]);
@@ -29,9 +65,8 @@ function Snapping()
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
 		        //Added onclick      
-				element["onmousedown"] = new Function("element.Report(primitiveManager.getCurrentPrimitiveID())");
+				element["onmousedown"] = new Function("element.Report(primitiveManager.getCurrentPrimitiveID())");				
 				
-								
 		 		//Observer what makes Subject
 				SnapInherits(snapObserver, element); 				
 		        //Updates the changed parameters
