@@ -93,6 +93,8 @@ function PrimitiveManager(){
         t.setAttribute("id", id);
         t.setAttribute("translation", "0 0 0");
         t.setAttribute("scale", "1 1 1");
+        
+        t.PrimType = primitive;
 
         t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
 
@@ -156,7 +158,23 @@ function PrimitiveManager(){
         that.selectCurrentPrimitive(id);
         ui.treeViewer.addPrimitive(id, id);
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
+        
+        return that.primitiveList[id];
     };
+    
+    
+    
+    /*
+     * Clones a primitive with all it's parameters
+     * @returns {null}
+     */
+    this.clonePrimitiveGroup = function(){
+        var primitiveToClone = that.primitiveList[currentPrimitiveID];
+        var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].PrimType, that.primitiveList[currentPrimitiveID].Parameters);
+        
+       // clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
+    };
+    
 
     
     
