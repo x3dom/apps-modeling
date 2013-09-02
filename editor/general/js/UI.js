@@ -82,6 +82,7 @@ function UI(primitiveManager){
        
         that.BBPrimName = that.newTextProperty("primitiveName", true);
         that.BBDelete = that.newImageProperty("deletePrimitive", true);
+        that.BBClone = that.newImageProperty("clonePrimitiveGroup", true);
 
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({

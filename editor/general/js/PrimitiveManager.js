@@ -632,6 +632,7 @@ function PrimitiveManager(){
         ui.BBTransZ.disable(false);
         ui.BBPrimName.disable(false);
         ui.BBDelete.disable(false);
+        ui.BBClone.disable(false);
     };
 
 
@@ -650,6 +651,7 @@ function PrimitiveManager(){
         //ui.BBPrimName.set("");
         ui.BBPrimName.disable(true);
         ui.BBDelete.disable(true);
+        ui.BBClone.disable(true);
     };
 
 
