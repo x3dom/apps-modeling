@@ -167,7 +167,9 @@ function Controller(ui){
             document.getElementById("ButtonSnapToGrid").src="images/snapGrid_on.png";
     	}
 
-        primitiveManager.updateGridSize(this.getGridSize());
+        var size = this.getGridSize();
+        primitiveManager.updateGridSize(size);
+        groupManager.updateGridSize(size);
     };
 
 
@@ -177,8 +179,9 @@ function Controller(ui){
     this.getGridSize = function()
     {
         var snapToGrid = (document.getElementById("ButtonSnapToGrid").getAttribute("render") === "true");
-        return (snapToGrid == true) ? 1 : 0;     // TODO; user-definable grid size?
+        // TODO: what about user-definable grid size?
+        // But perhaps requires dynamic adaptions of grid plane...
+        return (snapToGrid == true) ? 0.5 : 0;
     };
 }
-
 

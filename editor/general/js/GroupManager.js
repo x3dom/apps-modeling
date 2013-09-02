@@ -195,10 +195,18 @@ function GroupManager() {
             primitiveManager.highlightCurrentBoundingVolume(true);
 
             new x3dom.Moveable(document.getElementById("x3d"), t, this.primitiveMoved, controller.getGridSize());
-            // TODO: updateGridSize if button was clicked afterwards...
         }
     };
 
+    this.updateGridSize = function(size)
+    {
+        if (this.currentGroup) {
+            var ot = this.currentGroup.getTransformNode();
+            if (ot && ot._iMove) {
+                ot._iMove.setGridSize(size);
+            }
+        }
+    };
 
 
     this.ungroupSelectedObjects = function(){
