@@ -24,26 +24,29 @@ function Snapping()
 	    {
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
-	    		element = document.getElementById(elementList[i]);	
-	    		console.log(elementList[i]);
-	    		
+	    		element = document.getElementById(elementList[i]);
 	    		 		
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
 		        //Added onclick      
-				element["onmousedown"] = new Function('element.Report(snapping.getParameter())');
+				element["onmousedown"] = new Function("element.Report(primitiveManager.getCurrentPrimitiveID())");
 				
 								
 		 		//Observer what makes Subject
 				SnapInherits(snapObserver, element); 				
 		        //Updates the changed parameters
-    	    	element.Update = function( postPosition )
+    	    	element.Update = function( myPosition, postPosition )
     	    	{
-    	    		// TODO: Need ID of the element is updated in the background
-    	    		var index = SnappingArray.GetIndexNumber(this.Object);
-    	    		console.log(index);
-    	    		
-    	    		snapping.getDistance(postPosition, 1); 
+    	    		try
+    	    		{
+    	    			var distance = snapping.getDistance( myPosition, postPosition );
+    	    			console.log(distance);
+    	    		}
+    	    		catch(event)
+    	    		{
+    	    			console.log(event);
+    	    		}
+    	    		 
     	    	};
 		        //Added to Observer list 
 		        element.AddObserver(element);
@@ -51,36 +54,17 @@ function Snapping()
 	    }
     };
     
-    /*
-     * Each element calls this method when it is clicked, and is registered by the other elements
-     */
-    this.getParameter = function()
-    {
-    	return primitiveManager.getPosition( primitiveManager.getCurrentPrimitiveID() );
-    };
-    
+   
     /*
      * Calculated distance to the elements
      */
-    this.getDistance = function(postPosition, myPosition)
+    this.getDistance = function( myPosition, postPosition )
     {
     	distance = ((postPosition.x - myPosition.x) * (postPosition.x - myPosition.x)) +
     			   ((postPosition.y - myPosition.y) * (postPosition.y - myPosition.y)) +
     			   ((postPosition.z - myPosition.z) * (postPosition.z - myPosition.z));
-    
-    	if(distance == 0)
-    	{
-    		return 0;
-    	}
-    	
-    	if(distance < 0)
-    	{
-    		distance = distance * (-1);
-    	}
     	
     	result = Math.sqrt(distance);
-    	
-    	console.log(result);
     	return result;
     };
 }

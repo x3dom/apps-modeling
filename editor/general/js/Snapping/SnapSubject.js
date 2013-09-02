@@ -10,11 +10,23 @@ function SnapSubject()
 SnapSubject.prototype.Report = function( context )
 {
 	var count = this.observers.ArrayLength();
-	
-	for(var i = 0; i < count; i++)
-	{
-		this.observers.GetArrayObject(i).Update( context );
-	}
+ 	
+ 	try
+ 	{
+ 		//post position is the position of the selected item
+		var postPosition = primitiveManager.getPosition(context);
+		
+		for(var i = 0; i < count; i++)
+		{
+			//myPosition is the position of the other member from ObjectArray
+			var myPosition = primitiveManager.getPosition(this.observers.GetArrayObject(i).id);	
+			this.observers.GetArrayObject(i).Update( myPosition, postPosition );
+		}	
+ 	}
+ 	catch(event)
+ 	{
+ 		console.log(event);
+ 	}
 };
 
 // Add new Observer Element
