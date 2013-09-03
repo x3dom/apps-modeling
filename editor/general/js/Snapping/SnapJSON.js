@@ -24,6 +24,7 @@ function SnapJSON()
 			
 		switch(propertie)
 		{
+			//Draw Snappoints
 			case 'snapPoints':
 				for(var i = 0; i < jsonObj.snapPoints.length; i++)
 				{
@@ -32,6 +33,7 @@ function SnapJSON()
 				return snapPoints;
 				break;
 				
+			//Draw Normale
 			case 'normale':
 				for(var i = 0; i < jsonObj.normale.length; i++)
 				{

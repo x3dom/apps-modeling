@@ -24,11 +24,12 @@ function Snapping()
 			document.getElementById("SnapPoints").style.border="solid 1px gray";
             document.getElementById("SnapPoints").src = "./images/magnet_off.png";
             
-            //remove existing lines
+            //remove existing lines and Points
             elementList = primitiveManager.getIDList();
             for(var i = 0; i < elementList.length; i++)
             {
             	primitiveManager.removeSnapNode(elementList[i] + '_line');
+            	primitiveManager.removeSnapNode(elementList[i] + '_point');
             }
 		}
 	};
@@ -151,10 +152,11 @@ function Snapping()
     /*
      * Draws the points from the JSON file
      */
-    function setPoint(pointPosition, objectName)
-    {    	   	
+    function setPoint(pointPosition, objectName, postObj)
+    {
+    	temp = postObj.id + '_point';
     	var pointTransform = document.createElement('Transform');
-    	pointTransform.setAttribute('id', 'pointsJSON');
+    	pointTransform.setAttribute('id', temp);
     	
     	var pointShape = document.createElement('Shape');
     	var pointAppearance = document.createElement('Appearance');
