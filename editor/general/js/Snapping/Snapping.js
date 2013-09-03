@@ -66,11 +66,7 @@ function Snapping()
 				SnapInherits(snapObserver, element);
 				//Added to Observer list 
 		        element.AddObserver(element);
-				
-				
-				//Added mouseevent
-				//element.onmousedown = function(){ element.Report(primitiveManager.getCurrentPrimitiveID()); };
-				
+								
 				
 			 	//Updates the changed parameters
     	    	element.Update = function( myPosition, postPosition, myObj, postObj )
@@ -79,6 +75,10 @@ function Snapping()
     	    		{
     	    			var distance = snapping.getDistance( myPosition, postPosition );
     	    			console.log(myObj.id + " zu " + postObj.id + " : " + distance);
+    	    			
+    	    			var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
+    	    			var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
+    	    			setLines( point1, point2 );
     	    		}
     	    		catch(event)
     	    		{
@@ -102,5 +102,62 @@ function Snapping()
     	
     	result = Math.sqrt(distance);
     	return result;
+    };
+    
+    
+    /*
+     * Draws a line between two elements
+     */
+    function setLines(point1, point2)
+    {    	   	
+    	var lineTransform = document.createElement('Transform');
+    	lineTransform.setAttribute('id', 'pointLine');
+    	
+    	var lineShape = document.createElement('Shape');
+    	var lineAppearance = document.createElement('Appearance');
+    	var lineMaterial = document.createElement('Material');
+    	lineMaterial.setAttribute('emissiveColor', '1 1 0');
+    	
+    	var lineSet = document.createElement('IndexedLineSet');
+    	var lineSetCoordinate = document.createElement('Coordinate');
+    	lineSet.setAttribute('coordIndex', '0 0 1 -1');
+    	lineSetCoordinate.setAttribute('Point', point1 + ', ' + point2);
+    	
+    	lineAppearance.appendChild(lineMaterial);
+    	lineShape.appendChild(lineAppearance);
+    	lineSet.appendChild(lineSetCoordinate);
+    	lineShape.appendChild(lineSet);
+    	lineTransform.appendChild(lineShape);
+    	
+    	var lineSnap = document.getElementById('snapLines');
+    	lineSnap.appendChild(lineTransform);
+    };
+    
+    
+    /*
+     * Draws the points from the JSON file
+     */
+    function setPoints(point1, point2)
+    {    	   	
+    	var pointTransform = document.createElement('Transform');
+    	pointTransform.setAttribute('id', 'pointsJSON');
+    	
+    	var pointShape = document.createElement('Shape');
+    	var pointAppearance = document.createElement('Appearance');
+    	var pointMaterial = document.createElement('Material');
+    	lineMaterial.setAttribute('emissiveColor', '1 1 0');
+    	
+    	var pointSet = document.createElement('LineSet');
+    	var pointSetCoordinate = document.createElement('Coordinate');
+    	pointSetCoordinate.setAttribute('Point', point1 + ', ' + point2);
+    	
+    	pointAppearance.appendChild(pointMaterial);
+    	pointShape.appendChild(pointAppearance);
+    	pointSet.appendChild(pointSetCoordinate);
+    	pointShape.appendChild(pointSet);
+    	pointTransform.appendChild(pointShape);
+    	
+    	var pointSnap = document.getElementById('snapPoints');
+    	pointSnap.appendChild(pointTransform);
     };
 }
