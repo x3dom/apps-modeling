@@ -1,5 +1,5 @@
 /*
- * 
+ * The Snapping class regulates the central functionality
  */
 function Snapping()
 {
@@ -12,11 +12,17 @@ function Snapping()
 		if(snapBool == false)
 		{
 			snapBool = true;
-			setSnapping();		
+			setSnapping();
+			
+			document.getElementById("SnapPoints").style.border="solid 1px #fff";
+            document.getElementById("SnapPoints").src = "./images/magnet_on.png";
 		}
 		else
 		{
 			snapBool = false;
+			
+			document.getElementById("SnapPoints").style.border="solid 1px gray";
+            document.getElementById("SnapPoints").src = "./images/magnet_off.png";
 		}
 	
 	};
