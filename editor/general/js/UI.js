@@ -956,7 +956,7 @@ function UI(primitiveManager){
                     });
                 }
             }
-        }
+        };
 
 
         /*
