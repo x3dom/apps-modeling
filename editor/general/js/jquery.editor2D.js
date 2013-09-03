@@ -130,7 +130,7 @@
 		this.mouseDownListener = function (evt)
 		{
 			//Update mouse position
-			that.updateMousePos(evt)
+			that.updateMousePos(evt);
 			
 			evt.preventDefault();
 			evt.stopPropagation();
@@ -254,7 +254,7 @@
 		this.mouseWheelListener = function (evt)
 		{
 			//Update mouse position
-			that.updateMousePos(evt)
+			that.updateMousePos(evt);
 			
 			//Check for up- or down-scroll
 			if (evt.wheelDelta > 0 || evt.detail > 0) 
@@ -278,7 +278,7 @@
 				that.addPoint();
 				that.draw();
 			}
-		}
+		};
 		
 		/*
 		 * Handle 'mouseout'-event
@@ -335,7 +335,7 @@
 				that.gridSize += delta;
 				that.draw();
 			}
-		}
+		};
 		
 		/*
 		 * 
@@ -421,6 +421,7 @@
 				var distance = Math.pow(this.points[0].x - this.mousePosX, 2) + Math.pow(this.points[0].y - this.mousePosY, 2);
 				return (distance <= 0.25);
 			}
+            return false;
 		};
 
         /*
@@ -479,7 +480,7 @@
                 {
                     for (var c=0; c<this.points[p].control.length; c++)
                     {
-                        var distance = Math.pow(this.points[p].control[c].x - this.mousePosX, 2) + Math.pow(this.points[p].control[c].y - this.mousePosY, 2);
+                        distance = Math.pow(this.points[p].control[c].x - this.mousePosX, 2) + Math.pow(this.points[p].control[c].y - this.mousePosY, 2);
                         if (distance <= 0.02)
                         {
                             this.points[p].control[c].over = true;
@@ -541,7 +542,7 @@
 			var dirVecX = this.mousePosX - this.actPoint.x;
 			var dirVecY = this.mousePosY - this.actPoint.y;
 			
-			if (Math.abs(dirVecX > 0.1) || Math.abs(dirVecY) > 0.1)
+			if (Math.abs(dirVecX) > 0.1 || Math.abs(dirVecY) > 0.1)
 			{
 				if (this.actPoint.control.length == 0) 
 				{
@@ -578,8 +579,8 @@
 			{
 				that.actPoint.x = x;
 				that.actPoint.y = y;
-				that.actPoint.lock = false
-				that.actPoint.opposite.lock = false
+				that.actPoint.lock = false;
+				that.actPoint.opposite.lock = false;
 			}
 			else
 			{
@@ -671,7 +672,7 @@
                 }
                 //this.unselectPoints();
             }
-        }
+        };
 		
 		/*
 		 * Clear the canvas and draw the grid, points and lines
@@ -1016,7 +1017,7 @@
   			var uuu = uu * u;
   			var ttt = tt * t;
  
-  			p = p0.multiply(uuu);
+  			var p = p0.multiply(uuu);
   			p = p.add(p1.multiply(3 * uu * t)); 
   			p = p.add(p2.multiply(3 * u * tt));
   			p = p.add(p3.multiply(ttt));
@@ -1043,7 +1044,7 @@
             }
 			
 			return sum;
-		}
+		};
 		
 		this.convertPoints = function(points)
 		{
@@ -1055,12 +1056,12 @@
 			}
 			
 			return pointsStr;
-		}
+		};
 		
 		
-		//Finaly initialize the editor
+		//Finally initialize the editor
 		this.init();
-    };
+    }
 	
 	Editor2D.prototype = {
 		clear: function() 
@@ -1114,14 +1115,14 @@
 
         if (options === undefined || typeof options === 'object') {
             // Creates a new plugin instance, for each selected element, and
-            // stores a reference withint the element's data
+            // stores a reference within the element's data
             return this.each(function() {
                 if (!$.data(this, 'Editor2D')) {
                     $.data(this, 'Editor2D', new Editor2D(this, options));
                 }
             });
         } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
-            // Call a public pluguin method (not starting with an underscore) for each
+            // Call a public plugin method (not starting with an underscore) for each
             // selected element.
             if (Array.prototype.slice.call(args, 1).length == 0 && $.inArray(options, $.fn.editor2D.getters) != -1) {
                 // If the user does not pass any arguments and the method allows to
@@ -1130,7 +1131,7 @@
                 var instance = $.data(this[0], 'Editor2D');
                 return instance[options].apply(instance, Array.prototype.slice.call(args, 1));
             } else {
-                // Invoke the speficied method on each selected element
+                // Invoke the specified method on each selected element
                 return this.each(function() {
                     var instance = $.data(this, 'Editor2D');
                     if (instance instanceof Editor2D && typeof instance[options] === 'function') {
@@ -1139,6 +1140,7 @@
                 });
             }
         }
+        return null;
     };
 	
 	// Plugin defaults – added as a property on our plugin function.
@@ -1158,7 +1160,5 @@
 	};
 
     $.fn.editor2D.getters = ['samplePoints', 'getSnapToGrid', 'isReady'];
-	
-
 	
 })(jQuery);
