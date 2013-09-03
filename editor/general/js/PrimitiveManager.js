@@ -255,7 +255,8 @@ function PrimitiveManager(){
             ui.BBTransY.set(pos.y.toFixed(3));
             ui.BBTransZ.set(pos.z.toFixed(3));
             
-            snapping.init();
+            // when snapping is active, the selected item position is always known and calculate the position the other
+            snapping.startSnapping();
         }
     }
     

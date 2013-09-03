@@ -3,44 +3,35 @@
  */
 function Snapping()
 {
-	// ist snapping starting?
-	var snappingBool = false;
-
-
+	var snapBool = false;
 	/*
 	 * Starts the ability to snapping
 	 */
 	this.init = function()
 	{
-		setSnapping();
+		if(snapBool == false)
+		{
+			snapBool = true;
+			setSnapping();		
+		}
+		else
+		{
+			snapBool = false;
+		}
+	
 	};
 	
 	
 	/*
-	 * For the button on the top bar, checks whether set or not
+	 * when snapping is active, the selected item position is always known and calculate the position the other
 	 */
 	this.startSnapping = function()
 	{
-		if(snapping.getIsSnapping() == false){ snapping.setIsSnapping( true ); }
-		else{ snapping.setIsSnapping( false ); }
-	};
-	
-	
-	/*
-	 * Set snapping on or off
-	 */
-	this.setIsSnapping = function( value )
-	{
-		snappingBool = value;
-	};
-	
-	
-	/*
-	 * Give condition of snapping
-	 */
-	this.getIsSnapping = function()
-	{
-		return snappingBool;
+		if(snapBool == true)
+		{
+        	currentPrimitive = primitiveManager.getCurrentPrimitive();
+       		currentPrimitive.Report(primitiveManager.getCurrentPrimitiveID());
+       	}
 	};
 	
 	
@@ -64,12 +55,17 @@ function Snapping()
 	    		 		
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
-		        //Added onclick      
-				element["onmousedown"] = new Function("element.Report(primitiveManager.getCurrentPrimitiveID())");				
+		        //Observer what makes Subject
+				SnapInherits(snapObserver, element);
+				//Added to Observer list 
+		        element.AddObserver(element);
 				
-		 		//Observer what makes Subject
-				SnapInherits(snapObserver, element); 				
-		        //Updates the changed parameters
+				
+				//Added mouseevent
+				//element.onmousedown = function(){ element.Report(primitiveManager.getCurrentPrimitiveID()); };
+				
+				
+			 	//Updates the changed parameters
     	    	element.Update = function( myPosition, postPosition )
     	    	{
     	    		try
@@ -83,8 +79,6 @@ function Snapping()
     	    		}
     	    		 
     	    	};
-		        //Added to Observer list 
-		        element.AddObserver(element);
 	    	}
 	    }
     };
