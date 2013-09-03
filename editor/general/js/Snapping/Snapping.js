@@ -23,8 +23,14 @@ function Snapping()
 			
 			document.getElementById("SnapPoints").style.border="solid 1px gray";
             document.getElementById("SnapPoints").src = "./images/magnet_off.png";
+            
+            //remove existing lines
+            elementList = primitiveManager.getIDList();
+            for(var i = 0; i < elementList.length; i++)
+            {
+            	primitiveManager.removeSnapNode(elementList[i] + '_line');
+            }
 		}
-	
 	};
 	
 	
