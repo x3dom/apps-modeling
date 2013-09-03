@@ -35,6 +35,7 @@ function Snapping()
 	{
 		if(snapBool == true)
 		{
+			//Current Item reports its changes to the observer
         	currentPrimitive = primitiveManager.getCurrentPrimitive();
        		currentPrimitive.Report(primitiveManager.getCurrentPrimitiveID());
        	}
@@ -72,12 +73,12 @@ function Snapping()
 				
 				
 			 	//Updates the changed parameters
-    	    	element.Update = function( myPosition, postPosition )
+    	    	element.Update = function( myPosition, postPosition, myObj, postObj )
     	    	{
     	    		try
     	    		{
     	    			var distance = snapping.getDistance( myPosition, postPosition );
-    	    			console.log(distance);
+    	    			console.log(myObj.id + " zu " + postObj.id + " : " + distance);
     	    		}
     	    		catch(event)
     	    		{
