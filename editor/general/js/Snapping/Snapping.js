@@ -44,6 +44,7 @@ function Snapping()
 	
     /*
      * Observers properties are added to any existing element
+     * Here is the calculation of the distance between two elements
      */
     function setSnapping()
     {
@@ -73,12 +74,20 @@ function Snapping()
     	    	{
     	    		try
     	    		{
-    	    			var distance = snapping.getDistance( myPosition, postPosition );
-    	    			console.log(myObj.id + " zu " + postObj.id + " : " + distance);
+    	    			//Calculated distance to the elements
+    	    			var distance = myPosition.subtract(postPosition).length();
     	    			
-    	    			var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
-    	    			var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
-    	    			setLines( point1, point2 );
+    	    			if(distance != 0)
+    	    			{
+    	    				/*
+    	    				var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
+	    	    			var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
+	    	    			setLine( point1, point2 );
+	    	    			*/
+	    	    			
+    	    				console.log(myObj.id + " zu " + postObj.id + " : " + distance);
+	    	    			snapTo(myObj, postObj, distance);
+	    	    		}
     	    		}
     	    		catch(event)
     	    		{
@@ -89,26 +98,25 @@ function Snapping()
 	    	}
 	    }
     };
+        
     
-   
     /*
-     * Calculated distance to the elements
+     * 
      */
-    this.getDistance = function( myPosition, postPosition )
+    function snapTo(myObj, postObj, distance)
     {
-    	distance = ((postPosition.x - myPosition.x) * (postPosition.x - myPosition.x)) +
-    			   ((postPosition.y - myPosition.y) * (postPosition.y - myPosition.y)) +
-    			   ((postPosition.z - myPosition.z) * (postPosition.z - myPosition.z));
-    	
-    	result = Math.sqrt(distance);
-    	return result;
+    	if(distance < 2.0)
+    	{
+    		myObj.setAttribute('translation', postObj.getAttribute('translation'));
+    		console.log('Object is snapping');
+    	}
     };
     
     
     /*
      * Draws a line between two elements
      */
-    function setLines(point1, point2)
+    function setLine(point1, point2)
     {    	   	
     	var lineTransform = document.createElement('Transform');
     	lineTransform.setAttribute('id', 'pointLine');
@@ -129,7 +137,7 @@ function Snapping()
     	lineShape.appendChild(lineSet);
     	lineTransform.appendChild(lineShape);
     	
-    	var lineSnap = document.getElementById('snapLines');
+    	var lineSnap = document.getElementById('root');
     	lineSnap.appendChild(lineTransform);
     };
     
@@ -137,7 +145,7 @@ function Snapping()
     /*
      * Draws the points from the JSON file
      */
-    function setPoints(point1, point2)
+    function setPoint(point1, point2)
     {    	   	
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', 'pointsJSON');
@@ -157,7 +165,7 @@ function Snapping()
     	pointShape.appendChild(pointSet);
     	pointTransform.appendChild(pointShape);
     	
-    	var pointSnap = document.getElementById('snapPoints');
+    	var pointSnap = document.getElementById('cpnt_matrixTransform');
     	pointSnap.appendChild(pointTransform);
     };
 }
