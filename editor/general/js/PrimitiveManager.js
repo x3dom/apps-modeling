@@ -542,7 +542,9 @@ function PrimitiveManager(){
         //PRIMITIVE MODE
         else
         {
-            //that.primitiveList[currentPrimitiveID].children[0];
+            MT = that.primitiveList[currentPrimitiveID].children[0];
+
+            ui.BBPrimName.set(currentPrimitiveID);
         }
 
         var tempValue = "";
