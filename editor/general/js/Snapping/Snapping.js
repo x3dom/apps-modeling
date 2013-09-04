@@ -4,6 +4,7 @@
 function Snapping()
 {
 	var snapBool = false;
+	
 	/*
 	 * Starts the ability to snapping
 	 */
@@ -12,7 +13,7 @@ function Snapping()
 		if(snapBool == false)
 		{
 			snapBool = true;
-			setSnapping();
+			snapping.setSnapping();
 			
 			document.getElementById("SnapPoints").style.border="solid 1px #fff";
             document.getElementById("SnapPoints").src = "./images/magnet_on.png";
@@ -33,7 +34,20 @@ function Snapping()
             }
 		}
 	};
+		
 	
+	/*
+	 * when a new item to the list comes after the snapping are start
+	 * snapping is added to the new object
+	 */
+	this.newSnapObject = function(objID)
+	{
+		if(snapBool == true)
+		{
+			snapping.setSnapping();
+		}
+	};
+		
 	
 	/*
 	 * when snapping is active, the selected item position is always known and calculate the position the other
@@ -53,63 +67,71 @@ function Snapping()
      * Observers properties are added to any existing element
      * Here is the calculation of the distance between two elements
      */
-    function setSnapping()
+    this.setSnapping = function()
     {
     	elementList = [];
     	elementList = primitiveManager.getIDList();
     	
-    	// Observer-Objects
-    	var snapObserver = new SnapObserver();
-    	var snapSubject = new SnapSubject();
-    	
+		// Observer-Objects
+		var snapObserver = new SnapObserver();
+		var snapSubject = new SnapSubject();
+
 	    if(elementList.length != null)
 	    {	    	
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
 	    		element = document.getElementById(elementList[i]);
-	    		 		
+	    		
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
 		        //Observer what makes Subject
 				SnapInherits(snapObserver, element);
 				//Added to Observer list 
 		        element.AddObserver(element);
-								
-				
-			 	//Updates the changed parameters
-    	    	element.Update = function( myPosition, postPosition, myObj, postObj )
-    	    	{
-    	    		try
-    	    		{
-    	    			//Calculated distance to the elements
-    	    			//Each element draws a line on the selected item, 
-    	    			//the lines and the distance are always calculate and updated
-    	    			var distance = myPosition.subtract(postPosition).length();
-    	    			if(distance != 0)
-    	    			{
-    	    				if(distance < 5.0)
-    	    				{
-    	    					setLine(myPosition, postPosition, postObj);
-    	    					snapTo(myObj, postObj, distance);
-    	    				}
-							else
-							{
-								//Removes connection lines, otherwise they remain visible
-								primitiveManager.removeSnapNode(postObj.id + '_line');
-				            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
-				            }
-    	    			}
-    	    		}
-    	    		catch(event)
-    	    		{
-    	    			console.log(event);
-    	    		}
-    	    	};
+				//Call the update function of the observer
+				elementUpdate(element);
 	    	}
 	    }
     };
     
     
+    /*
+     * Call the update function of the observer
+     */
+	function elementUpdate(element)
+	{
+	 	//Updates the changed parameters
+    	element.Update = function( myPosition, postPosition, myObj, postObj )
+    	{
+    		try
+    		{
+    			//Calculated distance to the elements
+    			//Each element draws a line on the selected item, 
+    			//the lines and the distance are always calculate and updated
+    			var distance = myPosition.subtract(postPosition).length();
+    			if(distance != 0)
+    			{
+    				if(distance < 5.0)
+    				{
+    					setLine(myPosition, postPosition, postObj);
+    					snapTo(myObj, postObj, distance);
+    				}
+					else
+					{
+						//Removes connection lines, otherwise they remain visible
+						primitiveManager.removeSnapNode(postObj.id + '_line');
+		            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
+		            }
+    			}
+    		}
+    		catch(event)
+    		{
+    			console.log(event);
+    		}
+    	};
+	};
+	
+	
     /*
      * Connects two points
      * Removes connection lines, otherwise they remain visible

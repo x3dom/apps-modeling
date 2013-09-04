@@ -140,7 +140,8 @@ function PrimitiveManager(){
 
         var root = document.getElementById('root');
         t.appendChild(mt);
-        root.appendChild(t);        
+        root.appendChild(t);
+            
         
         // wrapper for adding moving functionality, last param is callback function
         // TODO: last param shall be grid size for snap-to-grid
@@ -148,7 +149,7 @@ function PrimitiveManager(){
         
         that.primitiveList[id] = t;
         that.primitiveList[id].addEventListener("mousedown",
-            function(){ primitiveSelected(id); },
+            function(){ primitiveSelected(id); snapping.newSnapObject(); },
         false);
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
@@ -158,7 +159,7 @@ function PrimitiveManager(){
         that.selectCurrentPrimitive(id);
         ui.treeViewer.addPrimitive(id, id);
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
-        
+                
         return that.primitiveList[id];
     };
     
