@@ -85,8 +85,19 @@ function Snapping()
     	    			//Each element draws a line on the selected item, 
     	    			//the lines and the distance are always calculate and updated
     	    			var distance = myPosition.subtract(postPosition).length();
-    	    			if(distance != 0){ snapTo(myObj, postObj, distance); }
-    	    			setLine(myPosition, postPosition, postObj);
+    	    			if(distance != 0)
+    	    			{
+    	    				if(distance < 5.0)
+    	    				{
+    	    					setLine(myPosition, postPosition, postObj);
+    	    					snapTo(myObj, postObj, distance);
+    	    				}
+							else
+							{
+								primitiveManager.removeSnapNode(postObj.id + '_line');
+				            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
+				            }
+    	    			}
     	    		}
     	    		catch(event)
     	    		{
