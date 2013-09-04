@@ -4,6 +4,7 @@
 function Snapping()
 {
 	var snapBool = false;
+	var snapJ = new SnapJSON();
 	
 	/*
 	 * Starts the ability to snapping
@@ -14,6 +15,15 @@ function Snapping()
 		{
 			snapBool = true;
 			snapping.setSnapping();
+			
+			
+			// TODO: Only test !!!
+			var result = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
+			for(var i = 0; i < result.length; i++)
+	        {
+	            console.log(result[i]);
+	        }
+	        
 			
 			document.getElementById("SnapPoints").style.border="solid 1px #fff";
             document.getElementById("SnapPoints").src = "./images/magnet_on.png";
@@ -76,6 +86,7 @@ function Snapping()
 		var snapObserver = new SnapObserver();
 		var snapSubject = new SnapSubject();
 
+
 	    if(elementList.length != null)
 	    {	    	
 	    	for(var i = 0; i < elementList.length; i++)
@@ -104,7 +115,7 @@ function Snapping()
     	element.Update = function( myPosition, postPosition, myObj, postObj )
     	{
     		try
-    		{
+    		{        
     			//Calculated distance to the elements
     			//Each element draws a line on the selected item, 
     			//the lines and the distance are always calculate and updated
@@ -190,16 +201,16 @@ function Snapping()
     /*
      * Draws the points from the JSON file
      */
-    function setPoint(pointPosition, objectName, postObj)
+    function setPoint(pointPosition, objectID)
     {
-    	temp = postObj.id + '_point';
+    	temp = objectID + '_point';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	
     	var pointShape = document.createElement('Shape');
     	var pointAppearance = document.createElement('Appearance');
     	var pointMaterial = document.createElement('Material');
-    	lineMaterial.setAttribute('emissiveColor', '1 1 0');
+    	pointMaterial.setAttribute('emissiveColor', '1 1 0');
     	
     	var pointSet = document.createElement('LineSet');
     	var pointSetCoordinate = document.createElement('Coordinate');

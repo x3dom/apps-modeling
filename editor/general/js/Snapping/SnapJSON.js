@@ -18,7 +18,7 @@ function SnapJSON()
     	var normale = [];
     	
 	    // json-string load
-		var json = GetHttpText('/' + pfad + '/' + id + '.json');	
+		var json = GetHttpText( pfad + '/' + id + '.json');	
 		var jsonObj = eval ('(' + json + ')');
 		
 			
