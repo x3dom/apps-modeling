@@ -94,6 +94,7 @@ function Snapping()
     	    				}
 							else
 							{
+								//Removes connection lines, otherwise they remain visible
 								primitiveManager.removeSnapNode(postObj.id + '_line');
 				            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
 				            }
@@ -111,12 +112,15 @@ function Snapping()
     
     /*
      * Connects two points
+     * Removes connection lines, otherwise they remain visible
      */
     function snapTo(myObj, postObj, distance)
     {    		
     	if(distance < 2.0)
     	{
     		myObj.setAttribute('translation', postObj.getAttribute('translation'));
+    		primitiveManager.removeSnapNode(postObj.id + '_line');
+    		primitiveManager.removeSnapNode(myObj.id + '_line');
     	}
     };
     
@@ -132,6 +136,7 @@ function Snapping()
     
 		if(document.getElementById(temp))
     	{
+    		//Removes connection lines, otherwise they remain visible
     		primitiveManager.removeSnapNode(temp);
     	}
     		
