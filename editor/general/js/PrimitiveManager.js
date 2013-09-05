@@ -25,6 +25,206 @@ document.addEventListener('keyup', function (e) {
 
 
 /*
+ *
+ */
+function Primitive(primType, parameters){
+    if (arguments.length < 2)
+    {
+        console.log("Error: Primitive constructor needs primType and parameters.");
+        return;
+    }
+
+    var that = this;
+
+    this.id = "primitive_" + primitiveManager.primCounter;
+    primitiveManager.primCounter++;
+
+    this.matrixTransformNode = document.createElement('MatrixTransform');
+    this.matrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
+
+    // wrapper for adding moving functionality, last param is callback function
+    new x3dom.Moveable(document.getElementById("x3d"),
+                       this.matrixTransformNode,
+                       primitiveManager.primitiveMoved,
+                       controller.getGridSize());
+
+    //translation values
+    this.transX = 0;
+    this.transY = 0;
+    this.transZ = 0;
+    //eulerian angles for rotation
+    this.rotX = 0;
+    this.rotY = 0;
+    this.rotZ = 0;
+    //scale factors
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.scaleZ = 1;
+
+    this.primType = primType;
+
+    this.parameters = [];
+
+    // deep copy of parameters
+    var k;
+    var aParam;
+    var partType;
+
+    for (k = 0; k < parameters.length; k++) {
+        aParam = {};
+        for (partType in parameters[k]) {
+            aParam[partType] = parameters[k][partType];
+        }
+        this.parameters.push(aParam);
+    }
+
+    this.primitiveNode = document.createElement(this.primType);
+
+    primitiveManager.setDefaultParameters(this.primitiveNode, parameters);
+
+    this.material = document.createElement('Material');
+
+    this.material.setAttribute("diffuseColor",  "#3F7EBD");
+    this.material.setAttribute("specularColor", "#2A2A2A");
+    this.material.setAttribute("emissiveColor", "#000000");
+    this.material.setAttribute("transparency", "0.0");
+    this.material.setAttribute("shininess", "0.2");
+
+    // insert nodes into DOM
+    var appearance = document.createElement('Appearance');
+    appearance.appendChild(this.material);
+
+    var shape = document.createElement('Shape');
+    shape.appendChild(appearance);
+    shape.appendChild(this.primitiveNode);
+
+    this.matrixTransformNode.appendChild(shape);
+
+    document.getElementById('root').appendChild(this.matrixTransformNode);
+
+
+
+    /*
+     * Returns the ID / name of the primitive.
+     */
+    this.getID = function(){
+        return that.id;
+    }
+
+
+
+    this.getParameters = function(){
+        return that.parameters;
+    }
+
+
+
+    this.getMaterial = function(){
+        return that.material;
+    }
+
+
+
+    /*
+     * Returns the DOM node of the primitive.
+     */
+    this.getPrimitiveNode = function(){
+        return that.primitiveNode;
+    }
+
+
+
+    /*
+     * Returns the DOM Node of this group's matrix transform.
+     * @returns {DOMNode}
+     */
+    this.getMatrixTransformNode = function(){
+        return that.matrixTransformNode;
+    };
+
+
+
+    this.getTranslationAsString =  function(){
+        return that.transX + ' ' + that.transY + ' ' + that.transZ;
+    }
+
+
+
+    this.getScaleAsString =  function(){
+        return that.scaleX + ' ' + that.scaleY + ' ' + that.scaleZ;
+    }
+
+
+    this.setRotation = function(x, y, z){
+        this.rotX = x;
+        this.rotY = y;
+        this.rotZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.setTranslation = function(x, y, z){
+        this.transX = x;
+        this.transY = y;
+        this.transZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.setScale = function(x, y, z){
+        this.scaleX = x;
+        this.scaleY = y;
+        this.scaleZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.getTranslationAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ)
+    };
+
+
+
+    this.getRotationAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ)
+    };
+
+
+
+    this.getScaleAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ)
+    };
+
+
+
+    this.updateMatrixTransform = function(){
+        var deg2Rad = Math.PI / 180.0;
+
+        var matTr = x3dom.fields.SFMatrix4f.translation(this.getTranslationAsVec());
+
+        var matRX = x3dom.fields.SFMatrix4f.rotationX(this.rotX  * deg2Rad);
+        var matRY = x3dom.fields.SFMatrix4f.rotationY(this.rotY  * deg2Rad);
+        var matRZ = x3dom.fields.SFMatrix4f.rotationZ(this.rotZ  * deg2Rad);
+
+        var matSc = x3dom.fields.SFMatrix4f.scale(this.getScaleAsVec());
+
+        var transformMat = matTr;
+        transformMat     = transformMat.mult(matRX.mult(matRY).mult(matRZ));
+        transformMat     = transformMat.mult(matSc);
+
+        that.matrixTransformNode.setAttribute("matrix", matrixToString(transformMat));
+    };
+}
+
+
+
+/*
  * The PrimitiveManager component handles all the behaviour of all 
  * added primitives of the workspace
  * @returns {PrimitiveManager}
@@ -38,9 +238,7 @@ function PrimitiveManager(){
     // list of all selected primitives (including the first selected one)
     var selectedPrimitiveIDs = [];
     // count of all primitives that were created during this session
-    var primCounter = 0;
-    // count of actually used primitives on workspace 
-    var primitiveCounter = 0;
+    this.primCounter = 0;
     // ui element to get access to the gui elements
     var ui = {};
     // toggle for bounding volume highlighting
@@ -83,77 +281,19 @@ function PrimitiveManager(){
 
         if (HANDLING_MODE === "hand")
             controller.Activate("translation");
-   
-        var id = "primitive_" + primCounter;
-        primCounter++;
-        
-        var shape = document.createElement('Shape');
 
-        var translation = document.createElement('Transform');
-        translation.setAttribute("id", id);
-        translation.setAttribute("translation", "0 0 0");
+        var prim = new Primitive(primitive, parameters);
 
-        translation.PrimType = primitive;
+        var id   = prim.getID();
 
-        translation.IDMap = {id:id, shapeID:shape.id, name:id, cboxNumber:(primitiveCounter + 1)};
-
-        translation.Parameters = [];
-        // deep copy of parameters
-        for (var k=0; k<parameters.length; k++) {
-            var aParam = {};
-            for (var partType in parameters[k]) {
-                aParam[partType] = parameters[k][partType];
-            }
-            translation.Parameters.push(aParam);
-        }
-
-        var mt = document.createElement('MatrixTransform');
-        mt.setAttribute("id", 'mt_' + id);
-        mt.Transformation = { rotationX : 0, rotationY : 0, rotationZ : 0 };
-        var transformString = matrixToString(x3dom.fields.SFMatrix4f.identity());
-        mt.setAttribute("matrix", transformString);
-
-        var scale = document.createElement('Transform');
-        scale.setAttribute("scale", "1 1 1");
-
-        // Appearance Node
-        var app = document.createElement('Appearance');
-
-        // Material Node
-        var mat = document.createElement('Material');
-        mat.setAttribute("diffuseColor",  "#3F7EBD");
-        mat.setAttribute("specularColor", "#2A2A2A");
-        mat.setAttribute("emissiveColor", "#000000");
-        mat.setAttribute("transparency", "0.0");
-        mat.setAttribute("shininess", "0.2");
-        translation.Material = mat;
-
-        app.appendChild(mat);
-        shape.appendChild(app);
-        scale.appendChild(shape);
-        mt.appendChild(scale);
-
-        var prim = document.createElement(primitive);
-        
-        that.setDefaultParameters(prim, parameters);
-
-        shape.appendChild(prim);
-        translation.Parameters.Primitive = prim;
-        translation.Shape = shape;
-
-        translation.appendChild(mt);
-        document.getElementById('root').appendChild(translation);
-        
-        // wrapper for adding moving functionality, last param is callback function
-        new x3dom.Moveable(document.getElementById("x3d"), translation, primitiveMoved, controller.getGridSize());
-        
-        that.primitiveList[id] = translation;
-        that.primitiveList[id].addEventListener("mousedown",
+        prim.getPrimitiveNode().addEventListener("mousedown",
             function(){ primitiveSelected(id); snapping.newSnapObject(); },
-        false);
+            false);
+
+        that.primitiveList[id] = prim;
+
         that.updateTransformUIFromPrimitive(id, HANDLING_MODE);
 
-        primitiveCounter++;
         selectedPrimitiveIDs = [];
 
         that.selectCurrentPrimitive(id);
@@ -171,13 +311,21 @@ function PrimitiveManager(){
      */
     this.clonePrimitiveGroup = function(){
         var primitiveToClone = that.primitiveList[currentPrimitiveID];
-        var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].PrimType, that.primitiveList[currentPrimitiveID].Parameters);
+
+        //@todo: check
+        /*
+        var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].getPrimType(),
+                                      that.primitiveList[currentPrimitiveID].getParameters());
+
         clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
         clone.setAttribute("scale", primitiveToClone.getAttribute("scale"));
+
         clone.IDMap.name = "clone_" + primitiveToClone.IDMap.name;
+
         that.updateTransformUIFromPrimitive(currentPrimitiveID, HANDLING_MODE);
         ui.treeViewer.rename(currentPrimitiveID, clone.IDMap.name);
         that.highlightCurrentBoundingVolume(true);
+        */
     };
     
 
@@ -225,8 +373,8 @@ function PrimitiveManager(){
         selectedPrimitiveIDs = [id];
 
         ui.clearParameters();
-        ui.createParameters(that.primitiveList[id].Parameters);
-        ui.setMaterial(that.primitiveList[id].Material);
+        ui.createParameters(that.primitiveList[id].getParameters(), that.primitiveList[id].getPrimitiveNode());
+        ui.setMaterial(that.primitiveList[id].getMaterial());
 
         ui.treeViewer.activate(id);
 
@@ -243,7 +391,7 @@ function PrimitiveManager(){
      * @param {X3DNode} the interacting element
      * @param {SFVec3f} new translation value
      */
-    function primitiveMoved(elem, pos) {
+    this.primitiveMoved = function(elem, pos) {
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
@@ -448,30 +596,24 @@ function PrimitiveManager(){
      */
     this.highlightCurrentBoundingVolume = function(bool){
         var volume = null;
-        var bbTranslation = document.getElementById('bbox_translation');
-        var bbRotation    = document.getElementById('bbox_rotation');
-        var bbScale       = document.getElementById('bbox_scale');
+
+        var bbTransform = document.getElementById('bbox_transform');
 
         //GROUP MODE
         if (ui.groupModeActive())
         {
             var group = groupManager.getCurrentGroup();
 
-            bbTranslation.setAttribute("translation", group.getTransformNode().getAttribute("translation"));
-            bbRotation.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
-            //@todo: continue implementation
-            //bbScale.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
+            bbTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
             volume = group.getGroupNode()._x3domNode.getVolume();
         }
         //PRIMITIVE MODE
         else if (currentPrimitiveID !== "")
         {
-            bbTranslation.setAttribute("translation", that.primitiveList[currentPrimitiveID].getAttribute("translation"));
-            bbRotation.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
-            bbScale.setAttribute("scale", that.primitiveList[currentPrimitiveID].children[0].children[0].getAttribute("scale"));
+            bbTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].getMatrixTransformNode().getAttribute("matrix"));
 
-            volume = that.primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
+            volume = that.primitiveList[currentPrimitiveID].getPrimitiveNode()._x3domNode.getVolume();
         }
 
         if (volume)
@@ -489,7 +631,8 @@ function PrimitiveManager(){
                                       max.x+' '+max.y+' '+max.z+', '+
                                       max.x+' '+max.y+' '+min.z );
         }
-        bbTranslation.setAttribute("render", "" + bool);
+
+        bbTransform.setAttribute("render", "" + bool);
     };
 
 
@@ -510,10 +653,10 @@ function PrimitiveManager(){
             {
                 if (that.primitiveList[key])
                 {
-                    that.primitiveList[key].highlight(false, highlightCol);
+                    that.primitiveList[key].getMatrixTransformNode().highlight(false, highlightCol);
                 }
             }
-            that.primitiveList[currentPrimitiveID].highlight(true, highlightCol);
+            that.primitiveList[currentPrimitiveID].getMatrixTransformNode().highlight(true, highlightCol);
         }
     };
     
@@ -527,21 +670,12 @@ function PrimitiveManager(){
     //          - actually, some of this is UI functionality
     //          - with groups, this is not only about "primitives" any more
     this.updatePrimitiveTransformFromUI = function() {
-        var group;
-
-        var translation;
-        var rotation;
-        var scale;
-
-        var deg2Rad;
-        var rotX;
-        var rotY;
-        var rotZ;
-        var transformMat;
+        var objectToBeUpdated;
 
         //GROUP MODE
         if (ui.groupModeActive())
         {
+            /*
             group       = groupManager.getCurrentGroup();
 
             translation = group.getTransformNode();
@@ -550,43 +684,33 @@ function PrimitiveManager(){
             //scale       = group.getScaleNode();
 
             ui.BBPrimName.set(groupManager.getCurrentGroupID());
+            */
         }
         //PRIMITIVE MODE
         else
         {
-            translation = that.primitiveList[currentPrimitiveID];
-            rotation    = that.primitiveList[currentPrimitiveID].children[0];
-            scale       = that.primitiveList[currentPrimitiveID].children[0].children[0];
+            objectToBeUpdated = that.primitiveList[currentPrimitiveID];
 
-            ui.BBPrimName.set(currentPrimitiveID);
+            ui.BBPrimName.set(objectToBeUpdated.getID());
         }
 
-        var tempValue = ui.BBTransX.get() + " " +
-                        ui.BBTransY.get() + " " +
-                        ui.BBTransZ.get();
+        var valX = ui.BBTransX.get();
+        var valY = ui.BBTransY.get();
+        var valZ = ui.BBTransZ.get();
+
+        var tempValue = valX + ' ' + valY + ' ' + valZ;
 
         if (HANDLING_MODE === "translation")
         {
-            translation.setAttribute("scale", tempValue);
+            objectToBeUpdated.setTranslation(valX, valY, valZ);
         }
         else if (HANDLING_MODE === "rotation")
         {
-            rotation.Transformation.rotationX = ui.BBTransX.get();
-            rotation.Transformation.rotationY = ui.BBTransY.get();
-            rotation.Transformation.rotationZ = ui.BBTransZ.get();
-
-            deg2Rad = Math.PI / 180.0;
-            rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * deg2Rad);
-            rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * deg2Rad);
-            rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * deg2Rad);
-
-            transformMat = rotX.mult(rotY).mult(rotZ);
-
-            rotation.setAttribute("matrix", matrixToString(transformMat));
+            objectToBeUpdated.setRotation(valX, valY, valZ);
         }
         else if (HANDLING_MODE === "scale")
         {
-            scale.setAttribute("scale", tempValue);
+            objectToBeUpdated.setScale(valX, valY, valZ);
         }
         
         this.highlightCurrentBoundingVolume(true);
@@ -623,17 +747,14 @@ function PrimitiveManager(){
         //PRIMITIVE MODE
         else
         {
-            MT = that.primitiveList[id].children[0];
+            MT = that.primitiveList[id].getMatrixTransformNode();
 
-            ui.BBPrimName.set(that.primitiveList[id].IDMap.name);
+            ui.BBPrimName.set(that.primitiveList[id].getID());
         }
 
         if (interactionMode === "rotation")
         {
-            //@todo: make this work for group mode
-            ui.BBTransX.set(MT.Transformation.rotationX);
-            ui.BBTransY.set(MT.Transformation.rotationY);
-            ui.BBTransZ.set(MT.Transformation.rotationZ);
+            vec = that.primitiveList[id].getRotationAsVec();
         }
         else
         {
@@ -645,13 +766,20 @@ function PrimitiveManager(){
             //PRIMITIVE MODE
             else
             {
-                vec = x3dom.fields.SFVec3f.parse(that.primitiveList[id].attributes[interactionMode].nodeValue);
+                if (interactionMode === "translation")
+                {
+                    vec = that.primitiveList[id].getTranslationAsVec();
+                }
+                else if (interactionMode === "scale")
+                {
+                    vec = that.primitiveList[id].getScaleAsVec();
+                }
             }
-
-            ui.BBTransX.set(vec.x.toFixed(3));
-            ui.BBTransY.set(vec.y.toFixed(3));
-            ui.BBTransZ.set(vec.z.toFixed(3));
         }
+
+        ui.BBTransX.set(vec.x.toFixed(3));
+        ui.BBTransY.set(vec.y.toFixed(3));
+        ui.BBTransZ.set(vec.z.toFixed(3));
     };
 
 

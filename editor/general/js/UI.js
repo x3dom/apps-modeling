@@ -789,9 +789,11 @@ function UI(primitiveManager){
          * @param {x3dom geometry} geometry where the parameters should be set
          * @returns (undefined)
          */
-        this.createParameters = function (parameters) {
+        this.createParameters = function (parameters, prim) {
             for (var i = 0; i < parameters.length; i++) {
-                this.addRightbarElement({param: parameters[i], id: "property_" + i, primitive: parameters.Primitive});
+                this.addRightbarElement({param: parameters[i],
+                                         id:    "property_" + i,
+                                         primitive: prim});
             }
         };
 

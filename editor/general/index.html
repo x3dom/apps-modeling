@@ -304,19 +304,17 @@
                 <inline url="x3d/axis.x3d"></inline>
             </transform>
             
-            <transform id="bbox_translation">
-                <matrixTransform id="bbox_rotation">
-                    <transform id="bbox_scale">
-                        <Shape isPickable="false" DEF="line">
-                            <IndexedLineSet coordIndex="0 1 2 3 0 -1, 4 5 6 7 4 -1, 0 4 -1, 1 5 -1, 2 6 -1, 3 7 -1">
-                                <Coordinate id="bbox_points" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0">
-                                </Coordinate>
-                                <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
-                            </IndexedLineSet>
-                        </Shape>
-                    </transform>
-                </matrixTransform>
-            </transform>
+
+            <matrixTransform id="bbox_transform">
+                <Shape isPickable="false" DEF="line">
+                    <IndexedLineSet coordIndex="0 1 2 3 0 -1, 4 5 6 7 4 -1, 0 4 -1, 1 5 -1, 2 6 -1, 3 7 -1">
+                        <Coordinate id="bbox_points" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0">
+                        </Coordinate>
+                        <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
+                    </IndexedLineSet>
+                </Shape>
+            </matrixTransform>
+
 
             <transform id="root" translation="0 0 0"></transform>
             <transform id="snapPoints"> </transform>
