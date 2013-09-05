@@ -109,19 +109,19 @@ function Primitive(primType, parameters){
      */
     this.getID = function(){
         return that.id;
-    }
+    };
 
 
 
     this.getParameters = function(){
         return that.parameters;
-    }
+    };
 
 
 
     this.getMaterial = function(){
         return that.material;
-    }
+    };
 
 
 
@@ -130,7 +130,7 @@ function Primitive(primType, parameters){
      */
     this.getPrimitiveNode = function(){
         return that.primitiveNode;
-    }
+    };
 
 
 
@@ -146,13 +146,13 @@ function Primitive(primType, parameters){
 
     this.getTranslationAsString =  function(){
         return that.transX + ' ' + that.transY + ' ' + that.transZ;
-    }
+    };
 
 
 
     this.getScaleAsString =  function(){
         return that.scaleX + ' ' + that.scaleY + ' ' + that.scaleZ;
-    }
+    };
 
 
     this.setRotation = function(x, y, z){
@@ -161,7 +161,7 @@ function Primitive(primType, parameters){
         this.rotZ = z;
 
         that.updateMatrixTransform();
-    }
+    };
 
 
 
@@ -171,7 +171,7 @@ function Primitive(primType, parameters){
         this.transZ = z;
 
         that.updateMatrixTransform();
-    }
+    };
 
 
 
@@ -181,24 +181,24 @@ function Primitive(primType, parameters){
         this.scaleZ = z;
 
         that.updateMatrixTransform();
-    }
+    };
 
 
 
     this.getTranslationAsVec = function(){
-        return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ)
+        return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ);
     };
 
 
 
     this.getRotationAsVec = function(){
-        return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ)
+        return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ);
     };
 
 
 
     this.getScaleAsVec = function(){
-        return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ)
+        return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ);
     };
 
 
@@ -409,7 +409,7 @@ function PrimitiveManager(){
             // when snapping is active, the selected item position is always known and calculate the position the other
             snapping.startSnapping();
         }
-    }
+    };
     
     
     
