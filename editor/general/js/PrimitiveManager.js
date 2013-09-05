@@ -392,18 +392,20 @@ function PrimitiveManager(){
      * @param {SFVec3f} new translation value
      */
     this.primitiveMoved = function(elem, pos) {
+
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
+            HANDLING_MODE = 'translation';
+
             currentPrimitiveID = elem.getAttribute('id');
             that.highlightCurrentBoundingVolume(true);
 
-            // update GUI elements appropriately
+            // update stored transform values and GUI elements appropriately
             // TODO; this is still  _very_ slow in Safari, seems to trigger something else
-            ui.BBTransX.set(pos.x.toFixed(3));
-            ui.BBTransY.set(pos.y.toFixed(3));
-            ui.BBTransZ.set(pos.z.toFixed(3));
-            
+            that.primitiveList[currentPrimitiveID].setTranslation(pos.x, pos.y, pos.z);
+            that.updateTransformUIFromPrimitive();
+
             // when snapping is active, the selected item position is always known and calculate the position the other
             snapping.startSnapping();
         }
