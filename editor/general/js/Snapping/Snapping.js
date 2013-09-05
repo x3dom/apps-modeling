@@ -14,16 +14,7 @@ function Snapping()
 		if(snapBool == false)
 		{
 			snapBool = true;
-			snapping.setSnapping();
-			
-			
-			// TODO: Only test !!!
-			var result = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
-			for(var i = 0; i < result.length; i++)
-	        {
-	            console.log(result[i]);
-	        }
-	        
+			snapping.setSnapping();	        
 			
 			document.getElementById("SnapPoints").style.border="solid 1px #fff";
             document.getElementById("SnapPoints").src = "./images/magnet_on.png";
@@ -87,10 +78,20 @@ function Snapping()
 		var snapSubject = new SnapSubject();
 
 
+		// TODO: Only test !!!
+		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
+
+
 	    if(elementList.length != null)
-	    {	    	
+	    { 	
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
+	    		//Set Snappoints
+	    		for(var x = 0; x < pointList.length; x++)
+		        {
+		        	setPoint(pointList[x], elementList[i]);
+		        }
+		        
 	    		element = document.getElementById(elementList[i]);
 	    		
 	    		//Subject is observed
@@ -115,7 +116,7 @@ function Snapping()
     	element.Update = function( myPosition, postPosition, myObj, postObj )
     	{
     		try
-    		{        
+    		{
     			//Calculated distance to the elements
     			//Each element draws a line on the selected item, 
     			//the lines and the distance are always calculate and updated
@@ -201,28 +202,33 @@ function Snapping()
     /*
      * Draws the points from the JSON file
      */
-    function setPoint(pointPosition, objectID)
+    function setPoint(pointPosition, myObj)
     {
-    	temp = objectID + '_point';
+    	temp = myObj + '_point';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	
     	var pointShape = document.createElement('Shape');
     	var pointAppearance = document.createElement('Appearance');
     	var pointMaterial = document.createElement('Material');
-    	pointMaterial.setAttribute('emissiveColor', '1 1 0');
+    	pointMaterial.setAttribute('diffuseColor', '1 1 0');
     	
-    	var pointSet = document.createElement('LineSet');
-    	var pointSetCoordinate = document.createElement('Coordinate');
-    	pointSetCoordinate.setAttribute('Point', pointPosition);
+    	//var pointSet = document.createElement('LineSet');
+    	var pointSphere = document.createElement('Sphere');
+    	pointSphere.setAttribute('radius', '0.05');
+    	
+    	//var pointSetCoordinate = document.createElement('Coordinate');
+    	//pointSetCoordinate.setAttribute('Point', pointPosition);
     	
     	pointAppearance.appendChild(pointMaterial);
     	pointShape.appendChild(pointAppearance);
-    	pointSet.appendChild(pointSetCoordinate);
-    	pointShape.appendChild(pointSet);
+    	
+    	//pointSet.appendChild(pointSetCoordinate);
+    	
+    	pointShape.appendChild(pointSphere);
     	pointTransform.appendChild(pointShape);
     	
-    	var pointSnap = document.getElementById('snapPoints');
+    	var pointSnap = document.getElementById(myObj);
     	pointSnap.appendChild(pointTransform);
     };
 }
