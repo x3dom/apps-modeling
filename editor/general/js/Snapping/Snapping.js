@@ -185,7 +185,7 @@ function Snapping()
     	var lineSet = document.createElement('IndexedLineSet');
     	var lineSetCoordinate = document.createElement('Coordinate');
     	lineSet.setAttribute('coordIndex', '0 0 1 -1');
-    	lineSetCoordinate.setAttribute('Point', point1 + ', ' + point2);
+    	lineSetCoordinate.setAttribute('point', point1 + ', ' + point2);
     	
     	lineAppearance.appendChild(lineMaterial);
     	lineShape.appendChild(lineAppearance);
@@ -204,27 +204,29 @@ function Snapping()
      */
     function setPoint(pointPosition, myObj)
     {
+    	var position = pointPosition[0] + ' ' + pointPosition[1] + ' ' + pointPosition[2];
+    	
     	temp = myObj + '_point';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
+    	pointTransform.setAttribute('translation', position);
     	
     	var pointShape = document.createElement('Shape');
     	var pointAppearance = document.createElement('Appearance');
     	var pointMaterial = document.createElement('Material');
     	pointMaterial.setAttribute('diffuseColor', '1 1 0');
     	
-    	//var pointSet = document.createElement('LineSet');
     	var pointSphere = document.createElement('Sphere');
-    	pointSphere.setAttribute('radius', '0.05');
-    	
-    	//var pointSetCoordinate = document.createElement('Coordinate');
-    	//pointSetCoordinate.setAttribute('Point', pointPosition);
+    	pointSphere.setAttribute('radius', '0.03');
+    	/*
+    	var pointSet = document.createElement('LineSet');
+    	var pointSetCoordinate = document.createElement('Coordinate');
+    	pointSetCoordinate.setAttribute('point', '0 0 0');
+    	pointSet.appendChild(pointSetCoordinate);
+    	*/
     	
     	pointAppearance.appendChild(pointMaterial);
     	pointShape.appendChild(pointAppearance);
-    	
-    	//pointSet.appendChild(pointSetCoordinate);
-    	
     	pointShape.appendChild(pointSphere);
     	pointTransform.appendChild(pointShape);
     	
