@@ -461,7 +461,6 @@ function PrimitiveManager(){
             transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
             matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
 
-            //@todo: how does it work? (-> see Core.js)
             volume = group.getGroupNode()._x3domNode.getVolume();
         }
         //PRIMITIVE MODE
@@ -567,10 +566,10 @@ function PrimitiveManager(){
             }
         }
         else if (HANDLING_MODE === "rotation") {
-            //@todo: make this work for group mode
             MT.Transformation.rotationX = ui.BBTransX.get();
             MT.Transformation.rotationY = ui.BBTransY.get();
             MT.Transformation.rotationZ = ui.BBTransZ.get();
+
             var s = Math.PI / 180;
             var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * s);
             var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * s);

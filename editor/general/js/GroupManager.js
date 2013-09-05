@@ -2,7 +2,13 @@
  * Group class. A Group object contains all information about a Group of objects.
  * This includes, for instance, the ids of the objects as well as the group's name.
  */
-function Group(name) {
+function Group(objIDs, name) {
+    var root;
+    var i;
+    var prim;
+    var vol;
+    var vec;
+
     var that = this;
 
     //list of object IDs
@@ -13,8 +19,13 @@ function Group(name) {
     this.groupNode           = document.createElement("Group");
     this.transformNode       = document.createElement("Transform");
     this.matrixTransformNode = document.createElement("MatrixTransform");
+    this.matrixTransformNode.Transformation = {};
+    this.matrixTransformNode.Transformation.rotationX = 0.0;
+    this.matrixTransformNode.Transformation.rotationY = 0.0;
+    this.matrixTransformNode.Transformation.rotationZ = 0.0;
 
-    document.getElementById('root').appendChild(this.transformNode);
+    root = document.getElementById('root');
+    root.appendChild(this.transformNode);
     this.transformNode.appendChild(this.matrixTransformNode);
     this.matrixTransformNode.appendChild(this.groupNode);
 
@@ -23,110 +34,74 @@ function Group(name) {
         this.name = "group_" + groupManager.groupCounter++;
     }
 
+    //move all new object IDs into this group
+    for (i = 0; i < objIDs.length; ++i)
+    {
+        //check whether the object is inside the list - if so, do nothing
+        if (this.objectIDList.indexOf(objIDs[i]) === -1)
+        {
+            prim = primitiveManager.getPrimitiveByID(objIDs[i]);
 
+            root.removeChild(prim);
+
+            //important - otherwise, the backend graph is not properly rebuilt after insertion
+            removeX3DOMBackendGraph(prim);
+
+            this.groupNode.appendChild(prim);
+
+            //after deletion of the backend graph, the highlight property got lost
+            prim.highlight(false, "1 1 0");
+            prim.highlight(true,  "1 1 0");
+
+            this.objectIDList.push(objIDs[i]);
+        }
+    }
+
+    //in order to properly rotate/translate the group, change the transform values of all its primitives:
+    //each primitive needs to be transformed relative to the group's center point
+    vol = this.groupNode._x3domNode.getVolume();
+
+    for (i = 0; i < objIDs.length; ++i)
+    {
+        prim = primitiveManager.getPrimitiveByID(objIDs[i]);
+
+        //'prim' is already the transform node
+        vec = x3dom.fields.SFVec3f.parse(prim.getAttribute('translation')).subtract(vol.center);
+
+        prim.setAttribute('translation', vec.toString());
+
+    }
+
+    this.transformNode.setAttribute('translation', vol.center.toString());
+
+
+
+    /*
+     * Returns the DOM Node of this group.
+     * @returns {DOMNode}
+     */
     this.getGroupNode = function(){
         return that.groupNode;
     };
 
 
 
+    /*
+     * Returns the DOM Node of this group's transform.
+     * @returns {DOMNode}
+     */
     this.getTransformNode = function(){
         return that.transformNode;
     };
 
 
 
+    /*
+     * Returns the DOM Node of this group's matrix transform.
+     * @returns {DOMNode}
+     */
     this.getMatrixTransformNode = function(){
         return that.matrixTransformNode;
-    };
-
-
-
-    /*
-     * Appends a list of object IDs to the current object ID list.
-     * Duplicate entries are avoided.
-     */
-    this.addObjectList = function(objIDs){
-        var root;
-        var i;
-
-        //move all new object IDs into this group
-        for (i = 0; i < objIDs.length; ++i)
-        {
-            that.addObject(objIDs[i]);
-        }
-    };
-
-
-
-    /*
-     * Adds the object with the given id to this group.
-     * Duplicate entries are avoided.
-     */
-    this.addObject = function(id){
-        var prim;
-
-        if (typeof id !== 'undefined')
-        {
-            //check whether the object is inside the list - if so, do nothing
-            if (that.objectIDList.indexOf(id) === -1)
-            {
-                prim = primitiveManager.getPrimitiveByID(id);
-
-                document.getElementById('root').removeChild(prim);
-
-                //important - otherwise, the backend graph is not properly rebuilt after insertion
-                removeX3DOMBackendGraph(prim);
-
-                that.groupNode.appendChild(prim);
-
-                //after deletion of the backend graph, the highlight property got lost
-                prim.highlight(false, "1 1 0");
-                prim.highlight(true,  "1 1 0");
-
-                that.objectIDList.push(id);
-            }
-        }
-        else
-        {
-            x3dom.debug.logError("Cannot add object to group: ID must be specified.");
-        }
-    };
-
-
-
-    /*
-     * Removes the object with the given id from this group.
-     */
-    this.removeObject = function(id){
-        //@todo: DOM manipulations
-
-        var idx;
-
-        if (typeof id !== 'undefined')
-        {
-            // TODO: variable objectIDList is undefined here, pass as param
-            idx = objectIDList.indexOf(id);
-
-            //if there is an object with the given ID in the list, remove it - else, do nothing
-            if (idx === -1)
-            {
-                objectIDList.splice(idx, 1);
-
-                /*
-                that.groupNode.removeChild(prim);
-
-                //important - otherwise, the backend graph is not properly rebuilt after insertion
-                removeX3DOMBackendGraph(prim);
-
-                document.getElementById('root').appendChild(prim);
-                */
-            }
-        }
-        else
-        {
-            x3dom.debug.logError("Cannot remove object from group: ID must be specified.");
-        }
     };
 }
 
@@ -177,8 +152,7 @@ function GroupManager() {
         {
             //put the IDs of the selected objects into a new group
             //(a default name is assigned to the new group)
-            var g = new Group();
-            g.addObjectList(primitiveManager.getSelectedPrimitiveIDs());
+            var g = new Group(primitiveManager.getSelectedPrimitiveIDs());
 
             //put the new group in the list of groups
             that.groupList.push(g);
