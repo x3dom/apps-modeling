@@ -69,7 +69,6 @@ function Group(objIDs, name) {
         vec = x3dom.fields.SFVec3f.parse(prim.getAttribute('translation')).subtract(vol.center);
 
         prim.setAttribute('translation', vec.toString());
-
     }
 
     this.transformNode.setAttribute('translation', vol.center.toString());

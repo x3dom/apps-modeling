@@ -87,25 +87,24 @@ function PrimitiveManager(){
         var id = "primitive_" + primCounter;
         primCounter++;
         
-        var s = document.createElement('Shape');
+        var shape = document.createElement('Shape');
 
-        var t = document.createElement('Transform');
-        t.setAttribute("id", id);
-        t.setAttribute("translation", "0 0 0");
-        t.setAttribute("scale", "1 1 1");
-        
-        t.PrimType = primitive;
+        var translation = document.createElement('Transform');
+        translation.setAttribute("id", id);
+        translation.setAttribute("translation", "0 0 0");
 
-        t.IDMap = {id:id, shapeID:s.id, name:id, cboxNumber:(primitiveCounter + 1)};
+        translation.PrimType = primitive;
 
-        t.Parameters = [];
+        translation.IDMap = {id:id, shapeID:shape.id, name:id, cboxNumber:(primitiveCounter + 1)};
+
+        translation.Parameters = [];
         // deep copy of parameters
         for (var k=0; k<parameters.length; k++) {
             var aParam = {};
             for (var partType in parameters[k]) {
                 aParam[partType] = parameters[k][partType];
             }
-            t.Parameters.push(aParam);
+            translation.Parameters.push(aParam);
         }
 
         var mt = document.createElement('MatrixTransform');
@@ -114,40 +113,41 @@ function PrimitiveManager(){
         var transformString = matrixToString(x3dom.fields.SFMatrix4f.identity());
         mt.setAttribute("matrix", transformString);
 
+        var scale = document.createElement('Transform');
+        scale.setAttribute("scale", "1 1 1");
+
         // Appearance Node
         var app = document.createElement('Appearance');
 
         // Material Node
         var mat = document.createElement('Material');
-        mat.setAttribute("diffuseColor", "#3F7EBD");
+        mat.setAttribute("diffuseColor",  "#3F7EBD");
         mat.setAttribute("specularColor", "#2A2A2A");
         mat.setAttribute("emissiveColor", "#000000");
         mat.setAttribute("transparency", "0.0");
         mat.setAttribute("shininess", "0.2");
-        t.Material = mat;
+        translation.Material = mat;
 
         app.appendChild(mat);
-        s.appendChild(app);
-        mt.appendChild(s);
+        shape.appendChild(app);
+        scale.appendChild(shape);
+        mt.appendChild(scale);
 
         var prim = document.createElement(primitive);
         
         that.setDefaultParameters(prim, parameters);
-        
-        s.appendChild(prim);
-        t.Parameters.Primitive = prim;
-        t.Shape = s;
 
-        var root = document.getElementById('root');
-        t.appendChild(mt);
-        root.appendChild(t);
-            
+        shape.appendChild(prim);
+        translation.Parameters.Primitive = prim;
+        translation.Shape = shape;
+
+        translation.appendChild(mt);
+        document.getElementById('root').appendChild(translation);
         
         // wrapper for adding moving functionality, last param is callback function
-        // TODO: last param shall be grid size for snap-to-grid
-        new x3dom.Moveable(document.getElementById("x3d"), t, primitiveMoved, controller.getGridSize());
+        new x3dom.Moveable(document.getElementById("x3d"), translation, primitiveMoved, controller.getGridSize());
         
-        that.primitiveList[id] = t;
+        that.primitiveList[id] = translation;
         that.primitiveList[id].addEventListener("mousedown",
             function(){ primitiveSelected(id); snapping.newSnapObject(); },
         false);
@@ -448,27 +448,28 @@ function PrimitiveManager(){
      */
     this.highlightCurrentBoundingVolume = function(bool){
         var volume = null;
-        var transform = document.getElementById('cpnt_transform');
-        var matrixTransform = document.getElementById('cpnt_matrixTransform');
+        var bbTranslation = document.getElementById('bbox_translation');
+        var bbRotation    = document.getElementById('bbox_rotation');
+        var bbScale       = document.getElementById('bbox_scale');
 
         //GROUP MODE
         if (ui.groupModeActive())
         {
-            //@todo: testing, continue implementation
             var group = groupManager.getCurrentGroup();
 
-            transform.setAttribute("translation",  group.getTransformNode().getAttribute("translation"));
-            transform.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
-            matrixTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+            bbTranslation.setAttribute("translation", group.getTransformNode().getAttribute("translation"));
+            bbRotation.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+            //@todo: continue implementation
+            //bbScale.setAttribute("scale",        group.getTransformNode().getAttribute("scale"));
 
             volume = group.getGroupNode()._x3domNode.getVolume();
         }
         //PRIMITIVE MODE
         else if (currentPrimitiveID !== "")
         {
-            transform.setAttribute("translation",  that.primitiveList[currentPrimitiveID].getAttribute("translation"));
-            transform.setAttribute("scale",        that.primitiveList[currentPrimitiveID].getAttribute("scale"));
-            matrixTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
+            bbTranslation.setAttribute("translation", that.primitiveList[currentPrimitiveID].getAttribute("translation"));
+            bbRotation.setAttribute("matrix", that.primitiveList[currentPrimitiveID].children[0].getAttribute("matrix"));
+            bbScale.setAttribute("scale", that.primitiveList[currentPrimitiveID].children[0].children[0].getAttribute("scale"));
 
             volume = that.primitiveList[currentPrimitiveID].Parameters.Primitive._x3domNode.getVolume();
         }
@@ -478,7 +479,7 @@ function PrimitiveManager(){
             var min = x3dom.fields.SFVec3f.copy(volume.min);
             var max = x3dom.fields.SFVec3f.copy(volume.max);
 
-            var box = document.getElementById('cpnt');
+            var box = document.getElementById('bbox_points');
             box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
                                       min.x+' '+min.y+' '+max.z+', '+
                                       max.x+' '+min.y+' '+max.z+', '+
@@ -488,7 +489,7 @@ function PrimitiveManager(){
                                       max.x+' '+max.y+' '+max.z+', '+
                                       max.x+' '+max.y+' '+min.z );
         }
-        transform.setAttribute("render", "" + bool);
+        bbTranslation.setAttribute("render", "" + bool);
     };
 
 
@@ -527,56 +528,65 @@ function PrimitiveManager(){
     //          - with groups, this is not only about "primitives" any more
     this.updatePrimitiveTransformFromUI = function() {
         var group;
-        var MT;
+
+        var translation;
+        var rotation;
+        var scale;
+
+        var deg2Rad;
+        var rotX;
+        var rotY;
+        var rotZ;
+        var transformMat;
 
         //GROUP MODE
         if (ui.groupModeActive())
         {
-            group = groupManager.getCurrentGroup();
+            group       = groupManager.getCurrentGroup();
 
-            MT = group.getMatrixTransformNode();
+            translation = group.getTransformNode();
+            rotation    = group.getMatrixTransformNode();
+            //@todo: make it work
+            //scale       = group.getScaleNode();
 
             ui.BBPrimName.set(groupManager.getCurrentGroupID());
         }
         //PRIMITIVE MODE
         else
         {
-            MT = that.primitiveList[currentPrimitiveID].children[0];
+            translation = that.primitiveList[currentPrimitiveID];
+            rotation    = that.primitiveList[currentPrimitiveID].children[0];
+            scale       = that.primitiveList[currentPrimitiveID].children[0].children[0];
 
             ui.BBPrimName.set(currentPrimitiveID);
         }
 
-        var tempValue = "";
-        var transformMat = x3dom.fields.SFMatrix4f.identity();
-
-        if (HANDLING_MODE === "translation" || HANDLING_MODE === "scale") {
-            tempValue = ui.BBTransX.get() + " " +
+        var tempValue = ui.BBTransX.get() + " " +
                         ui.BBTransY.get() + " " +
                         ui.BBTransZ.get();
 
-            //GROUP MODE
-            if (ui.groupModeActive())
-            {
-               group.getTransformNode().setAttribute(HANDLING_MODE, tempValue);
-            }
-            //PRIMITIVE MODE
-            else
-            {
-                that.primitiveList[currentPrimitiveID].setAttribute(HANDLING_MODE, tempValue);
-            }
+        if (HANDLING_MODE === "translation")
+        {
+            translation.setAttribute("scale", tempValue);
         }
-        else if (HANDLING_MODE === "rotation") {
-            MT.Transformation.rotationX = ui.BBTransX.get();
-            MT.Transformation.rotationY = ui.BBTransY.get();
-            MT.Transformation.rotationZ = ui.BBTransZ.get();
+        else if (HANDLING_MODE === "rotation")
+        {
+            rotation.Transformation.rotationX = ui.BBTransX.get();
+            rotation.Transformation.rotationY = ui.BBTransY.get();
+            rotation.Transformation.rotationZ = ui.BBTransZ.get();
 
-            var s = Math.PI / 180;
-            var rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * s);
-            var rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * s);
-            var rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * s);
+            deg2Rad = Math.PI / 180.0;
+            rotX = x3dom.fields.SFMatrix4f.rotationX(ui.BBTransX.get() * deg2Rad);
+            rotY = x3dom.fields.SFMatrix4f.rotationY(ui.BBTransY.get() * deg2Rad);
+            rotZ = x3dom.fields.SFMatrix4f.rotationZ(ui.BBTransZ.get() * deg2Rad);
 
             transformMat = rotX.mult(rotY).mult(rotZ);
-            MT.setAttribute("matrix", matrixToString(transformMat));
+
+            rotation.setAttribute("matrix", matrixToString(transformMat));
+        }
+        else if (HANDLING_MODE === "scale")
+        {
+            scale.setAttribute("scale", tempValue);
         }
         
         this.highlightCurrentBoundingVolume(true);
