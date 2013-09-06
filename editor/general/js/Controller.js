@@ -16,8 +16,6 @@ function Controller(ui){
         //(since this function can also be triggered from the application:
         // dragging an object around automatically leads to translation mode)
 
-        var currPrimID;
-
         HANDLING_MODE = mode;
         
         if (mode === "translation"){
@@ -54,12 +52,7 @@ function Controller(ui){
             ui.TBRotate.dehighlight();
         }
 
-        currPrimID = primitiveManager.getCurrentPrimitiveID();
-
-        if (currPrimID !== "")
-        {
-            primitiveManager.updateTransformUIFromPrimitive(currPrimID, HANDLING_MODE);
-        }
+        primitiveManager.updateTransformUIFromCurrentObject();
     };
     
     

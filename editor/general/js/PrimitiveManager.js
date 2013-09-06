@@ -1,12 +1,18 @@
-/*
- * Creates a string from SFMatrix4f that can be set on MatrixTransform
- * @param {SFMatrix4f} transformMat matrix that should be converted to a string
- * @returns (undefined)
- */
-function matrixToString(transformMat){
-    return transformMat.toGL().toString();
-}
+//utility function - we need it if we want to move an X3DOM object inside the DOM
+//in that case, the X3DOM backend graph needs to be cleared, it then gets rebuilt after re-insertion
+// TODO: this does not trigger any internal cleanups, better also call removeChild on DOM node first
+function removeX3DOMBackendGraph(domNode)
+{
+    var children = domNode.childNodes;
+    var i;
 
+    for (i = 0; i < children.length; ++i)
+    {
+        removeX3DOMBackendGraph(children[i]);
+    }
+
+    domNode._x3domNode = null;
+}
 
 
 //@todo: there is currently no method to query key states in X3DOM (?)
@@ -24,135 +30,26 @@ document.addEventListener('keyup', function (e) {
 
 
 
-
 /*
- * Base class for everything that is transformed inside the editor.
- * Concretely speaking: Primitives and Groups.
+ * Sets the default values of a new primitive to the property fields of the
+ * right bars accordion
+ * @param {Primitive} primitive the primitive where the default values should be set
+ * @param {Parameters} parameters the parameters that should be set to primitive as default
+ * @returns (undefined)
  */
-function TransformableObject(){
-    this.domNode = null;
-
-    this.id = "(unnamed)";
-
-    this.matrixTransformNode = document.createElement('MatrixTransform');
-    this.matrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
-    //@todo: check, automaticaly assign unique id
-    // node needs an id to be identified later on, e.g. in Moveable callback
-    this.matrixTransformNode.setAttribute("id", this.id);
-
-    //translation values
-    this.transX = 0;
-    this.transY = 0;
-    this.transZ = 0;
-    //eulerian angles for rotation
-    this.rotX = 0;
-    this.rotY = 0;
-    this.rotZ = 0;
-    //scale factors
-    this.scaleX = 1;
-    this.scaleY = 1;
-    this.scaleZ = 1;
-};
-
-
-/*
- * Returns the ID / name of the object.
- */
-TransformableObject.prototype.getID = function(){
-    return this.id;
-};
-
-
-/*
- * Returns the DOM node which represents this object.
- */
-TransformableObject.prototype.getDOMNode = function(){
-    return this.domNode;
-};
-
-
-/*
- * Returns the DOM Node of this group's matrix transform.
- * @returns {DOMNode}
- */
-TransformableObject.prototype.getMatrixTransformNode = function(){
-    return this.matrixTransformNode;
-};
-
-
-
-TransformableObject.prototype.setRotation = function(x, y, z){
-    this.rotX = x;
-    this.rotY = y;
-    this.rotZ = z;
-
-    this.updateMatrixTransform();
-};
-
-
-
-TransformableObject.prototype.setTranslation = function(x, y, z){
-    this.transX = x;
-    this.transY = y;
-    this.transZ = z;
-
-    this.updateMatrixTransform();
-};
-
-
-
-TransformableObject.prototype.setScale = function(x, y, z){
-    this.scaleX = x;
-    this.scaleY = y;
-    this.scaleZ = z;
-
-    this.updateMatrixTransform();
-};
-
-
-
-// TODO: this is unnecessary overhead, just represent trans as Vec3f
-TransformableObject.prototype.getTranslationAsVec = function(){
-    return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ);
-};
-
-
-
-// TODO: this is unnecessary overhead, just represent rot as Vec3f
-TransformableObject.prototype.getRotationAsVec = function(){
-    return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ);
-};
-
-
-// TODO: this is unnecessary overhead, just represent scale as Vec3f
-TransformableObject.prototype.getScaleAsVec = function(){
-    return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ);
-};
-
-
-
-TransformableObject.prototype.updateMatrixTransform = function(){
-    var deg2Rad = Math.PI / 180.0;
-
-    var matTr = x3dom.fields.SFMatrix4f.translation(this.getTranslationAsVec());
-
-    var matRX = x3dom.fields.SFMatrix4f.rotationX(this.rotX  * deg2Rad);
-    var matRY = x3dom.fields.SFMatrix4f.rotationY(this.rotY  * deg2Rad);
-    var matRZ = x3dom.fields.SFMatrix4f.rotationZ(this.rotZ  * deg2Rad);
-
-    var matSc = x3dom.fields.SFMatrix4f.scale(this.getScaleAsVec());
-
-    var transformMat = matTr;
-    transformMat     = transformMat.mult(matRX.mult(matRY).mult(matRZ));
-    transformMat     = transformMat.mult(matSc);
-
-    this.matrixTransformNode.setAttribute("matrix", matrixToString(transformMat));
+setDefaultParameters = function(primitive, parameters) {
+    var s = Math.PI / 180;
+    for (var i = 0; i < parameters.length; i++){
+        primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ?
+            (parameters[i].value * s).toString() : parameters[i].value);
+    }
 };
 
 
 
 /*
- *
+ * Primitive class, inherits from TransformableObject.
+ * This class encapsulates all data which is related to a single primitive.
  */
 Primitive.prototype = new TransformableObject();
 Primitive.prototype.constructor = Primitive;
@@ -163,8 +60,10 @@ function Primitive(primType, parameters){
         return;
     }
 
-    this.id = "primitive_" + primitiveManager.primCounter;
-    primitiveManager.primCounter++;
+    //not very elegant, but necessary because of the dynamic id
+    //(which differs among instances, in contrast to other members of the prototype)
+    this.init();
+
 
     this.primType   = primType;
     this.domNode    = document.createElement(this.primType);
@@ -182,7 +81,7 @@ function Primitive(primType, parameters){
         this.parameters.push(aParam);
     }
 
-    primitiveManager.setDefaultParameters(this.domNode, parameters);
+    setDefaultParameters(this.domNode, parameters);
 
     this.material = document.createElement('Material');
 
@@ -191,6 +90,7 @@ function Primitive(primType, parameters){
     this.material.setAttribute("emissiveColor", "#000000");
     this.material.setAttribute("transparency", "0.0");
     this.material.setAttribute("shininess", "0.2");
+
 
     // insert nodes into DOM
     var appearance = document.createElement('Appearance');
@@ -204,6 +104,7 @@ function Primitive(primType, parameters){
 
     document.getElementById('root').appendChild(this.matrixTransformNode);
 
+
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized
     var that = this;
@@ -211,17 +112,42 @@ function Primitive(primType, parameters){
         this.matrixTransformNode,
         function(elem, pos){ primitiveManager.primitiveMoved(elem, pos, that) },
         controller.getGridSize());
-
-
-    this.getMaterial = function(){
-        return this.material;
-    };
-
-
-    this.getParameters = function(){
-        return this.parameters;
-    };
 }
+
+
+
+/*
+ * Returns the material which is associated with this primitive.
+ */
+Primitive.prototype.getMaterial = function(){
+    return this.material;
+};
+
+
+/*
+ * Returns the parameters which are associated with this primitive.
+ */
+Primitive.prototype.getParameters = function(){
+    return this.parameters;
+};
+
+
+
+/*
+ * Returns the primitive type as a string (for instance, "cone").
+ */
+Primitive.prototype.getPrimType = function(){
+    return this.primType;
+}
+
+
+
+/*
+ * Returns the DOM node which represents this object.
+ */
+Primitive.prototype.getDOMNode = function(){
+    return this.domNode;
+};
 
 
 
@@ -286,17 +212,17 @@ function PrimitiveManager(){
         var id   = prim.getID();
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveSelected(id); snapping.newSnapObject(); },
+            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(); },
             false);
 
         this.primitiveList[id] = prim;
 
-        this.updateTransformUIFromPrimitive(id, HANDLING_MODE);
+        this.updateTransformUIFromCurrentObject();
 
         selectedPrimitiveIDs = [];
 
         this.selectCurrentPrimitive(id);
-        ui.treeViewer.addPrimitive(id, id);
+        ui.treeViewer.addPrimitive(id, prim.getName());
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
                 
         return this.primitiveList[id];
@@ -305,27 +231,20 @@ function PrimitiveManager(){
     
     
     /*
-     * Clones a primitive with all it's parameters
+     * Clones a primitive with all its parameters
      * @returns {null}
      */
     this.clonePrimitiveGroup = function(){
         var primitiveToClone = this.primitiveList[currentPrimitiveID];
 
-        // TODO: make working again!
-        //@todo: check
-        /*
-        var clone = this.addPrimitive(this.primitiveList[currentPrimitiveID].getPrimType(),
-                                      this.primitiveList[currentPrimitiveID].getParameters());
+        var clone = this.addPrimitive(primitiveToClone.getPrimType(), primitiveToClone.getParameters());
 
-        clone.setAttribute("translation", primitiveToClone.getAttribute("translation"));
-        clone.setAttribute("scale", primitiveToClone.getAttribute("scale"));
+        clone.setTranslationAsVec(primitiveToClone.getTranslation());
+        clone.setScaleAsVec(primitiveToClone.getScale());
 
-        clone.IDMap.name = "clone_" + primitiveToClone.IDMap.name;
+        this.updateTransformUIFromCurrentObject();
 
-        this.updateTransformUIFromPrimitive(currentPrimitiveID, HANDLING_MODE);
-        ui.treeViewer.rename(currentPrimitiveID, clone.IDMap.name);
         this.highlightCurrentBoundingVolume(true);
-        */
     };
     
 
@@ -333,12 +252,12 @@ function PrimitiveManager(){
     
     /*
      * Sets the visibility of a primitive
-     * @param {string} id name of the primitive
+     * @param {string} id of the primitive
      * @param {bool} bool visibility that should be set (true: visible)
      * @returns {null}
      */
     this.setPrimitiveVisibility = function(id, bool){
-        this.primitiveList[id].setAttribute("render", bool);
+        this.primitiveList[id].getMatrixTransformNode().setAttribute("render", bool);
     };
 
 
@@ -381,7 +300,7 @@ function PrimitiveManager(){
         this.enableTransformationUI();
         ui.RBAccordion.disable(false);
 
-        this.updateTransformUIFromPrimitive(id, HANDLING_MODE);
+        this.updateTransformUIFromCurrentObject();
     };
 
 
@@ -402,32 +321,15 @@ function PrimitiveManager(){
             // update stored transform values and GUI elements appropriately
             // TODO; this is still  _very_ slow in Safari, seems to trigger something else
             primitive.setTranslation(pos.x, pos.y, pos.z);
-            primitiveManager.updateTransformUIFromPrimitive(primitive.getID(), HANDLING_MODE);
+            primitiveManager.updateTransformUIFromCurrentObject();
 
             // when snapping is active, the selected item position is always known and calculate the position the other
             snapping.startSnapping();
         }
     };
-    
-    
-    
-    /*
-     * Sets the default values of a new primitive to the property fields of the
-     * right bars accordion
-     * @param {Primitive} primitive the primitive where the default values should be set
-     * @param {Parameters} parameters the parameters that should be set to primitive as default
-     * @returns (undefined)
-     */
-    this.setDefaultParameters = function(primitive, parameters) {
-        var s = Math.PI / 180;
-        for (var i = 0; i < parameters.length; i++){
-            primitive.setAttribute(parameters[i].x3domName, (parameters[i].type === "angle") ? 
-                (parameters[i].value * s).toString() : parameters[i].value);
-        }
-    };
 
-    
-    
+
+
 	/* 
      * Removes snapNode
      * @returns {undefined}
@@ -446,19 +348,19 @@ function PrimitiveManager(){
      */  
     this.removeNode = function()
     {
-        if (currentPrimitiveID) {
-            var ot = document.getElementById(currentPrimitiveID);
+        if (currentPrimitiveID  && currentPrimitiveID !== "") {
+            var matrixTransformNode = this.primitiveList[currentPrimitiveID].getMatrixTransformNode();
             
-            if (ot._iMove) {
-                ot._iMove.detachHandlers();
+            if (matrixTransformNode._iMove) {
+                matrixTransformNode._iMove.detachHandlers();
             }
 
-            for (var i = 0; i < ot.childNodes.length; i++) 
+            for (var i = 0; i < matrixTransformNode.childNodes.length; i++)
             {
                 // check if we have a real X3DOM Node; not just e.g. a Text-tag
-                if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) 
+                if (matrixTransformNode.childNodes[i].nodeType === Node.ELEMENT_NODE)
                 { 
-                    ot.removeChild(ot.childNodes[i]);
+                    matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
                     ui.treeViewer.removeNode(currentPrimitiveID);
                     delete this.primitiveList[currentPrimitiveID];
 
@@ -467,7 +369,7 @@ function PrimitiveManager(){
                 }
             }
 
-            document.getElementById('root').removeChild(ot);
+            document.getElementById('root').removeChild(matrixTransformNode);
         }
     };
 
@@ -528,7 +430,7 @@ function PrimitiveManager(){
      * @param {type} id name of the primitive's values that should be set
      * @returns {null}
      */
-    function primitiveSelected(id){
+    this.primitiveSelected = function(id){
         var idx;
 
         if (typeof id !== 'undefined')
@@ -543,7 +445,7 @@ function PrimitiveManager(){
                     controller.Activate("translation");
 				}
 
-                this.updateTransformUIFromPrimitive(id, HANDLING_MODE);
+                this.updateTransformUIFromCurrentObject();
             }
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
             else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
@@ -678,15 +580,11 @@ function PrimitiveManager(){
         if (ui.groupModeActive())
         {
             objectToBeUpdated = groupManager.getCurrentGroup();
-
-            ui.BBPrimName.set(groupManager.getCurrentGroupID());
         }
         //PRIMITIVE MODE
         else
         {
             objectToBeUpdated = this.primitiveList[currentPrimitiveID];
-
-            ui.BBPrimName.set(objectToBeUpdated.getID());
         }
 
         var valX = ui.BBTransX.get();
@@ -699,7 +597,7 @@ function PrimitiveManager(){
         }
         else if (HANDLING_MODE === "rotation")
         {
-            objectToBeUpdated.setRotation(valX, valY, valZ);
+            objectToBeUpdated.setRotationAngles(valX, valY, valZ);
         }
         else if (HANDLING_MODE === "scale")
         {
@@ -720,66 +618,41 @@ function PrimitiveManager(){
      */
     //@todo: this function is not very beautiful at the moment:
     //          - actually, some of this is UI functionality
-    //          - with groups, this is not only about "primitives" any more
     //          - better assume that we have no parameters, but we only handle the "current" primitive or group
-    this.updateTransformUIFromPrimitive = function(id, mode) {
-        var interactionMode = HANDLING_MODE;
-        var MT;
-        var group;
-        var vec;
-
-        //GROUP MODE
-        if (ui.groupModeActive())
+    this.updateTransformUIFromCurrentObject = function() {
+        if (currentPrimitiveID != "")
         {
-            group = groupManager.getCurrentGroup();
+            var currentObject;
+            var vec;
 
-            MT = group.getMatrixTransformNode();
-
-            ui.BBPrimName.set(groupManager.getCurrentGroupID());
-        }
-        //PRIMITIVE MODE
-        else
-        {
-            MT = this.primitiveList[id].getMatrixTransformNode();
-
-            ui.BBPrimName.set(this.primitiveList[id].getID());
-        }
-
-        if (interactionMode === "rotation")
-        {
-            vec = this.primitiveList[id].getRotationAsVec();
-        }
-        else
-        {
-            //GROUP MODE
             if (ui.groupModeActive())
             {
-                if (interactionMode === "translation")
-                {
-                    vec = group.getTranslationAsVec();
-                }
-                else if (interactionMode === "scale")
-                {
-                    vec = group.getScaleAsVec();
-                }
+                currentObject = groupManager.getCurrentGroup();
             }
-            //PRIMITIVE MODE
             else
             {
-                if (interactionMode === "translation")
-                {
-                    vec = this.primitiveList[id].getTranslationAsVec();
-                }
-                else if (interactionMode === "scale")
-                {
-                    vec = this.primitiveList[id].getScaleAsVec();
-                }
+                currentObject = this.primitiveList[currentPrimitiveID];
             }
-        }
 
-        ui.BBTransX.set(vec.x.toFixed(3));
-        ui.BBTransY.set(vec.y.toFixed(3));
-        ui.BBTransZ.set(vec.z.toFixed(3));
+            ui.BBPrimName.set(currentObject.getName());
+
+            if (HANDLING_MODE === "rotation")
+            {
+                vec = currentObject.getRotationAngles();
+            }
+            else if (HANDLING_MODE === "translation")
+            {
+                vec = currentObject.getTranslation();
+            }
+            else if (HANDLING_MODE === "scale")
+            {
+                vec = currentObject.getScale();
+            }
+
+            ui.BBTransX.set(vec.x.toFixed(3));
+            ui.BBTransY.set(vec.y.toFixed(3));
+            ui.BBTransZ.set(vec.z.toFixed(3));
+        }
     };
 
 
@@ -831,8 +704,7 @@ function PrimitiveManager(){
         }
         else
         {
-            // TODO: IDMap member not available - FIXME!
-            this.primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
+            this.primitiveList[currentPrimitiveID].setName(ui.BBPrimName.get());
             ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
         }
     };

@@ -161,7 +161,7 @@ function Group(objIDs, name) {
     {
         prim = primitiveManager.getPrimitiveByID(objIDs[i]);
 
-        vec = prim.getTranslationAsVec().subtract(vol.center);
+        vec = prim.getTranslation().subtract(vol.center);
 
         prim.setTranslation(vec.x, vec.y, vec.z);
     }

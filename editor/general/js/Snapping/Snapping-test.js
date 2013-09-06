@@ -49,8 +49,8 @@ function Snapping()
 		actualObject = primitiveManager.getCurrentPrimitive();
 		actualObjectID = actualObject.id;
 
-        var point1 = primitiveManager.getPrimitiveByID(objListID[0]).getTranslationAsVec();
-        var point2 = primitiveManager.getPrimitiveByID(objListID[1]).getTranslationAsVec();
+        var point1 = primitiveManager.getPrimitiveByID(objListID[0]).getTranslation();
+        var point2 = primitiveManager.getPrimitiveByID(objListID[1]).getTranslation();
 
 		var distance = point1.subtract(point2).length();
 		

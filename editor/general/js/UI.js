@@ -43,7 +43,7 @@ function UI(primitiveManager){
         //current group might become null
         if (val){
             primitiveManager.enableTransformationUI();
-            primitiveManager.updateTransformUIFromPrimitive();
+            primitiveManager.updateTransformUIFromCurrentObject();
             primitiveManager.highlightCurrentBoundingVolume();
         }
         else {
