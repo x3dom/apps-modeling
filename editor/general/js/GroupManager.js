@@ -6,73 +6,24 @@ function Group(objIDs, name) {
     var root;
     var i;
     var prim;
+    var primMatrixTransformNode;
     var vol;
     var vec;
 
+    //translation values
+    this.transX = 0;
+    this.transY = 0;
+    this.transZ = 0;
+    //eulerian angles for rotation
+    this.rotX = 0;
+    this.rotY = 0;
+    this.rotZ = 0;
+    //scale factors
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.scaleZ = 1;
+
     var that = this;
-
-    //list of object IDs
-    this.objectIDList = [];
-    //name the group
-    this.name = "";
-    //group, transform and matrixTransform nodes, which represents this group inside the scene graph
-    this.groupNode           = document.createElement("Group");
-    this.transformNode       = document.createElement("Transform");
-    this.matrixTransformNode = document.createElement("MatrixTransform");
-    this.matrixTransformNode.Transformation = {};
-    this.matrixTransformNode.Transformation.rotationX = 0.0;
-    this.matrixTransformNode.Transformation.rotationY = 0.0;
-    this.matrixTransformNode.Transformation.rotationZ = 0.0;
-
-    root = document.getElementById('root');
-    root.appendChild(this.transformNode);
-    this.transformNode.appendChild(this.matrixTransformNode);
-    this.matrixTransformNode.appendChild(this.groupNode);
-
-    if (typeof name === 'undefined')
-    {
-        this.name = "group_" + groupManager.groupCounter++;
-    }
-
-    //move all new object IDs into this group
-    for (i = 0; i < objIDs.length; ++i)
-    {
-        //check whether the object is inside the list - if so, do nothing
-        if (this.objectIDList.indexOf(objIDs[i]) === -1)
-        {
-            prim = primitiveManager.getPrimitiveByID(objIDs[i]);
-
-            root.removeChild(prim);
-
-            //important - otherwise, the backend graph is not properly rebuilt after insertion
-            removeX3DOMBackendGraph(prim);
-
-            this.groupNode.appendChild(prim);
-
-            //after deletion of the backend graph, the highlight property got lost
-            prim.highlight(false, "1 1 0");
-            prim.highlight(true,  "1 1 0");
-
-            this.objectIDList.push(objIDs[i]);
-        }
-    }
-
-    //in order to properly rotate/translate the group, change the transform values of all its primitives:
-    //each primitive needs to be transformed relative to the group's center point
-    vol = this.groupNode._x3domNode.getVolume();
-
-    for (i = 0; i < objIDs.length; ++i)
-    {
-        prim = primitiveManager.getPrimitiveByID(objIDs[i]);
-
-        //'prim' is already the transform node
-        vec = x3dom.fields.SFVec3f.parse(prim.getAttribute('translation')).subtract(vol.center);
-
-        prim.setAttribute('translation', vec.toString());
-    }
-
-    this.transformNode.setAttribute('translation', vol.center.toString());
-
 
 
     /*
@@ -86,22 +37,140 @@ function Group(objIDs, name) {
 
 
     /*
-     * Returns the DOM Node of this group's transform.
-     * @returns {DOMNode}
-     */
-    this.getTransformNode = function(){
-        return that.transformNode;
-    };
-
-
-
-    /*
      * Returns the DOM Node of this group's matrix transform.
      * @returns {DOMNode}
      */
     this.getMatrixTransformNode = function(){
         return that.matrixTransformNode;
     };
+
+
+
+    this.setRotation = function(x, y, z){
+        this.rotX = x;
+        this.rotY = y;
+        this.rotZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.setTranslation = function(x, y, z){
+        this.transX = x;
+        this.transY = y;
+        this.transZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.setScale = function(x, y, z){
+        this.scaleX = x;
+        this.scaleY = y;
+        this.scaleZ = z;
+
+        that.updateMatrixTransform();
+    }
+
+
+
+    this.getTranslationAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ)
+    };
+
+
+
+    this.getRotationAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ)
+    };
+
+
+
+    this.getScaleAsVec = function(){
+        return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ)
+    };
+
+
+
+    this.updateMatrixTransform = function(){
+        var deg2Rad = Math.PI / 180.0;
+
+        var matTr = x3dom.fields.SFMatrix4f.translation(this.getTranslationAsVec());
+
+        var matRX = x3dom.fields.SFMatrix4f.rotationX(this.rotX  * deg2Rad);
+        var matRY = x3dom.fields.SFMatrix4f.rotationY(this.rotY  * deg2Rad);
+        var matRZ = x3dom.fields.SFMatrix4f.rotationZ(this.rotZ  * deg2Rad);
+
+        var matSc = x3dom.fields.SFMatrix4f.scale(this.getScaleAsVec());
+
+        var transformMat = matTr;
+        transformMat     = transformMat.mult(matRX.mult(matRY).mult(matRZ));
+        transformMat     = transformMat.mult(matSc);
+
+        that.matrixTransformNode.setAttribute("matrix", matrixToString(transformMat));
+    };
+
+
+    //list of object IDs
+    this.objectIDList = [];
+    //name the group
+    this.name = "";
+    //group, transform and matrixTransform nodes, which represents this group inside the scene graph
+    this.groupNode           = document.createElement("Group");
+    this.matrixTransformNode = document.createElement("MatrixTransform");
+
+    root = document.getElementById('root');
+    root.appendChild(this.matrixTransformNode);
+    this.matrixTransformNode.appendChild(this.groupNode);
+
+    if (typeof name === 'undefined')
+    {
+        this.name = "group_" + groupManager.groupCounter++;
+    }
+
+    //move all new object IDs into this group
+    for (i = 0; i < objIDs.length; ++i)
+    {
+        //check whether the object is inside the list - if so, do nothing
+        if (this.objectIDList.indexOf(objIDs[i]) === -1)
+        {
+            primMatrixTransformNode = primitiveManager.getPrimitiveByID(objIDs[i]).getMatrixTransformNode();
+
+            root.removeChild(primMatrixTransformNode);
+
+            //important - otherwise, the backend graph is not properly rebuilt after insertion
+            removeX3DOMBackendGraph(primMatrixTransformNode);
+
+            this.groupNode.appendChild(primMatrixTransformNode);
+
+            //after deletion of the backend graph, the highlight property got lost
+            primMatrixTransformNode.highlight(false, "1 1 0");
+            primMatrixTransformNode.highlight(true,  "1 1 0");
+
+            this.objectIDList.push(objIDs[i]);
+        }
+    }
+
+    //in order to properly rotate/translate the group, change the transform values of all its primitives:
+    //each primitive needs to be transformed relative to the group's center point
+    vol = this.groupNode._x3domNode.getVolume();
+
+    for (i = 0; i < objIDs.length; ++i)
+    {
+        prim = primitiveManager.getPrimitiveByID(objIDs[i]);
+
+        vec = prim.getTranslationAsVec().subtract(vol.center);
+
+        prim.setTranslation(vec.x, vec.y, vec.z);
+    }
+
+    this.setTranslation(vol.center.x,vol.center.y, vol.center.z);
+
+
+
+
 }
 
 
@@ -163,7 +232,7 @@ function GroupManager() {
             ui.toggleGroupMode(true);
 
             //this is necessary in order to properly initialize the group's bounding box
-            var t = that.currentGroup.getTransformNode();
+            var t = that.currentGroup.getMatrixTransformNode();
             t._x3domNode.nodeChanged();
             primitiveManager.highlightCurrentBoundingVolume(true);
 

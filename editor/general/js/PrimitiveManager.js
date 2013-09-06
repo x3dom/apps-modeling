@@ -232,7 +232,7 @@ function Primitive(primType, parameters){
 function PrimitiveManager(){
     
     // List of all created primitives
-    this.primitiveList = [];
+    this.primitiveList = {};
     // actually active id
     var currentPrimitiveID = "";
     // list of all selected primitives (including the first selected one)
@@ -557,15 +557,15 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    that.primitiveList[id].highlight(false, highlightCol);
-                    that.primitiveList[id].highlight(true,  highlightCol);
+                    that.primitiveList[id].getMatrixTransformNode().highlight(false, highlightCol);
+                    that.primitiveList[id].getMatrixTransformNode().highlight(true,  highlightCol);
                 }
                 //remove from selection
                 else
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
 
-                    that.primitiveList[id].highlight(false, highlightCol);
+                    that.primitiveList[id].getMatrixTransformNode().highlight(false, highlightCol);
                 }
 
                 //if we started to group primitives, disable the transformation UI
@@ -677,16 +677,9 @@ function PrimitiveManager(){
         //GROUP MODE
         if (ui.groupModeActive())
         {
-            /*
-            group       = groupManager.getCurrentGroup();
-
-            translation = group.getTransformNode();
-            rotation    = group.getMatrixTransformNode();
-            //@todo: make it work
-            //scale       = group.getScaleNode();
+            objectToBeUpdated = groupManager.getCurrentGroup();
 
             ui.BBPrimName.set(groupManager.getCurrentGroupID());
-            */
         }
         //PRIMITIVE MODE
         else
@@ -763,7 +756,14 @@ function PrimitiveManager(){
             //GROUP MODE
             if (ui.groupModeActive())
             {
-                vec = x3dom.fields.SFVec3f.parse(group.getTransformNode().getAttribute(interactionMode));
+                if (interactionMode === "translation")
+                {
+                    vec = group.getTranslationAsVec();
+                }
+                else if (interactionMode === "scale")
+                {
+                    vec = group.getScaleAsVec();
+                }
             }
             //PRIMITIVE MODE
             else
