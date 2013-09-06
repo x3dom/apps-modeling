@@ -14,13 +14,13 @@ SnapSubject.prototype.Report = function( context )
  	try
  	{
  		//post position is the position of the selected item
-		var postPosition = primitiveManager.getPosition(context);
+		var postPosition = primitiveManager..getPrimitiveByID(context).getTranslationAsVec();
 		var myObj = primitiveManager.getCurrentPrimitive();
 		
 		for(var i = 0; i < count; i++)
 		{
 			//myPosition is the position of the other member from ObjectArray
-			var myPosition = primitiveManager.getPosition(this.observers.GetArrayObject(i).id);	
+			var myPosition = primitiveManager.getPrimitiveByID(this.observers.GetArrayObject(i).id).getTranslationAsVec();
 			this.observers.GetArrayObject(i).Update( myPosition, postPosition, myObj, this.observers.GetArrayObject(i) );
 		}	
  	}

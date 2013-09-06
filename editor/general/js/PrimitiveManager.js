@@ -881,38 +881,6 @@ function PrimitiveManager(){
 
 
 
-    // TODO: the following three accessor functions seem broken, adapt to new code!
-    /*
-     * Returns the position of the required primitive 
-     * @returns {SFVec3f}
-     */
-    this.getPosition = function(primitiveID){
-        return x3dom.fields.SFVec3f.parse(that.primitiveList[primitiveID].getAttribute("translation"));
-    };
-    
-    
-    
-    /*
-     * Returns the scale of the required primitive 
-     * @returns {SFVec3f}
-     */
-    this.getScale = function(primitiveID){
-        return x3dom.fields.SFVec3f.parse(that.primitiveList[primitiveID].getAttribute("scale"));
-    };
-    
-    
-    
-    /*
-     * Returns the rotation of the required primitive 
-     * @returns {SFMatrix4f}
-     */
-    this.getRotation = function(primitiveID){
-        return x3dom.fields.SFMatrix4f.parse(
-               that.primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
-    };
-
-
-
     /*
      * Returns a list with all primitives IDs
      * @returns {List of IDs of all primitives}
