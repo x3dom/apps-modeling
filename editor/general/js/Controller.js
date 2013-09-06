@@ -160,9 +160,7 @@ function Controller(ui){
             document.getElementById("ButtonSnapToGrid").src="images/snapGrid_on.png";
     	}
 
-        var size = this.getGridSize();
-        primitiveManager.updateGridSize(size);
-        groupManager.updateGridSize(size);
+        primitiveManager.updateGridSize(this.getGridSize());
     };
 
 
@@ -177,4 +175,3 @@ function Controller(ui){
         return (snapToGrid == true) ? 0.5 : 0;
     };
 }
-

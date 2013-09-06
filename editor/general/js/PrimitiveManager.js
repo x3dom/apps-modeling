@@ -53,17 +53,17 @@ setDefaultParameters = function(primitive, parameters) {
  */
 Primitive.prototype = new TransformableObject();
 Primitive.prototype.constructor = Primitive;
+
 function Primitive(primType, parameters){
     if (arguments.length < 2)
     {
-        console.log("Error: Primitive constructor needs primType and parameters.");
+        x3dom.debug.logError("Error: Primitive constructor needs primType and parameters.");
         return;
     }
 
     //not very elegant, but necessary because of the dynamic id
     //(which differs among instances, in contrast to other members of the prototype)
     this.init();
-
 
     this.primType   = primType;
     this.domNode    = document.createElement(this.primType);
@@ -137,7 +137,7 @@ Primitive.prototype.getParameters = function(){
  */
 Primitive.prototype.getPrimType = function(){
     return this.primType;
-}
+};
 
 
 
@@ -215,7 +215,7 @@ function PrimitiveManager(){
         var id   = prim.getID();
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(); },
+            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(id); },
             false);
 
         this.primitiveList[id] = prim;
@@ -423,9 +423,20 @@ function PrimitiveManager(){
 
     this.updateGridSize = function(size)
     {
-        for (var key in this.primitiveList) {
+        var key, ot;
+
+        for (key in this.primitiveList) {
             if (this.primitiveList[key]) {
-                var ot = document.getElementById(currentObjectID);
+                ot = this.primitiveList[key].getMatrixTransformNode();
+                if (ot && ot._iMove) {
+                    ot._iMove.setGridSize(size);
+                }
+            }
+        }
+
+        for (key in this.groupList) {
+            if (this.groupList[key]) {
+                ot = this.groupList[key].getMatrixTransformNode();
                 if (ot && ot._iMove) {
                     ot._iMove.setGridSize(size);
                 }
@@ -460,7 +471,7 @@ function PrimitiveManager(){
     this.groupSelected = function(id){
         ui.toggleGroupMode(true);
         this.selectObject(id);
-    }
+    };
 
 
 
@@ -495,6 +506,8 @@ function PrimitiveManager(){
             //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
             else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
             {
+                var trafo = this.primitiveList[id].getMatrixTransformNode();
+
                 idx = selectedPrimitiveIDs.indexOf(id);
 
                 //add to selection
@@ -502,15 +515,16 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    this.primitiveList[id].getMatrixTransformNode().highlight(false, highlightCol);
-                    this.primitiveList[id].getMatrixTransformNode().highlight(true,  highlightCol);
+                    // ?!?
+                    trafo.highlight(false, highlightCol);
+                    trafo.highlight(true,  highlightCol);
                 }
                 //remove from selection
                 else
                 {
                     selectedPrimitiveIDs.splice(idx, 1);
 
-                    this.primitiveList[id].getMatrixTransformNode().highlight(false, highlightCol);
+                    trafo.highlight(false, highlightCol);
                 }
 
                 //if we started to group primitives, disable the transformation UI
@@ -532,7 +546,7 @@ function PrimitiveManager(){
         {
             x3dom.debug.logError("primitiveSelected: ID must be specified.");
         }
-    }
+    };
     
     
     
@@ -552,14 +566,7 @@ function PrimitiveManager(){
         if (object)
         {
             //@todo: still open whether we should move "domNode" to the base class
-            if (ui.groupModeActive())
-            {
-                volume = object.getDOMNode()._x3domNode.getVolume();
-            }
-            else
-            {
-                volume = object.getDOMNode()._x3domNode.getVolume();
-            }
+            volume = object.getDOMNode()._x3domNode.getVolume();
 
             bbTransform.setAttribute("matrix", object.getMatrixTransformNode().getAttribute("matrix"));
 
@@ -762,11 +769,12 @@ function PrimitiveManager(){
         {
             if (ui.groupModeActive())
             {
-                console.log("Error: no group with id \"" + currentObjectID + "\" found!")
+                x3dom.debug.logError("No group with id \"" + currentObjectID + "\" found!")
             }
             else
             {
-                console.log("Error: no primitive with id \"" + currentObjectID + "\" found!")
+                // Not really an issue, on init for example there is no current object
+                x3dom.debug.logWarning("No primitive with id \"" + currentObjectID + "\" found!")
             }
             return null;
         }
@@ -848,7 +856,6 @@ function PrimitiveManager(){
             //remove the current group
             //@todo: make it work
             //...
-
         }
 
         //disable group mode in the ui
