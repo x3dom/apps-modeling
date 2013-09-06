@@ -41,13 +41,10 @@ function Primitive(primType, parameters){
 
     this.matrixTransformNode = document.createElement('MatrixTransform');
     this.matrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
+    // node needs an id to be identified later on, e.g. in Moveable callback
+    this.matrixTransformNode.setAttribute("id", this.id);
 
-    // wrapper for adding moving functionality, last param is callback function
-    new x3dom.Moveable(document.getElementById("x3d"),
-                       this.matrixTransformNode,
-                       primitiveManager.primitiveMoved,
-                       controller.getGridSize());
-
+    // TODO: this is unnecessary overhead later on, just represent values as Vec3f
     //translation values
     this.transX = 0;
     this.transY = 0;
@@ -102,6 +99,12 @@ function Primitive(primType, parameters){
 
     document.getElementById('root').appendChild(this.matrixTransformNode);
 
+    // wrapper for adding moving functionality, last param is callback function,
+    // must be called _after_ having added node to tree since otherwise uninitialized
+    new x3dom.Moveable(document.getElementById("x3d"),
+        this.matrixTransformNode,
+        primitiveManager.primitiveMoved,
+        controller.getGridSize());
 
 
     /*
@@ -144,12 +147,14 @@ function Primitive(primType, parameters){
 
 
 
+    // TODO: this is unnecessary overhead, just represent trans as Vec3f
     this.getTranslationAsString =  function(){
         return that.transX + ' ' + that.transY + ' ' + that.transZ;
     };
 
 
 
+    // TODO: this is unnecessary overhead, just represent scale as Vec3f
     this.getScaleAsString =  function(){
         return that.scaleX + ' ' + that.scaleY + ' ' + that.scaleZ;
     };
@@ -184,19 +189,19 @@ function Primitive(primType, parameters){
     };
 
 
-
+    // TODO: this is unnecessary overhead, just represent trans as Vec3f
     this.getTranslationAsVec = function(){
         return new x3dom.fields.SFVec3f(this.transX, this.transY, this.transZ);
     };
 
 
-
+    // TODO: this is unnecessary overhead, just represent rot as Vec3f
     this.getRotationAsVec = function(){
         return new x3dom.fields.SFVec3f(this.rotX, this.rotY, this.rotZ);
     };
 
 
-
+    // TODO: this is unnecessary overhead, just represent scale as Vec3f
     this.getScaleAsVec = function(){
         return new x3dom.fields.SFVec3f(this.scaleX, this.scaleY, this.scaleZ);
     };
@@ -312,6 +317,7 @@ function PrimitiveManager(){
     this.clonePrimitiveGroup = function(){
         var primitiveToClone = that.primitiveList[currentPrimitiveID];
 
+        // TODO: make working again!
         //@todo: check
         /*
         var clone = that.addPrimitive(that.primitiveList[currentPrimitiveID].getPrimType(),
@@ -392,7 +398,6 @@ function PrimitiveManager(){
      * @param {SFVec3f} new translation value
      */
     this.primitiveMoved = function(elem, pos) {
-
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
@@ -404,7 +409,7 @@ function PrimitiveManager(){
             // update stored transform values and GUI elements appropriately
             // TODO; this is still  _very_ slow in Safari, seems to trigger something else
             that.primitiveList[currentPrimitiveID].setTranslation(pos.x, pos.y, pos.z);
-            that.updateTransformUIFromPrimitive();
+            that.updateTransformUIFromPrimitive(currentPrimitiveID, HANDLING_MODE);
 
             // when snapping is active, the selected item position is always known and calculate the position the other
             snapping.startSnapping();
@@ -465,7 +470,7 @@ function PrimitiveManager(){
                     delete that.primitiveList[currentPrimitiveID];
 
                     that.clearSelection();
-                    primitiveCounter--;
+                    that.primitiveCounter--;
                 }
             }
 
@@ -488,7 +493,7 @@ function PrimitiveManager(){
 
         that.primitiveList = [];
         currentPrimitiveID = "";
-        primitiveCounter = 0;
+        that.primitiveCounter = 0;
     };
 
 
@@ -515,10 +520,10 @@ function PrimitiveManager(){
         var rgb = document.getElementById(element).value;
         that.highlightCurrentPrimitive(false);
         if (element === "diffuse" || element === "specular" || element === "emissive") {
-            that.primitiveList[currentPrimitiveID].Material.setAttribute(element+'Color', rgb);
+            that.primitiveList[currentPrimitiveID].material.setAttribute(element+'Color', rgb);
         }
         if(element === "transparency" || element === "shininess") {
-            that. primitiveList[currentPrimitiveID].Material.setAttribute(element, rgb);
+            that. primitiveList[currentPrimitiveID].material.setAttribute(element, rgb);
         }
     };
 
@@ -613,9 +618,11 @@ function PrimitiveManager(){
         //PRIMITIVE MODE
         else if (currentPrimitiveID !== "")
         {
-            bbTransform.setAttribute("matrix", that.primitiveList[currentPrimitiveID].getMatrixTransformNode().getAttribute("matrix"));
+            var thePrimitive = that.primitiveList[currentPrimitiveID];
 
-            volume = that.primitiveList[currentPrimitiveID].getPrimitiveNode()._x3domNode.getVolume();
+            bbTransform.setAttribute("matrix", thePrimitive.getMatrixTransformNode().getAttribute("matrix"));
+
+            volume = thePrimitive.getPrimitiveNode()._x3domNode.getVolume();
         }
 
         if (volume)
@@ -699,8 +706,6 @@ function PrimitiveManager(){
         var valX = ui.BBTransX.get();
         var valY = ui.BBTransY.get();
         var valZ = ui.BBTransZ.get();
-
-        var tempValue = valX + ' ' + valY + ' ' + valZ;
 
         if (HANDLING_MODE === "translation")
         {
@@ -833,6 +838,7 @@ function PrimitiveManager(){
         }
         else
         {
+            // TODO: IDMap member not available - FIXME!
             that.primitiveList[currentPrimitiveID].IDMap.name = ui.BBPrimName.get();
             ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
         }
@@ -875,6 +881,7 @@ function PrimitiveManager(){
 
 
 
+    // TODO: the following three accessor functions seem broken, adapt to new code!
     /*
      * Returns the position of the required primitive 
      * @returns {SFVec3f}
@@ -900,7 +907,8 @@ function PrimitiveManager(){
      * @returns {SFMatrix4f}
      */
     this.getRotation = function(primitiveID){
-        return x3dom.fields.SFMatrix4f.parse(that.primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
+        return x3dom.fields.SFMatrix4f.parse(
+               that.primitiveList[primitiveID].children[0].getAttribute("matrix")).transpose();
     };
 
 
