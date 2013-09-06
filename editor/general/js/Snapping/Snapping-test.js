@@ -16,7 +16,7 @@ function Snapping()
 		var i, pfad = './x3d/JsonFiles/Box.json';
 		// IDs of all elements in view (TODO: recreate on change)
 		var objListID = primitiveManager.getIDList();
-		actualObjectID = primitiveManager.getCurrentPrimitive().id;
+		actualObjectID = primitiveManager.getCurrentObject().id;
 
 		if(document.getElementById('snapPoint_' + actualObjectID))
 		{
@@ -46,7 +46,7 @@ function Snapping()
 	// Snap the Element
 	this.snap = function(objListID, normalePoint)
 	{	
-		actualObject = primitiveManager.getCurrentPrimitive();
+		actualObject = primitiveManager.getCurrentObject();
 		actualObjectID = actualObject.id;
 
         var point1 = primitiveManager.getPrimitiveByID(objListID[0]).getTranslation();

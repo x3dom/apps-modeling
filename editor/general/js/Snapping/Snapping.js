@@ -58,7 +58,7 @@ function Snapping()
 		if(snapBool == true)
 		{
 			//Current Item reports its changes to the observer
-        	currentPrimitive = primitiveManager.getCurrentPrimitive();
+        	currentPrimitive = primitiveManager.getCurrentObject();
        		currentPrimitive.Report(primitiveManager.getCurrentPrimitiveID());
        	}
 	};

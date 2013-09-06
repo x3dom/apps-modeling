@@ -104,7 +104,6 @@ function Primitive(primType, parameters){
 
     document.getElementById('root').appendChild(this.matrixTransformNode);
 
-
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized
     var that = this;
@@ -160,18 +159,22 @@ function PrimitiveManager(){
     
     // List of all created primitives
     this.primitiveList = {};
+
+    // list of all created groups
+    this.groupList = {};
+
+    // current group, if any
+    this.currentGroup = null;
+
     // actually active id
-    var currentPrimitiveID = "";
+    var currentObjectID = "";
+
     // list of all selected primitives (including the first selected one)
     var selectedPrimitiveIDs = [];
-    // count of all primitives that were created during this session
-    this.primCounter = 0;
+
     // ui element to get access to the gui elements
     var ui = {};
-    // toggle for bounding volume highlighting
-    var boundingVolumeHighlighting = true;
-    // toggle for primitive highlighting
-    var primitiveHighlighting = true;
+
     // highlight color
     var highlightCol = "1 1 0";
     
@@ -217,15 +220,16 @@ function PrimitiveManager(){
 
         this.primitiveList[id] = prim;
 
-        this.updateTransformUIFromCurrentObject();
-
         selectedPrimitiveIDs = [];
 
-        this.selectCurrentPrimitive(id);
+        this.selectObject(id);
+
+        this.updateTransformUIFromCurrentObject();
+
         ui.treeViewer.addPrimitive(id, prim.getName());
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
                 
-        return this.primitiveList[id];
+        return prim;
     };
     
     
@@ -235,7 +239,7 @@ function PrimitiveManager(){
      * @returns {null}
      */
     this.clonePrimitiveGroup = function(){
-        var primitiveToClone = this.primitiveList[currentPrimitiveID];
+        var primitiveToClone = this.primitiveList[currentObjectID];
 
         var clone = this.addPrimitive(primitiveToClone.getPrimType(), primitiveToClone.getParameters());
 
@@ -246,7 +250,6 @@ function PrimitiveManager(){
 
         this.highlightCurrentBoundingVolume(true);
     };
-    
 
     
     
@@ -266,8 +269,8 @@ function PrimitiveManager(){
      * Clears the current selection and disables the UI elements for transformation editing.
      */
     this.clearSelection = function() {
-        currentPrimitiveID = "";
-        this.highlightCurrentPrimitive(false);
+        currentObjectID = "";
+        this.highlightCurrentObject(false);
         this.highlightCurrentBoundingVolume(false);
 
         this.disableTransformationUI();
@@ -283,22 +286,39 @@ function PrimitiveManager(){
      * @param {string} id name of the primitive that should be selected
      * @returns {null}
      */
-    this.selectCurrentPrimitive = function(id){
+    this.selectObject = function(id){
         if (HANDLING_MODE === "hand")
             controller.Activate("translation");
 
-        currentPrimitiveID = id;
-        this.highlightCurrentPrimitive(true);
-        selectedPrimitiveIDs = [id];
+        currentObjectID = id;
 
-        ui.clearParameters();
-        ui.createParameters(this.primitiveList[id].getParameters(), this.primitiveList[id].getDOMNode());
-        ui.setMaterial(this.primitiveList[id].getMaterial());
+        if (!ui.groupModeActive() && (typeof this.groupList[id] !== 'undefined'))
+        {
+            ui.toggleGroupMode(true);
+        }
+        else if (ui.groupModeActive() && (typeof this.groupList[id] === 'undefined'))
+        {
+            ui.toggleGroupMode(false);
+        }
+
+        if (ui.groupModeActive())
+        {
+            selectedPrimitiveIDs = this.groupList[id].getPrimitiveIDList();
+        }
+        else
+        {
+            selectedPrimitiveIDs = [id];
+            ui.clearParameters();
+            ui.createParameters(this.primitiveList[id].getParameters(), this.primitiveList[id].getDOMNode());
+            ui.setMaterial(this.primitiveList[id].getMaterial());
+            ui.RBAccordion.disable(false);
+        }
+
+        this.highlightCurrentObject(true);
 
         ui.treeViewer.activate(id);
 
         this.enableTransformationUI();
-        ui.RBAccordion.disable(false);
 
         this.updateTransformUIFromCurrentObject();
     };
@@ -310,18 +330,25 @@ function PrimitiveManager(){
      * @param {X3DNode} the interacting element
      * @param {SFVec3f} new translation value
      */
+    // TODO; this is still  _very_ slow in Safari, seems to trigger something else
     this.primitiveMoved = function(elem, pos, primitive) {
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
             HANDLING_MODE = 'translation';
 
-            primitiveManager.highlightCurrentBoundingVolume(true);
-
-            // update stored transform values and GUI elements appropriately
-            // TODO; this is still  _very_ slow in Safari, seems to trigger something else
+            //update stored transform values and GUI elements appropriately
             primitive.setTranslation(pos.x, pos.y, pos.z);
-            primitiveManager.updateTransformUIFromCurrentObject();
+
+            if (primitive.getID() !== currentObjectID)
+            {
+                primitiveManager.selectObject(primitive.getID());
+            }
+            else
+            {
+                primitiveManager.updateTransformUIFromCurrentObject();
+                primitiveManager.highlightCurrentBoundingVolume(true);
+            }
 
             // when snapping is active, the selected item position is always known and calculate the position the other
             snapping.startSnapping();
@@ -348,8 +375,8 @@ function PrimitiveManager(){
      */  
     this.removeNode = function()
     {
-        if (currentPrimitiveID  && currentPrimitiveID !== "") {
-            var matrixTransformNode = this.primitiveList[currentPrimitiveID].getMatrixTransformNode();
+        if (currentObjectID  && currentObjectID !== "") {
+            var matrixTransformNode = this.primitiveList[currentObjectID].getMatrixTransformNode();
             
             if (matrixTransformNode._iMove) {
                 matrixTransformNode._iMove.detachHandlers();
@@ -361,8 +388,8 @@ function PrimitiveManager(){
                 if (matrixTransformNode.childNodes[i].nodeType === Node.ELEMENT_NODE)
                 { 
                     matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
-                    ui.treeViewer.removeNode(currentPrimitiveID);
-                    delete this.primitiveList[currentPrimitiveID];
+                    ui.treeViewer.removeNode(currentObjectID);
+                    delete this.primitiveList[currentObjectID];
 
                     this.clearSelection();
                     this.primitiveCounter--;
@@ -370,6 +397,8 @@ function PrimitiveManager(){
             }
 
             document.getElementById('root').removeChild(matrixTransformNode);
+
+            this.highlightCurrentBoundingVolume(false);
         }
     };
 
@@ -381,13 +410,13 @@ function PrimitiveManager(){
     {
         for (var key in this.primitiveList) {
             if (this.primitiveList[key]) {
-                currentPrimitiveID = key;
+                currentObjectID = key;
                 this.removeNode();
             }
         }
 
         this.primitiveList = [];
-        currentPrimitiveID = "";
+        currentObjectID = "";
         this.primitiveCounter = 0;
     };
 
@@ -396,16 +425,15 @@ function PrimitiveManager(){
     {
         for (var key in this.primitiveList) {
             if (this.primitiveList[key]) {
-                var ot = document.getElementById(currentPrimitiveID);
+                var ot = document.getElementById(currentObjectID);
                 if (ot && ot._iMove) {
                     ot._iMove.setGridSize(size);
                 }
             }
         }
     };
-    
-    
-    
+
+
     /*
      * Changes the material of a primitive 
      * @param {elementid} element the id of the textfield with the color
@@ -413,32 +441,49 @@ function PrimitiveManager(){
      */
     this.changePrimitiveMaterial = function(element){
         var rgb = document.getElementById(element).value;
-        this.highlightCurrentPrimitive(false);
+        this.highlightCurrentObject(false);
         if (element === "diffuse" || element === "specular" || element === "emissive") {
-            this.primitiveList[currentPrimitiveID].material.setAttribute(element+'Color', rgb);
+            this.primitiveList[currentObjectID].material.setAttribute(element+'Color', rgb);
         }
         if(element === "transparency" || element === "shininess") {
-            this. primitiveList[currentPrimitiveID].material.setAttribute(element, rgb);
+            this. primitiveList[currentObjectID].material.setAttribute(element, rgb);
         }
     };
 
 
 
     /*
-     * Will be called if a primitive is picked and should
-     * set the values of translation, rotation or scaling
+     * Will be called if a group is picked.
+     * @param {type} id name of the primitive's values that should be set
+     * @returns {null}
+     */
+    this.groupSelected = function(id){
+        ui.toggleGroupMode(true);
+        this.selectObject(id);
+    }
+
+
+
+    /*
+     * Will be called if a primitive is picked.
      * @param {type} id name of the primitive's values that should be set
      * @returns {null}
      */
     this.primitiveSelected = function(id){
         var idx;
 
+        if (ui.groupModeActive())
+        {
+            ui.toggleGroupMode(false);
+            this.clearSelection();
+        }
+
         if (typeof id !== 'undefined')
         {
             //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
             if (selectedPrimitiveIDs.length === 0 || !keyPressed[16])
             {
-                this.selectCurrentPrimitive(id);
+                this.selectObject(id);
 
                 if (HANDLING_MODE === "hand")
 				{
@@ -497,43 +542,42 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.highlightCurrentBoundingVolume = function(bool){
-        var volume = null;
-
+        var object = this.getCurrentObject();
         var bbTransform = document.getElementById('bbox_transform');
+        var volume;
+        var min;
+        var max;
+        var box;
 
-        //GROUP MODE
-        if (ui.groupModeActive())
+        if (object)
         {
-            var group = groupManager.getCurrentGroup();
+            //@todo: still open whether we should move "domNode" to the base class
+            if (ui.groupModeActive())
+            {
+                volume = object.getDOMNode()._x3domNode.getVolume();
+            }
+            else
+            {
+                volume = object.getDOMNode()._x3domNode.getVolume();
+            }
 
-            bbTransform.setAttribute("matrix", group.getMatrixTransformNode().getAttribute("matrix"));
+            bbTransform.setAttribute("matrix", object.getMatrixTransformNode().getAttribute("matrix"));
 
-            volume = group.getGroupNode()._x3domNode.getVolume();
-        }
-        //PRIMITIVE MODE
-        else if (currentPrimitiveID !== "")
-        {
-            var thePrimitive = this.primitiveList[currentPrimitiveID];
+            if (volume)
+            {
+                min = x3dom.fields.SFVec3f.copy(volume.min);
+                max = x3dom.fields.SFVec3f.copy(volume.max);
 
-            bbTransform.setAttribute("matrix", thePrimitive.getMatrixTransformNode().getAttribute("matrix"));
-
-            volume = thePrimitive.getDOMNode()._x3domNode.getVolume();
-        }
-
-        if (volume)
-        {
-            var min = x3dom.fields.SFVec3f.copy(volume.min);
-            var max = x3dom.fields.SFVec3f.copy(volume.max);
-
-            var box = document.getElementById('bbox_points');
-            box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
-                                      min.x+' '+min.y+' '+max.z+', '+
-                                      max.x+' '+min.y+' '+max.z+', '+
-                                      max.x+' '+min.y+' '+min.z+', '+
-                                      min.x+' '+max.y+' '+min.z+', '+
-                                      min.x+' '+max.y+' '+max.z+', '+
-                                      max.x+' '+max.y+' '+max.z+', '+
-                                      max.x+' '+max.y+' '+min.z );
+                box = document.getElementById('bbox_points');
+                box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
+                                          min.x+' '+min.y+' '+max.z+', '+
+                                          max.x+' '+min.y+' '+max.z+', '+
+                                          max.x+' '+min.y+' '+min.z+', '+
+                                          min.x+' '+max.y+' '+min.z+', '+
+                                          min.x+' '+max.y+' '+max.z+', '+
+                                          max.x+' '+max.y+' '+max.z+', '+
+                                          max.x+' '+max.y+' '+min.z );
+            }
         }
 
         bbTransform.setAttribute("render", "" + bool);
@@ -542,15 +586,18 @@ function PrimitiveManager(){
 
 
     /*
-     * Highlights or un-highlights the currently selected primitive (if any)
+     * Highlights or un-highlights the currently selected primitive or group (if any)
      * @param {bool} on specifies whether highlighting should be active
      * @returns (undefined)
      */
-    this.highlightCurrentPrimitive = function(on) {
-        if (currentPrimitiveID !== "")
+    this.highlightCurrentObject = function(on) {
+        var primitives;
+        var i;
+
+        if (currentObjectID !== "")
         {
             //update the bounding volume, or hide it
-            this.highlightCurrentBoundingVolume(on);
+            this.highlightCurrentBoundingVolume(true);
 
             //un-highlight all primitives, then highlight the current primitive
             for (var key in this.primitiveList)
@@ -560,7 +607,10 @@ function PrimitiveManager(){
                     this.primitiveList[key].getMatrixTransformNode().highlight(false, highlightCol);
                 }
             }
-            this.primitiveList[currentPrimitiveID].getMatrixTransformNode().highlight(true, highlightCol);
+            if (on)
+            {
+                this.getCurrentObject().getMatrixTransformNode().highlight(true, highlightCol);
+            }
         }
     };
     
@@ -572,20 +622,8 @@ function PrimitiveManager(){
      */
     //@todo: this function is not very beautiful at the moment:
     //          - actually, some of this is UI functionality
-    //          - with groups, this is not only about "primitives" any more
     this.updatePrimitiveTransformFromUI = function() {
-        var objectToBeUpdated;
-
-        //GROUP MODE
-        if (ui.groupModeActive())
-        {
-            objectToBeUpdated = groupManager.getCurrentGroup();
-        }
-        //PRIMITIVE MODE
-        else
-        {
-            objectToBeUpdated = this.primitiveList[currentPrimitiveID];
-        }
+        var objectToBeUpdated = this.getCurrentObject();
 
         var valX = ui.BBTransX.get();
         var valY = ui.BBTransY.get();
@@ -620,19 +658,12 @@ function PrimitiveManager(){
     //          - actually, some of this is UI functionality
     //          - better assume that we have no parameters, but we only handle the "current" primitive or group
     this.updateTransformUIFromCurrentObject = function() {
-        if (currentPrimitiveID != "")
+        if (currentObjectID != "")
         {
             var currentObject;
             var vec;
 
-            if (ui.groupModeActive())
-            {
-                currentObject = groupManager.getCurrentGroup();
-            }
-            else
-            {
-                currentObject = this.primitiveList[currentPrimitiveID];
-            }
+            currentObject = this.getCurrentObject();
 
             ui.BBPrimName.set(currentObject.getName());
 
@@ -704,19 +735,43 @@ function PrimitiveManager(){
         }
         else
         {
-            this.primitiveList[currentPrimitiveID].setName(ui.BBPrimName.get());
-            ui.treeViewer.rename(currentPrimitiveID, ui.BBPrimName.get());
+            this.primitiveList[currentObjectID].setName(ui.BBPrimName.get());
+            ui.treeViewer.rename(currentObjectID, ui.BBPrimName.get());
         }
     };
 
     
     
     /*
-     * Returns the currently selected primitive
+     * Returns the currently selected primitive or group.
      * @returns {primitive}
      */
-    this.getCurrentPrimitive = function(){
-        return this.primitiveList[currentPrimitiveID];
+    this.getCurrentObject = function(){
+        var currObj;
+
+        if (ui.groupModeActive())
+        {
+            currObj = this.groupList[currentObjectID]
+        }
+        else
+        {
+            currObj = this.primitiveList[currentObjectID];
+        }
+
+        if (typeof currObj === 'undefined')
+        {
+            if (ui.groupModeActive())
+            {
+                console.log("Error: no group with id \"" + currentObjectID + "\" found!")
+            }
+            else
+            {
+                console.log("Error: no primitive with id \"" + currentObjectID + "\" found!")
+            }
+            return null;
+        }
+
+        return currObj;
     };
 
 
@@ -726,7 +781,7 @@ function PrimitiveManager(){
      * @returns {primitive}
      */
     this.getCurrentPrimitiveID = function(){
-        return currentPrimitiveID;
+        return currentObjectID;
     };
 
 
@@ -758,4 +813,46 @@ function PrimitiveManager(){
         
         return idList;
     };
+
+
+
+    this.groupSelectedPrimitives = function(){
+        //avoid that two objects belong to the same group:
+        //if the user wants to group objects while a group is selected, do nothing
+        if (!ui.groupModeActive())
+        {
+            //put the IDs of the selected objects into a new group
+            //(a default name is assigned to the new group)
+            var g = new Group(primitiveManager.getSelectedPrimitiveIDs());
+
+            //put the new group in the list of groups
+            this.groupList[g.getID()] = g;
+
+            //make this the current object
+            currentObjectID = g.getID();
+
+            //enable group mode in the ui
+            ui.toggleGroupMode(true);
+
+            //this is necessary in order to properly initialize the group's bounding box
+            var t = this.getCurrentObject().getMatrixTransformNode();
+            t._x3domNode.nodeChanged();
+
+            this.highlightCurrentBoundingVolume(true);
+        }
+    };
+
+
+    this.ungroupSelectedPrimitives = function(){
+        if (this.currentGroup){
+            //remove the current group
+            //@todo: make it work
+            //...
+
+        }
+
+        //disable group mode in the ui
+        ui.toggleGroupMode(false);
+    };
+
 }

@@ -44,10 +44,11 @@ function UI(primitiveManager){
         if (val){
             primitiveManager.enableTransformationUI();
             primitiveManager.updateTransformUIFromCurrentObject();
-            primitiveManager.highlightCurrentBoundingVolume();
+            primitiveManager.highlightCurrentBoundingVolume(true);
         }
-        else {
-            groupManager.setCurrentGroup(null);
+        else
+        {
+            primitiveManager.clearSelection();
         }
     };
 
@@ -151,7 +152,7 @@ function UI(primitiveManager){
                         primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
                         if (tempNode.isActive()){
                             if (tempNode.isSelected())
-                                primitiveManager.highlightCurrentPrimitive(true);
+                                primitiveManager.highlightCurrentObject(true);
                         }
                     }
                 }
@@ -166,7 +167,7 @@ function UI(primitiveManager){
             onActivate: function(node){
                 if (node.isSelected()) {
                     that.treeViewer.activate(node.data.key);
-                    primitiveManager.selectCurrentPrimitive(node.data.key);
+                    primitiveManager.selectObject(node.data.key);
                 }
             }
         });
@@ -209,7 +210,7 @@ function UI(primitiveManager){
                 activate: function(event, ui) {
                     if (ui.newHeader.text() === "Material Editor"){
                         document.getElementById("diffuse").focus();
-                        that.setMaterial(primitiveManager.getCurrentPrimitive().Material);
+                        that.setMaterial(primitiveManager.getCurrentObject().getMaterial());
                     }
                 }
         });
@@ -870,7 +871,7 @@ function UI(primitiveManager){
                         object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
                         document.getElementById(object.id).value = object.param.value;
                         var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                        primitiveManager.highlightCurrentPrimitive(true);
+                        primitiveManager.highlightCurrentObject(true);
                     }
                 });
             }
@@ -953,7 +954,7 @@ function UI(primitiveManager){
                             document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
 
                             var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
-                            primitiveManager.highlightCurrentPrimitive(true);
+                            primitiveManager.highlightCurrentObject(true);
                         }
                     });
                 }
