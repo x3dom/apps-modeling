@@ -14,7 +14,7 @@ SnapSubject.prototype.Report = function( context )
  	try
  	{
  		//post position is the position of the selected item
-		var postPosition = primitiveManager..getPrimitiveByID(context).getTranslationAsVec();
+		var postPosition = primitiveManager.getPrimitiveByID(context).getTranslationAsVec();
 		var myObj = primitiveManager.getCurrentPrimitive();
 		
 		for(var i = 0; i < count; i++)
