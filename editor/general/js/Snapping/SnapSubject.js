@@ -13,15 +13,28 @@ SnapSubject.prototype.Report = function( context )
  	
  	try
  	{
- 		//post position is the position of the selected item
-		var postPosition = primitiveManager.getPrimitiveByID(context).getTranslation();
-		var myObj = primitiveManager.getCurrentObject();
-		
+ 		var myObj = primitiveManager.getCurrentPrimitive();
+ 		var myObjPoint = snapping.getCurrentPrimitive();
+ 		var myPosition = primitiveManager.getPosition(context);
+ 	
+ 		
 		for(var i = 0; i < count; i++)
 		{
+			postObj = this.observers.GetArrayObject(i);
+			postObjPoint = this.observers.GetArrayObject(i) + '_point_0';
+			
 			//myPosition is the position of the other member from ObjectArray
-			var myPosition = primitiveManager.getPrimitiveByID(this.observers.GetArrayObject(i).id).getTranslation();
-			this.observers.GetArrayObject(i).Update( myPosition, postPosition, myObj, this.observers.GetArrayObject(i) );
+			var postPosition = primitiveManager.getPosition(this.observers.GetArrayObject(i).id);
+			var postPointP = snapping.getPosition(this.observers.GetArrayObject(i).id + '_point_0');						
+			var postPositionPoint = postPointP.add(postPosition);
+			
+			
+			//Position from Point from current Element
+			var myPointP = snapping.getPosition(context + '_point_0');
+			var myPositionPoint = myPointP.add(myPosition);
+								
+			
+			this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint );
 		}	
  	}
  	catch(event)
@@ -29,6 +42,7 @@ SnapSubject.prototype.Report = function( context )
  		console.log(event);
  	}
 };
+
 
 // Add new Observer Element
 SnapSubject.prototype.AddObserver = function( observer )
@@ -41,6 +55,7 @@ SnapSubject.prototype.AddObserver = function( observer )
 	// Observer added to Observerlist
 	this.observers.SetArrayObject( observer );
 };
+
 
 // Remove Observer from Element-List
 SnapSubject.prototype.RemoveObserver = function( observer )

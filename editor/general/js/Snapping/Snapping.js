@@ -4,6 +4,7 @@
 function Snapping()
 {
 	var snapBool = false;
+	var objPointList = [];
 	var snapJ = new SnapJSON();
 	
 	/*
@@ -28,10 +29,11 @@ function Snapping()
             
             //remove existing lines and Points
             elementList = primitiveManager.getIDList();
+            
             for(var i = 0; i < elementList.length; i++)
             {
             	primitiveManager.removeSnapNode(elementList[i] + '_line');
-            	primitiveManager.removeSnapNode(elementList[i] + '_point');
+            	primitiveManager.removeSnapNode(elementList[i] + '_point_0');
             }
 		}
 	};
@@ -58,7 +60,7 @@ function Snapping()
 		if(snapBool == true)
 		{
 			//Current Item reports its changes to the observer
-        	currentPrimitive = primitiveManager.getCurrentObject();
+        	currentPrimitive = primitiveManager.getCurrentPrimitive();
        		currentPrimitive.Report(primitiveManager.getCurrentPrimitiveID());
        	}
 	};
@@ -82,6 +84,11 @@ function Snapping()
 		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
 
 
+		for(var i = 0; elementList.length; i++)
+		{
+			console.log(elementList[i]);	
+		}
+		
 	    if(elementList.length != null)
 	    { 	
 	    	for(var i = 0; i < elementList.length; i++)
@@ -113,20 +120,24 @@ function Snapping()
 	function elementUpdate(element)
 	{
 	 	//Updates the changed parameters
-    	element.Update = function( myPosition, postPosition, myObj, postObj )
+    	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
     	{
     		try
     		{
+    			//console.log(myObjPoint);
+    			
     			//Calculated distance to the elements
     			//Each element draws a line on the selected item, 
-    			//the lines and the distance are always calculate and updated
-    			var distance = myPosition.subtract(postPosition).length();
+    			//the lines and the distance are always calculate and updated   			
+    			var distance = myPosition.subtract(postPosition).length();		
+    			
+    			
     			if(distance != 0)
     			{
     				if(distance < 5.0)
     				{
     					setLine(myPosition, postPosition, postObj);
-    					snapTo(myObj, postObj, distance);
+    					snapTo(myObj, postPositionPoint, distance);
     				}
 					else
 					{
@@ -148,11 +159,14 @@ function Snapping()
      * Connects two points
      * Removes connection lines, otherwise they remain visible
      */
-    function snapTo(myObj, postObj, distance)
-    {    		
+    function snapTo(myObj, position, distance)
+    {
+    	this.primitiveManager.highlightCurrentBoundingVolume(false);
+    		
     	if(distance < 2.0)
     	{
-    		myObj.setAttribute('translation', postObj.getAttribute('translation'));
+    		myObj.setAttribute('translation', position);
+    		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
     	}
@@ -162,9 +176,9 @@ function Snapping()
     /*
      * Draws a line between two elements
      */
-    function setLine(myPosition, postPosition, postObj)
+    function setLine(myPosition, postPosition, myObj)
     {
-    	temp = postObj.id + '_line';
+    	temp = myObj.id + '_line';
 		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
 		var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
     
@@ -206,7 +220,7 @@ function Snapping()
     {
     	var position = pointPosition[0] + ' ' + pointPosition[1] + ' ' + pointPosition[2];
     	
-    	temp = myObj + '_point';
+    	temp = myObj + '_point_0';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	pointTransform.setAttribute('translation', position);
@@ -218,12 +232,6 @@ function Snapping()
     	
     	var pointSphere = document.createElement('Sphere');
     	pointSphere.setAttribute('radius', '0.03');
-    	/*
-    	var pointSet = document.createElement('LineSet');
-    	var pointSetCoordinate = document.createElement('Coordinate');
-    	pointSetCoordinate.setAttribute('point', '0 0 0');
-    	pointSet.appendChild(pointSetCoordinate);
-    	*/
     	
     	pointAppearance.appendChild(pointMaterial);
     	pointShape.appendChild(pointAppearance);
@@ -232,5 +240,45 @@ function Snapping()
     	
     	var pointSnap = document.getElementById(myObj);
     	pointSnap.appendChild(pointTransform);
+    	
+    	//Save Objectpoint in the Pointlist
+    	objPointList[temp] = pointTransform;
+    };
+    
+    
+	/* */
+	this.getIDList = function()
+	{
+        var pointObjID = [];
+        for (var key in objPointList){
+            pointObjID.push(key);
+        }
+        
+        return pointObjID;
+	};
+	
+	/* */
+    this.getPrimitiveByID = function(id){
+        if (id) {
+            return objPointList[id];
+        }
+        else {
+            return null;
+        }
+    };
+	
+	/* */
+    this.getCurrentPrimitiveID = function(){
+        return primitiveManager.getCurrentPrimitiveID() + '_point_0';
+    };
+    
+	/* */
+    this.getCurrentPrimitive = function(){
+    	return snapping.getPrimitiveByID(primitiveManager.getCurrentPrimitiveID() + '_point_0'); 
+    };
+    
+	/* */
+    this.getPosition = function(pointID){
+        return x3dom.fields.SFVec3f.parse(objPointList[pointID].getAttribute("translation"));
     };
 }

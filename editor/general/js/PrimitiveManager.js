@@ -109,7 +109,7 @@ function Primitive(primType, parameters){
     var that = this;
     new x3dom.Moveable(document.getElementById("x3d"),
         this.matrixTransformNode,
-        function(elem, pos){ primitiveManager.primitiveMoved(elem, pos, that) },
+        function(elem, pos){ primitiveManager.primitiveMoved(elem, pos, that); },
         controller.getGridSize());
 }
 
@@ -215,7 +215,7 @@ function PrimitiveManager(){
         var id   = prim.getID();
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(id); },
+            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(); },
             false);
 
         this.primitiveList[id] = prim;
@@ -758,7 +758,7 @@ function PrimitiveManager(){
 
         if (ui.groupModeActive())
         {
-            currObj = this.groupList[currentObjectID]
+            currObj = this.groupList[currentObjectID];
         }
         else
         {
@@ -769,12 +769,12 @@ function PrimitiveManager(){
         {
             if (ui.groupModeActive())
             {
-                x3dom.debug.logError("No group with id \"" + currentObjectID + "\" found!")
+                x3dom.debug.logError("No group with id \"" + currentObjectID + "\" found!");
             }
             else
             {
                 // Not really an issue, on init for example there is no current object
-                x3dom.debug.logWarning("No primitive with id \"" + currentObjectID + "\" found!")
+                x3dom.debug.logWarning("No primitive with id \"" + currentObjectID + "\" found!");
             }
             return null;
         }
