@@ -12,29 +12,36 @@ function Snapping()
 	 */
 	this.init = function()
 	{
-		if(snapBool == false)
+		try
 		{
-			snapBool = true;
-			snapping.setSnapping();	        
-			
-			document.getElementById("SnapPoints").style.border="solid 1px #fff";
-            document.getElementById("SnapPoints").src = "./images/magnet_on.png";
+			if(snapBool == false)
+			{
+				snapBool = true;
+				snapping.setSnapping();	        
+				
+				document.getElementById("SnapPoints").style.border="solid 1px #fff";
+	            document.getElementById("SnapPoints").src = "./images/magnet_on.png";
+			}
+			else
+			{
+				snapBool = false;
+				
+				document.getElementById("SnapPoints").style.border="solid 1px gray";
+	            document.getElementById("SnapPoints").src = "./images/magnet_off.png";
+	            
+	            //remove existing lines and Points
+	            elementList = primitiveManager.getIDList();
+	            
+	            for(var i = 0; i < elementList.length; i++)
+	            {
+	            	primitiveManager.removeSnapNode(elementList[i] + '_line');
+	            	primitiveManager.removeSnapNode(elementList[i] + '_point_0');
+	            }
+			}
 		}
-		else
+		catch(event)
 		{
-			snapBool = false;
-			
-			document.getElementById("SnapPoints").style.border="solid 1px gray";
-            document.getElementById("SnapPoints").src = "./images/magnet_off.png";
-            
-            //remove existing lines and Points
-            elementList = primitiveManager.getIDList();
-            
-            for(var i = 0; i < elementList.length; i++)
-            {
-            	primitiveManager.removeSnapNode(elementList[i] + '_line');
-            	primitiveManager.removeSnapNode(elementList[i] + '_point_0');
-            }
+			console.log(event);
 		}
 	};
 		
@@ -75,42 +82,48 @@ function Snapping()
     	elementList = [];
     	elementList = primitiveManager.getIDList();
     	
+    	
 		// Observer-Objects
 		var snapObserver = new SnapObserver();
 		var snapSubject = new SnapSubject();
 
-
-		// TODO: Only test !!!
-		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
-
-
-		for(var i = 0; elementList.length; i++)
+	
+		try
 		{
-			console.log(elementList[i]);	
-		}
-		
-	    if(elementList.length != null)
-	    { 	
-	    	for(var i = 0; i < elementList.length; i++)
-	    	{
-	    		//Set Snappoints
-	    		for(var x = 0; x < pointList.length; x++)
-		        {
-		        	setPoint(pointList[x], elementList[i]);
-		        }
-		        
-	    		element = document.getElementById(elementList[i]);
-	    		
-	    		//Subject is observed
-		        SnapInherits(snapSubject, element);
-		        //Observer what makes Subject
-				SnapInherits(snapObserver, element);
-				//Added to Observer list 
-		        element.AddObserver(element);
-				//Call the update function of the observer
-				elementUpdate(element);
-	    	}
-	    }
+			// TODO: Only test !!!
+			var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
+			
+			
+		    if(elementList.length != null)
+		    { 	
+		    	for(var i = 0; i < elementList.length; i++)
+		    	{		    		
+		    		if(typeof elementList[i] != 'undefined')
+		    		{
+			    		//Set Snappoints
+			    		for(var x = 0; x < pointList.length; x++)
+				        {
+				        	setPoint(pointList[x], elementList[i]);
+				        }
+				        
+			    		element = document.getElementById(elementList[i]);
+			    		
+			    		//Subject is observed
+				        SnapInherits(snapSubject, element);
+				        //Observer what makes Subject
+						SnapInherits(snapObserver, element);
+						//Added to Observer list 
+				        element.AddObserver(element);
+						//Call the update function of the observer
+						elementUpdate(element);
+					}
+				}
+		    }
+	   }
+	   catch(event)
+	   {
+	   		console.log(event);
+	   }
     };
     
     
@@ -209,7 +222,6 @@ function Snapping()
     	
     	var lineSnap = document.getElementById('snapLines');
     	lineSnap.appendChild(lineTransform);
-    	
     };
     
     
