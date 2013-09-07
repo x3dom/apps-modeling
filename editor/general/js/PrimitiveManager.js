@@ -793,6 +793,14 @@ function PrimitiveManager(){
     };
 
 
+    /*
+     * Returns the currently selected primitive
+     * @returns {primitive}
+     */
+    this.getCurrentPrimitive = function(){
+        return this.primitiveList[currentObjectID];
+    };
+
 
     /*
      * Returns primitive with the given ID, if any
