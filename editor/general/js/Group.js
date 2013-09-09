@@ -22,8 +22,8 @@ function Group(primIDs) {
     var vol;
     var vec;
 
-    root.appendChild(this.matrixTransformNode);
     this.matrixTransformNode.appendChild(this.domNode);
+    root.appendChild(this.matrixTransformNode);
 
     //move all new object IDs into this group
     for (i = 0; i < primIDs.length; ++i)
@@ -68,11 +68,13 @@ function Group(primIDs) {
     var that = this;
     new x3dom.Moveable(document.getElementById("x3d"),
         this.matrixTransformNode,
-        function(elem, pos){ primitiveManager.primitiveMoved(elem, pos, that) },
+        function(elem, pos){ primitiveManager.objectMoved(elem, pos, that) },
         controller.getGridSize());
 
-    this.getDOMNode().addEventListener("mousedown",
-        function(){ primitiveManager.groupSelected(this.id); },
+    this.domNode.addEventListener("mousedown",
+        (function(id){
+            return function(){ primitiveManager.groupPicked(id); }
+        })(this.id),
         false);
 }
 

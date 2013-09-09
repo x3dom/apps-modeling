@@ -109,7 +109,7 @@ function Primitive(primType, parameters){
     var that = this;
     new x3dom.Moveable(document.getElementById("x3d"),
         this.matrixTransformNode,
-        function(elem, pos){ primitiveManager.primitiveMoved(elem, pos, that); },
+        function(elem, pos){ primitiveManager.objectMoved(elem, pos, that); },
         controller.getGridSize());
 }
 
@@ -215,7 +215,7 @@ function PrimitiveManager(){
         var id   = prim.getID();
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveManager.primitiveSelected(id); snapping.newSnapObject(); },
+            function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); },
             false);
 
         this.primitiveList[id] = prim;
@@ -331,18 +331,18 @@ function PrimitiveManager(){
      * @param {SFVec3f} new translation value
      */
     // TODO; this is still  _very_ slow in Safari, seems to trigger something else
-    this.primitiveMoved = function(elem, pos, primitive) {
+    this.objectMoved = function(elem, pos, object) {
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
             HANDLING_MODE = 'translation';
 
             //update stored transform values and GUI elements appropriately
-            primitive.setTranslation(pos.x, pos.y, pos.z);
+            object.setTranslation(pos.x, pos.y, pos.z);
 
-            if (primitive.getID() !== currentObjectID)
+            if (object.getID() !== currentObjectID)
             {
-                primitiveManager.selectObject(primitive.getID());
+                primitiveManager.selectObject(object.getID());
             }
             else
             {
@@ -465,85 +465,80 @@ function PrimitiveManager(){
 
     /*
      * Will be called if a group is picked.
-     * @param {type} id name of the primitive's values that should be set
+     * @param {type} id name of the group that was picked
      * @returns {null}
      */
-    this.groupSelected = function(id){
-        ui.toggleGroupMode(true);
-        this.selectObject(id);
+    this.groupPicked = function(id){
+        if (id !== currentObjectID)
+        {
+            primitiveManager.selectObject(id);
+        }
+        else
+        {
+            primitiveManager.updateTransformUIFromCurrentObject();
+            primitiveManager.highlightCurrentBoundingVolume(true);
+        }
     };
 
 
 
     /*
      * Will be called if a primitive is picked.
-     * @param {type} id name of the primitive's values that should be set
+     * @param {type} id name of the primitive that was picked
      * @returns {null}
      */
-    this.primitiveSelected = function(id){
+    this.primitivePicked = function(id){
         var idx;
+        var trafo;
 
-        if (ui.groupModeActive())
+        //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
+        if (selectedPrimitiveIDs.length === 0 || !keyPressed[16])
         {
-            ui.toggleGroupMode(false);
-            this.clearSelection();
+            this.selectObject(id);
+
+            if (HANDLING_MODE === "hand")
+            {
+                controller.Activate("translation");
+            }
+
+            this.updateTransformUIFromCurrentObject();
+        }
+        //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
+        else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
+        {
+            trafo = this.primitiveList[id].getMatrixTransformNode();
+
+            idx = selectedPrimitiveIDs.indexOf(id);
+
+            //add to selection
+            if (idx === -1)
+            {
+                selectedPrimitiveIDs.push(id);
+
+                trafo.highlight(false, highlightCol);
+                trafo.highlight(true,  highlightCol);
+            }
+            //remove from selection
+            else
+            {
+                selectedPrimitiveIDs.splice(idx, 1);
+
+                trafo.highlight(false, highlightCol);
+            }
+
+            //if we started to group primitives, disable the transformation UI
+            if (selectedPrimitiveIDs.length === 2)
+            {
+                this.disableTransformationUI();
+                ui.RBAccordion.disable(true);
+            }
         }
 
-        if (typeof id !== 'undefined')
+        //if we stopped to group primitives, enable the transformation UI
+        if (selectedPrimitiveIDs.length === 1)
         {
-            //if nothing is selected, use this as the primary primitive (which gets transformed etc.)
-            if (selectedPrimitiveIDs.length === 0 || !keyPressed[16])
-            {
-                this.selectObject(id);
-
-                if (HANDLING_MODE === "hand")
-				{
-                    controller.Activate("translation");
-				}
-
-                this.updateTransformUIFromCurrentObject();
-            }
-            //if there is already a selected object and SHIFT is pressed, add/remove object to/from selection
-            else if (keyPressed[16] && selectedPrimitiveIDs[0] !== id)
-            {
-                var trafo = this.primitiveList[id].getMatrixTransformNode();
-
-                idx = selectedPrimitiveIDs.indexOf(id);
-
-                //add to selection
-                if (idx === -1)
-                {
-                    selectedPrimitiveIDs.push(id);
-
-                    trafo.highlight(false, highlightCol);
-                    trafo.highlight(true,  highlightCol);
-                }
-                //remove from selection
-                else
-                {
-                    selectedPrimitiveIDs.splice(idx, 1);
-
-                    trafo.highlight(false, highlightCol);
-                }
-
-                //if we started to group primitives, disable the transformation UI
-                if (selectedPrimitiveIDs.length === 2)
-                {
-                    this.disableTransformationUI();
-                    ui.RBAccordion.disable(true);
-                }
-            }
-
-            //if we stopped to group primitives, enable the transformation UI
-            if (selectedPrimitiveIDs.length === 1)
-            {
-                this.enableTransformationUI();
-                ui.RBAccordion.disable(false);
-            }
-        }
-        else
-        {
-            x3dom.debug.logError("primitiveSelected: ID must be specified.");
+            this.enableTransformationUI();
+            ui.RBAccordion.disable(false);
         }
     };
     

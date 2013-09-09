@@ -40,15 +40,16 @@ function UI(primitiveManager){
     this.toggleGroupMode = function(val){
         groupMode = val;
 
-        //current group might become null
         if (val){
             primitiveManager.enableTransformationUI();
             primitiveManager.updateTransformUIFromCurrentObject();
             primitiveManager.highlightCurrentBoundingVolume(true);
+
+            ui.RBAccordion.disable(true);
         }
         else
         {
-            primitiveManager.clearSelection();
+            ui.RBAccordion.disable(false);
         }
     };
 
