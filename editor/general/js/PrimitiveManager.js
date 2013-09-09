@@ -515,7 +515,6 @@ function PrimitiveManager(){
                 {
                     selectedPrimitiveIDs.push(id);
 
-                    // ?!?
                     trafo.highlight(false, highlightCol);
                     trafo.highlight(true,  highlightCol);
                 }

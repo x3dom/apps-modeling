@@ -16,7 +16,7 @@ function Snapping()
 		var i, pfad = './x3d/JsonFiles/Box.json';
 		// IDs of all elements in view (TODO: recreate on change)
 		var objListID = primitiveManager.getIDList();
-		actualObjectID = primitiveManager.getCurrentPrimitive().id;
+		actualObjectID = primitiveManager.getCurrentPrimitiveID();
 
 		if(document.getElementById('snapPoint_' + actualObjectID))
 		{
@@ -46,8 +46,8 @@ function Snapping()
 	// Snap the Element
 	this.snap = function(objListID, normalePoint)
 	{	
-		actualObject = primitiveManager.getCurrentPrimitive();
-		actualObjectID = actualObject.id;
+		actualObject   = primitiveManager.getCurrentPrimitive();
+		actualObjectID = actualObject.getID();
 
         var point1 = primitiveManager.getPosition(objListID[0]);
         var point2 = primitiveManager.getPosition(objListID[1]);
@@ -68,7 +68,7 @@ function Snapping()
                 var pointPosition2_y = point2.y + normale_y;
                 var pointPosition2_z = point2.z + normale_z;
 
-				actualObject.setAttribute('translation', pointPosition2_x + ' ' + pointPosition2_y + ' ' + pointPosition2_z);
+				actualObject.setTranslation(pointPosition2_x, pointPosition2_y, pointPosition2_z);
 			}
 		}
 		else
@@ -79,7 +79,7 @@ function Snapping()
                 var pointPosition1_y = point1.y + normale_y;
                 var pointPosition1_z = point1.z + normale_z;
 
-				actualObject.setAttribute('translation', pointPosition1_x + ' ' + pointPosition1_y + ' ' + pointPosition1_z);
+                actualObject.setTranslation(pointPosition1_x, pointPosition1_y, pointPosition1_z);
 			}
 		}
 	};
