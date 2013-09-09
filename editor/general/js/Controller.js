@@ -70,33 +70,35 @@ function Controller(ui){
         switch(point) {
             case "front":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointFront")._x3domNode);
+                runtime.noNav();
                 break;
             case "back":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBack")._x3domNode);
+                runtime.noNav();
                 break;
             case "right":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointRight")._x3domNode);
+                runtime.noNav();
                 break;
             case "left":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointLeft")._x3domNode);
+                runtime.noNav();
                 break;
             case "top":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointTop")._x3domNode);
+                runtime.noNav();
                 break;
             case "bottom":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBottom")._x3domNode);
-                break;
-            case "upright":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
-                runtime.uprightView();
+                runtime.noNav();
                 break;
             case "all":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
                 runtime.showAll('negZ');
                 break;
-            case "reset":
+            case "free":
                 runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
-                runtime.resetView();
+                runtime.examine();
                 break;
         }
     };
