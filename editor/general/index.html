@@ -293,22 +293,23 @@
                             position="0 0 10" orientation="0 1 0 0">
             </orthoviewpoint>
             <orthoviewpoint id="orthoViewPointBack" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
-                            position="0 0 -10" orientation="0 1 0 3.14">
+                            position="0 0 -10" orientation="0 1 0 3.14159265359">
             </orthoviewpoint>
             <orthoviewpoint id="orthoViewPointTop" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
-                            position="0 10 0" orientation="-1 0 0 1.57">
+                            position="0 10 0" orientation="-1 0 0 1.57079632679">
             </orthoviewpoint>
             <orthoviewpoint id="orthoViewPointBottom" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
-                            position="0 -10 0" orientation="1 0 0 1.57">
+                            position="0 -10 0" orientation="1 0 0 1.57079632679">
             </orthoviewpoint>
             <orthoviewpoint id="orthoViewPointLeft" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
-                            position="-10 0 0" orientation="0 -1 0 1.57">
+                            position="-10 0 0" orientation="0 -1 0 1.57079632679">
             </orthoviewpoint>
             <orthoviewpoint id="orthoViewPointRight" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
-                            position="10 0 0" orientation="0 1 0 1.57">
+                            position="10 0 0" orientation="0 1 0 1.57079632679">
             </orthoviewpoint>
             
             <navigationInfo id="navi" type='"EXAMINE" "ANY"'></navigationInfo>
+
 
             <transform id="planeId" rotation="1 0 0 -1.57079632679">
                 <Shape id="plane" isPickable="false">
@@ -323,7 +324,6 @@
             <transform id="axis">
                 <inline url="x3d/axis.x3d"></inline>
             </transform>
-            
 
             <matrixTransform id="bbox_transform">
                 <Shape isPickable="false" DEF="line">
@@ -335,10 +335,10 @@
                 </Shape>
             </matrixTransform>
 
-
             <transform id="root" translation="0 0 0"></transform>
-            <transform id="snapPoints"> </transform>
-            <transform id="snapLines"> </transform>
+
+            <transform id="snapPoints"></transform>
+            <transform id="snapLines"></transform>
         </scene>
     </x3d>
 </div>
