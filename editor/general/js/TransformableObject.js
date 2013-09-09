@@ -1,6 +1,6 @@
 matrixToString = function(mat){
     return mat.toGL().toString();
-}
+};
 
 /*
  * Base class for everything that is transformed inside the editor.
@@ -75,6 +75,16 @@ TransformableObject.prototype.setRotationAngles = function(x, y, z){
 
 
 
+TransformableObject.prototype.setRotationAnglesAsVec = function(v){
+    this.rotationAngles.x = v.x;
+    this.rotationAngles.y = v.y;
+    this.rotationAngles.z = v.z;
+
+    this.updateMatrixTransform();
+};
+
+
+
 TransformableObject.prototype.setTranslation = function(x, y, z){
     this.translation.x = x;
     this.translation.y = y;
@@ -104,7 +114,7 @@ TransformableObject.prototype.setScale = function(x, y, z){
 
 
 TransformableObject.prototype.setScaleAsVec = function(v){
-    this.scale = x3dom.fields.SFVec3f.copy(v)
+    this.scale = x3dom.fields.SFVec3f.copy(v);
 
     this.updateMatrixTransform();
 };

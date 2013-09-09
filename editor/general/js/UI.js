@@ -771,7 +771,7 @@ function UI(primitiveManager){
 
             divID.appendChild(divIDinnen);
             document.getElementById("divs").appendChild(divID);
-        }
+        };
 
 
         /*
