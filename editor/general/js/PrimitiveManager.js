@@ -238,16 +238,56 @@ function PrimitiveManager(){
      * Clones a primitive with all its parameters
      * @returns {null}
      */
-    this.clonePrimitiveGroup = function(){
-        var primitiveToClone = this.primitiveList[currentObjectID];
+    this.cloneObject = function(){
+        var originalGroup;
+        var clonedGroup;
+        var primitiveIDs;
+        var i;
+        var newPrimitiveIDs = [];
 
-        var clone = this.addPrimitive(primitiveToClone.getPrimType(), primitiveToClone.getParameters());
+        var that = this;
 
-        clone.setTranslationAsVec(primitiveToClone.getTranslation());
-        clone.setScaleAsVec(primitiveToClone.getScale());
+        //creates a clone of the given primitive and returns it
+        var clonePrimitive = function(prim)
+        {
+            var clonedPrim = that.addPrimitive(prim.getPrimType(), prim.getParameters());
+
+            clonedPrim.setTranslationAsVec(prim.getTranslation());
+            clonedPrim.setRotationAnglesAsVec(prim.getRotationAngles());
+            clonedPrim.setScaleAsVec(prim.getScale());
+
+            return clonedPrim;
+        };
+
+        if (!ui.groupModeActive())
+        {
+            clonePrimitive(this.primitiveList[currentObjectID]);
+        }
+        else
+        {
+            originalGroup = this.groupList[currentObjectID];
+
+            //add new primitives, which are clones of the original primitives
+            primitiveIDs = originalGroup.getPrimitiveIDList();
+
+            for (i = 0; i < primitiveIDs.length; ++i)
+            {
+                newPrimitiveIDs.push(clonePrimitive(this.primitiveList[primitiveIDs[i]]).getID());
+            }
+
+            selectedPrimitiveIDs = newPrimitiveIDs;
+
+            this.groupSelectedPrimitives();
+
+            clonedGroup = this.groupList[currentObjectID];
+
+            //apply the original group's transformations to the new group
+            clonedGroup.setTranslationAsVec(originalGroup.getTranslation());
+            clonedGroup.setRotationAnglesAsVec(originalGroup.getRotationAngles());
+            clonedGroup.setScaleAsVec(originalGroup.getScale());
+        }
 
         this.updateTransformUIFromCurrentObject();
-
         this.highlightCurrentBoundingVolume(true);
     };
 
@@ -283,10 +323,12 @@ function PrimitiveManager(){
      * Selects the primitive with the given ID as the current primitive, meaning that this is the primitive
      * which is affected by transformations and which can be inspected with the UI.
      * Note that this clears the list of selected primitives, only the primary primitive is selected afterwards.
-     * @param {string} id name of the primitive that should be selected
+     * @param {string} id name of the primitive or group that should be selected
      * @returns {null}
      */
     this.selectObject = function(id){
+        var groupID;
+
         if (HANDLING_MODE === "hand")
             controller.Activate("translation");
 
@@ -307,6 +349,14 @@ function PrimitiveManager(){
         }
         else
         {
+            //if a primitive within a group is selected (for instance, in the tree view), select the group instead
+            groupID = this.findGroupOfPrimitive(id);
+            if (groupID !== "")
+            {
+                this.selectObject(groupID);
+                return;
+            }
+
             selectedPrimitiveIDs = [id];
             ui.clearParameters();
             ui.createParameters(this.primitiveList[id].getParameters(), this.primitiveList[id].getDOMNode());
@@ -728,11 +778,10 @@ function PrimitiveManager(){
      */
     //@todo: this function is not very beautiful at the moment:
     //          - actually, some of this is UI functionality
-    //          - with groups, this is not only about "primitives" any more
-    this.setPrimitiveName = function() {
+    this.setObjectName = function() {
         if (ui.groupModeActive())
         {
-            //@todo: implement
+            this.groupList[currentObjectID].setName(ui.BBPrimName.get())
         }
         else
         {
@@ -833,7 +882,7 @@ function PrimitiveManager(){
         {
             //put the IDs of the selected objects into a new group
             //(a default name is assigned to the new group)
-            var g = new Group(primitiveManager.getSelectedPrimitiveIDs());
+            var g = new Group(this.getSelectedPrimitiveIDs());
 
             //put the new group in the list of groups
             this.groupList[g.getID()] = g;
@@ -864,4 +913,20 @@ function PrimitiveManager(){
         ui.toggleGroupMode(false);
     };
 
+
+
+    this.findGroupOfPrimitive = function(id){
+        var i;
+        var group;
+
+        for (group in this.groupList)
+        {
+            if (this.groupList[group].getPrimitiveIDList().indexOf(id) !== -1)
+            {
+                return this.groupList[group].getID();
+            }
+        }
+
+        return "";
+    }
 }

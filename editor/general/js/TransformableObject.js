@@ -75,6 +75,16 @@ TransformableObject.prototype.setRotationAngles = function(x, y, z){
 
 
 
+TransformableObject.prototype.setRotationAnglesAsVec = function(v){
+    this.rotationAngles.x = v.x;
+    this.rotationAngles.y = v.y;
+    this.rotationAngles.z = v.z;
+
+    this.updateMatrixTransform();
+};
+
+
+
 TransformableObject.prototype.setTranslation = function(x, y, z){
     this.translation.x = x;
     this.translation.y = y;
