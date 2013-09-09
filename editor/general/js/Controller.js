@@ -66,41 +66,40 @@ function Controller(ui){
     this.setViewpoint = function(point)
     {
         var runtime = document.getElementById("x3d").runtime;
-        var viewpoint = runtime.canvas.doc._scene.getViewpoint();
         
         switch(point) {
             case "front":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointFront")._x3domNode);
+                document.getElementById("orthoViewPointFront").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "back":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointBack")._x3domNode);
+                document.getElementById("orthoViewPointBack").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "right":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointRight")._x3domNode);
+                document.getElementById("orthoViewPointRight").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "left":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointLeft")._x3domNode);
+                document.getElementById("orthoViewPointLeft").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "top":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointTop")._x3domNode);
+                document.getElementById("orthoViewPointTop").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "bottom":
-                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointBottom")._x3domNode);
+                document.getElementById("orthoViewPointBottom").setAttribute('set_bind','true');
                 runtime.noNav();
                 break;
             case "all":
-                viewpoint._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
-                //runtime.showAll('negZ');
+                document.getElementById("viewPoint").setAttribute('set_bind','true');
                 runtime.showObject(document.getElementById("root"));
+                //runtime.showAll('negZ');
                 runtime.examine();
                 break;
             case "free":
-                viewpoint._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
+                document.getElementById("viewPoint").setAttribute('set_bind','true');
                 runtime.examine();
                 break;
         }
