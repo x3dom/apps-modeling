@@ -70,36 +70,37 @@ function Controller(ui){
         
         switch(point) {
             case "front":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointFront")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointFront")._x3domNode);
                 runtime.noNav();
                 break;
             case "back":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBack")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointBack")._x3domNode);
                 runtime.noNav();
                 break;
             case "right":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointRight")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointRight")._x3domNode);
                 runtime.noNav();
                 break;
             case "left":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointLeft")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointLeft")._x3domNode);
                 runtime.noNav();
                 break;
             case "top":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointTop")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointTop")._x3domNode);
                 runtime.noNav();
                 break;
             case "bottom":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBottom")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("orthoViewPointBottom")._x3domNode);
                 runtime.noNav();
                 break;
             case "all":
                 viewpoint._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
                 //runtime.showAll('negZ');
                 runtime.showObject(document.getElementById("root"));
+                runtime.examine();
                 break;
             case "free":
-                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
+                viewpoint._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
                 runtime.examine();
                 break;
         }
