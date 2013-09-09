@@ -71,36 +71,44 @@ function Controller(ui){
             case "front":
                 document.getElementById("orthoViewPointFront").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 0");
                 break;
             case "back":
                 document.getElementById("orthoViewPointBack").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 0");
                 break;
             case "right":
                 document.getElementById("orthoViewPointRight").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "0 1 0 1.57079632679");
                 break;
             case "left":
                 document.getElementById("orthoViewPointLeft").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "0 1 0 1.57079632679");
                 break;
             case "top":
                 document.getElementById("orthoViewPointTop").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 -1.57079632679");
                 break;
             case "bottom":
                 document.getElementById("orthoViewPointBottom").setAttribute('set_bind','true');
                 runtime.noNav();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 -1.57079632679");
                 break;
             case "all":
                 document.getElementById("viewPoint").setAttribute('set_bind','true');
                 runtime.showObject(document.getElementById("root"));
                 //runtime.showAll('negZ');
                 runtime.examine();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 -1.57079632679");
                 break;
             case "free":
                 document.getElementById("viewPoint").setAttribute('set_bind','true');
                 runtime.examine();
+                document.getElementById("planeId").setAttribute("rotation", "1 0 0 -1.57079632679");
                 break;
         }
     };
