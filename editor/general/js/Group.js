@@ -65,12 +65,12 @@ function Group(primIDs) {
     var that = this;
     new x3dom.Moveable(document.getElementById("x3d"),
         this.matrixTransformNode,
-        function(elem, pos){ primitiveManager.objectMoved(elem, pos, that) },
+        function(elem, pos){ primitiveManager.objectMoved(elem, pos, that); },
         controller.getGridSize());
 
     this.domNode.addEventListener("mousedown",
         (function(id){
-            return function(){ primitiveManager.groupPicked(id); }
+            return function(){ primitiveManager.groupPicked(id); };
         })(this.id),
         false);
 }

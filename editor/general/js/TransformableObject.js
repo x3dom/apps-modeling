@@ -1,6 +1,6 @@
 matrixToString = function(mat){
     return mat.toGL().toString();
-}
+};
 
 /*
  * Base class for everything that is transformed inside the editor.
@@ -114,7 +114,7 @@ TransformableObject.prototype.setScale = function(x, y, z){
 
 
 TransformableObject.prototype.setScaleAsVec = function(v){
-    this.scale = x3dom.fields.SFVec3f.copy(v)
+    this.scale = x3dom.fields.SFVec3f.copy(v);
 
     this.updateMatrixTransform();
 };

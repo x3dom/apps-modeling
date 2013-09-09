@@ -764,7 +764,7 @@ function PrimitiveManager(){
     this.setObjectName = function() {
         if (ui.groupModeActive())
         {
-            this.groupList[currentObjectID].setName(ui.BBPrimName.get())
+            this.groupList[currentObjectID].setName(ui.BBPrimName.get());
         }
         else
         {
@@ -911,5 +911,5 @@ function PrimitiveManager(){
         }
 
         return "";
-    }
+    };
 }
