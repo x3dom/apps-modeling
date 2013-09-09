@@ -35,9 +35,6 @@ function Group(primIDs) {
 
             root.removeChild(primMatrixTransformNode);
 
-            //important - otherwise, the backend graph is not properly rebuilt after insertion
-            removeX3DOMBackendGraph(primMatrixTransformNode);
-
             this.domNode.appendChild(primMatrixTransformNode);
 
             //after deletion of the backend graph, the highlight property got lost
