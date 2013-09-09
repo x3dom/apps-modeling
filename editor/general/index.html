@@ -289,6 +289,25 @@
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
             </viewpoint>
+            <orthoviewpoint id="orthoViewPointFront" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="0 0 10" orientation="0 1 0 0">
+            </orthoviewpoint>
+            <orthoviewpoint id="orthoViewPointBack" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="0 0 -10" orientation="0 1 0 3.14">
+            </orthoviewpoint>
+            <orthoviewpoint id="orthoViewPointTop" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="0 10 0" orientation="-1 0 0 1.57">
+            </orthoviewpoint>
+            <orthoviewpoint id="orthoViewPointBottom" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="0 -10 0" orientation="1 0 0 1.75">
+            </orthoviewpoint>
+            <orthoviewpoint id="orthoViewPointLeft" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="-10 0 0" orientation="0 -1 0 1.57">
+            </orthoviewpoint>
+            <orthoviewpoint id="orthoViewPointRight" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
+                            position="10 0 0" orientation="0 1 0 1.57">
+            </orthoviewpoint>
+            
             <navigationInfo id="navi" type='"EXAMINE" "ANY"'></navigationInfo>
 
             <transform id="planeId" rotation="1 0 0 -1.57079632679">

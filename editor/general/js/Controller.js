@@ -56,6 +56,7 @@ function Controller(ui){
     };
     
     
+    var currentViewPoint = "perspective";
     
     /*
      * Sets the specified view point in the editor
@@ -65,35 +66,38 @@ function Controller(ui){
     this.setViewpoint = function(point)
     {
         var runtime = document.getElementById("x3d").runtime;
-
+        
         switch(point) {
             case "front":
-            runtime.showAll('negZ');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointFront")._x3domNode);
+                break;
             case "back":
-            runtime.showAll('posZ');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBack")._x3domNode);
+                break;
             case "right":
-            runtime.showAll('negX');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointRight")._x3domNode);
+                break;
             case "left":
-            runtime.showAll('posX');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointLeft")._x3domNode);
+                break;
             case "top":
-            runtime.showAll('negY');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointTop")._x3domNode);
+                break;
             case "bottom":
-            runtime.showAll('posY');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("orthoViewPointBottom")._x3domNode);
+                break;
             case "upright":
-            runtime.uprightView();
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
+                runtime.uprightView();
+                break;
             case "all":
-            runtime.showAll('negZ');
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
+                runtime.showAll('negZ');
+                break;
             case "reset":
-            runtime.resetView();
-            break;
+                runtime.canvas.doc._scene.getViewpoint()._stack.replaceTop(document.getElementById("viewPoint")._x3domNode);
+                runtime.resetView();
+                break;
         }
     };
     
