@@ -904,6 +904,19 @@ function UI(primitiveManager){
                         object.primitive.setAttribute(object.param.x3domName,
                             document.getElementById(object.id).checked);
                         object.param.value = document.getElementById(object.id).checked;
+
+                        // fake param HACK, field obviously doesn't exist
+                        if (object.param.x3domName == "positive") {
+                            var material = primitiveManager.getMaterialFor(object.primitive);
+                            primitiveManager.highlightCurrentObject(false);
+
+                            if (!object.param.value)
+                                material.setAttribute("diffuseColor", "#E77F65");
+                            else
+                                material.setAttribute("diffuseColor", "#3F7EBD");
+                            //farbtasticPicker.setColor(material.getAttribute("diffuseColor"));
+                            console.log(material.getAttribute("diffuseColor"));
+                        }
                     });
             }
 

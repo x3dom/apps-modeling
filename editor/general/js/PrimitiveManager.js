@@ -74,6 +74,10 @@ function Primitive(primType, parameters){
     this.material.setAttribute("transparency", "0.0");
     this.material.setAttribute("shininess", "0.2");
 
+    // fake param HACK, field obviously doesn't exist
+    if (this.domNode.getAttribute("positive") === "false") {
+        this.material.setAttribute("diffuseColor", "#E77F65");
+    }
 
     // insert nodes into DOM
     var appearance = document.createElement('Appearance');
@@ -629,9 +633,6 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.highlightCurrentObject = function(on) {
-        var primitives;
-        var i;
-
         if (currentObjectID !== "")
         {
             //update the bounding volume, or hide it
@@ -651,8 +652,8 @@ function PrimitiveManager(){
             }
         }
     };
-    
-    
+
+
     
     /*
      * 
@@ -846,6 +847,17 @@ function PrimitiveManager(){
     };
 
 
+    /*
+     *
+     */
+    this.getMaterialFor = function(primitive) {
+        for (var key in this.primitiveList)
+        {
+            if (this.primitiveList[key].getDOMNode() == primitive)
+                return this.primitiveList[key].getMaterial();
+        }
+    };
+
 
     /*
      * Returns a list with all primitives IDs
@@ -903,7 +915,6 @@ function PrimitiveManager(){
 
 
     this.findGroupOfPrimitive = function(id){
-        var i;
         var group;
 
         for (group in this.groupList)
