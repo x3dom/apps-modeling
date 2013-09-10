@@ -406,32 +406,36 @@ function PrimitiveManager(){
      * Removes a primitive from the DOM and from primitive array
      * @returns {undefined}
      */  
-    this.removeNode = function()
+    this.removeCurrentObject = function()
     {
         if (currentObjectID  && currentObjectID !== "") {
-            var matrixTransformNode = this.primitiveList[currentObjectID].getMatrixTransformNode();
-            
-            if (matrixTransformNode._iMove) {
-                matrixTransformNode._iMove.detachHandlers();
-            }
-
-            for (var i = 0; i < matrixTransformNode.childNodes.length; i++)
+            //@todo: make it work for groups
+            if (!ui.groupModeActive())
             {
-                // check if we have a real X3DOM Node; not just e.g. a Text-tag
-                if (matrixTransformNode.childNodes[i].nodeType === Node.ELEMENT_NODE)
-                { 
-                    matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
-                    ui.treeViewer.removeNode(currentObjectID);
-                    delete this.primitiveList[currentObjectID];
+                var matrixTransformNode = this.primitiveList[currentObjectID].getMatrixTransformNode();
 
-                    this.clearSelection();
-                    this.primitiveCounter--;
+                if (matrixTransformNode._iMove) {
+                    matrixTransformNode._iMove.detachHandlers();
                 }
+
+                for (var i = 0; i < matrixTransformNode.childNodes.length; i++)
+                {
+                    // check if we have a real X3DOM Node; not just e.g. a Text-tag
+                    if (matrixTransformNode.childNodes[i].nodeType === Node.ELEMENT_NODE)
+                    {
+                        matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
+                        ui.treeViewer.removeNode(currentObjectID);
+                        delete this.primitiveList[currentObjectID];
+
+                        this.clearSelection();
+                        this.primitiveCounter--;
+                    }
+                }
+
+                document.getElementById('root').removeChild(matrixTransformNode);
+
+                this.highlightCurrentBoundingVolume(false);
             }
-
-            document.getElementById('root').removeChild(matrixTransformNode);
-
-            this.highlightCurrentBoundingVolume(false);
         }
     };
 
@@ -439,12 +443,12 @@ function PrimitiveManager(){
     /*
      * Removes all primitives from the DOM and from primitive array
      */
-    this.removeAllNodes = function()
+    this.removeAllObjects = function()
     {
         for (var key in this.primitiveList) {
             if (this.primitiveList[key]) {
                 currentObjectID = key;
-                this.removeNode();
+                this.removeCurrentObject();
             }
         }
 

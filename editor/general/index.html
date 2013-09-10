@@ -135,7 +135,7 @@
         <ul class="nav">
             <li><a>Scene</a>
                 <ul>
-                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllNodes()" onmouseover="this.style.cursor='pointer';">New</a></li>
+                    <li><a href="#" id="newFile" onclick="primitiveManager.removeAllObjects()" onmouseover="this.style.cursor='pointer';">New</a></li>
                     <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Fetch...</a></li>
                     <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Store...</a></li>
                 </ul>
@@ -208,7 +208,7 @@
                 <label for="primitiveName" class="objectLabel">Object:</label>
                 <input type="text" title="Name of the selected primitive. Can be renamed in this field" id="primitiveName" onchange="primitiveManager.setObjectName();" class="amount" value=""/>
                 <img title="Clones the selected primitive/group" src="images/clonePrimitiveGroup.png" id="clonePrimitiveGroup" onclick="primitiveManager.cloneObject()" onmouseover="this.style.cursor='pointer';"/>
-                <img title="Removes the selected primitive" src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeNode();" onmouseover="this.style.cursor='pointer';"/>
+                <img title="Removes the selected primitive (del)" src="images/delete.png" id="deletePrimitive" onclick="primitiveManager.removeCurrentObject();" onmouseover="this.style.cursor='pointer';"/>
             </p>
         </div>
         <div id="coordinatesValue">
@@ -283,7 +283,7 @@
 
 
 <div id="x3d-view">
-    <x3d id="x3d" showStat="false" showLog="false">
+    <x3d id="x3d" showStat="false" showLog="false" onkeydown="if ((event || window.event).keyCode === 46){ primitiveManager.removeCurrentObject(); /*key 46 = DEL*/  }">
         <scene>
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
