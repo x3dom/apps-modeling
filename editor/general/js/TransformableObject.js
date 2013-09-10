@@ -1,4 +1,4 @@
-matrixToString = function(mat){
+matrixToGLString = function(mat){
     return mat.toGL().toString();
 };
 
@@ -17,7 +17,7 @@ TransformableObject.prototype.init = function(){
     this.name = "object_" + idCounter++;
 
     this.matrixTransformNode = document.createElement('MatrixTransform');
-    this.matrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
+    this.matrixTransformNode.setAttribute("matrix", matrixToGLString(x3dom.fields.SFMatrix4f.identity()));
 
     //transformation values
     this.translation    = new x3dom.fields.SFVec3f(0, 0, 0);
@@ -153,5 +153,5 @@ TransformableObject.prototype.updateMatrixTransform = function(){
     transformMat     = transformMat.mult(matRX.mult(matRY).mult(matRZ));
     transformMat     = transformMat.mult(matSc);
 
-    this.matrixTransformNode.setAttribute("matrix", matrixToString(transformMat));
+    this.matrixTransformNode.setAttribute("matrix", matrixToGLString(transformMat));
 };

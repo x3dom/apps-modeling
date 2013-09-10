@@ -113,19 +113,21 @@ Group.prototype.releaseAllPrimitives = function(){
 
 
     //apply the group's transformations to all the primitives
-    groupMatrix = x3dom.fields.SFMatrix4f.parse(this.matrixTransformNode.getAttribute("matrix"));
-    //groupMatrix.getTransform(groupMatTranslation, groupMatRotation, groupMatScale);
+    groupMatrix = x3dom.fields.SFMatrix4f.parse(this.matrixTransformNode.getAttribute("matrix")).transpose();
 
     for (i = 0; i < this.primitiveIDList.length; ++i)
     {
         primMatrixTransformNode = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]).getMatrixTransformNode();
-        primMatrix              = x3dom.fields.SFMatrix4f.parse(primMatrixTransformNode.getAttribute("matrix"));
+        primMatrix              = x3dom.fields.SFMatrix4f.parse(primMatrixTransformNode.getAttribute("matrix")).transpose();
 
-        //primMatrix = groupMatrix.mult(primMatrix);
-        //primMatrix = primMatrix;
+        primMatrix = groupMatrix.mult(primMatrix);
 
-        //primMatrixTransformNode.setAttribute("matrix", matrixToString(primMatrix));
-        primMatrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
+
+        //@todo: extract trans, rot, scale and center, and update values of each primitive's matrix
+        //...
+
+
+        primMatrixTransformNode.setAttribute("matrix", matrixToGLString(primMatrix));
     }
 
 
