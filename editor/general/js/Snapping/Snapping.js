@@ -83,37 +83,32 @@ function Snapping()
 
 	
 
-			// TODO: Only test !!!
-			var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
-			
-			
-		    if(elementList.length != null)
-		    { 	
-		    	for(var i = 0; i < elementList.length; i++)
-		    	{		    		
-		    		if(typeof elementList[i] != 'undefined')
-		    		{
-			    		//Set Snappoints
-			    		for(var x = 0; x < pointList.length; x++)
-				        {
-				        	setPoint(pointList[x], elementList[i]);
-				        }
-				        
-			    		element = primitiveManager.getPrimitiveByID(elementList[i]);
-			    		
-			    		//Subject is observed
-				        SnapInherits(snapSubject, element);
-				        //Observer what makes Subject
-						SnapInherits(snapObserver, element);
-						//Added to Observer list 
-				        element.AddObserver(element);
-						//Call the update function of the observer
-						elementUpdate(element);
-					}
-				}
-		    }
-	  
-
+		// TODO: Only test !!!
+		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
+		
+		
+	    if(elementList.length != null)
+	    { 	
+	    	for(var i = 0; i < elementList.length; i++)
+	    	{
+	    		//Set Snappoints
+	    		for(var x = 0; x < pointList.length; x++)
+		        {
+		        	setPoint(pointList[x], elementList[i]);
+		        }
+		        
+	    		element = primitiveManager.getPrimitiveByID(elementList[i]);
+	    		
+	    		//Subject is observed
+		        SnapInherits(snapSubject, element);
+		        //Observer what makes Subject
+				SnapInherits(snapObserver, element);
+				//Added to Observer list 
+		        element.AddObserver(element);
+				//Call the update function of the observer
+				elementUpdate(element);
+			}
+	    }
     };
     
     
