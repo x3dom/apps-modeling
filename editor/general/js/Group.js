@@ -112,7 +112,8 @@ Group.prototype.releaseAllPrimitives = function(){
     var scaleVec = new x3dom.fields.SFVec3f(1, 1, 1);
     var scaleRotQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
     var rotationQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
-
+    var angles;
+    var rad2Deg = 180.0 / Math.PI;
 
     //apply the group's transformations to all the primitives
     groupMatrix = x3dom.fields.SFMatrix4f.parse(this.matrixTransformNode.getAttribute("matrix")).transpose();
@@ -131,6 +132,10 @@ Group.prototype.releaseAllPrimitives = function(){
 
         prim.setTranslationAsVec(transVec);
         prim.setScaleAsVec(scaleVec);
+
+        //for rotation, find euler angles
+        angles = rotationQuat.toMatrix().getEulerAngles();
+        prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
 
         primMatrixTransformNode.setAttribute("matrix", matrixToGLString(primMatrix));
     }
