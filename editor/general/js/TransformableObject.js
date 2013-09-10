@@ -8,8 +8,7 @@ matrixToString = function(mat){
  */
 var idCounter = 0;
 
-function TransformableObject(){
-};
+function TransformableObject(){}
 
 
 

@@ -12,8 +12,6 @@ function Snapping()
 	 */
 	this.init = function()
 	{
-		try
-		{
 			if(snapBool == false)
 			{
 				snapBool = true;
@@ -38,11 +36,7 @@ function Snapping()
 	            	primitiveManager.removeSnapNode(elementList[i] + '_point_0');
 	            }
 			}
-		}
-		catch(event)
-		{
-			console.log(event);
-		}
+		
 	};
 		
 	
@@ -68,7 +62,7 @@ function Snapping()
 		{
 			//Current Item reports its changes to the observer
         	currentPrimitive = primitiveManager.getCurrentPrimitive();
-       		currentPrimitive.Report(primitiveManager.getCurrentPrimitiveID());
+       		currentPrimitive.Report();
        	}
 	};
 	
@@ -88,8 +82,7 @@ function Snapping()
 		var snapSubject = new SnapSubject();
 
 	
-		try
-		{
+
 			// TODO: Only test !!!
 			var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
 			
@@ -106,7 +99,7 @@ function Snapping()
 				        	setPoint(pointList[x], elementList[i]);
 				        }
 				        
-			    		element = document.getElementById(elementList[i]);
+			    		element = primitiveManager.getPrimitiveByID(elementList[i]);
 			    		
 			    		//Subject is observed
 				        SnapInherits(snapSubject, element);
@@ -119,11 +112,8 @@ function Snapping()
 					}
 				}
 		    }
-	   }
-	   catch(event)
-	   {
-	   		console.log(event);
-	   }
+	  
+
     };
     
     
@@ -135,35 +125,28 @@ function Snapping()
 	 	//Updates the changed parameters
     	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
     	{
-    		try
-    		{
-    			//console.log(myObjPoint);
-    			
-    			//Calculated distance to the elements
-    			//Each element draws a line on the selected item, 
-    			//the lines and the distance are always calculate and updated   			
-    			var distance = myPosition.subtract(postPosition).length();		
-    			
-    			
-    			if(distance != 0)
-    			{
-    				if(distance < 5.0)
-    				{
-    					setLine(myPosition, postPosition, postObj);
-    					snapTo(myObj, postPositionPoint, distance);
-    				}
-					else
-					{
-						//Removes connection lines, otherwise they remain visible
-						primitiveManager.removeSnapNode(postObj.id + '_line');
-		            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
-		            }
-    			}
-    		}
-    		catch(event)
-    		{
-    			console.log(event);
-    		}
+			//console.log(myObjPoint);
+			
+			//Calculated distance to the elements
+			//Each element draws a line on the selected item, 
+			//the lines and the distance are always calculate and updated   			
+			var distance = myPosition.subtract(postPosition).length();		
+			
+			
+			if(distance != 0)
+			{
+				if(distance < 5.0)
+				{
+					setLine(myPosition, postPosition, postObj);
+					snapTo(myObj, postPositionPoint, distance);
+				}
+				else
+				{
+					//Removes connection lines, otherwise they remain visible
+					primitiveManager.removeSnapNode(postObj.id + '_line');
+	            	primitiveManager.removeSnapNode(myObj.id + '_line');			          					            
+	            }
+			}
     	};
 	};
 	
@@ -178,7 +161,7 @@ function Snapping()
     		
     	if(distance < 2.0)
     	{
-    		myObj.setAttribute('translation', position);
+    		myObj.setTranslationAsVec(position);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
@@ -228,11 +211,11 @@ function Snapping()
     /*
      * Draws the points from the JSON file
      */
-    function setPoint(pointPosition, myObj)
+    function setPoint(pointPosition, myObjID)
     {
     	var position = pointPosition[0] + ' ' + pointPosition[1] + ' ' + pointPosition[2];
     	
-    	temp = myObj + '_point_0';
+    	temp = myObjID + '_point_0';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	pointTransform.setAttribute('translation', position);
@@ -250,8 +233,8 @@ function Snapping()
     	pointShape.appendChild(pointSphere);
     	pointTransform.appendChild(pointShape);
     	
-    	var pointSnap = document.getElementById(myObj);
-    	pointSnap.appendChild(pointTransform);
+    	var objectTransform = primitiveManager.getPrimitiveByID(myObjID).getMatrixTransformNode();
+    	objectTransform.appendChild(pointTransform);
     	
     	//Save Objectpoint in the Pointlist
     	objPointList[temp] = pointTransform;

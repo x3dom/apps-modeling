@@ -4,6 +4,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Cone" x3domName="Cone" image="images/cone.jpg">
         <Parameter editorName="Bottom Radius" x3domName="bottomRadius">0.5</Parameter>
@@ -16,6 +18,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Cylinder" x3domName="Cylinder" image="images/cylinder.jpg">
         <Parameter editorName="Radius" x3domName="radius">0.5</Parameter>
@@ -27,6 +31,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Circular Torus" x3domName="Torus" image="images/circulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
@@ -38,6 +44,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Rectangular Torus" x3domName="RectangularTorus" image="images/rectangulartorus.jpg">
         <Parameter editorName="RInside" x3domName="innerRadius">0.5</Parameter>
@@ -49,6 +57,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
         <Parameter editorName="Diameter" x3domName="diameter">1.0</Parameter>
@@ -59,6 +69,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Snout" x3domName="Snout" image="images/snout.jpg">
         <Parameter editorName="DTop" x3domName="dtop">0.5</Parameter>
@@ -72,6 +84,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Pyramid" x3domName="Pyramid" image="images/pyramid.jpg">
         <Parameter editorName="XBottom" x3domName="xbottom">1</Parameter>
@@ -84,6 +98,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Slope-Bottom Cylinder" x3domName="SlopedCylinder" image="images/slopebottomcylinder.jpg">
         <Parameter editorName="Radius" x3domName="radius">0.5</Parameter>
@@ -98,6 +114,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Nozzle" x3domName="Nozzle" image="images/nozzle.jpg">
         <Parameter editorName="Height" x3domName="stemHeight">0.9</Parameter>
@@ -108,6 +126,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
@@ -116,6 +136,8 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Solid of Revolution" x3domName="SolidOfRevolution" image="images/solidofrevolution.jpg">
         <Parameter type="angle" editorName="Angle" x3domName="angle">90</Parameter>
@@ -125,5 +147,7 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
+        <!-- fake param, obviously doesn't exist -->
+        <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
 </PrimitiveParameterMap>
