@@ -104,12 +104,14 @@ Group.prototype.releaseAllPrimitives = function(){
     //@todo: make it work!
     var root = document.getElementById('root');
     var i;
+    var prim;
     var primMatrixTransformNode;
     var primMatrix;
     var groupMatrix;
-    //var groupMatTranslation;
-    //var groupMatRotation;
-    //var groupMatScale;
+    var transVec = new x3dom.fields.SFVec3f(0, 0, 0);
+    var scaleVec = new x3dom.fields.SFVec3f(1, 1, 1);
+    var scaleRotQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
+    var rotationQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
 
 
     //apply the group's transformations to all the primitives
@@ -117,15 +119,18 @@ Group.prototype.releaseAllPrimitives = function(){
 
     for (i = 0; i < this.primitiveIDList.length; ++i)
     {
-        primMatrixTransformNode = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]).getMatrixTransformNode();
+        prim                    = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]);
+        primMatrixTransformNode = prim.getMatrixTransformNode();
         primMatrix              = x3dom.fields.SFMatrix4f.parse(primMatrixTransformNode.getAttribute("matrix")).transpose();
 
         primMatrix = groupMatrix.mult(primMatrix);
 
 
         //@todo: extract trans, rot, scale and center, and update values of each primitive's matrix
-        //...
+        primMatrix.getTransform(transVec, rotationQuat, scaleVec, scaleRotQuat);
 
+        prim.setTranslationAsVec(transVec);
+        prim.setScaleAsVec(scaleVec);
 
         primMatrixTransformNode.setAttribute("matrix", matrixToGLString(primMatrix));
     }
@@ -134,11 +139,29 @@ Group.prototype.releaseAllPrimitives = function(){
     //move DOM objects out of the group
     for (i = 0; i < this.primitiveIDList.length; ++i)
     {
-        primMatrixTransformNode = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]).getMatrixTransformNode();
+        prim                    = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]);
+        primMatrixTransformNode = prim.getMatrixTransformNode();
 
         this.domNode.removeChild(primMatrixTransformNode);
 
         root.appendChild(primMatrixTransformNode);
+
+        //re-initialize mouse callbacks
+        prim.getDOMNode().addEventListener("mousedown",
+            (function(id){
+                return function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); }
+            })(prim.getID()),
+            false);
+
+        // wrapper for adding moving functionality, last param is callback function,
+        // must be called _after_ having added node to tree since otherwise uninitialized
+
+        new x3dom.Moveable(document.getElementById("x3d"),
+            primMatrixTransformNode,
+            (function(primitive){
+                return function(elem, pos){ primitiveManager.objectMoved(elem, pos, primitive); }
+            })(prim),
+            controller.getGridSize());
     }
 
     //remove the group from the DOM
