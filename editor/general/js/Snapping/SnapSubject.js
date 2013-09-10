@@ -7,40 +7,33 @@ function SnapSubject()
 }
 
 // reports the event context to all Objects
-SnapSubject.prototype.Report = function( context )
+SnapSubject.prototype.Report = function( )
 {
 	var count = this.observers.ArrayLength();
- 	
- 	try
- 	{
- 		var myObj = primitiveManager.getCurrentPrimitive();
+
+ 		var myObj = this;
  		var myObjPoint = snapping.getCurrentPrimitive();
- 		var myPosition = primitiveManager.getPosition(context);
+ 		var myPosition = this.getTranslation();
  	
  		
 		for(var i = 0; i < count; i++)
-		{
+		{			
 			postObj = this.observers.GetArrayObject(i);
 			postObjPoint = this.observers.GetArrayObject(i) + '_point_0';
 			
 			//myPosition is the position of the other member from ObjectArray
-			var postPosition = primitiveManager.getPosition(this.observers.GetArrayObject(i).id);
-			var postPointP = snapping.getPosition(this.observers.GetArrayObject(i).id + '_point_0');						
+			var postPosition = this.observers.GetArrayObject(i).getTranslation();
+			var postPointP = snapping.getPosition(this.observers.GetArrayObject(i).getID() + '_point_0');						
 			var postPositionPoint = postPointP.add(postPosition);
 			
 			
 			//Position from Point from current Element
-			var myPointP = snapping.getPosition(context + '_point_0');
+			var myPointP = snapping.getPosition(this.getID() + '_point_0');
 			var myPositionPoint = myPointP.add(myPosition);
 								
 			
 			this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint );
 		}	
- 	}
- 	catch(event)
- 	{
- 		console.log(event);
- 	}
 };
 
 
