@@ -94,3 +94,55 @@ Group.prototype.getDOMNode = function(){
 Group.prototype.getPrimitiveIDList = function(){
     return this.primitiveIDList;
 };
+
+
+
+/**
+ * Releases all primitives from this group, puts them back into the DOM.
+ */
+Group.prototype.releaseAllPrimitives = function(){
+    //@todo: make it work!
+    var root = document.getElementById('root');
+    var i;
+    var primMatrixTransformNode;
+    var primMatrix;
+    var groupMatrix;
+    //var groupMatTranslation;
+    //var groupMatRotation;
+    //var groupMatScale;
+
+
+    //apply the group's transformations to all the primitives
+    groupMatrix = x3dom.fields.SFMatrix4f.parse(this.matrixTransformNode.getAttribute("matrix"));
+    //groupMatrix.getTransform(groupMatTranslation, groupMatRotation, groupMatScale);
+
+    for (i = 0; i < this.primitiveIDList.length; ++i)
+    {
+        primMatrixTransformNode = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]).getMatrixTransformNode();
+        primMatrix              = x3dom.fields.SFMatrix4f.parse(primMatrixTransformNode.getAttribute("matrix"));
+
+        //primMatrix = groupMatrix.mult(primMatrix);
+        //primMatrix = primMatrix;
+
+        //primMatrixTransformNode.setAttribute("matrix", matrixToString(primMatrix));
+        primMatrixTransformNode.setAttribute("matrix", matrixToString(x3dom.fields.SFMatrix4f.identity()));
+    }
+
+
+    //move DOM objects out of the group
+    for (i = 0; i < this.primitiveIDList.length; ++i)
+    {
+        primMatrixTransformNode = primitiveManager.getPrimitiveByID(this.primitiveIDList[i]).getMatrixTransformNode();
+
+        this.domNode.removeChild(primMatrixTransformNode);
+
+        root.appendChild(primMatrixTransformNode);
+    }
+
+    //remove the group from the DOM
+    root.removeChild(this.matrixTransformNode);
+
+
+    //finally, empty the list of primitive IDs
+    this.primitiveIDList = [];
+}

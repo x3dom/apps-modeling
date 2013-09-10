@@ -146,9 +146,6 @@ function PrimitiveManager(){
     // list of all created groups
     this.groupList = {};
 
-    // current group, if any
-    this.currentGroup = null;
-
     // actually active id
     var currentObjectID = "";
 
@@ -890,11 +887,20 @@ function PrimitiveManager(){
 
 
     this.ungroupSelectedPrimitives = function(){
-        if (this.currentGroup){
-            //remove the current group
-            //@todo: make it work
-            //...
+        var group;
+
+        if (ui.groupModeActive() && currentObjectID != "")
+        {
+            group = this.groupList[currentObjectID];
+
+            group.releaseAllPrimitives();
+
+            //remove the current group form the list
+            delete this.groupList[currentObjectID];
         }
+
+        //make sure nothing is selected after the group has been resolved
+        primitiveManager.clearSelection();
 
         //disable group mode in the ui
         ui.toggleGroupMode(false);
