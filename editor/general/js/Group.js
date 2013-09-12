@@ -101,7 +101,6 @@ Group.prototype.getPrimitiveIDList = function(){
  * Releases all primitives from this group, puts them back into the DOM.
  */
 Group.prototype.releaseAllPrimitives = function(){
-    //@todo: make it work!
     var root = document.getElementById('root');
     var i;
     var prim;
@@ -126,8 +125,6 @@ Group.prototype.releaseAllPrimitives = function(){
 
         primMatrix = groupMatrix.mult(primMatrix);
 
-
-        //@todo: extract trans, rot, scale and center, and update values of each primitive's matrix
         primMatrix.getTransform(transVec, rotationQuat, scaleVec, scaleRotQuat);
 
         prim.setTranslationAsVec(transVec);

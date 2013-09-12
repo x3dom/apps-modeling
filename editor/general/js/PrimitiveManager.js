@@ -138,6 +138,32 @@ Primitive.prototype.getDOMNode = function(){
 
 
 /*
+ * Returns a simple JSON representation of this object.
+ * This includes all relevant members, but no X3DOM nodes.
+ */
+Primitive.prototype.toJSON = function(){
+    var jsonObj = {
+        tX         : this.translation.x,
+        tY         : this.translation.y,
+        tZ         : this.translation.z,
+
+        rX         : this.rotationAngles.x,
+        rY         : this.rotationAngles.y,
+        rZ         : this.rotationAngles.z,
+
+        sX         : this.scale.x,
+        sY         : this.scale.y,
+        sZ         : this.scale.z,
+
+        type       : this.primType,
+        parameters : this.parameters,
+        id         : this.id
+    };
+    return jsonObj;
+};
+
+
+/*
  * The PrimitiveManager component handles all the behaviour of all 
  * added primitives of the workspace
  * @returns {PrimitiveManager}
@@ -933,4 +959,33 @@ function PrimitiveManager(){
 
         return "";
     };
+
+
+    /**
+     * Writes all primitives to the given arrays. Groups are resolved.
+     * Positive primitives and negative primitives are distinguished.
+     */
+    this.getSceneData = function(positivePrimitivesJSON, negativePrimitivesJSON)
+    {
+        var p;
+        var g;
+
+        this.clearSelection();
+
+        //resolve groups
+        for (g in this.groupList) {
+            this.groupList[g].releaseAllPrimitives();
+        }
+
+        this.groupList =[];
+
+        //export positive primitives
+        for (p in this.primitiveList) {
+            positivePrimitivesJSON.push(this.primitiveList[p].toJSON());
+        }
+
+        //export negative primitives
+        //@todo: make it work
+        //...
+    }
 }

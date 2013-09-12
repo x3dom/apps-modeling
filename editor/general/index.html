@@ -123,6 +123,7 @@
     <script type='text/javascript' src="js/Group.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
     <script type='text/javascript' src="js/Controller.js"></script>
+    <script type='text/javascript' src="js/StorageManager.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
     <script type='text/javascript' src='js/farbtastic.js'></script>
     <script type='text/javascript' src="js/jquery.editor2D.js"></script>
@@ -137,7 +138,7 @@
                 <ul>
                     <li><a href="#" id="newFile" onclick="primitiveManager.removeAllObjects()" onmouseover="this.style.cursor='pointer';">New</a></li>
                     <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Fetch...</a></li>
-                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';">Store...</a></li>
+                    <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.saveScene();">Store...</a></li>
                 </ul>
             </li>
         </ul>

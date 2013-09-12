@@ -8,6 +8,8 @@ var controller = new Controller(ui);
 var HANDLING_MODE = "translation";
 // Start snapping
 var snapping = new Snapping();
+//handles server communication
+var storageManager = new StorageManager();
 
 
 window.onload = function(){
