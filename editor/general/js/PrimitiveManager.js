@@ -319,12 +319,12 @@ function PrimitiveManager(){
      * Clears the current selection and disables the UI elements for transformation editing.
      */
     this.clearSelection = function() {
-        currentObjectID = "";
         this.highlightCurrentObject(false);
         this.highlightCurrentBoundingVolume(false);
 
         this.disableTransformationUI();
         ui.RBAccordion.disable(true);
+        currentObjectID = "";
     };
 
 
