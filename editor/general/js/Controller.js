@@ -51,8 +51,6 @@ function Controller(ui){
             ui.TBScale.dehighlight();
             ui.TBRotate.dehighlight();
         }
-
-        primitiveManager.updateTransformUIFromCurrentObject();
     };
     
     
