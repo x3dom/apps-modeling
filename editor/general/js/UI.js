@@ -123,6 +123,13 @@ function UI(primitiveManager){
                 color: '#FFFFFF',
                 position: 'left'
         });
+
+        $('#refPnts').slimScroll({
+            height: '99%',
+            size: '10px',
+            color: '#FFFFFF',
+            position: 'left'
+        });
         
         
         $('#properties').slimScroll({
@@ -537,13 +544,12 @@ function UI(primitiveManager){
        
     
     var statisticsTick = false;
-    var infoTick = false;
     /*
      * Show or hide stats
      */
     this.showStatistik = function(htmlID)
     {
-        statisticsTick === true ? statisticsTick = false : statisticsTick = true;
+        statisticsTick = !statisticsTick;
         if (statisticsTick){
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
         }
@@ -552,14 +558,15 @@ function UI(primitiveManager){
         }
         document.getElementById("x3d").runtime.statistics();
     };
-    
-    
+
+
+    var infoTick = false;
     /*
      * Show or hide debug log
      */
     this.showInfo = function(htmlID)
     {
-        infoTick === true ? infoTick = false : infoTick = true;
+        infoTick = !infoTick;
         if (infoTick){
             document.getElementById(htmlID+"_tick").style.visibility = "visible";
         }
