@@ -129,8 +129,8 @@ function Snapping()
 			{
 				if(distance < 5.0)
 				{
-					setLine(myPosition, postPosition, postObj);
-					snapTo(myObj, postPositionPoint, distance);
+					setLine(myPosition, postPosition, myObj, postObj);
+					snapTo(myObj, postObj, postPositionPoint, distance);
 				}
 				else
 				{
@@ -147,7 +147,7 @@ function Snapping()
      * Connects two points
      * Removes connection lines, otherwise they remain visible
      */
-    function snapTo(myObj, position, distance)
+    function snapTo(myObj, postObj, position, distance)
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
@@ -164,7 +164,7 @@ function Snapping()
     /*
      * Draws a line between two elements
      */
-    function setLine(myPosition, postPosition, myObj)
+    function setLine(myPosition, postPosition, myObj, postObj)
     {
     	var temp = myObj.id + '_line';
 		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
@@ -173,7 +173,8 @@ function Snapping()
 		if(document.getElementById(temp))
     	{
     		//Removes connection lines, otherwise they remain visible
-    		primitiveManager.removeSnapNode(temp);
+    		primitiveManager.removeSnapNode(postObj.id + '_line');
+    		primitiveManager.removeSnapNode(myObj.id + '_line');
     	}
     		
    		var lineTransform = document.createElement('Transform');
