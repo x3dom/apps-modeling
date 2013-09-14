@@ -119,9 +119,7 @@ function Snapping()
 	{
 	 	//Updates the changed parameters
     	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
-    	{
-			//console.log(myObjPoint);
-			
+    	{		
 			//Calculated distance to the elements
 			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
