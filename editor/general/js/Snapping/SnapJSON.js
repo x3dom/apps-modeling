@@ -12,7 +12,7 @@ function SnapJSON()
 	 * The JSON function gets the path to the file and the name of the object, 
 	 * and returns the values ​​that are queried in the third parameter
 	 */
-	function loadJSON(pfad, id, propertie)
+	function loadJSON(pfad, id, property)
     {
     	var snapPoints = [];
     	var normale = [];
@@ -20,13 +20,13 @@ function SnapJSON()
 	    // json-string load
 		var json = GetHttpText( pfad + '/' + id + '.json');	
 		var jsonObj = eval ('(' + json + ')');
-		
-			
-		switch(propertie)
+		var i;
+
+		switch(property)
 		{
 			//Draw Snappoints
 			case 'snapPoints':
-				for(var i = 0; i < jsonObj.snapPoints.length; i++)
+				for(i = 0; i < jsonObj.snapPoints.length; i++)
 				{
 					snapPoints.push(jsonObj.snapPoints[i]);
 				}
@@ -35,7 +35,7 @@ function SnapJSON()
 				
 			//Draw Normale
 			case 'normale':
-				for(var i = 0; i < jsonObj.normale.length; i++)
+				for(i = 0; i < jsonObj.normale.length; i++)
 				{
 					normale.push(jsonObj.normale[i]);
 				}
@@ -44,12 +44,12 @@ function SnapJSON()
 			
 			default:
 			{
-				alert("Propertie no found");
+				alert("Property no found");
 			}
 		}
 		
 		return -1;
-    };
+    }
 
 	
 	function GetHttpText(url) 
@@ -61,5 +61,5 @@ function SnapJSON()
 		vHTTPReq.send();
 	
 		return vHTTPReq.responseText;
-	};
+	}
 }

@@ -1,6 +1,4 @@
-function StorageManager(){
-
-};
+function StorageManager(){}
 
 
 
@@ -76,7 +74,8 @@ StorageManager.prototype.primitiveInDSL = function(id, primType, parameters){
                 })();
                 break;
 
-            default:;
+            default:
+                break;
         }
 
         paramValueMap[param.editorName] = val;
@@ -153,4 +152,4 @@ StorageManager.prototype.primitiveInDSL = function(id, primType, parameters){
     }
 
     return dslCommands;
-}
+};

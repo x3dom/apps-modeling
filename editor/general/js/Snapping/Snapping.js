@@ -12,31 +12,32 @@ function Snapping()
 	 */
 	this.init = function()
 	{
-			if(snapBool == false)
-			{
-				snapBool = true;
-				snapping.setSnapping();	        
-				
-				document.getElementById("SnapPoints").style.border="solid 1px #fff";
-	            document.getElementById("SnapPoints").src = "./images/magnet_on.png";
-			}
-			else
-			{
-				snapBool = false;
-				
-				document.getElementById("SnapPoints").style.border="solid 1px gray";
-	            document.getElementById("SnapPoints").src = "./images/magnet_off.png";
-	            
-	            //remove existing lines and Points
-	            elementList = primitiveManager.getIDList();
-	            
-	            for(var i = 0; i < elementList.length; i++)
-	            {
-	            	primitiveManager.removeSnapNode(elementList[i] + '_line');
-	            	primitiveManager.removeSnapNode(elementList[i] + '_point_0');
-	            }
-			}
-		
+        var snapPoints = document.getElementById("SnapPoints");
+
+        if(snapBool == false)
+        {
+            snapBool = true;
+            snapping.setSnapping();
+
+            snapPoints.style.border="solid 1px #fff";
+            snapPoints.src = "./images/magnet_on.png";
+        }
+        else
+        {
+            snapBool = false;
+
+            snapPoints.style.border="solid 1px gray";
+            snapPoints.src = "./images/magnet_off.png";
+
+            //remove existing lines and Points
+            var elementList = primitiveManager.getIDList();
+
+            for(var i = 0; i < elementList.length; i++)
+            {
+                primitiveManager.removeSnapNode(elementList[i] + '_line');
+                primitiveManager.removeSnapNode(elementList[i] + '_point_0');
+            }
+        }
 	};
 		
 	
@@ -61,7 +62,7 @@ function Snapping()
 		if(snapBool == true)
 		{
 			//Current Item reports its changes to the observer
-        	currentPrimitive = primitiveManager.getCurrentPrimitive();
+        	var currentPrimitive = primitiveManager.getCurrentPrimitive();
        		currentPrimitive.Report();
        	}
 	};
@@ -73,15 +74,12 @@ function Snapping()
      */
     this.setSnapping = function()
     {
-    	elementList = [];
-    	elementList = primitiveManager.getIDList();
-    	
+    	var elementList = primitiveManager.getIDList();
     	
 		// Observer-Objects
 		var snapObserver = new SnapObserver();
 		var snapSubject = new SnapSubject();
 
-	
 
 		// TODO: Only test !!!
 		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
@@ -97,7 +95,7 @@ function Snapping()
 		        	setPoint(pointList[x], elementList[i]);
 		        }
 		        
-	    		element = primitiveManager.getPrimitiveByID(elementList[i]);
+	    		var element = primitiveManager.getPrimitiveByID(elementList[i]);
 	    		
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
@@ -118,8 +116,9 @@ function Snapping()
 	function elementUpdate(element)
 	{
 	 	//Updates the changed parameters
-    	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
-    	{		
+    	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition,
+                                   myPositionPoint, postPositionPoint )
+    	{
 			//Calculated distance to the elements
 			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
@@ -141,7 +140,7 @@ function Snapping()
 	            }
 			}
     	};
-	};
+	}
 	
 	
     /*
@@ -159,7 +158,7 @@ function Snapping()
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
     	}
-    };
+    }
     
     
     /*
@@ -167,7 +166,7 @@ function Snapping()
      */
     function setLine(myPosition, postPosition, myObj)
     {
-    	temp = myObj.id + '_line';
+    	var temp = myObj.id + '_line';
 		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
 		var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
     
@@ -198,7 +197,7 @@ function Snapping()
     	
     	var lineSnap = document.getElementById('snapLines');
     	lineSnap.appendChild(lineTransform);
-    };
+    }
     
     
     /*
@@ -208,7 +207,7 @@ function Snapping()
     {
     	var position = pointPosition[0] + ' ' + pointPosition[1] + ' ' + pointPosition[2];
     	
-    	temp = myObjID + '_point_0';
+    	var temp = myObjID + '_point_0';
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	pointTransform.setAttribute('translation', position);
@@ -231,7 +230,7 @@ function Snapping()
     	
     	//Save Objectpoint in the Pointlist
     	objPointList[temp] = pointTransform;
-    };
+    }
     
     
 	/* */
@@ -247,7 +246,7 @@ function Snapping()
 	
 	/* */
     this.getPrimitiveByID = function(id){
-        if (id) {
+        if (id && objPointList[id]) {
             return objPointList[id];
         }
         else {

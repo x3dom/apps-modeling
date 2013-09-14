@@ -18,8 +18,8 @@ SnapSubject.prototype.Report = function( )
 	
 	for(var i = 0; i < count; i++)
 	{			
-		postObj = this.observers.GetArrayObject(i);
-		postObjPoint = this.observers.GetArrayObject(i) + '_point_0';
+		var postObj = this.observers.GetArrayObject(i);
+		var postObjPoint = this.observers.GetArrayObject(i) + '_point_0';
 		
 		//myPosition is the position of the other member from ObjectArray
 		var postPosition = this.observers.GetArrayObject(i).getTranslation();
@@ -32,8 +32,9 @@ SnapSubject.prototype.Report = function( )
 		var myPositionPoint = myPointP.add(myPosition);
 							
 		
-		this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint );
-	}	
+		this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, myPosition,
+                                                 postPosition, myPositionPoint, postPositionPoint );
+	}
 };
 
 

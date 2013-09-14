@@ -164,14 +164,14 @@ function Controller(ui){
     	if (snapToGridButton.getAttribute("render") === "true")
     	{
             snapToGridButton.setAttribute("render", "false");
-            document.getElementById("ButtonSnapToGrid").style.border="solid 1px gray";
-            document.getElementById("ButtonSnapToGrid").src="images/snapGrid_off.png";
+            snapToGridButton.style.border="solid 1px gray";
+            snapToGridButton.src="images/snapGrid_off.png";
     	}
     	else
     	{
             snapToGridButton.setAttribute("render", "true");
-            document.getElementById("ButtonSnapToGrid").style.border="solid 1px #fff";
-            document.getElementById("ButtonSnapToGrid").src="images/snapGrid_on.png";
+            snapToGridButton.style.border="solid 1px #fff";
+            snapToGridButton.src="images/snapGrid_on.png";
     	}
 
         primitiveManager.updateGridSize(this.getGridSize());

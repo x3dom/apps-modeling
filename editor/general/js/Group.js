@@ -5,6 +5,7 @@
  */
 Group.prototype = new TransformableObject();
 Group.prototype.constructor = Group;
+
 function Group(primIDs) {
 
     this.init();
@@ -172,4 +173,4 @@ Group.prototype.releaseAllPrimitives = function(){
 
     //finally, empty the list of primitive IDs
     this.primitiveIDList = [];
-}
+};
