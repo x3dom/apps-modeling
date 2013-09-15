@@ -81,7 +81,7 @@ function Snapping()
 		var snapSubject = new SnapSubject();
 
 
-		// TODO: Only test !!!
+		// Retrieves the information about the position of the Snappoints
 		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
 		
 		
@@ -123,17 +123,17 @@ function Snapping()
 			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
 			var distance = myPosition.subtract(postPosition).length();		
-			var distancePoint = myPositionPoint.subtract(postPositionPoint).length();
 			
 			//console.log(distance);
 			//console.log(distancePoint);
 			
 			if(distance != 0)
 			{
-				if(distance < 5.0)
+				if(distance < 4.0)
 				{
 					setLine(myPosition, postPosition, myObj, postObj);
-					snapTo(myObj, postObj, myObjPoint, postPositionPoint, distance);
+					snapTo(myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
+                           myPositionPoint, postPositionPoint, distance);
 				}
 				else
 				{
@@ -150,13 +150,21 @@ function Snapping()
      * Connects two points
      * Removes connection lines, otherwise they remain visible
      */
-    function snapTo(myObj, postObj, myObjPoint, postPositionPoint, distance)
+    function snapTo(myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
+                    myPositionPoint, postPositionPoint, distance)
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
     	if(distance < 2.0)
     	{
-    		myObj.setTranslation(postPositionPoint.x, postPositionPoint.y, postPositionPoint.z);
+    		//This is the position of the point in the element, and is added 
+    		//to the global position. This point is the connecting point.
+    		var postPointTempPosition = snapping.getPosition(postObjPoint.id);
+   
+    		//The new position is then passed to the right place    							    		
+    		myObj.setTranslation(postPositionPoint.x + postPointTempPosition.x,
+    			                 postPositionPoint.y + postPointTempPosition.y,
+    			                 postPositionPoint.z + postPointTempPosition.z);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
