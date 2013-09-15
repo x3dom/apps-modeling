@@ -123,9 +123,7 @@ function Snapping()
 			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
 			var distance = myPosition.subtract(postPosition).length();		
-			
-			console.log(postPosition);
-			console.log(postPositionPoint);
+
 			
 			if(distance != 0)
 			{
@@ -168,7 +166,7 @@ function Snapping()
      */
     function setLine(myPosition, postPosition, myObj, postObj)
     {
-    	var temp = myObj.id + '_line';
+    	var temp = postObj.id + '_line';
 		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
 		var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
     
