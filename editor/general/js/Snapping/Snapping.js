@@ -123,14 +123,17 @@ function Snapping()
 			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
 			var distance = myPosition.subtract(postPosition).length();		
-
+			var distancePoint = myPositionPoint.subtract(postPositionPoint).length();
+			
+			//console.log(distance);
+			//console.log(distancePoint);
 			
 			if(distance != 0)
 			{
 				if(distance < 5.0)
 				{
 					setLine(myPosition, postPosition, myObj, postObj);
-					snapTo(myObj, postObj, myObjPoint, postPosition, distance);
+					snapTo(myObj, postObj, myObjPoint, postPositionPoint, distance);
 				}
 				else
 				{
@@ -147,13 +150,13 @@ function Snapping()
      * Connects two points
      * Removes connection lines, otherwise they remain visible
      */
-    function snapTo(myObj, postObj, myObjPoint, postPosition, distance)
+    function snapTo(myObj, postObj, myObjPoint, postPositionPoint, distance)
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
     	if(distance < 2.0)
     	{
-    		myObj.setTranslationAsVec(postPosition);
+    		myObj.setTranslation(postPositionPoint.x, postPositionPoint.y, postPositionPoint.z);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
