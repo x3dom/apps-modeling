@@ -116,7 +116,7 @@ function Snapping()
 	function elementUpdate(element)
 	{
 	 	//Updates the changed parameters
-    	element.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition,
+    	element.Update = function( myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                                    myPositionPoint, postPositionPoint )
     	{
 			//Calculated distance to the elements
@@ -124,13 +124,15 @@ function Snapping()
 			//the lines and the distance are always calculate and updated   			
 			var distance = myPosition.subtract(postPosition).length();		
 			
+			console.log(postPosition);
+			console.log(postPositionPoint);
 			
 			if(distance != 0)
 			{
 				if(distance < 5.0)
 				{
 					setLine(myPosition, postPosition, myObj, postObj);
-					snapTo(myObj, postObj, postPositionPoint, distance);
+					snapTo(myObj, postObj, myObjPoint, postPosition, distance);
 				}
 				else
 				{
@@ -147,13 +149,13 @@ function Snapping()
      * Connects two points
      * Removes connection lines, otherwise they remain visible
      */
-    function snapTo(myObj, postObj, position, distance)
+    function snapTo(myObj, postObj, myObjPoint, postPosition, distance)
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
     	if(distance < 2.0)
     	{
-    		myObj.setTranslationAsVec(position);
+    		myObj.setTranslationAsVec(postPosition);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');

@@ -19,10 +19,11 @@ SnapSubject.prototype.Report = function( )
 	for(var i = 0; i < count; i++)
 	{			
 		var postObj = this.observers.GetArrayObject(i);
-		var postObjPoint = this.observers.GetArrayObject(i) + '_point_0';
+		var postObjPoint = snapping.getPrimitiveByID(this.observers.GetArrayObject(i).getID() + '_point_0');
+				
 		
 		//myPosition is the position of the other member from ObjectArray
-		var postPosition = this.observers.GetArrayObject(i).getTranslation();
+		var postPosition = postObj.getTranslation();
 		var postPointP = snapping.getPosition(this.observers.GetArrayObject(i).getID() + '_point_0');						
 		var postPositionPoint = postPointP.add(postPosition);
 		
@@ -32,7 +33,7 @@ SnapSubject.prototype.Report = function( )
 		var myPositionPoint = myPointP.add(myPosition);
 							
 		
-		this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, myPosition,
+		this.observers.GetArrayObject(i).Update( myObj, postObj, myObjPoint, postObjPoint, myPosition,
                                                  postPosition, myPositionPoint, postPositionPoint );
 	}
 };

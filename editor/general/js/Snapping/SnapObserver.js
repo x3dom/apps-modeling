@@ -3,7 +3,7 @@
  */
 function SnapObserver()
 {
-	this.Update = function( myObj, postObj, myObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
+	this.Update = function( myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition, myPositionPoint, postPositionPoint )
 	{
 	};
 }
