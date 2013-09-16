@@ -4,8 +4,10 @@
 function Snapping()
 {
 	var snapBool = false;
-	var objPointList = [];
 	var snapJ = new SnapJSON();
+	var createLine = new CreateLine();
+	var snapPointCreate = new SnapPointCreate();
+	var objPointList = snapPointCreate.getObjPointList();
 	
 	/*
 	 * Starts the ability to snapping
@@ -92,7 +94,7 @@ function Snapping()
 	    		//Set Snappoints
 	    		for(var x = 0; x < pointList.length; x++)
 		        {
-		        	setPoint(pointList[x], elementList[i]);
+		        	snapPointCreate.setPoint(pointList[x], elementList[i]);
 		        }
 		        
 	    		var element = primitiveManager.getPrimitiveByID(elementList[i]);
@@ -131,7 +133,7 @@ function Snapping()
 			{
 				if(distance < 4.0)
 				{
-					setLine(myPosition, postPosition, myObj, postObj);
+					createLine.setLine(myPosition, postPosition, myObj, postObj);
 					snapTo(myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                            myPositionPoint, postPositionPoint, distance);
 				}
@@ -169,79 +171,6 @@ function Snapping()
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
     	}
-    }
-    
-    
-    /*
-     * Draws a line between two elements
-     */
-    function setLine(myPosition, postPosition, myObj, postObj)
-    {
-    	var temp = postObj.id + '_line';
-		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
-		var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
-    
-		if(document.getElementById(temp))
-    	{
-    		//Removes connection lines, otherwise they remain visible
-    		primitiveManager.removeSnapNode(postObj.id + '_line');
-    		primitiveManager.removeSnapNode(myObj.id + '_line');
-    	}
-    		
-   		var lineTransform = document.createElement('Transform');
-    	lineTransform.setAttribute('id', temp);
-    	
-    	var lineShape = document.createElement('Shape');
-    	var lineAppearance = document.createElement('Appearance');
-    	var lineMaterial = document.createElement('Material');
-    	lineMaterial.setAttribute('emissiveColor', '1 1 0');
-    	
-    	var lineSet = document.createElement('IndexedLineSet');
-    	var lineSetCoordinate = document.createElement('Coordinate');
-    	lineSet.setAttribute('coordIndex', '0 0 1 -1');
-    	lineSetCoordinate.setAttribute('point', point1 + ', ' + point2);
-    	
-    	lineAppearance.appendChild(lineMaterial);
-    	lineShape.appendChild(lineAppearance);
-    	lineSet.appendChild(lineSetCoordinate);
-    	lineShape.appendChild(lineSet);
-    	lineTransform.appendChild(lineShape);
-    	
-    	var lineSnap = document.getElementById('snapLines');
-    	lineSnap.appendChild(lineTransform);
-    }
-    
-    
-    /*
-     * Draws the points from the JSON file
-     */
-    function setPoint(pointPosition, myObjID)
-    {
-    	var position = pointPosition[0] + ' ' + pointPosition[1] + ' ' + pointPosition[2];
-    	
-    	var temp = myObjID + '_point_0';
-    	var pointTransform = document.createElement('Transform');
-    	pointTransform.setAttribute('id', temp);
-    	pointTransform.setAttribute('translation', position);
-    	
-    	var pointShape = document.createElement('Shape');
-    	var pointAppearance = document.createElement('Appearance');
-    	var pointMaterial = document.createElement('Material');
-    	pointMaterial.setAttribute('diffuseColor', '1 1 0');
-    	
-    	var pointSphere = document.createElement('Sphere');
-    	pointSphere.setAttribute('radius', '0.03');
-    	
-    	pointAppearance.appendChild(pointMaterial);
-    	pointShape.appendChild(pointAppearance);
-    	pointShape.appendChild(pointSphere);
-    	pointTransform.appendChild(pointShape);
-    	
-    	var objectTransform = primitiveManager.getPrimitiveByID(myObjID).getMatrixTransformNode();
-    	objectTransform.appendChild(pointTransform);
-    	
-    	//Save Objectpoint in the Pointlist
-    	objPointList[temp] = pointTransform;
     }
     
     
