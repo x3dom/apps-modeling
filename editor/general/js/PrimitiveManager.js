@@ -140,20 +140,22 @@ Primitive.prototype.getDOMNode = function(){
 /*
  * Returns a simple JSON representation of this object.
  * This includes all relevant members, but no X3DOM nodes.
+ * The object is rotated by 90 degrees around the x-axis,
+ * so that z points upwards.
  */
 Primitive.prototype.toJSON = function(){
     var jsonObj = {
-        tX         : this.translation.x,
-        tY         : this.translation.y,
-        tZ         : this.translation.z,
+        tX         :  this.translation.x,
+        tY         : -this.translation.z,
+        tZ         :  this.translation.y,
 
-        rX         : this.rotationAngles.x,
-        rY         : this.rotationAngles.y,
-        rZ         : this.rotationAngles.z,
+        rX         :  this.rotationAngles.x,
+        rY         : -this.rotationAngles.z,
+        rZ         :  this.rotationAngles.y,
 
-        sX         : this.scale.x,
-        sY         : this.scale.y,
-        sZ         : this.scale.z,
+        sX         :  this.scale.x,
+        sY         : -this.scale.z,
+        sZ         :  this.scale.y,
 
         type       : this.primType,
         parameters : this.parameters,
@@ -161,6 +163,7 @@ Primitive.prototype.toJSON = function(){
     };
     return jsonObj;
 };
+
 
 
 /*
@@ -687,9 +690,9 @@ function PrimitiveManager(){
     this.updatePrimitiveTransformFromUI = function() {
         var objectToBeUpdated = this.getCurrentObject();
 
-        var valX = ui.BBTransX.get();
-        var valY = ui.BBTransY.get();
-        var valZ = ui.BBTransZ.get();
+        var valX =  ui.BBTransX.get();
+        var valY =  ui.BBTransZ.get();
+        var valZ = -ui.BBTransY.get();
 
         if (HANDLING_MODE === "translation")
         {
@@ -742,9 +745,9 @@ function PrimitiveManager(){
                 vec = currentObject.getScale();
             }
 
-            ui.BBTransX.set(vec.x.toFixed(3));
-            ui.BBTransY.set(vec.y.toFixed(3));
-            ui.BBTransZ.set(vec.z.toFixed(3));
+            ui.BBTransX.set( vec.x.toFixed(3));
+            ui.BBTransY.set(-vec.z.toFixed(3));
+            ui.BBTransZ.set( vec.y.toFixed(3));
         }
     };
 
@@ -847,6 +850,7 @@ function PrimitiveManager(){
     };
 
 
+
     /*
      * Returns the currently selected primitive
      * @returns {primitive}
@@ -854,6 +858,7 @@ function PrimitiveManager(){
     this.getCurrentPrimitive = function(){
         return this.primitiveList[currentObjectID];
     };
+
 
 
     /*
@@ -870,6 +875,7 @@ function PrimitiveManager(){
     };
 
 
+
     /*
      *
      */
@@ -880,6 +886,7 @@ function PrimitiveManager(){
                 return this.primitiveList[key].getMaterial();
         }
     };
+
 
 
     /*
@@ -924,6 +931,7 @@ function PrimitiveManager(){
     };
 
 
+
     this.ungroupSelectedPrimitives = function(){
         var group;
 
@@ -961,9 +969,12 @@ function PrimitiveManager(){
     };
 
 
+
     /**
      * Writes all primitives to the given arrays. Groups are resolved.
      * Positive primitives and negative primitives are distinguished.
+     * This also uses a coordinate system which has the z axis pointing upwards,
+     * which is the X3DOM coordinate system rotated around the X-axis by -90 degrees.
      */
     this.getSceneData = function(positivePrimitivesJSON, negativePrimitivesJSON)
     {
