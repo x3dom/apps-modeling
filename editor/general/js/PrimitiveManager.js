@@ -398,7 +398,7 @@ function PrimitiveManager(){
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
-            HANDLING_MODE = 'translation';
+            controller.Activate('translation')
 
             //update stored transform values and GUI elements appropriately
             object.setTranslation(pos.x, pos.y, pos.z);
@@ -704,7 +704,7 @@ function PrimitiveManager(){
         }
         else if (HANDLING_MODE === "scale")
         {
-            objectToBeUpdated.setScale(valX, valY, valZ);
+            objectToBeUpdated.setScale(valX, valY, -valZ);
         }
         
         this.highlightCurrentBoundingVolume(true);
@@ -746,8 +746,16 @@ function PrimitiveManager(){
             }
 
             ui.BBTransX.set( vec.x.toFixed(3));
-            ui.BBTransY.set(-vec.z.toFixed(3));
             ui.BBTransZ.set( vec.y.toFixed(3));
+
+            if (HANDLING_MODE !== "scale")
+            {
+                ui.BBTransY.set(-vec.z.toFixed(3));
+            }
+            else
+            {
+                ui.BBTransY.set(vec.z.toFixed(3));
+            }
         }
     };
 
