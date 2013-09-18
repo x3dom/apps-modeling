@@ -48,8 +48,51 @@ function Primitive(primType, parameters){
     //(which differs among instances, in contrast to other members of the prototype)
     this.init();
 
+    var that = this;
+
     this.primType   = primType;
     this.domNode    = document.createElement(this.primType);
+
+    //two exceptions:
+    //for the "Origin" and "Reference Point" primitives, create a special indexedlineset,
+    //which represents a moveable coordinate frame
+    if (this.primType === "IndexedLineSet")
+    {
+        (function(){
+            var coordIndexStr = "";
+            var pointStr      = "";
+            var colorStr       = "";
+
+            //"Origin" geometry
+            if (parameters[0].value === "true")
+            {
+                coordIndexStr = "0 1 -1, 2 3 -1, 4 5 -1";
+                pointStr      = "1 0 0, 0 0 0, 0 1 0, 0 0 0, 0 0 1, 0 0 0";
+                colorStr       = "1 0 0, 1 0 0, 0 0 1, 0 0 1, 0 1 0, 0 1 0";
+            }
+            //"Reference Point" geometry
+            else
+            {
+                //todo: adapt for refpoint 3D icon
+                coordIndexStr = "0 1 -1, 2 3 -1, 4 5 -1";
+                pointStr      = "1 0 0, 0 0 0, 0 1 0, 0 0 0, 0 0 1, 0 0 0";
+                colorStr       = "1 0 0, 1 0 0, 0 0 1, 0 0 1, 0 1 0, 0 1 0";
+            }
+
+            that.domNode.setAttribute("coordIndex", coordIndexStr);
+            that.domNode.setAttribute("isPickable", "true");
+
+            var coordNode = document.createElement("Coordinate");
+            var colorNode = document.createElement("Color");
+
+            coordNode.setAttribute("point", pointStr);
+            colorNode.setAttribute("color", colorStr);
+
+            that.domNode.appendChild(coordNode);
+            that.domNode.appendChild(colorNode);
+        })();
+    }
+
     this.parameters = [];
 
     // deep copy of parameters
@@ -74,7 +117,6 @@ function Primitive(primType, parameters){
     this.material.setAttribute("transparency", "0.0");
     this.material.setAttribute("shininess", "0.2");
 
-    // fake param HACK, field obviously doesn't exist
     if (this.domNode.getAttribute("positive") === "false") {
         this.material.setAttribute("diffuseColor", "#E77F65");
     }
@@ -93,7 +135,6 @@ function Primitive(primType, parameters){
 
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized
-    var that = this;
     new x3dom.Moveable(document.getElementById("x3d"),
         this.matrixTransformNode,
         function(elem, pos){ primitiveManager.objectMoved(elem, pos, that); },
@@ -124,15 +165,6 @@ Primitive.prototype.getParameters = function(){
  */
 Primitive.prototype.getPrimType = function(){
     return this.primType;
-};
-
-
-
-/*
- * Returns the DOM node which represents this object.
- */
-Primitive.prototype.getDOMNode = function(){
-    return this.domNode;
 };
 
 
@@ -179,6 +211,12 @@ function PrimitiveManager(){
     // list of all created groups
     this.groupList = {};
 
+    //ID of the origin primitive, if any
+    this.originID = "";
+
+    //counter for enumerating reference points
+    this.refPointCounter = 1;
+
     // actually active id
     var currentObjectID = "";
 
@@ -218,6 +256,12 @@ function PrimitiveManager(){
      */
     this.addPrimitive = function(primitive, parameters){
 
+        //special case: allow only one origin instance
+        if (primitive === "IndexedLineSet" && this.originID !== "" && parameters[0].value == "true")
+        {
+            return;
+        }
+
         ui.toggleGroupMode(false);
 
         if (HANDLING_MODE === "hand")
@@ -226,6 +270,19 @@ function PrimitiveManager(){
         var prim = new Primitive(primitive, parameters);
 
         var id   = prim.getID();
+
+        if (primitive === "IndexedLineSet")
+        {
+            if (parameters[0].value == "true")
+            {
+                prim.setName("Origin");
+                this.originID = id;
+            }
+            else
+            {
+                prim.setName("RefPnt_" + this.refPointCounter++);
+            }
+        }
 
         prim.getDOMNode().addEventListener("mousedown",
             function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); },
@@ -626,7 +683,6 @@ function PrimitiveManager(){
 
         if (object)
         {
-            //@todo: still open whether we should move "domNode" to the base class
             volume = object.getDOMNode()._x3domNode.getVolume();
 
             bbTransform.setAttribute("matrix", object.getMatrixTransformNode().getAttribute("matrix"));

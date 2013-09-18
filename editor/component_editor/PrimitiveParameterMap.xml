@@ -1,4 +1,10 @@
 <PrimitiveParameterMap>
+    <Primitive editorName="Origin" x3domName="IndexedLineSet" image="images/box.jpg">
+        <Parameter type="bool" editorName="isOrigin" x3domName="undefined" render="false">true</Parameter>
+    </Primitive>
+    <Primitive editorName="Reference Point" x3domName="IndexedLineSet" image="images/box.jpg">
+        <Parameter type="bool" editorName="isOrigin" x3domName="undefined" render="false">false</Parameter>
+    </Primitive>
     <Primitive editorName="Box" x3domName="Box" image="images/box.jpg">
         <Parameter type="vec3" step="0.25" min="0" render="true" editorName="Size" x3domName="size">1.0,1.0,1.0</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>

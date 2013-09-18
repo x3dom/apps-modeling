@@ -16,6 +16,9 @@ TransformableObject.prototype.init = function(){
     this.id   = "o"       + idCounter;
     this.name = "object_" + idCounter++;
 
+    //this must be overwritten by child classes
+    this.domNode = null;
+
     this.matrixTransformNode = document.createElement('MatrixTransform');
     this.matrixTransformNode.setAttribute("matrix", matrixToGLString(x3dom.fields.SFMatrix4f.identity()));
 
@@ -50,6 +53,15 @@ TransformableObject.prototype.getName = function(){
  */
 TransformableObject.prototype.setName = function(name){
    this.name = name;
+};
+
+
+
+/*
+ * Returns the DOM node which represents this object.
+ */
+TransformableObject.prototype.getDOMNode = function(){
+    return this.domNode;
 };
 
 
