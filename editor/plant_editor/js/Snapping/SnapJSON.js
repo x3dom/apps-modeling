@@ -12,7 +12,7 @@ function SnapJSON()
 	 * The JSON function gets the path to the file and the name of the object, 
 	 * and returns the values ​​that are queried in the third parameter
 	 */
-	function loadJSON(pfad, id, property)
+	function loadJSON(pfad, id)
     {
     	var snapPoints = [];
     	var normale = [];
@@ -20,32 +20,11 @@ function SnapJSON()
 	    // json-string load
 		var json = GetHttpText( pfad + '/' + id + '.json');	
 		var jsonObj = eval ('(' + json + ')');
-		var i;
-
-		switch(property)
-		{
-			//Draw Snappoints
-			case 'snapPoints':
-				for(i = 0; i < jsonObj.snapPoints.length; i++)
-				{
-					snapPoints.push(jsonObj.snapPoints[i]);
-				}
-				return snapPoints;
-				break;
-				
-			//Draw Normale
-			case 'normale':
-				for(i = 0; i < jsonObj.normale.length; i++)
-				{
-					normale.push(jsonObj.normale[i]);
-				}
-				return normale;
-				break;
-			
-			default:
-			{
-				alert("Property no found");
-			}
+		
+		if(jsonObj != undefined)
+		{	
+			console.log(jsonObj);
+			return jsonObj;
 		}
 		
 		return -1;

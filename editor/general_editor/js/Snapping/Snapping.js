@@ -84,21 +84,17 @@ function Snapping()
 
 
 		// Retrieves the information about the position of the Snappoints
-		var pointList = snapJ.getJSON('./x3d/JsonFiles', 'Box', 'snapPoints');
+		var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
 		
 		
 	    if(elementList.length != null)
 	    { 	
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
-	    		//Set Snappoints
-	    		for(var x = 0; x < pointList.length; x++)
-		        {
-		        	snapPointCreate.setPoint(pointList[x], elementList[i]);
-		        }
-		        
+	    		//Set Point to Object
+	    		snapPointCreate.setPoint(pointListObj.point1.position, elementList[i]);
+		        //Search Object
 	    		var element = primitiveManager.getPrimitiveByID(elementList[i]);
-	    		
 	    		//Subject is observed
 		        SnapInherits(snapSubject, element);
 		        //Observer what makes Subject
