@@ -6,6 +6,8 @@
     border-top: none;
     left: 50%;
     margin-left: -342px;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 41px;
     width: 685px;
     z-index: 10000;

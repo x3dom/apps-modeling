@@ -79,16 +79,6 @@ function Group(primIDs) {
 
 
 /*
- * Returns the DOM Node of this group.
- * @returns {DOMNode}
- */
-Group.prototype.getDOMNode = function(){
-    return this.domNode;
-};
-
-
-
-/*
  * Returns the list of all primitive IDs for this group.
  * @returns {DOMNode}
  */

@@ -150,4 +150,10 @@
         <!-- fake param, obviously doesn't exist -->
         <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
+    <Primitive editorName="Origin" x3domName="IndexedLineSet" image="images/origin.jpg">
+        <Parameter type="bool" editorName="isOrigin" x3domName="undefined" render="false">true</Parameter>
+    </Primitive>
+    <Primitive editorName="Reference Point" x3domName="IndexedLineSet" image="images/refPoint.jpg">
+        <Parameter type="bool" editorName="isOrigin" x3domName="undefined" render="false">false</Parameter>
+    </Primitive>
 </PrimitiveParameterMap>
