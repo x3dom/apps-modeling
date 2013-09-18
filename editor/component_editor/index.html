@@ -204,7 +204,7 @@
     <div class="buttonTop"><img title="Ungroups a selected group" src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="primitiveManager.ungroupSelectedPrimitives();"/></div>
     <div class="buttonTop"><img title="Sets a new origin point" src="images/origin.png" id="ButtonOrigin" onmouseover="this.style.cursor='pointer';"
-                                onclick="createSingletonOrigin();"/></div>
+                                onclick="createSingletonOrigin(ui);"/></div>
 </div>
 
 
@@ -341,6 +341,16 @@
                         <Coordinate id="bbox_points" point="0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0">
                         </Coordinate>
                         <Color color="1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0, 1 0 0"></Color>
+                    </IndexedLineSet>
+                </Shape>
+            </matrixTransform>
+            
+            <matrixTransform render="false" id="origin_transform">
+                <Shape isPickable="true" DEF="line">
+                    <IndexedLineSet coordIndex="0 1 -1, 2 3 -1, 4 5 -1">
+                        <Coordinate id="origin_points" point="1 0 0, 0 0 0, 0 1 0, 0 0 0, 0 0 1, 0 0 0">
+                        </Coordinate>
+                        <Color color="1 0 0, 1 0 0, 0 0 1, 0 0 1, 0 1 0, 0 1 0"></Color>
                     </IndexedLineSet>
                 </Shape>
             </matrixTransform>

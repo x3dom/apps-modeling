@@ -421,6 +421,7 @@ function UI(primitiveManager){
     this.newImageProperty = function(id, toolTip){
         
         var obj = {};
+        obj.highlighted = false;
 
         obj.get = function(){
             return document.getElementById(id).value;
@@ -432,10 +433,12 @@ function UI(primitiveManager){
         
         obj.highlight = function(){
             document.getElementById(id).style.border = "solid 1px " + highlightColor;
+            obj.highlighted = true;
         };
         
         obj.dehighlight = function(){
             document.getElementById(id).style.border = "solid 1px " + defColor;
+            obj.highlighted = false;
         };
         
         obj.disable = function(bool){
