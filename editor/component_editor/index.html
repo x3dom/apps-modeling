@@ -121,6 +121,7 @@
 
 
     <script type='text/javascript' src="js/TransformableObject.js"></script>
+    <script type='text/javascript' src="js/Origin.js"></script>
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="js/Group.js"></script>
     <script type='text/javascript' src="js/UI.js"></script>
@@ -202,6 +203,8 @@
                                 onclick="primitiveManager.groupSelectedPrimitives();"/></div>
     <div class="buttonTop"><img title="Ungroups a selected group" src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="primitiveManager.ungroupSelectedPrimitives();"/></div>
+    <div class="buttonTop"><img title="Sets a new origin point" src="images/origin.png" id="ButtonOrigin" onmouseover="this.style.cursor='pointer';"
+                                onclick="createSingletonOrigin();"/></div>
 </div>
 
 
@@ -231,6 +234,9 @@
             <h3>Primitives</h3>
             <div id="divs"> </div>
 
+            <h3>Snapping Points</h3>
+            <div id="snappingPoints"> </div>
+            
             <h3>Tree View</h3>
             <div id='treeview'>
                 <div id="tree">

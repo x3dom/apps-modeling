@@ -80,6 +80,7 @@ function UI(primitiveManager){
         that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
         that.TBSnapToGrid = that.newImageProperty("ButtonSnapToGrid", true);
         that.TBSnap = that.newImageProperty("SnapPoints", true);
+        that.TBOrigin = that.newImageProperty("ButtonOrigin", true);
         that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
        
         that.BBPrimName = that.newTextProperty("primitiveName", true);
