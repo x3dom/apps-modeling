@@ -11,7 +11,7 @@ var snapping = new Snapping();
 //handles server communication
 var storageManager = new StorageManager();
 // Shows if origin point and refPoints are added to scene
-var origin_refPoints_added = [false, false];
+var origin_refPoints_added = [0, 0];
 
 window.onload = function(){
     ui.initialize();

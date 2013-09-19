@@ -238,9 +238,6 @@ function PrimitiveManager(){
     //ID of the origin primitive, if any
     this.originID = "";
 
-    //counter for enumerating reference points
-    this.refPointCounter = 1;
-
     // actually active id
     var currentObjectID = "";
 
@@ -281,7 +278,7 @@ function PrimitiveManager(){
     this.addPrimitive = function(primitive, parameters){
 
         //special case: allow only one origin instance
-        if (primitive === "IndexedLineSet" && this.originID !== "" && parameters[0].isOrigin === "true")
+        if (primitive === "IndexedLineSet" && origin_refPoints_added[0] !== 0 && parameters[0].isOrigin)
         {
             return;
         }
@@ -300,11 +297,10 @@ function PrimitiveManager(){
             if (parameters[0].value == "true")
             {
                 prim.setName("Origin");
-                this.originID = id;
             }
             else
             {
-                prim.setName("RefPnt_" + this.refPointCounter++);
+                prim.setName("RefPnt_" + origin_refPoints_added[1]);
             }
         }
 
@@ -479,7 +475,7 @@ function PrimitiveManager(){
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
-            controller.Activate('translation')
+            controller.Activate('translation');
 
             //update stored transform values and GUI elements appropriately
             object.setTranslation(pos.x, pos.y, pos.z);
