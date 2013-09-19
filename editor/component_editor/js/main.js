@@ -13,9 +13,33 @@ var storageManager = new StorageManager();
 // Shows if origin point and refPoints are added to scene
 var origin_refPoints_added = [0, 0];
 
+
+
+/*
+ * Initializes the entire application
+ * @returns {undefined}
+ */
 window.onload = function(){
     ui.initialize();
     controller.Activate("hand");
     primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");
 };
+
+
+
+/*
+ * This function monitors the closing of a tab or the browser. If the work isn't
+ * completed this function will react by a closing dialog
+ * @returns {null}
+ */
+//window.onbeforeunload = OnBeforeUnload;
+function OnBeforeUnload(oEvent) {   
+    // return a string to show the warning message (not every browser will use this string in the dialog)
+    // or run the code you need when the user closes your page  
+    if (origin_refPoints_added[0] === 0 ||
+        origin_refPoints_added[1] === 0)
+        return "You are closing the application without a complete work.\n" +
+               "You have to define an 'Origin' and the 'Reference Points'.\n" +
+               "Do you really want to exit the application?";       
+}
