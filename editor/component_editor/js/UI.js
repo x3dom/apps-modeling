@@ -282,6 +282,7 @@ function UI(primitiveManager){
 
         $("#DeletePlane").tooltip();
         $("#DeleteAxis").tooltip();
+        $("#warning").tooltip();
     };
     
     
@@ -321,7 +322,9 @@ function UI(primitiveManager){
                   type: (currParam.getAttribute("type") !== null) ? currParam.getAttribute("type") : "spinner",
                   render: (currParam.getAttribute("render") !== null) ? currParam.getAttribute("render") : "true",
                   step: (currParam.getAttribute("step") !== null) ? currParam.getAttribute("step") :
-                                            (currParam.getAttribute("type") !== "angle") ? 0.1 : 1.0
+                                            (currParam.getAttribute("type") !== "angle") ? 0.1 : 1.0,
+                  isOrigin: (currParam.getAttribute("isOrigin") !== null) ? Boolean(currParam.getAttribute("isOrigin")) : false,
+                  isRefPoint: (currParam.getAttribute("isRefPoint") !== null) ? Boolean(currParam.getAttribute("isRefPoint")) : false
                 } );
             }
        }

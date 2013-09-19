@@ -10,7 +10,8 @@ var HANDLING_MODE = "translation";
 var snapping = new Snapping();
 //handles server communication
 var storageManager = new StorageManager();
-
+// Shows if origin point and refPoints are added to scene
+var origin_refPoints_added = [false, false];
 
 window.onload = function(){
     ui.initialize();

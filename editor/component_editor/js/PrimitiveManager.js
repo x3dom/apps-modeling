@@ -64,11 +64,12 @@ function Primitive(primType, parameters){
             var colorStr       = "";
 
             //"Origin" geometry
-            if (parameters[0].value === "true")
+            if (parameters[0].isOrigin)
             {
                 coordIndexStr = "0 1 -1, 2 3 -1, 4 5 -1";
                 pointStr      = "1 0 0, 0 0 0, 0 1 0, 0 0 0, 0 0 1, 0 0 0";
                 colorStr      = "1 0 0, 1 0 0, 0 0 1, 0 0 1, 0 1 0, 0 1 0";
+                origin_refPoints_added[0] = 1;
             }
             //"Reference Point" geometry
             else
@@ -92,6 +93,14 @@ function Primitive(primType, parameters){
                                  0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9,\n\
                                  0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, \n\
                                  0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9, 0 0.5 0.9";
+                origin_refPoints_added[1]++;
+            }
+
+            if (origin_refPoints_added[0] > 0 && origin_refPoints_added[1] > 0){
+                document.getElementById("warning").style.visibility = "hidden";
+            }
+            else {
+                document.getElementById("warning").style.visibility = "visible";
             }
 
             that.domNode.setAttribute("coordIndex", coordIndexStr);
@@ -272,7 +281,7 @@ function PrimitiveManager(){
     this.addPrimitive = function(primitive, parameters){
 
         //special case: allow only one origin instance
-        if (primitive === "IndexedLineSet" && this.originID !== "" && parameters[0].value == "true")
+        if (primitive === "IndexedLineSet" && this.originID !== "" && parameters[0].isOrigin === "true")
         {
             return;
         }
@@ -527,6 +536,20 @@ function PrimitiveManager(){
                     {
                         matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
                         ui.treeViewer.removeNode(currentObjectID);
+                        
+                        if (this.primitiveList[currentObjectID].parameters[0].isRefPoint){
+                            origin_refPoints_added[1]--;
+                        }
+                        if (this.primitiveList[currentObjectID].parameters[0].isOrigin){
+                            origin_refPoints_added[0] = 0;
+                        }
+                        if (origin_refPoints_added[0] > 0 && origin_refPoints_added[1] > 0){
+                            document.getElementById("warning").style.visibility = "hidden";
+                        }
+                        else {
+                            document.getElementById("warning").style.visibility = "visible";
+                        }
+                        
                         delete this.primitiveList[currentObjectID];
 
                         this.clearSelection();

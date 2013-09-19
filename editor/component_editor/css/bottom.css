@@ -4,66 +4,66 @@
 
 #Unten
 {
-	position: absolute;
-	border-radius: 10px 10px 0px 0px;
-	border: solid 2px #fff;
-	border-bottom: none;
-	left: 50%;
-	margin-left: -342px;
-        padding-left: 10px;
-        padding-right: 10px;
-	height: 40px;
-	width: 685px;
-	bottom: 0px;
-	z-index: 10000;
-	background-image: url(../images/karbon_bg.png);
+    position: absolute;
+    border-radius: 10px 10px 0px 0px;
+    border: solid 2px #fff;
+    border-bottom: none;
+    left: 50%;
+    margin-left: -342px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 40px;
+    width: 685px;
+    bottom: 0px;
+    z-index: 10000;
+    background-image: url(../images/karbon_bg.png);
 }
 
 #primitiveName
 {
-	width: 120px;
-	float:left;
-	font-weight: bold;
-	border-radius: 5px 0px 0px 5px;
-	margin-top:0px;
-	padding-bottom: 4px;
-	padding-left: 5px;
-	height: 18px;
-	border: 1px solid gray;
-	border-right:none;
-	background-color: #111111;
+    width: 120px;
+    float:left;
+    font-weight: bold;
+    border-radius: 5px 0px 0px 5px;
+    margin-top:0px;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    height: 18px;
+    border: 1px solid gray;
+    border-right:none;
+    background-color: #111111;
 }
 
 #deletePrimitive
 {
-	width: 23px;
-	float: left;
-	height: 23px;
-	border: solid 1px gray;
-	border-radius: 0px 5px 5px 0px;
+    width: 23px;
+    float: left;
+    height: 23px;
+    border: solid 1px gray;
+    border-radius: 0px 5px 5px 0px;
 }
 
 
 #clonePrimitiveGroup
 {
-	width: 23px;
-	float: left;
-	height: 23px;
-	border: solid 1px gray;
-        border-right: none;
+    width: 23px;
+    float: left;
+    height: 23px;
+    border: solid 1px gray;
+    border-right: none;
 }
 
 
 
 .amount
 {
-	width: 40px;
-	margin-left: 5px;
+    width: 40px;
+    margin-left: 5px;
     padding-bottom: 4px;
     height: 14px;
-	color: white;
-	font-size:0.9em;
-	background: transparent;
+    color: white;
+    font-size:0.9em;
+    background: transparent;
 }
 
 .text-slider
@@ -77,4 +77,12 @@
     left: 15%;
     width: 70%;
     position: absolute;
+}
+
+
+#warning{
+    position: absolute; 
+    z-index: 10000000; 
+    right: 205px; 
+    bottom: -3px;
 }
