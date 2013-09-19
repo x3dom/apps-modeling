@@ -16,6 +16,8 @@ function UI(primitiveManager){
     var farbtasticPicker = null;
     // primitive type for 2D-Editor
     var primitivType = null;
+    // primitive position for 2D-Editor
+    var primitivePos = null;
     // specifies whether we are in "group mode"
     // this means that no single primitive, but a group is being transformed etc.
     var groupMode = false;
@@ -140,7 +142,7 @@ function UI(primitiveManager){
             position: 'right'
         });
         
-        // Inititalization of the treeview
+        // Initialization of the treeview
         $("#tree").dynatree({
             checkbox: true,
             selectMode: 3,
@@ -231,7 +233,7 @@ function UI(primitiveManager){
                 active: false,
                 icons: iconsAccordion,
                 activate: function(event, ui) {
-                    
+                    // ?
                 }
         });
         
@@ -385,9 +387,12 @@ function UI(primitiveManager){
         };
         
         obj.disable = function(bool){
-            if (bool) document.getElementById(id).style.opacity="0.5";
-            else document.getElementById(id).style.opacity="1.0";
-            document.getElementById(id).disabled = bool;
+            var o = document.getElementById(id);
+            if (bool)
+                o.style.opacity="0.5";
+            else
+                o.style.opacity="1.0";
+            o.disabled = bool;
         };
         
         if (toolTip)
@@ -395,10 +400,8 @@ function UI(primitiveManager){
         
         return obj;
     };
-    
-    
-    
-    
+
+
     /*
      * Creates a new label property with getter and setter of function
      * @param {id} identifier in the html document where the value should be get/set
@@ -490,7 +493,7 @@ function UI(primitiveManager){
         };
         
         obj.idMap = function(index){
-            return document.getElementById(id)[index].Primitive.IDMap;
+            return document.getElementById(id)[index].Primitive.IDMap;      // TODO: check, Primitive seems undefined!
         };
         
         obj.selectedIndex = function(){
@@ -733,8 +736,12 @@ function UI(primitiveManager){
                 value: points.toString()
             });
 
-            primitiveManager.addPrimitive(that.primitiveParameterMap[primitivType].x3domName,
-                that.primitiveParameterMap[primitivType].parameters);
+            var obj = primitiveManager.addPrimitive(
+                        that.primitiveParameterMap[primitivType].x3domName,
+                        that.primitiveParameterMap[primitivType].parameters);
+
+            obj.setTranslationAsVec(primitivePos);
+            primitiveManager.selectObject(obj.getID());
         }
     };
 
@@ -757,7 +764,11 @@ function UI(primitiveManager){
         this.addLeftbarElement = function(img, name) {
             var divID = document.createElement("div");
             divID.setAttribute("id", name);
-            divID.innerHTML = "<img src='" + img + "' width='100%' height='100%'>";
+
+            divID.setAttribute('draggable', "true");
+            divID.ondragstart = controller.drag;
+
+            divID.innerHTML = "<img src='" + img + "' id='icon_" + name + "' width='100%' height='100%'>";
             divID.setAttribute("style",
                 "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
                     defColor + "; border-radius: 5px;");
@@ -776,7 +787,7 @@ function UI(primitiveManager){
                 divID.onclick = function () {
                     var mustBeClosed = (name == "Extrusion");
                     that.editor2D_show(mustBeClosed);
-                    primitivType = name;
+                    that.setPrimitiveTypeNameAndPos(name, new x3dom.fields.SFVec3f(0, 0, 0));
                 };
             }
             else {
@@ -794,6 +805,12 @@ function UI(primitiveManager){
 
             divID.appendChild(divIDinnen);
             document.getElementById("divs").appendChild(divID);
+        };
+
+
+        this.setPrimitiveTypeNameAndPos = function(name, pos) {
+            primitivType = name;
+            primitivePos = pos;
         };
 
 
@@ -894,7 +911,7 @@ function UI(primitiveManager){
 
                         object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id).value);
                         document.getElementById(object.id).value = object.param.value;
-                        var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+
                         primitiveManager.highlightCurrentObject(true);
                     }
                 });
@@ -946,13 +963,14 @@ function UI(primitiveManager){
 
             function vecProperty(vecSize) {
                 var labels = ["X:", "Y:", "Z:"];
+                var i;
 
                 var newLabel = document.createElement("label");
                 newLabel.setAttribute("style", "float: left; margin-bottom: 5px; width: 100%;");
                 newLabel.innerHTML = object.param.editorName;
                 divID.appendChild(newLabel);
 
-                for (var i = 0; i < vecSize; i++) {
+                for (i = 0; i < vecSize; i++) {
                     var outerDiv = document.createElement("div");
                     outerDiv.setAttribute("style", "float: left; margin-bottom: 5px;");
 
@@ -972,25 +990,28 @@ function UI(primitiveManager){
 
                 document.getElementById("properties").appendChild(divID);
 
-                for (var i = 0; i < vecSize; i++) {
+                for (i = 0; i < vecSize; i++) {
                     $("#" + object.id + "_" + i).spinner({
                         step: object.param.step,
                         min: object.param.min,
                         max: object.param.max,
+
                         stop: function (e, ui) {
-                            object.primitive.setAttribute(object.param.x3domName,
-                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
-                                    clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
-                                    clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value));
-                            object.param.value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value) + "," +
-                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value) + "," +
-                                clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+                            var obj0 = document.getElementById(object.id + "_0");
+                            var obj1 = document.getElementById(object.id + "_1");
+                            var obj2 = document.getElementById(object.id + "_2");
 
-                            document.getElementById(object.id + "_0").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_0").value);
-                            document.getElementById(object.id + "_1").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_1").value);
-                            document.getElementById(object.id + "_2").value = clamp(object.param.min, object.param.max, document.getElementById(object.id + "_2").value);
+                            var obj0val = clamp(object.param.min, object.param.max, obj0.value);
+                            var obj1val = clamp(object.param.min, object.param.max, obj1.value);
+                            var obj2val = clamp(object.param.min, object.param.max, obj2.value);
 
-                            var ref = object.primitive.parentNode.parentNode.parentNode.id; // uahh
+                            object.param.value = obj0val + "," + obj1val + "," + obj2val;
+                            object.primitive.setAttribute(object.param.x3domName, object.param.value);
+
+                            obj0.value = obj0val;
+                            obj1.value = obj1val;
+                            obj2.value = obj2val;
+
                             primitiveManager.highlightCurrentObject(true);
                         }
                     });

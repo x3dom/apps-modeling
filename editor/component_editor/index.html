@@ -7,7 +7,7 @@
     <!-- only one comment -->
     <title>CAD Primitive Editor</title>
 
-    <link rel="stylesheet" type="text/css" href="css/x3dom.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/x3dom.css"/>
 
     <script type="text/javascript" src="../../../x3dom/src/lang/Array.js"></script>
     <script type="text/javascript" src="../../../x3dom/src/Internals.js"></script>
@@ -86,7 +86,7 @@
     if (typeof x3dom === "undefined")
     {
         document.write(
-            '<script type="text/javascript" src="js/x3dom-full.js"><\/script>');
+            '<script type="text/javascript" src="../static/x3dom-full.js"><\/script>');
     }
     </script>
 
@@ -291,7 +291,9 @@
 
 
 <div id="x3d-view">
-    <x3d id="x3d" showStat="false" showLog="false" onkeydown="if ((event || window.event).keyCode === 46){ primitiveManager.removeCurrentObject(); /*key 46 = DEL*/  }">
+    <x3d id="x3d" showStat="false" showLog="false"
+         onkeydown="if ((event || window.event).keyCode == 46){ primitiveManager.removeCurrentObject(); /*46 = DEL*/ }"
+         ondrop="controller.drop(event)" ondragover="controller.allowDrop(event)">
         <scene>
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">

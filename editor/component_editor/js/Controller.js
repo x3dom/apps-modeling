@@ -53,7 +53,6 @@ function Controller(ui){
                 ui.TBScale.dehighlight();
                 ui.TBRotate.dehighlight();
             }
-
         }
     };
     
@@ -223,4 +222,64 @@ function Controller(ui){
     function saveScene(){
         alert("saving scene");
     }
+
+
+
+    this.drag = function(event) {
+        if (event.dataTransfer) {
+            var name = event.target.id;
+            if (name.indexOf("_") >= 0)
+                name = name.substring(name.indexOf("_") + 1);
+
+            event.dataTransfer.setData("Text", name);
+        }
+    };
+
+    this.drop = function(event) {
+        event.preventDefault();
+
+        if (event.dataTransfer) {
+            var data = event.dataTransfer.getData("Text");
+            //event.target.appendChild(document.getElementById(data));
+            //console.log(data);
+            if (!data)
+                return true;
+
+            var runtime = document.getElementById("x3d").runtime;
+            var ray = runtime.getViewingRay(event.layerX, event.layerY);
+
+            // calc dist to ground plane
+            var len = 100;
+            // if ray not parallel to plane and reasonably near then use d
+            if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
+                var d = -ray.pos.y / ray.dir.y;
+                len = (d < len) ? d : len;
+            }
+            var pos = ray.pos.add(ray.dir.multiply(len));
+
+            if (data == "Extrusion" || data == "Solid of Revolution") {
+                ui.editor2D_show( (data == "Extrusion") );
+                ui.setPrimitiveTypeNameAndPos(data, pos);
+            }
+            else {
+                var obj = primitiveManager.addPrimitive(
+                       ui.primitiveParameterMap[data].x3domName,
+                       ui.primitiveParameterMap[data].parameters);
+
+                obj.setTranslationAsVec(pos);
+                primitiveManager.selectObject(obj.getID());
+            }
+        }
+
+        event.stopPropagation();
+        event.returnValue = false;
+        return false;
+    };
+
+    this.allowDrop = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.returnValue = false;
+        return false;
+    };
 }

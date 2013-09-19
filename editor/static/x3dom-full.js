@@ -1,4 +1,4 @@
-/** X3DOM Runtime, http://www.x3dom.org/ 1.6.0-dev - 3e6d15fe5d293617a1447e5537305fd7d8204f6e - Wed Sep 18 13:59:59 2013 +0200 */
+/** X3DOM Runtime, http://www.x3dom.org/ 1.6.0-dev - 6b0c13fc19e5b27236e6afd048692302c284c971 - Thu Sep 19 13:29:34 2013 +0200 */
 if(!Array.forEach){Array.forEach=function(array,fun,thisp){var len=array.length;for(var i=0;i<len;i++){if(i in array){fun.call(thisp,array[i],i,array);}}};}
 if(!Array.map){Array.map=function(array,fun,thisp){var len=array.length;var res=[];for(var i=0;i<len;i++){if(i in array){res[i]=fun.call(thisp,array[i],i,array);}}
 return res;};}
@@ -553,8 +553,9 @@ this.appendParam(obj,'menu','false');this.appendParam(obj,'quality','high');this
 obj.setAttribute('classid','clsid:d27cdb6e-ae6d-11cf-96b8-444553540000');else{obj.setAttribute('type','application/x-shockwave-flash');obj.setAttribute('data',swf_path);}
 return obj;}};this.createHTMLCanvas=function(x3dElem)
 {x3dom.debug.logInfo("Creating canvas for (X)3D element...");var canvas=document.createElement('canvas');canvas.setAttribute("class","x3dom-canvas");var userStyle=x3dElem.getAttribute("style");if(userStyle){x3dom.debug.logInfo("Inline X3D styles detected");}
-var evtArr=["onmousedown","onmousemove","onmouseout","onmouseover","onmouseup","onclick","ondblclick","onkeydown","onkeypress","onkeyup","ontouchstart","ontouchmove","ontouchend","ontouchcancel","ontouchleave","ontouchenter","onMozTouchDown","onMozTouchMove","onMozTouchUp"];for(var i=0;i<evtArr.length;i++)
+var evtArr=["onmousedown","onmousemove","onmouseout","onmouseover","onmouseup","onclick","ondblclick","onkeydown","onkeypress","onkeyup","ontouchstart","ontouchmove","ontouchend","ontouchcancel","ontouchleave","ontouchenter","onMozTouchDown","onMozTouchMove","onMozTouchUp","ondragstart","ondrop","ondragover"];for(var i=0;i<evtArr.length;i++)
 {var evtName=evtArr[i];var userEvt=x3dElem.getAttribute(evtName);if(userEvt){x3dom.debug.logInfo(evtName+", "+userEvt);canvas.setAttribute(evtName,userEvt);}}
+var userProp=x3dElem.getAttribute("draggable");if(userProp){x3dom.debug.logInfo("draggable="+userProp);canvas.setAttribute("draggable",userProp);}
 if(!x3dElem.__addEventListener&&!x3dElem.__removeEventListener)
 {x3dElem.__addEventListener=x3dElem.addEventListener;x3dElem.__removeEventListener=x3dElem.removeEventListener;x3dElem.addEventListener=function(type,func,phase){var j,found=false;for(j=0;j<evtArr.length&&!found;j++){if(evtArr[j]===type){found=true;}}
 if(found){x3dom.debug.logInfo('addEventListener for div.on'+type);that.canvas.addEventListener(type,func,phase);}else{x3dom.debug.logInfo('addEventListener for X3D.on'+type);this.__addEventListener(type,func,phase);}};x3dElem.removeEventListener=function(type,func,phase){var j,found=false;for(j=0;j<evtArr.length&&!found;j++){if(evtArr[j]===type){found=true;}}
@@ -4248,4 +4249,4 @@ c+"</a></h2>";result+="<ul style='list-style-type:circle;'>";for(var t in compon
 x3dom.docs.specBaseURL+x3dom.docs.specURLMap[c]+"#"+t+"' style='color:black; text-decoration:none; font-weight:bold;'>"+
 t+"</a></li>";}
 result+="</ul>";}
-return result;};x3dom.versionInfo={version:'1.6.0-dev',revision:'3e6d15fe5d293617a1447e5537305fd7d8204f6e',date:'Wed Sep 18 13:59:59 2013 +0200'};
+return result;};x3dom.versionInfo={version:'1.6.0-dev',revision:'6b0c13fc19e5b27236e6afd048692302c284c971',date:'Thu Sep 19 13:29:34 2013 +0200'};

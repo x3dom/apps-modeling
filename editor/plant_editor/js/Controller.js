@@ -209,6 +209,8 @@ function Controller(ui){
             if (!data)
                 return true;
 
+            // special code for extrusion and solid of revolution nodes
+            // is only implemented in the component editor, not here...
             var obj = primitiveManager.addPrimitive(
                    ui.primitiveParameterMap[data].x3domName,
                    ui.primitiveParameterMap[data].parameters);
