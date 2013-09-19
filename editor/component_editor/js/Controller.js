@@ -6,6 +6,10 @@
  */
 function Controller(ui){
     
+    // IntervalID for automatically saving mode
+    var saveInterval = null;
+    
+    
     /*
      * Activates the specified transformation mode 
      * @param {string} mode transformation mode (translation, scale, rotation, hand)
@@ -188,4 +192,35 @@ function Controller(ui){
         // But perhaps requires dynamic adaptions of grid plane...
         return (snapToGrid == true) ? 0.5 : 0;
     };
+    
+    
+    
+    /*
+     * Toggles the auto save mode. If on the scene will be automatically saved
+     * every given seconds
+     * @param {number} seconds saving interval
+     * @returns {Null}
+     */
+    this.autoSave = function(seconds){
+        if (ui.TBAutoSave.highlighted){ 
+            ui.TBAutoSave.dehighlight();
+            ui.TBAutoSave.setImage("images/autoSave_off.png");
+            clearInterval(saveInterval);
+        }
+        else {
+            ui.TBAutoSave.highlight();
+            ui.TBAutoSave.setImage("images/autoSave_on.png");
+            saveInterval = setInterval(saveScene, (seconds * 1000));
+        }
+    };
+    
+    
+    
+    /*
+     * Saves the scene 
+     * @returns {Null}
+     */
+    function saveScene(){
+        alert("saving scene");
+    }
 }

@@ -80,6 +80,7 @@ function UI(primitiveManager){
         that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
         that.TBSnapToGrid = that.newImageProperty("ButtonSnapToGrid", true);
         that.TBSnap = that.newImageProperty("SnapPoints", true);
+        that.TBAutoSave = that.newImageProperty("ButtonAutoSave", true);
         that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
        
         that.BBPrimName = that.newTextProperty("primitiveName", true);
@@ -433,6 +434,10 @@ function UI(primitiveManager){
             document.getElementById(id).textContent = value;
         };
         
+        obj.setImage = function(url){
+            document.getElementById(id).src = url;
+        };
+        
         obj.highlight = function(){
             document.getElementById(id).style.border = "solid 1px " + highlightColor;
             obj.highlighted = true;
@@ -442,6 +447,7 @@ function UI(primitiveManager){
             document.getElementById(id).style.border = "solid 1px " + defColor;
             obj.highlighted = false;
         };
+        
         
         obj.disable = function(bool){
             if (bool) document.getElementById(id).style.opacity="0.5";
