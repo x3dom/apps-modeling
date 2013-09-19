@@ -64,7 +64,7 @@ function Primitive(primType, parameters){
             var colorStr       = "";
 
             //"Origin" geometry
-            if (parameters[0].isOrigin)
+            if (parameters.isOrigin)
             {
                 coordIndexStr = "0 1 -1, 2 3 -1, 4 5 -1";
                 pointStr      = "1 0 0, 0 0 0, 0 1 0, 0 0 0, 0 0 1, 0 0 0";
@@ -130,6 +130,8 @@ function Primitive(primType, parameters){
         }
         this.parameters.push(aParam);
     }
+    this.parameters.isOrigin = parameters.isOrigin;
+    this.parameters.isRefPoint = parameters.isRefPoint;
 
     setDefaultParameters(this.domNode, parameters);
 
@@ -278,7 +280,7 @@ function PrimitiveManager(){
     this.addPrimitive = function(primitive, parameters){
 
         //special case: allow only one origin instance
-        if (primitive === "IndexedLineSet" && origin_refPoints_added[0] !== 0 && parameters[0].isOrigin)
+        if (primitive === "IndexedLineSet" && origin_refPoints_added[0] !== 0 && parameters.isOrigin)
         {
             return;
         }
@@ -294,7 +296,7 @@ function PrimitiveManager(){
 
         if (primitive === "IndexedLineSet")
         {
-            if (parameters[0].value == "true")
+            if (parameters.isOrigin)
             {
                 prim.setName("Origin");
             }
@@ -533,10 +535,10 @@ function PrimitiveManager(){
                         matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
                         ui.treeViewer.removeNode(currentObjectID);
                         
-                        if (this.primitiveList[currentObjectID].parameters[0].isRefPoint){
+                        if (this.primitiveList[currentObjectID].parameters.isRefPoint){
                             origin_refPoints_added[1]--;
                         }
-                        if (this.primitiveList[currentObjectID].parameters[0].isOrigin){
+                        if (this.primitiveList[currentObjectID].parameters.isOrigin){
                             origin_refPoints_added[0] = 0;
                         }
                         if (origin_refPoints_added[0] > 0 && origin_refPoints_added[1] > 0){

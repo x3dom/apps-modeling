@@ -328,6 +328,10 @@ function UI(primitiveManager){
                   isRefPoint: (currParam.getAttribute("isRefPoint") !== null) ? Boolean(currParam.getAttribute("isRefPoint")) : false
                 } );
             }
+            primitiveParameterMap[currPrim.getAttribute("editorName")].parameters.isOrigin = currPrim.getAttribute("isOrigin") !== null ? 
+                                                                                             Boolean(currPrim.getAttribute("isOrigin")) : false;
+            primitiveParameterMap[currPrim.getAttribute("editorName")].parameters.isRefPoint = currPrim.getAttribute("isRefPoint") !== null ? 
+                                                                                             Boolean(currPrim.getAttribute("isRefPoint")) : false;
        }
        
        return primitiveParameterMap;
