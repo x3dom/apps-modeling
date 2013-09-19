@@ -215,10 +215,15 @@ function Controller(ui){
 
             var runtime = document.getElementById("x3d").runtime;
             var ray = runtime.getViewingRay(event.layerX, event.layerY);
-            var len = 20;
 
-            // TODO: calc dist to ground plane
-            // id not parallel and reasonably near then use dist instead
+            // calc dist to ground plane
+            var len = 100;
+            // if ray not parallel to plane and reasonably near then use d
+            if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
+                var d = -ray.pos.y / ray.dir.y;
+                len = (d < len) ? d : len;
+            }
+
             var pos = ray.pos.add(ray.dir.multiply(len));
 
             obj.setTranslationAsVec(pos);
