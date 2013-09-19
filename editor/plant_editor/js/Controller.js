@@ -201,17 +201,39 @@ function Controller(ui){
 
     this.drop = function(event) {
         event.preventDefault();
+
         if (event.dataTransfer) {
             var data = event.dataTransfer.getData("Text");
-            console.log(data);
             //event.target.appendChild(document.getElementById(data));
+            //console.log(data);
+            if (!data)
+                return true;
 
-            primitiveManager.addPrimitive(ui.primitiveParameterMap[data].x3domName,
-                ui.primitiveParameterMap[data].parameters);
+            var obj = primitiveManager.addPrimitive(
+                   ui.primitiveParameterMap[data].x3domName,
+                   ui.primitiveParameterMap[data].parameters);
+
+            var runtime = document.getElementById("x3d").runtime;
+            var ray = runtime.getViewingRay(event.layerX, event.layerY);
+            var len = 20;
+
+            // TODO: calc dist to ground plane
+            // id not parallel and reasonably near then use dist instead
+            var pos = ray.pos.add(ray.dir.multiply(len));
+
+            obj.setTranslationAsVec(pos);
+            primitiveManager.selectObject(obj.getID());
         }
+
+        event.stopPropagation();
+        event.returnValue = false;
+        return false;
     };
 
     this.allowDrop = function(event) {
         event.preventDefault();
+        event.stopPropagation();
+        event.returnValue = false;
+        return false;
     };
 }

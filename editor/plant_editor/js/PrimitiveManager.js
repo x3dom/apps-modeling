@@ -398,7 +398,7 @@ function PrimitiveManager(){
         //if SHIFT is pressed, do nothing (-> group selection)
         if (!keyPressed[16])
         {
-            controller.Activate('translation')
+            controller.Activate('translation');
 
             //update stored transform values and GUI elements appropriately
             object.setTranslation(pos.x, pos.y, pos.z);
@@ -893,6 +893,7 @@ function PrimitiveManager(){
             if (this.primitiveList[key].getDOMNode() == primitive)
                 return this.primitiveList[key].getMaterial();
         }
+        return null;
     };
 
 

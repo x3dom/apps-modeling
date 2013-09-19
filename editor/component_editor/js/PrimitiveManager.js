@@ -282,7 +282,7 @@ function PrimitiveManager(){
         //special case: allow only one origin instance
         if (primitive === "IndexedLineSet" && origin_refPoints_added[0] !== 0 && parameters.isOrigin)
         {
-            return;
+            return null;
         }
 
         ui.toggleGroupMode(false);
@@ -985,6 +985,7 @@ function PrimitiveManager(){
             if (this.primitiveList[key].getDOMNode() == primitive)
                 return this.primitiveList[key].getMaterial();
         }
+        return null;
     };
 
 

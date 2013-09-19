@@ -893,6 +893,7 @@ function PrimitiveManager(){
             if (this.primitiveList[key].getDOMNode() == primitive)
                 return this.primitiveList[key].getMaterial();
         }
+        return null;
     };
 
 
