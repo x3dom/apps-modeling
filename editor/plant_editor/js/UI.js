@@ -741,7 +741,11 @@ function UI(primitiveManager){
         this.addLeftbarElement = function(img, name) {
             var divID = document.createElement("div");
             divID.setAttribute("id", name);
-            divID.innerHTML = "<img src='" + img + "' width='100%' height='100%'>";
+
+            divID.setAttribute('draggable', "true");
+            divID.ondragstart = controller.drag;
+
+            divID.innerHTML = "<img src='" + img + "' id='icon_" + name + "' width='100%' height='100%'>";
             divID.setAttribute("style",
                 "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
                     defColor + "; border-radius: 5px;");

@@ -188,4 +188,30 @@ function Controller(ui){
         // But perhaps requires dynamic adaptions of grid plane...
         return (snapToGrid == true) ? 0.5 : 0;
     };
+
+    this.drag = function(event) {
+        if (event.dataTransfer) {
+            var name = event.target.id;
+            if (name.indexOf("_") >= 0)
+                name = name.substring(name.indexOf("_") + 1);
+
+            event.dataTransfer.setData("Text", name);
+        }
+    };
+
+    this.drop = function(event) {
+        event.preventDefault();
+        if (event.dataTransfer) {
+            var data = event.dataTransfer.getData("Text");
+            console.log(data);
+            //event.target.appendChild(document.getElementById(data));
+
+            primitiveManager.addPrimitive(ui.primitiveParameterMap[data].x3domName,
+                ui.primitiveParameterMap[data].parameters);
+        }
+    };
+
+    this.allowDrop = function(event) {
+        event.preventDefault();
+    };
 }
