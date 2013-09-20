@@ -1,6 +1,5 @@
 function StorageManager(){}
 
-
 // the server to which the DSL description is sent
 var server_3D_url = "http://localhost:8080/";
 
@@ -25,6 +24,7 @@ StorageManager.prototype.saveScene = function()
             {
             sceneDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
             }
+        console.log("Primitive is positive",prim.positive)
         //sceneDataDSL += "rotate_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
         //@todo: pythonOCC allows scaling with origin and a single scalar factor
         //sceneDataDSL += "scale_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
@@ -44,12 +44,15 @@ StorageManager.prototype.saveScene = function()
     that.processDSL(sceneDataDSL);
 };
 
-StorageManager.prototype.processDSL = function(DSLdescription){
+StorageManager.prototype.processDSL = function(sceneDataDSL){
     // this method sends the DSL description to the 3D server
     // and get back a json object including :
     // the result (succesfull, fail, etc.)
     console.log("Requesting 3D server ...");
-    // here create a REST request to send the DSL as a json object
+    $.post('/process_dsl',{component_description:sceneDataDSL}, function(response) {
+    // log the response to the console
+    console.log("Response: "+response);
+    })
 };
 
 
@@ -79,9 +82,10 @@ StorageManager.prototype.primitiveInDSL = function(id, primType, paramValueMap){
 
         case "Torus":
             dslCommands = id + " = make_torus(" + paramValueMap["ROutside"] + "," + paramValueMap["RInside"] + "," + paramValueMap["Angle"] + ")\n";
-            break
+            break;
 
-        case "Dish":
+        case "RectangularTorus":
+            dslCommands = id + " = make_rectangular_torus(" + paramValueMap["ROutside"] + "," + paramValueMap["RInside"] + "," + paramValueMap["Height"] +"," + paramValueMap["Angle"] + ")\n";
             break;
 
         case "":
