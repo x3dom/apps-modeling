@@ -315,8 +315,9 @@
 
             <transform id="planeId" rotation="1 0 0 -1.57079632679">
                 <Shape id="plane" isPickable="false">
-                    <Appearance>
+                    <Appearance sortKey="-1">
                         <Material emissiveColor='0.2 0.2 0.2'></Material>
+                        <DepthMode id="depthMode" readOnly="false"></DepthMode>
                     </Appearance>
                     <Plane solid="false" size='25 25' primType='LINES' subdivision='50 50'>
                     </Plane>
