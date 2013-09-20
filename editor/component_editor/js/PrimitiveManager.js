@@ -151,6 +151,13 @@ function Primitive(primType, parameters){
     var appearance = document.createElement('Appearance');
     appearance.appendChild(this.material);
 
+    // thicker lines for better visibility (though currently due to underlying ANGLE problems a NOOP on Windows)
+    if (this.primType == "IndexedLineSet") {
+        var lineMode = document.createElement('LineProperties');
+        lineMode.setAttribute("linewidthScaleFactor", "2");
+        appearance.appendChild(lineMode);
+    }
+
     var shape = document.createElement('Shape');
     shape.appendChild(appearance);
     shape.appendChild(this.domNode);

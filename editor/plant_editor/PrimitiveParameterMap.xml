@@ -129,14 +129,13 @@
         <!-- fake param, obviously doesn't exist -->
         <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
-    <Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
+    <!--Primitive editorName="Extrusion" x3domName="Extrusion" image="images/extrusion.jpg">
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter type="bool" editorName="Begin Cap" x3domName="beginCap">true</Parameter>
         <Parameter type="bool" editorName="End Cap" x3domName="endCap">true</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
-        <!-- fake param, obviously doesn't exist -->
         <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Solid of Revolution" x3domName="SolidOfRevolution" image="images/solidofrevolution.jpg">
@@ -147,7 +146,6 @@
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
-        <!-- fake param, obviously doesn't exist -->
         <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
-    </Primitive>
+    </Primitive-->
 </PrimitiveParameterMap>
