@@ -14,8 +14,6 @@ function UI(primitiveManager){
     this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
     var farbtasticPicker = null;
-    // primitive type for 2D-Editor
-    var primitivType = null;
     // specifies whether we are in "group mode"
     // this means that no single primitive, but a group is being transformed etc.
     var groupMode = false;
@@ -273,12 +271,6 @@ function UI(primitiveManager){
                 primitiveManager.changePrimitiveMaterial("shininess");
             }
         });
-
-        //Initialize 2D-Editor
-        var editor2DCanvas = $('#Editor2D-Canvas');
-        editor2DCanvas.editor2D();
-        editor2DCanvas.on('modechanged', this.editor2D_onModeChanged);
-        editor2DCanvas.on('readychanged', this.editor2D_onReadyChanged);
 
         $("#DeletePlane").tooltip();
         $("#DeleteAxis").tooltip();
@@ -586,153 +578,6 @@ function UI(primitiveManager){
         elem.innerHTML = (showPnts == 0) ? "Points" : ((showPnts == 1) ? "Lines": "Faces");
     };
 
-    
-    
-	/*  
-     * Show the 2D-Editor
-     */
-    this.editor2D_show = function(mustBeClosed)
-    {
-        $('#Editor2D-Canvas').editor2D('clear');
-        $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept').addClass('Editor2D-Icon-Accept-Inactive');
-        $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap').addClass('Editor2D-Icon-Snap-Active');
-        $('#Editor2D-Canvas').editor2D('setSnapToGrid', true);
-        $('#Editor2D-Canvas').editor2D('setMustClosed', mustBeClosed);
-        $('#Editor2D-Overlay').css('display', 'block');
-	};
-
-    /*
-     * Hide the 2D-Editor
-     */
-    this.editor2D_hide = function()
-    {
-        $('#Editor2D-Overlay').css('display', 'none');
-    };
-
-    /*
-     * Create new drawing area
-     */
-    this.editor2D_new = function()
-    {
-        $('#Editor2D-Canvas').editor2D('clear');
-    };
-
-    /*
-     * Reset 2D-Editor view
-     */
-    this.editor2D_reset = function()
-    {
-        $('#Editor2D-Canvas').editor2D('resetView');
-    };
-
-    /*
-     * Handle 2D-Editors 'modechanged' event
-     */
-    this.editor2D_onModeChanged = function(evt)
-    {
-        that.editor2D_mode(evt.originalEvent.detail.mode);
-    };
-
-    /*
-     * Handle 2D-Editors 'readychanged' event
-     */
-    this.editor2D_onReadyChanged = function(evt)
-    {
-        if (evt.originalEvent.detail.ready)
-        {
-            $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept-Inactive').addClass('Editor2D-Icon-Accept');
-        }
-        else
-        {
-            $('#Editor2D-Icon-Accept').removeClass('Editor2D-Icon-Accept').addClass('Editor2D-Icon-Accept-Inactive');
-        }
-    };
-
-    /*
-     * Toggle Snap to Grid
-     */
-    this.editor2D_toggleSnap = function()
-    {
-        var snapToGrid = $('#Editor2D-Canvas').editor2D('getSnapToGrid');
-
-        if (snapToGrid)
-        {
-            $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap-Active').addClass('Editor2D-Icon-Snap');
-            $('#Editor2D-Canvas').editor2D('setSnapToGrid', false);
-        }
-        else
-        {
-            $('#Editor2D-Icon-Snap').removeClass('Editor2D-Icon-Snap').addClass('Editor2D-Icon-Snap-Active');
-            $('#Editor2D-Canvas').editor2D('setSnapToGrid', true);
-        }
-    };
-
-    /*
-     * Change 2D-Editors mode
-     */
-    this.editor2D_mode = function(mode)
-    {
-        this.editor2D_resetIcons();
-
-        switch (mode)
-        {
-            case 0:
-                $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen').addClass('Editor2D-Icon-Pen-Active');
-                $('#Editor2D-Canvas').editor2D('changeMode', 0);
-                break;
-            case 1:
-                $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer').addClass('Editor2D-Icon-Pointer-Active');
-                $('#Editor2D-Canvas').editor2D('changeMode', 1);
-                break;
-            case 2:
-                $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser').addClass('Editor2D-Icon-Eraser-Active');
-                $('#Editor2D-Canvas').editor2D('changeMode', 2);
-                break;
-            case 3:
-                $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move').addClass('Editor2D-Icon-Move-Active');
-                $('#Editor2D-Canvas').editor2D('changeMode', 3);
-                break;
-            case 4:
-                $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom').addClass('Editor2D-Icon-Zoom-Active');
-                $('#Editor2D-Canvas').editor2D('changeMode', 4);
-                break;
-        }
-    };
-
-    /*
-     * Handle 2D-Editors 'modechanged' event
-     */
-    this.editor2D_create = function () {
-        if ($('#Editor2D-Canvas').editor2D('isReady')) {
-            //Hide editor
-            this.editor2D_hide();
-
-            //Get points
-            var points = $('#Editor2D-Canvas').editor2D('samplePoints');
-
-            that.primitiveParameterMap[primitivType].parameters.push({
-                render: "false",
-                editorName: "Cross Section",
-                x3domName: "crossSection",
-                value: points.toString()
-            });
-
-            primitiveManager.addPrimitive(that.primitiveParameterMap[primitivType].x3domName,
-                that.primitiveParameterMap[primitivType].parameters);
-        }
-    };
-
-
-        /*
-         * Reset all 2D-Editor icon states
-         */
-        this.editor2D_resetIcons = function () {
-            $('#Editor2D-Icon-Pen').removeClass('Editor2D-Icon-Pen-Active').addClass('Editor2D-Icon-Pen');
-            $('#Editor2D-Icon-Pointer').removeClass('Editor2D-Icon-Pointer-Active').addClass('Editor2D-Icon-Pointer');
-            $('#Editor2D-Icon-Eraser').removeClass('Editor2D-Icon-Eraser-Active').addClass('Editor2D-Icon-Eraser');
-            $('#Editor2D-Icon-Move').removeClass('Editor2D-Icon-Move-Active').addClass('Editor2D-Icon-Move');
-            $('#Editor2D-Icon-Zoom').removeClass('Editor2D-Icon-Zoom-Active').addClass('Editor2D-Icon-Zoom');
-        };
 
         /*
          * Adds one primitive element to the left bar
@@ -760,19 +605,11 @@ function UI(primitiveManager){
                 "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
                     "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
 
-            if (name == "Extrusion" || name == "Solid of Revolution") {
-                divID.onclick = function () {
-                    var mustBeClosed = (name == "Extrusion");
-                    that.editor2D_show(mustBeClosed);
-                    primitivType = name;
-                };
-            }
-            else {
-                divID.onclick = function () {
-                    primitiveManager.addPrimitive(that.primitiveParameterMap[name].x3domName,
-                        that.primitiveParameterMap[name].parameters);
-                };
-            }
+
+            divID.onclick = function () {
+                primitiveManager.addPrimitive(that.primitiveParameterMap[name].x3domName,
+                    that.primitiveParameterMap[name].parameters);
+            };
 
             var divIDinnen = document.createElement("div");
             divIDinnen.setAttribute("id", name + "_inner");
