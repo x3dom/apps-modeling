@@ -1007,5 +1007,5 @@ function PrimitiveManager(){
         //export negative primitives
         //@todo: make it work
         //...
-    }
+    };
 }

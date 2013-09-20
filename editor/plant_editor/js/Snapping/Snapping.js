@@ -6,8 +6,8 @@ function Snapping()
 	var snapBool = false;
 	var snapJ = new SnapJSON();
 	var createLine = new CreateLine();
-	var snapPointCreate = new SnapPointCreate();
-	var objPointList = snapPointCreate.getObjPointList();
+	var createPoint = new CreatePoint();
+	var objPointList = createPoint.getObjPointList();
 	
 	/*
 	 * Starts the ability to snapping
@@ -92,7 +92,7 @@ function Snapping()
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
 	    		//Set Point to Object
-	    		snapPointCreate.setPoint(pointListObj.point1.position, elementList[i]);
+	    		createPoint.setPoint(pointListObj.point1.position, elementList[i]);
 		        //Search Object
 	    		var element = primitiveManager.getPrimitiveByID(elementList[i]);
 	    		//Subject is observed
@@ -117,19 +117,25 @@ function Snapping()
     	element.Update = function( myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                                    myPositionPoint, postPositionPoint )
     	{
-			//Calculated distance to the elements
-			//Each element draws a line on the selected item, 
+			//Calculated distance between the two Snappoint,
 			//the lines and the distance are always calculate and updated   			
-			var distance = myPosition.subtract(postPosition).length();		
-			
-			//console.log(distance);
-			//console.log(distancePoint);
-			
+			var distance = myPositionPoint.subtract(postPositionPoint).length();		
+						
 			if(distance != 0)
 			{
-				if(distance < 4.0)
+				if(distance < 5.0)
 				{
-					createLine.setLine(myPosition, postPosition, myObj, postObj);
+					
+					/*TODO:
+					* für die Skalierung muss ich die 2 Variablen anpassen 
+					* myPositionPoint, postPositionPoint, wird noch gemacht
+					*/
+					
+					
+					//Draws line between the two Snappoints
+					createLine.setLine(myPositionPoint, postPositionPoint, myObj, postObj);
+					
+					//Here we check whether the items can be combined
 					snapTo(myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                            myPositionPoint, postPositionPoint, distance);
 				}
@@ -153,16 +159,23 @@ function Snapping()
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
-    	if(distance < 2.0)
+    	if(distance < 3.0)
     	{
     		//This is the position of the point in the element, and is added 
     		//to the global position. This point is the connecting point.
     		var postPointTempPosition = snapping.getPosition(postObjPoint.id);
-   
+    		
+    		
+    		x = postPositionPoint.x + postPointTempPosition.x;
+ 			y = postPositionPoint.y + postPointTempPosition.y;
+   			z = postPositionPoint.z + postPointTempPosition.z;
+   			
+   			
+   			console.log(x);
+   			
+   			
     		//The new position is then passed to the right place    							    		
-    		myObj.setTranslation(postPositionPoint.x + postPointTempPosition.x,
-    			                 postPositionPoint.y + postPointTempPosition.y,
-    			                 postPositionPoint.z + postPointTempPosition.z);
+    		myObj.setTranslation(x, y, z);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
