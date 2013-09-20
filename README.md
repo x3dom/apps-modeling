@@ -1,4 +1,4 @@
 apps-modeling
 ====
 
-Web-based Modeling Applications
+Web-based 3D modeling applications
