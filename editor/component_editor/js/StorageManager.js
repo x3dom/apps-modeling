@@ -15,6 +15,7 @@ StorageManager.prototype.saveScene = function()
 
     //go through all positive primitives:
     //write each primitive's creation command and transform
+    numberOfPositivePrimitives = positivePrimitivesJSON.length
     Array.forEach(positivePrimitivesJSON, function(prim){
         //@todo: replace with matching primType
         sceneDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
@@ -24,20 +25,26 @@ StorageManager.prototype.saveScene = function()
             {
             sceneDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
             }
-        console.log("Primitive is positive",prim.positive)
         //sceneDataDSL += "rotate_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
         //@todo: pythonOCC allows scaling with origin and a single scalar factor
         //sceneDataDSL += "scale_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
-
-        // display is commented out, useful only for debug purpose
-        sceneDataDSL += "# affiche(" + prim.id + ")\n";
     });
 
-    //do the same for all negative primitives and use them for subtraction
+    //do the same for all negative primitives and use them for substraction
     //...
-
+    // finish the shape : fuse all positive and negative primitives and create the resulting shape
+    sceneDataDSL += "final_shape = ( ";//" affiche(" + prim.id + ")\n";
+    var positivePrimitiveIndex = 0;
+    Array.forEach(positivePrimitivesJSON, function(prim){
+        sceneDataDSL += " " + prim.id + " ";
+        positivePrimitiveIndex += 1;
+        if (positivePrimitiveIndex < numberOfPositivePrimitives)
+            {
+              sceneDataDSL += " + " ;  
+            }
+        });
+    sceneDataDSL += " )\n";
     //@todo: coord system orientation
-
     console.log("Scene Data in DSL:");
     console.log(sceneDataDSL);
     //
