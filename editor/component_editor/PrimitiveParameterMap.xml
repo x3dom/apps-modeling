@@ -14,7 +14,7 @@
         <Parameter type="bool" editorName="Show Top" x3domName="top">true</Parameter>
         <Parameter type="bool" editorName="Show Side" x3domName="side">true</Parameter>
         <Parameter type="bool" editorName="Show Bottom" x3domName="bottom">true</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -27,7 +27,7 @@
         <Parameter editorName="Show Top" x3domName="top" type="bool">true</Parameter>
         <Parameter type="bool" editorName="Show Side" x3domName="side">true</Parameter>
         <Parameter editorName="Show Bottom" x3domName="bottom" type="bool">true</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">32</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">32</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -39,7 +39,7 @@
         <Parameter editorName="ROutside" x3domName="outerRadius">1.0</Parameter>
         <Parameter type="angle" min="0" max="360" editorName="Angle" x3domName="angle">180</Parameter>
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
-        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24,24</Parameter>
         <Parameter type="bool" render="false" editorName="Inside/Outside-Radius" x3domName="insideOutsideRadius">true</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
@@ -53,7 +53,7 @@
         <Parameter type="angle" min="0" max="360" editorName="Angle" x3domName="angle">180</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -65,7 +65,7 @@
         <Parameter editorName="Radius" x3domName="radius">0.0</Parameter>
         <Parameter editorName="Height" x3domName="height">0.5</Parameter>
         <Parameter editorName="Show Bottom" x3domName="bottom" type="bool">true</Parameter>
-        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision">24,24</Parameter>
+        <Parameter type="vec2" step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24,24</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -80,7 +80,7 @@
         <Parameter editorName="Height" x3domName="height">1.0</Parameter>
         <Parameter editorName="Show Top" x3domName="top" type="bool">true</Parameter>
         <Parameter editorName="Show Bottom" x3domName="bottom" type="bool">true</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">32</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">32</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -110,7 +110,7 @@
         <Parameter editorName="YTShear" x3domName="ytshear">0</Parameter>
         <Parameter editorName="XBShear" x3domName="xbshear">0.26179</Parameter>
         <Parameter editorName="YBShear" x3domName="ybshear">0</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">32</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">32</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -122,7 +122,7 @@
         <Parameter editorName="Radius" x3domName="stemRadius">0.5</Parameter>
         <Parameter editorName="Nozzle Height" x3domName="nozzleHeight">0.1</Parameter>
         <Parameter editorName="Nozzle Radius" x3domName="nozzleRadius">0.6</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
@@ -143,7 +143,7 @@
         <Parameter type="angle" editorName="Angle" x3domName="angle">90</Parameter>
         <Parameter type="bool" editorName="Caps" x3domName="caps">true</Parameter>
         <Parameter type="angle" editorName="Crease Angle" x3domName="creaseAngle">0</Parameter>
-        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
+        <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision" render="false">24</Parameter>
         <Parameter type="bool" editorName="Solid" x3domName="solid" render="false">true</Parameter>
         <Parameter type="bool" editorName="CCW" x3domName="ccw" render="false">true</Parameter>
         <Parameter type="bool" editorName="Use Geo-Cache" x3domName="useGeoCache" render="false">false</Parameter>
