@@ -9,6 +9,10 @@ function Snapping()
 	var createPoint = new CreatePoint();
 	var objPointList = createPoint.getObjPointList();
 	
+	// Retrieves the information about the position of the Snappoints
+	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
+	
+	
 	/*
 	 * Starts the ability to snapping
 	 */
@@ -81,10 +85,6 @@ function Snapping()
 		// Observer-Objects
 		var snapObserver = new SnapObserver();
 		var snapSubject = new SnapSubject();
-
-
-		// Retrieves the information about the position of the Snappoints
-		var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
 		
 		
 	    if(elementList.length != null)
@@ -125,13 +125,14 @@ function Snapping()
 			{
 				if(distance < 5.0)
 				{
-					
+					var myDirectionPoint = 0;
+					var postDirectionPoint = 0;
+									
 					/*TODO:
 					* für die Skalierung muss ich die 2 Variablen anpassen 
 					* myPositionPoint, postPositionPoint, wird noch gemacht
 					*/
-					
-					
+				
 					//Draws line between the two Snappoints
 					createLine.setLine(myPositionPoint, postPositionPoint, myObj, postObj);
 					
@@ -166,16 +167,14 @@ function Snapping()
     		var postPointTempPosition = snapping.getPosition(postObjPoint.id);
     		
     		
-    		x = postPositionPoint.x + postPointTempPosition.x;
- 			y = postPositionPoint.y + postPointTempPosition.y;
-   			z = postPositionPoint.z + postPointTempPosition.z;
-   			
-   			
-   			console.log(x);
+    		x = postPositionPoint.x + postPointTempPosition.x * postObj.getScale().x;
+ 			y = postPositionPoint.y + postPointTempPosition.y * postObj.getScale().y;
+   			z = postPositionPoint.z + postPointTempPosition.z * postObj.getScale().z;
    			
    			
     		//The new position is then passed to the right place    							    		
     		myObj.setTranslation(x, y, z);
+    		
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');
