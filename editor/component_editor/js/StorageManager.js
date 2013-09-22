@@ -5,7 +5,7 @@ var server_3D_url = "http://localhost:8080/";
 
 StorageManager.prototype.saveScene = function()
 {
-    var sceneDataDSL = "# scene data exported from X3DOM component editor\n";
+    var shapeDataDSL = "# scene data exported from X3DOM component editor\n";
     var positivePrimitivesJSON = [];
 
     var that = this;
@@ -18,47 +18,47 @@ StorageManager.prototype.saveScene = function()
     numberOfPositivePrimitives = positivePrimitivesJSON.length
     Array.forEach(positivePrimitivesJSON, function(prim){
         //@todo: replace with matching primType
-        sceneDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
+        shapeDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
         // @todo: the comparison with 0.0 is not safe. 
         if ((prim.tX!=0.0) && (prim.tY!=0.0) && (prim.tZ!=0.0))
             {
-            sceneDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
+            shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
             }
-        //sceneDataDSL += "rotate_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
-        //@todo: pythonOCC allows scaling with origin and a single scalar factor
-        //sceneDataDSL += "scale_shape(" + prim.id + ", Vector(" + prim.tX ", " + prim.tY + ", " + prim.tZ + "))";
+        // @todo: the comparison with 0.0 is not safe. 
+        if ((prim.sX!=1.0) && (prim.sY!=1.0) && (prim.sZ!=1.0))
+            {
+            shapeDataDSL += prim.id + " = scale_shape(" + prim.sx + "," + prim.sY + "," + prim.sZ + ")\n";
+            }
     });
 
-    //do the same for all negative primitives and use them for substraction
-    //...
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
-    sceneDataDSL += "final_shape = ( ";//" affiche(" + prim.id + ")\n";
+    shapeDataDSL += "final_shape = ( ";
     var positivePrimitiveIndex = 0;
     Array.forEach(positivePrimitivesJSON, function(prim){
-        sceneDataDSL += " " + prim.id + " ";
+        shapeDataDSL += " " + prim.id + " ";
         positivePrimitiveIndex += 1;
         if (positivePrimitiveIndex < numberOfPositivePrimitives)
             {
-              sceneDataDSL += " + " ;  
+              shapeDataDSL += " + " ;  
             }
         });
-    sceneDataDSL += " )\n";
+    shapeDataDSL += " )\n";
     //@todo: coord system orientation
     console.log("Scene Data in DSL:");
-    console.log(sceneDataDSL);
+    console.log(shapeDataDSL);
     //
-    that.processDSL(sceneDataDSL);
+    that.processDSL(shapeDataDSL);
 };
 
-StorageManager.prototype.processDSL = function(sceneDataDSL){
+StorageManager.prototype.processDSL = function(shapeDataDSL){
     // this method sends the DSL description to the 3D server
     // and get back a json object including :
     // the result (succesfull, fail, etc.)
     console.log("Requesting 3D server ...");
-    $.post('/process_dsl',{component_description:sceneDataDSL}, function(response) {
+    $.post('/process_dsl',{shape_model:shapeDataDSL}, function(response) {
     // log the response to the console
-    console.log("Response: "+response);
+    console.log("Response: " + response);
     })
 };
 
