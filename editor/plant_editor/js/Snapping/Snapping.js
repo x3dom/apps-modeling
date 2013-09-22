@@ -125,8 +125,11 @@ function Snapping()
 			{
 				if(distance < 5.0)
 				{
-					var myDirectionPoint = 0;
-					var postDirectionPoint = 0;
+					var myDirectionPoint = myObj.getRotationAngles();
+					var postDirectionPoint = postObj.getRotationAngles();
+					
+					console.log(myDirectionPoint);
+					console.log(postDirectionPoint);				
 									
 					/*TODO:
 					* für die Skalierung muss ich die 2 Variablen anpassen 
@@ -166,10 +169,14 @@ function Snapping()
     		//to the global position. This point is the connecting point.
     		var postPointTempPosition = snapping.getPosition(postObjPoint.id);
     		
+    		//Scaling is counted
+    		xX = postPointTempPosition.x * postObj.getScale().x;
+    		yY = postPointTempPosition.y * postObj.getScale().y;
+    		zZ = postPointTempPosition.z * postObj.getScale().z;
     		
-    		x = postPositionPoint.x + postPointTempPosition.x * postObj.getScale().x;
- 			y = postPositionPoint.y + postPointTempPosition.y * postObj.getScale().y;
-   			z = postPositionPoint.z + postPointTempPosition.z * postObj.getScale().z;
+    		x = postPositionPoint.x + xX;
+ 			y = postPositionPoint.y + yY;
+   			z = postPositionPoint.z + zZ;
    			
    			
     		//The new position is then passed to the right place    							    		
