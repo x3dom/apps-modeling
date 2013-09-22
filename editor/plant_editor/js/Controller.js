@@ -64,7 +64,7 @@ function Controller(ui){
     this.setViewpoint = function(point)
     {
         var runtime = document.getElementById("x3d").runtime;
-        
+
         switch(point) {
             case "front":
                 document.getElementById("orthoViewPointFront").setAttribute('set_bind','true');

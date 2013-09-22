@@ -117,6 +117,7 @@ function UI(primitiveManager){
         for (var prim in that.primitiveParameterMap){
             this.addLeftbarElement(that.primitiveParameterMap[prim].image,
                               that.primitiveParameterMap[prim].editorName);
+            this.addContextMenuEntry(that.primitiveParameterMap[prim].editorName);
         }
 
         // scrollbar for primitives of left bar   		
@@ -141,7 +142,18 @@ function UI(primitiveManager){
             color: '#FFFFFF',
             position: 'right'
         });
-        
+
+        $('#innerContextMenu').slimScroll({
+            height: '160px',
+            size: '10px',
+            color: '#FFF',
+            position: 'right',
+            alwaysVisible: true,
+            railVisible: true,
+            railColor: '#AAA'
+        });
+
+
         // Initialization of the treeview
         $("#tree").dynatree({
             checkbox: true,
@@ -811,6 +823,72 @@ function UI(primitiveManager){
         this.setPrimitiveTypeNameAndPos = function(name, pos) {
             primitivType = name;
             primitivePos = pos;
+        };
+
+
+        this.addContextMenuEntry = function(name) {
+            var div = document.getElementById("innerContextMenu");
+            var that = this;
+
+            var divPrim = document.createElement("div");
+            divPrim.setAttribute("id", "ctx_" + name);
+            divPrim.setAttribute("class", "ContextMenuEntry");
+            divPrim.innerHTML = name;
+
+            div.appendChild(divPrim);
+
+            divPrim.onclick = function () {
+                if (name == "Extrusion" || name == "Solid of Revolution") {
+                    that.editor2D_show( (name == "Extrusion") );
+                    that.setPrimitiveTypeNameAndPos(name, primitivePos);
+                }
+                else {
+                    var obj = primitiveManager.addPrimitive(
+                        that.primitiveParameterMap[name].x3domName,
+                        that.primitiveParameterMap[name].parameters);
+
+                    if (obj) {  // null if 2nd origin
+                        obj.setTranslationAsVec(primitivePos);
+                        primitiveManager.selectObject(obj.getID());
+                    }
+                }
+                document.getElementById("contextMenu").style.display = "none";
+            };
+        };
+
+
+        this.createElemOnClick = function(event) {
+            var div = document.getElementById("contextMenu");
+            var runtime = document.getElementById("x3d").runtime;
+            var canvas = runtime.canvas;
+
+            // if right button released and not navigating or interacting
+            if (event.button == 2 && !canvas.doc._viewarea.isMoving()) {
+                var elem = canvas.canvas.offsetParent;
+                var canvasPos = elem.getBoundingClientRect();
+
+                var x = canvasPos.left + event.layerX;
+                var y = canvasPos.top  + event.layerY;
+
+                // get ray from eye through mouse position and calc dist to ground plane
+                var ray = runtime.getViewingRay(event.layerX, event.layerY);
+                var len = 100;
+
+                // if ray not parallel to plane and reasonably near then use d
+                if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
+                    var d = -ray.pos.y / ray.dir.y;
+                    len = (d < len) ? d : len;
+                }
+
+                primitivePos = ray.pos.add(ray.dir.multiply(len));
+
+                div.style.left = (x - 1) + "px";
+                div.style.top  = (y - 1) + "px";
+                div.style.display = "table-cell";
+            }
+            else {
+                div.style.display = "none";
+            }
         };
 
 

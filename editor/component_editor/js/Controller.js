@@ -254,15 +254,17 @@ function Controller(ui){
                 return true;
 
             var runtime = document.getElementById("x3d").runtime;
-            var ray = runtime.getViewingRay(event.layerX, event.layerY);
 
-            // calc dist to ground plane
+            // get ray from eye through mouse position and calc dist to ground plane
+            var ray = runtime.getViewingRay(event.layerX, event.layerY);
             var len = 100;
+
             // if ray not parallel to plane and reasonably near then use d
             if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
                 var d = -ray.pos.y / ray.dir.y;
                 len = (d < len) ? d : len;
             }
+
             var pos = ray.pos.add(ray.dir.multiply(len));
 
             if (data == "Extrusion" || data == "Solid of Revolution") {
@@ -274,8 +276,10 @@ function Controller(ui){
                        ui.primitiveParameterMap[data].x3domName,
                        ui.primitiveParameterMap[data].parameters);
 
-                obj.setTranslationAsVec(pos);
-                primitiveManager.selectObject(obj.getID());
+                if (obj) {
+                    obj.setTranslationAsVec(pos);
+                    primitiveManager.selectObject(obj.getID());
+                }
             }
         }
 
