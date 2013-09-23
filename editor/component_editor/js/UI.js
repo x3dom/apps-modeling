@@ -551,7 +551,7 @@ function UI(primitiveManager){
        if (fadeSwitch[0] === 0){
            $("#Links").animate(
            {
-               left: "-177px"
+               left: "-207px"
            }, 250);
            fadeSwitch[0]++;
        }

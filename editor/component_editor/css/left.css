@@ -2,15 +2,15 @@
 
 #leftBar
 {
-	width: 175px;
-	height: 100%;
-	background-image: url(../images/karbon_bg.png);
-	border: solid 2px #fff;
-	border-left: none;
-	border-radius: 0px 10px 0px 0px;
-	padding-top: 5px;
-	font-size: 10px;
-	font-weight: bold;
+    width: 205px;
+    height: 100%;
+    background-image: url(../images/karbon_bg.png);
+    border: solid 2px #fff;
+    border-left: none;
+    border-radius: 0px 10px 0px 0px;
+    padding-top: 5px;
+    font-size: 10px;
+    font-weight: bold;
 }
 
 #button_Links
@@ -18,7 +18,7 @@
     position:absolute;
     width: 30px;
     height: 150px;
-    left: 175px;
+    left: 205px;
     top: 50%;
     margin-top: -75px;
     z-index: 100000;
@@ -58,7 +58,7 @@
 
 #accordion_left .ui-accordion-content
 {
-    padding: 5% 5% 10px 15px;
+    padding: 5% 5% 10px 25px;
     background: #191415;
     color: #FFFFFF;
     margin: 0px;
