@@ -12,6 +12,8 @@ var snapping = new Snapping();
 var storageManager = new StorageManager();
 // Shows if origin point and refPoints are added to scene
 var origin_refPoints_added = [0, 0];
+// primType counter 
+var primType_counter = {};
 
 
 

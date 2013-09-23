@@ -332,11 +332,15 @@ function PrimitiveManager(){
 
         var id   = prim.getID();
 
+        primType_counter[primitive]++;
+        prim.setName(primitive + "_" + primType_counter[primitive]);
+
         if (primitive === "IndexedLineSet")
         {
             if (parameters.isOrigin)
             {
                 prim.setName("Origin");
+                prim.setTranslation(-0.5, 0.5, -0.5);
             }
             else
             {

@@ -829,6 +829,8 @@ function UI(primitiveManager){
 
             divID.appendChild(divIDinnen);
             document.getElementById("divs").appendChild(divID);
+            
+            primType_counter[that.primitiveParameterMap[name].x3domName] = 0;
         };
 
 
