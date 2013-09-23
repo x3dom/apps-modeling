@@ -794,7 +794,7 @@ function UI(primitiveManager){
 
             divID.innerHTML = "<img src='" + img + "' id='icon_" + name + "' width='100%' height='100%'>";
             divID.setAttribute("style",
-                "float:left; width: 60px; height: 60px; margin: 5px; padding: 0px; border: solid 1px " +
+                "float:left; width: 70px; height: 70px; margin: 5px; padding: 0px; border: solid 1px " +
                     defColor + "; border-radius: 5px;");
 
             divID.setAttribute("onmouseover",
