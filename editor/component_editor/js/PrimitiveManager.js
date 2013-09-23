@@ -210,22 +210,53 @@ Primitive.prototype.getPrimType = function(){
  */
 Primitive.prototype.toJSON = function(){
     var jsonObj = {
-        tX         :  this.translation.x,
-        tY         : -this.translation.z,
-        tZ         :  this.translation.y,
+        tX            :  this.translation.x,
+        tY            : -this.translation.z,
+        tZ            :  this.translation.y,
 
-        rX         :  this.rotationAngles.x,
-        rY         : -this.rotationAngles.z,
-        rZ         :  this.rotationAngles.y,
+        rX            :  this.rotationAngles.x,
+        rY            : -this.rotationAngles.z,
+        rZ            :  this.rotationAngles.y,
 
-        sX         :  this.scale.x,
-        sY         : -this.scale.z,
-        sZ         :  this.scale.y,
+        sX            :  this.scale.x,
+        sY            : -this.scale.z,
+        sZ            :  this.scale.y,
 
-        type       : this.primType,
-        parameters : this.parameters,
-        id         : this.id
+        type          : this.primType,
+        id            : this.id,
+        paramValueMap : {}
     };
+
+    var i;
+    var param;
+    var val;
+
+    for (i = 0; i < this.parameters.length; ++i)
+    {
+        param = this.parameters[i];
+        val   = null;
+
+        switch (param.type)
+        {
+            case "bool":
+            case "spinner":
+                val = param.value;
+                break;
+
+            case "vec3":
+                (function(){
+                    var splitStr = param.value.split(",");
+                    val = new x3dom.fields.SFVec3f(splitStr[0], splitStr[1], splitStr[2]);
+                })();
+                break;
+
+            default:
+                break;
+        }
+
+        jsonObj.paramValueMap[param.editorName] = val;
+    }
+
     return jsonObj;
 };
 
@@ -1084,11 +1115,10 @@ function PrimitiveManager(){
 
     /**
      * Writes all primitives to the given arrays. Groups are resolved.
-     * Positive primitives and negative primitives are distinguished.
      * This also uses a coordinate system which has the z axis pointing upwards,
      * which is the X3DOM coordinate system rotated around the X-axis by -90 degrees.
      */
-    this.getSceneData = function(positivePrimitivesJSON, negativePrimitivesJSON)
+    this.getSceneData = function(primitivesJSON)
     {
         var p;
         var g;
@@ -1104,11 +1134,7 @@ function PrimitiveManager(){
 
         //export positive primitives
         for (p in this.primitiveList) {
-            positivePrimitivesJSON.push(this.primitiveList[p].toJSON());
+            primitivesJSON.push(this.primitiveList[p].toJSON());
         }
-
-        //export negative primitives
-        //@todo: make it work
-        //...
     }
 }

@@ -6,18 +6,17 @@ StorageManager.prototype.saveScene = function()
 {
     var sceneDataDSL = "# scene data exported from X3DOM component editor\n";
     var positivePrimitivesJSON = [];
-    var negativePrimitivesJSON = [];
 
     var that = this;
 
     //get the scene data from the primitive manager
-    primitiveManager.getSceneData(positivePrimitivesJSON, negativePrimitivesJSON);
+    primitiveManager.getSceneData(positivePrimitivesJSON);
 
     //go through all positive primitives:
     //write each primitive's creation command and transform
     Array.forEach(positivePrimitivesJSON, function(prim){
         //@todo: replace with matching primType
-        sceneDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.parameters);
+        sceneDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
         sceneDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
 
@@ -45,42 +44,10 @@ StorageManager.prototype.vectorInDSL = function(x, y, z){
 };
 
 
-StorageManager.prototype.primitiveInDSL = function(id, primType, parameters){
+StorageManager.prototype.primitiveInDSL = function(id, primType, paramValueMap){
     var that = this;
 
     var dslCommands = "";
-
-    var paramValueMap = {};
-    var i;
-    var param;
-    var val;
-
-    for (i = 0; i < parameters.length; ++i)
-    {
-        param = parameters[i];
-        val   = null;
-
-        switch (param.type)
-        {
-            case "bool":
-            case "spinner":
-                val = param.value;
-                break;
-
-            case "vec3":
-                (function(){
-                var splitStr = param.value.split(",");
-                val = new x3dom.fields.SFVec3f(splitStr[0], splitStr[1], splitStr[2]);
-                })();
-                break;
-
-            default:
-                break;
-        }
-
-        paramValueMap[param.editorName] = val;
-    }
-
 
     switch (primType)
     {
