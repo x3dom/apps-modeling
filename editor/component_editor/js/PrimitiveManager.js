@@ -306,6 +306,7 @@ function PrimitiveManager(){
             if (parameters.isOrigin)
             {
                 prim.setName("Origin");
+                prim.setTranslation(-0.5, 0.5, -0.5);
             }
             else
             {
