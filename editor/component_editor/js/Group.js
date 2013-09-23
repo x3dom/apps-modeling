@@ -124,8 +124,6 @@ Group.prototype.releaseAllPrimitives = function(){
         //for rotation, find euler angles
         angles = rotationQuat.toMatrix().getEulerAngles();
         prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
-
-        primMatrixTransformNode.setAttribute("matrix", matrixToGLString(primMatrix));
     }
 
 
