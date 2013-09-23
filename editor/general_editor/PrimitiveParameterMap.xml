@@ -119,7 +119,8 @@
     </Primitive>
     <Primitive editorName="Nozzle" x3domName="Nozzle" image="images/nozzle.jpg">
         <Parameter editorName="Height" x3domName="stemHeight">0.9</Parameter>
-        <Parameter editorName="Radius" x3domName="stemRadius">0.5</Parameter>
+        <Parameter editorName="ROutside" x3domName="outerRadius">0.5</Parameter>
+        <Parameter editorName="RInside" x3domName="innerRadius">0.4</Parameter>
         <Parameter editorName="Nozzle Height" x3domName="nozzleHeight">0.1</Parameter>
         <Parameter editorName="Nozzle Radius" x3domName="nozzleRadius">0.6</Parameter>
         <Parameter step="1.0" editorName="Subdivision" x3domName="subdivision">24</Parameter>
