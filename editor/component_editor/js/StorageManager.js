@@ -6,17 +6,27 @@ var server_3D_url = "http://localhost:8080/";
 StorageManager.prototype.saveScene = function()
 {
     var shapeDataDSL = "# scene data exported from X3DOM component editor\n";
-    var positivePrimitivesJSON = [];
+    var primitivesJSON = [];
 
     var that = this;
 
     //get the scene data from the primitive manager
-    primitiveManager.getSceneData(positivePrimitivesJSON);
-
+    primitiveManager.getSceneData(primitivesJSON);
+    // compute how many positive and negative shapes
+    var numberOfPrimitives = primitivesJSON.length
+    var numberOfPositivePrimitives = 0
+    var numberOfNegativePrimitives = 0
+    Array.forEach(primitivesJSON, function(prim){
+        if (prim.paramValueMap["Positive Element"] == "true") {
+            numberOfPositivePrimitives++;}
+        else {
+            numberOfNegativePrimitives++;
+        }
+    });
     //go through all positive primitives:
     //write each primitive's creation command and transform
-    numberOfPositivePrimitives = positivePrimitivesJSON.length
-    Array.forEach(positivePrimitivesJSON, function(prim){
+
+    Array.forEach(primitivesJSON, function(prim){
         //@todo: replace with matching primType
         shapeDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
@@ -33,17 +43,38 @@ StorageManager.prototype.saveScene = function()
     });
 
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
-    shapeDataDSL += "final_shape = ( ";
+    shapeDataDSL += "component_shape = (";
     var positivePrimitiveIndex = 0;
-    Array.forEach(positivePrimitivesJSON, function(prim){
-        shapeDataDSL += " " + prim.id + " ";
-        positivePrimitiveIndex += 1;
-        if (positivePrimitiveIndex < numberOfPositivePrimitives)
-            {
-              shapeDataDSL += " + " ;  
+    Array.forEach(primitivesJSON, function(prim){
+        if (prim.paramValueMap["Positive Element"] == "true") { 
+            shapeDataDSL += " " + prim.id + " ";
+          if (positivePrimitiveIndex < numberOfPositivePrimitives - 1)
+                {
+                  shapeDataDSL += " + " ;
+                  positivePrimitiveIndex += 1; 
+                }
+        }
+    });
+    shapeDataDSL += " )";
+
+    // then do the same for negative shapes
+    if (numberOfNegativePrimitives>0) {
+        shapeDataDSL += " - ( ";
+        var negativePrimitiveIndex = 0;
+        Array.forEach(primitivesJSON, function(prim){
+            if (prim.paramValueMap["Positive Element"] == false) { 
+                shapeDataDSL += " " + prim.id + " ";
+                if (negativePrimitiveIndex < numberOfNegativePrimitives - 1)
+                    {
+                    shapeDataDSL += " - " ;
+                    negativePrimitiveIndex += 1; 
+                    }
             }
         });
-    shapeDataDSL += " )\n";
+    shapeDataDSL += " )";
+    }
+    shapeDataDSL += " \n";
+
     //@todo: coord system orientation
     console.log("Scene Data in DSL:");
     console.log(shapeDataDSL);
