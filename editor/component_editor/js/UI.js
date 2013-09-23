@@ -10,6 +10,8 @@ function UI(primitiveManager){
     var defColor = "gray";
     // highlight color of all ui elements
     var highlightColor = "#fff";
+    // highlight color of all buttons
+    var highlightColorButton = "#FFC125";
     // primitive parameter map to synchronize names between editor and x3dom
     this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
@@ -74,6 +76,8 @@ function UI(primitiveManager){
      */
     this.initializeUI = function (){
 
+        that.TBPlane = that.newImageProperty("DeletePlane", true);
+        that.TBGrid = that.newImageProperty("DeleteAxis", true);
         that.TBHand = that.newImageProperty("ButtonHand", true);
         that.TBTranslate = that.newImageProperty("ButtonVerschieben", true);
         that.TBScale = that.newImageProperty("ButtonSkalieren", true);
@@ -303,6 +307,9 @@ function UI(primitiveManager){
         $("#DeletePlane").tooltip();
         $("#DeleteAxis").tooltip();
         $("#warning").tooltip();
+        
+        that.TBGrid.highlight();
+        that.TBPlane.highlight();
     };
     
     
@@ -463,7 +470,7 @@ function UI(primitiveManager){
         };
         
         obj.highlight = function(){
-            document.getElementById(id).style.border = "solid 1px " + highlightColor;
+            document.getElementById(id).style.border = "solid 1px " + highlightColorButton;
             obj.highlighted = true;
         };
         

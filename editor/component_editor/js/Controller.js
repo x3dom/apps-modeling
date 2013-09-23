@@ -146,18 +146,17 @@ function Controller(ui){
      */
     this.removeAxis = function()
     {
-    	var coordSys = document.getElementById('axis');	
-    	var render = (coordSys.getAttribute("render") === "true");
+        var grid = document.getElementById("axis");
     	
-        if(render)
+        if(ui.TBGrid.highlighted)
     	{
-            coordSys.setAttribute("render", "false");
-            document.getElementById("DeleteAxis").style.border="solid 1px gray";
+            grid.setAttribute("render", "false");
+            ui.TBGrid.dehighlight();
     	}
     	else
     	{
-            coordSys.setAttribute("render", "true");
-            document.getElementById("DeleteAxis").style.border="solid 1px #fff";
+            grid.setAttribute("render", "true");
+            ui.TBGrid.highlight();
     	}    	
     };
     
@@ -171,15 +170,15 @@ function Controller(ui){
     {
     	var plane = document.getElementById("planeId");
     	
-    	if (plane.getAttribute("render") === "true")
+    	if (ui.TBPlane.highlighted)
     	{
             plane.setAttribute("render", "false");
-            document.getElementById("DeletePlane").style.border="solid 1px gray";
+            ui.TBPlane.dehighlight();
     	}
     	else
     	{
             plane.setAttribute("render", "true");
-            document.getElementById("DeletePlane").style.border="solid 1px #fff";
+            ui.TBPlane.highlight();
     	}
     };
     
@@ -188,21 +187,35 @@ function Controller(ui){
     this.snapPrimitiveToGrid = function(){
         var snapToGridButton = document.getElementById("ButtonSnapToGrid");
     	
-    	if (snapToGridButton.getAttribute("render") === "true")
+    	if (ui.TBSnapToGrid.highlighted)
     	{
             snapToGridButton.setAttribute("render", "false");
-            snapToGridButton.style.border="solid 1px gray";
-            snapToGridButton.src="images/snapGrid_off.png";
+            ui.TBSnapToGrid.dehighlight();
+            ui.TBSnapToGrid.setImage("images/snapGrid_off.png");
     	}
     	else
     	{
             snapToGridButton.setAttribute("render", "true");
-            snapToGridButton.style.border="solid 1px #fff";
-            snapToGridButton.src="images/snapGrid_on.png";
+            ui.TBSnapToGrid.highlight();
+            ui.TBSnapToGrid.setImage("images/snapGrid_on.png");
     	}
 
         primitiveManager.updateGridSize(this.getGridSize());
     };
+    
+    
+    
+    this.highlightSnapPrimitves = function() {
+        if (ui.TBSnap.highlighted){
+            ui.TBSnap.setImage("./images/magnet_off.png");
+            ui.TBSnap.dehighlight();
+        }
+        else {
+            ui.TBSnap.setImage("./images/magnet_on.png");
+            ui.TBSnap.highlight();
+        }
+    };
+    
 
 
     /*
