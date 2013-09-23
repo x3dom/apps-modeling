@@ -152,6 +152,7 @@ function UI(primitiveManager){
             position: 'right'
         });
 
+        // context menu for creating primitives by clicking with right mouse button
         $('#innerContextMenu').slimScroll({
             height: '160px',
             size: '10px',
@@ -161,6 +162,13 @@ function UI(primitiveManager){
             railVisible: true,
             railColor: '#AAA'
         });
+        // disable default behavior which opens another context menu by itself
+        document.getElementById('contextMenu').oncontextmenu = function(evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            evt.returnValue = false;
+            return false;
+        };
 
 
         // Initialization of the treeview
