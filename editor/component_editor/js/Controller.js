@@ -28,6 +28,10 @@ function Controller(ui){
                 ui.BBTransX.step(0.1);
                 ui.BBTransY.step(0.1);
                 ui.BBTransZ.step(0.1);
+                ui.BBTransMode.set("Translation:");
+                ui.BBTX.set("Tx");
+                ui.BBTY.set("Ty");
+                ui.BBTZ.set("Tz");
             }
             else if (mode === "scale"){
                 ui.TBHand.dehighlight();
@@ -37,6 +41,10 @@ function Controller(ui){
                 ui.BBTransX.step(0.1);
                 ui.BBTransY.step(0.1);
                 ui.BBTransZ.step(0.1);
+                ui.BBTransMode.set("Scale:");
+                ui.BBTX.set("Sx");
+                ui.BBTY.set("Sy");
+                ui.BBTZ.set("Sz");
             }
             else if (mode === "rotation"){
                 ui.TBHand.dehighlight();
@@ -46,12 +54,20 @@ function Controller(ui){
                 ui.BBTransX.step(1.0);
                 ui.BBTransY.step(1.0);
                 ui.BBTransZ.step(1.0);
+                ui.BBTransMode.set("Rotation:");
+                ui.BBTX.set("Rx");
+                ui.BBTY.set("Ry");
+                ui.BBTZ.set("Rz");
             }
             else {
                 ui.TBHand.highlight();
                 ui.TBTranslate.dehighlight();
                 ui.TBScale.dehighlight();
                 ui.TBRotate.dehighlight();
+                ui.BBTransMode.set("");
+                ui.BBTX.set("X");
+                ui.BBTY.set("Y");
+                ui.BBTZ.set("Z");
             }
         }
     };
