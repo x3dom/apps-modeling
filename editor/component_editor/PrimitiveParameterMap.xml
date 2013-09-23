@@ -118,8 +118,9 @@
         <Parameter type="bool" editorName="Positive Element" x3domName="positive">true</Parameter>
     </Primitive>
     <Primitive editorName="Nozzle" x3domName="Nozzle" image="images/nozzle.jpg">
-        <Parameter editorName="Height" min="0" x3domName="stemHeight">0.9</Parameter>
-        <Parameter editorName="Radius" min="0" x3domName="stemRadius">0.5</Parameter>
+        <Parameter editorName="Height" min="0" x3domName="height">0.9</Parameter>
+        <Parameter editorName="RInside" min="0" x3domName="innerRadius">0.4</Parameter>
+        <Parameter editorName="ROutside" min="0" x3domName="outerRadius">0.5</Parameter>
         <Parameter editorName="Nozzle Height" min="0" x3domName="nozzleHeight">0.1</Parameter>
         <Parameter editorName="Nozzle Radius" min="0" x3domName="nozzleRadius">0.6</Parameter>
         <Parameter step="1.0" editorName="Subdivision" min="0" x3domName="subdivision" render="false">24</Parameter>
