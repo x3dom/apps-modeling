@@ -101,6 +101,7 @@ function UI(primitiveManager){
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
             step: 0.1,
+            min: 0,
             stop:function(e,ui){
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
@@ -109,6 +110,7 @@ function UI(primitiveManager){
         that.BBTransY = that.newSpinnerProperty("amountY");
         $("#amountY").spinner({
             step: 0.1,
+            min: 0,
             stop:function(e,ui){
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
@@ -117,6 +119,7 @@ function UI(primitiveManager){
         that.BBTransZ = that.newSpinnerProperty("amountZ");
         $("#amountZ").spinner({
             step: 0.1,
+            min: 0,
             stop:function(e,ui){
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
