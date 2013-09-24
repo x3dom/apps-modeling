@@ -694,6 +694,8 @@ function PrimitiveManager(){
         var valY =  ui.BBTransZ.get();
         var valZ = -ui.BBTransY.get();
 
+        var scaleEpsilon = ui.BBTransX.step();
+
         if (HANDLING_MODE === "translation")
         {
             objectToBeUpdated.setTranslation(valX, valY, valZ);
@@ -704,7 +706,25 @@ function PrimitiveManager(){
         }
         else if (HANDLING_MODE === "scale")
         {
-            objectToBeUpdated.setScale(valX, valY, -valZ);
+            valZ = -valZ;
+
+            if (valX == 0.0)
+            {
+                ui.BBTransX.set(scaleEpsilon);
+                valX = scaleEpsilon;
+            }
+            if (valY == 0.0)
+            {
+                ui.BBTransZ.set(scaleEpsilon);
+                valY = scaleEpsilon;
+            }
+            if (valZ == 0.0)
+            {
+                ui.BBTransY.set(scaleEpsilon);
+                valZ = scaleEpsilon;
+            }
+
+            objectToBeUpdated.setScale(valX, valY, valZ);
         }
         
         this.highlightCurrentBoundingVolume(true);

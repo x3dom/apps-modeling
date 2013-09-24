@@ -132,7 +132,7 @@ function UI(primitiveManager){
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
-        
+
         that.BBTransY = that.newSpinnerProperty("amountY");
         $("#amountY").spinner({
             step: 0.1,
@@ -435,7 +435,14 @@ function UI(primitiveManager){
         };
         
         obj.step = function(step){
-            $("#" + id).spinner( "option", "step", step );
+            if (typeof step === 'undefined')
+            {
+                return $("#" + id).spinner( "option", "step");
+            }
+            else
+            {
+                $("#" + id).spinner( "option", "step", step );
+            }
         };
         
         obj.min = function(min){

@@ -53,8 +53,7 @@ function Controller(ui){
         }
     };
     
-    
-    var currentViewPoint = "perspective";
+
     
     /*
      * Sets the specified view point in the editor

@@ -61,9 +61,29 @@ function UI(primitiveManager){
         this.initializeUI();
         primitiveManager.setUI(that);
     };
-    
-    
-    
+
+
+
+    /*
+     * Clamps value on min and max if required
+     * @param {string} min minimal range of value
+     * @param {string} max maximum range of value
+     * @param {string} value param that should be clamped
+     * @returns (clamped value)
+     */
+    function clamp(min, max, value) {
+        min = parseFloat(min);
+        max = parseFloat(max);
+        if (min !== null && min !== NaN && value < min)
+            return min;
+        else if (max !== null && max !== NaN && value > max)
+            return max;
+
+        return value;
+    }
+
+
+
     /*
      * Initializes all components of the UI of the editor
      * @returns {Null}
@@ -87,23 +107,44 @@ function UI(primitiveManager){
         that.BBTransX = that.newSpinnerProperty("amountX");
         $("#amountX").spinner({
             step: 0.1,
+            min: 0.0,
             stop:function(e,ui){
+                var clampedValue = clamp(that.BBTransX.min,
+                    that.BBTransX.max,
+                    that.BBTransX.get());
+                if (clampedValue > 0 || clampedValue < 0)
+                    that.BBTransX.set(clampedValue);
+
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
-        
+
         that.BBTransY = that.newSpinnerProperty("amountY");
         $("#amountY").spinner({
             step: 0.1,
+            min: 0.0,
             stop:function(e,ui){
+                var clampedValue = clamp(that.BBTransY.min,
+                    that.BBTransY.max,
+                    that.BBTransY.get());
+                if (clampedValue > 0 || clampedValue < 0)
+                    that.BBTransY.set(clampedValue);
+
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
-        
+
         that.BBTransZ = that.newSpinnerProperty("amountZ");
         $("#amountZ").spinner({
             step: 0.1,
+            min: 0.0,
             stop:function(e,ui){
+                var clampedValue = clamp(that.BBTransZ.min,
+                    that.BBTransZ.max,
+                    that.BBTransZ.get());
+                if (clampedValue > 0 || clampedValue < 0)
+                    that.BBTransZ.set(clampedValue);
+
                 primitiveManager.updatePrimitiveTransformFromUI();
             }
         });
@@ -342,9 +383,16 @@ function UI(primitiveManager){
         obj.disable = function(bool){
             $("#" + id).spinner( "option", "disabled", bool );
         };
-        
+
         obj.step = function(step){
-            $("#" + id).spinner( "option", "step", step );
+            if (typeof step === 'undefined')
+            {
+                return $("#" + id).spinner( "option", "step");
+            }
+            else
+            {
+                $("#" + id).spinner( "option", "step", step );
+            }
         };
         
         return obj;
