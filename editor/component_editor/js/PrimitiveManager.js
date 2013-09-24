@@ -219,7 +219,7 @@ Primitive.prototype.toJSON = function(){
         rZ            :  this.rotationAngles.y,
 
         sX            :  this.scale.x,
-        sY            : -this.scale.z,
+        sY            :  this.scale.z,
         sZ            :  this.scale.y,
 
         type          : this.primType,
@@ -242,14 +242,15 @@ Primitive.prototype.toJSON = function(){
             case "spinner":
                 val = param.value;
                 break;
-
+            case "angle":
+                val = param.value;
+                break;
             case "vec3":
                 (function(){
                     var splitStr = param.value.split(",");
                     val = new x3dom.fields.SFVec3f(splitStr[0], splitStr[1], splitStr[2]);
                 })();
                 break;
-
             default:
                 break;
         }
