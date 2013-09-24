@@ -23,8 +23,8 @@ StorageManager.prototype.saveScene = function()
             numberOfNegativePrimitives++;
         }
     });
-    //go through all positive primitives:
-    //write each primitive's creation command and transform
+    // go through all primitives:
+    // write each primitive's creation command and transform
 
     Array.forEach(primitivesJSON, function(prim){
         //@todo: replace with matching primType
@@ -36,10 +36,13 @@ StorageManager.prototype.saveScene = function()
             shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
             }
         // @todo: the comparison with 0.0 is not safe. 
-        if ((prim.sX!=1.0) && (prim.sY!=1.0) && (prim.sZ!=1.0))
+        if ((prim.sX!=1.0) || (prim.sY!=1.0) || (prim.sZ!=1.0))
             {
-            shapeDataDSL += prim.id + " = scale_shape(" + prim.sx + "," + prim.sY + "," + prim.sZ + ")\n";
+            shapeDataDSL += prim.id + " = scale_shape(" + prim.sX + "," + prim.sY + "," + prim.sZ + ")\n";
             }
+        // then do the same with rotation
+        shapeDataDSL += prim.id + " = rotate_shape(" + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
+            
     });
 
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
