@@ -97,8 +97,8 @@
     <link rel='stylesheet' type='text/css' href='css/screen.css'>
     <link rel='stylesheet' type='text/css' href='css/bottom.css'>
     <link rel='stylesheet' type='text/css' href='css/right.css'>
-    <link rel='stylesheet' type='text/css' href='css/left.css'>
-    <link rel='stylesheet' type='text/css' href='css/top.css'>
+    <link rel='stylesheet' type='text/css' href='../static/left.css'>
+    <link rel='stylesheet' type='text/css' href='../static/top.css'>
     <link rel='stylesheet' type='text/css' href='../static/jquery.switchbutton.css'>
     <link rel="stylesheet" type="text/css" href='../static/ui.dynatree.css'>
     
@@ -116,12 +116,14 @@
     <script type='text/javascript' src="js/Snapping/SnapSubject.js"></script>
     <script type='text/javascript' src="js/Snapping/SnapInherits.js"></script>
     <script type='text/javascript' src="js/Snapping/Snapping.js"></script>
+    
+    <script type='text/javascript' src="js/SnappingContext/SnappingContext.js"></script>
 
     <script type='text/javascript' src="js/TransformableObject.js"></script>
     <script type='text/javascript' src="js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="js/Group.js"></script>
-    <script type='text/javascript' src="js/UI.js"></script>
-    <script type='text/javascript' src="js/Controller.js"></script>
+    <script type='text/javascript' src="../static/UI.js"></script>
+    <script type='text/javascript' src="../static/Controller.js"></script>
     <script type='text/javascript' src="js/StorageManager.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
 
@@ -192,8 +194,10 @@
                                 onclick="controller.Activate('rotation');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
     <div class="leftBorder"><img title="Snaps/Unsnaps the selected primitive to grid during translation" src="images/snapGrid_off.png" id="ButtonSnapToGrid" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.snapPrimitiveToGrid();"/></div>
+    <div class="buttonTop"><img title="If activated it saves automatically" src="images/autoSave_off.png" id="ButtonAutoSave" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.autoSave(2);"/></div>
     <div class="buttonTop"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
-                                onclick="snapping.init();"/></div>
+                                onclick="snapping.init(); controller.highlightSnapPrimitves();"/></div>
     <div class="buttonTop"><img title="Creates a group of the selected primitives" src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="primitiveManager.groupSelectedPrimitives();"/></div>
     <div class="buttonTop"><img title="Ungroups a selected group" src="images/ungroup.png" id="ButtonUngroup" onmouseover="this.style.cursor='pointer';"
@@ -212,10 +216,10 @@
         </div>
         <div id="coordinatesValue">
             <p>
-                <!--<label id="transformMode" class="text-slider"> </label>-->
-                <label class="text-slider">X:</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
-                <label class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
-                <label class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
+                <label id="transformMode" class="text-slider"> </label>
+                <label id="tx" class="text-slider">X:</label><input id="amountX" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
+                <label id="ty" class="text-slider">Y:</label><input id="amountY" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
+                <label id="tz" class="text-slider">Z:</label><input id="amountZ" class="amount" type="text" onchange="primitiveManager.updatePrimitiveTransformFromUI();"/>
             </p>
         </div>
 </div>

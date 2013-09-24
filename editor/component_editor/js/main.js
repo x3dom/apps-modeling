@@ -23,6 +23,7 @@ var primType_counter = {};
  */
 window.onload = function(){
     ui.initialize();
+    ui.initializeComponentEditorSpecialUI();
     controller.Activate("hand");
     primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");

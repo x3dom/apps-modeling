@@ -54,6 +54,7 @@ StorageManager.prototype.loadScene = function(){
 
 window.onload = function(){
     ui.initialize();
+    ui.initializePlantEditorSpecialUI();
     controller.Activate("hand");
     primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");
