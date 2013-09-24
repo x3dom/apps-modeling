@@ -162,9 +162,17 @@ function Primitive(primType, parameters){
     shape.appendChild(appearance);
     shape.appendChild(this.domNode);
 
-    this.matrixTransformNode.appendChild(shape);
-
-    document.getElementById('root').appendChild(this.matrixTransformNode);
+    if (primType === "Box"){
+        var fakeMatrixTransform = document.createElement('MatrixTransform');
+        fakeMatrixTransform.setAttribute("matrix", matrixToGLString(x3dom.fields.SFMatrix4f.rotationX(90 * Math.PI / 180)));
+        fakeMatrixTransform.appendChild(shape);
+        this.matrixTransformNode.appendChild(fakeMatrixTransform);
+        document.getElementById('root').appendChild(this.matrixTransformNode);
+    }
+    else {
+        this.matrixTransformNode.appendChild(shape);
+        document.getElementById('root').appendChild(this.matrixTransformNode);
+    }
 
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized
@@ -772,14 +780,24 @@ function PrimitiveManager(){
                 max = x3dom.fields.SFVec3f.copy(volume.max);
 
                 box = document.getElementById('bbox_points');
-                box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
-                                          min.x+' '+min.y+' '+max.z+', '+
-                                          max.x+' '+min.y+' '+max.z+', '+
-                                          max.x+' '+min.y+' '+min.z+', '+
-                                          min.x+' '+max.y+' '+min.z+', '+
-                                          min.x+' '+max.y+' '+max.z+', '+
-                                          max.x+' '+max.y+' '+max.z+', '+
-                                          max.x+' '+max.y+' '+min.z );
+                if (object.primType !== "Box")
+                    box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
+                                              min.x+' '+min.y+' '+max.z+', '+
+                                              max.x+' '+min.y+' '+max.z+', '+
+                                              max.x+' '+min.y+' '+min.z+', '+
+                                              min.x+' '+max.y+' '+min.z+', '+
+                                              min.x+' '+max.y+' '+max.z+', '+
+                                              max.x+' '+max.y+' '+max.z+', '+
+                                              max.x+' '+max.y+' '+min.z );
+                else
+                    box.setAttribute('point', min.x+' '+min.z+' '+min.y+', '+
+                                              min.x+' '+min.z+' '+max.y+', '+
+                                              max.x+' '+min.z+' '+max.y+', '+
+                                              max.x+' '+min.z+' '+min.y+', '+
+                                              min.x+' '+max.z+' '+min.y+', '+
+                                              min.x+' '+max.z+' '+max.y+', '+
+                                              max.x+' '+max.z+' '+max.y+', '+
+                                              max.x+' '+max.z+' '+min.y );
             }
         }
 
