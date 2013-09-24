@@ -162,9 +162,17 @@ function Primitive(primType, parameters){
     shape.appendChild(appearance);
     shape.appendChild(this.domNode);
 
-    this.matrixTransformNode.appendChild(shape);
-
-    document.getElementById('root').appendChild(this.matrixTransformNode);
+    if (primType === "Box"){
+        var fakeMatrixTransform = document.createElement('MatrixTransform');
+        fakeMatrixTransform.setAttribute("matrix", matrixToGLString(x3dom.fields.SFMatrix4f.rotationX(90 * Math.PI / 180)));
+        fakeMatrixTransform.appendChild(shape);
+        this.matrixTransformNode.appendChild(fakeMatrixTransform);
+        document.getElementById('root').appendChild(this.matrixTransformNode);
+    }
+    else {
+        this.matrixTransformNode.appendChild(shape);
+        document.getElementById('root').appendChild(this.matrixTransformNode);
+    }
 
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized
@@ -219,7 +227,7 @@ Primitive.prototype.toJSON = function(){
         rZ            :  this.rotationAngles.y,
 
         sX            :  this.scale.x,
-        sY            : -this.scale.z,
+        sY            :  this.scale.z,
         sZ            :  this.scale.y,
 
         type          : this.primType,
@@ -242,14 +250,15 @@ Primitive.prototype.toJSON = function(){
             case "spinner":
                 val = param.value;
                 break;
-
+            case "angle":
+                val = param.value;
+                break;
             case "vec3":
                 (function(){
                     var splitStr = param.value.split(",");
                     val = new x3dom.fields.SFVec3f(splitStr[0], splitStr[1], splitStr[2]);
                 })();
                 break;
-
             default:
                 break;
         }
@@ -771,14 +780,24 @@ function PrimitiveManager(){
                 max = x3dom.fields.SFVec3f.copy(volume.max);
 
                 box = document.getElementById('bbox_points');
-                box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
-                                          min.x+' '+min.y+' '+max.z+', '+
-                                          max.x+' '+min.y+' '+max.z+', '+
-                                          max.x+' '+min.y+' '+min.z+', '+
-                                          min.x+' '+max.y+' '+min.z+', '+
-                                          min.x+' '+max.y+' '+max.z+', '+
-                                          max.x+' '+max.y+' '+max.z+', '+
-                                          max.x+' '+max.y+' '+min.z );
+                if (object.primType !== "Box")
+                    box.setAttribute('point', min.x+' '+min.y+' '+min.z+', '+
+                                              min.x+' '+min.y+' '+max.z+', '+
+                                              max.x+' '+min.y+' '+max.z+', '+
+                                              max.x+' '+min.y+' '+min.z+', '+
+                                              min.x+' '+max.y+' '+min.z+', '+
+                                              min.x+' '+max.y+' '+max.z+', '+
+                                              max.x+' '+max.y+' '+max.z+', '+
+                                              max.x+' '+max.y+' '+min.z );
+                else
+                    box.setAttribute('point', min.x+' '+min.z+' '+min.y+', '+
+                                              min.x+' '+min.z+' '+max.y+', '+
+                                              max.x+' '+min.z+' '+max.y+', '+
+                                              max.x+' '+min.z+' '+min.y+', '+
+                                              min.x+' '+max.z+' '+min.y+', '+
+                                              min.x+' '+max.z+' '+max.y+', '+
+                                              max.x+' '+max.z+' '+max.y+', '+
+                                              max.x+' '+max.z+' '+min.y );
             }
         }
 
@@ -828,6 +847,8 @@ function PrimitiveManager(){
         var valY =  ui.BBTransZ.get();
         var valZ = -ui.BBTransY.get();
 
+        var scaleEpsilon = ui.BBTransX.step();
+
         if (HANDLING_MODE === "translation")
         {
             objectToBeUpdated.setTranslation(valX, valY, valZ);
@@ -838,7 +859,25 @@ function PrimitiveManager(){
         }
         else if (HANDLING_MODE === "scale")
         {
-            objectToBeUpdated.setScale(valX, valY, -valZ);
+            valZ = -valZ;
+
+            if (valX == 0.0)
+            {
+                ui.BBTransX.set(scaleEpsilon);
+                valX = scaleEpsilon;
+            }
+            if (valY == 0.0)
+            {
+                ui.BBTransZ.set(scaleEpsilon);
+                valY = scaleEpsilon;
+            }
+            if (valZ == 0.0)
+            {
+                ui.BBTransY.set(scaleEpsilon);
+                valZ = scaleEpsilon;
+            }
+
+            objectToBeUpdated.setScale(valX, valY, valZ);
         }
         
         this.highlightCurrentBoundingVolume(true);

@@ -32,12 +32,18 @@ function Controller(ui){
                 ui.BBTX.set("Tx");
                 ui.BBTY.set("Ty");
                 ui.BBTZ.set("Tz");
+                ui.BBTransX.min(null);
+                ui.BBTransY.min(null);
+                ui.BBTransZ.min(null);
             }
             else if (mode === "scale"){
                 ui.TBHand.dehighlight();
                 ui.TBTranslate.dehighlight();
                 ui.TBScale.highlight();
                 ui.TBRotate.dehighlight();
+                ui.BBTransX.min(0.0);
+                ui.BBTransY.min(0.0);
+                ui.BBTransZ.min(0.0);
                 ui.BBTransX.step(0.1);
                 ui.BBTransY.step(0.1);
                 ui.BBTransZ.step(0.1);
@@ -58,6 +64,9 @@ function Controller(ui){
                 ui.BBTX.set("Rx");
                 ui.BBTY.set("Ry");
                 ui.BBTZ.set("Rz");
+                ui.BBTransX.min(null);
+                ui.BBTransY.min(null);
+                ui.BBTransZ.min(null);
             }
             else {
                 ui.TBHand.highlight();
@@ -72,8 +81,7 @@ function Controller(ui){
         }
     };
     
-    
-    var currentViewPoint = "perspective";
+
     
     /*
      * Sets the specified view point in the editor
