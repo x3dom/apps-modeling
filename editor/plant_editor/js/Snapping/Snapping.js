@@ -24,16 +24,10 @@ function Snapping()
         {
             snapBool = true;
             snapping.setSnapping();
-
-            snapPoints.style.border="solid 1px #fff";
-            snapPoints.src = "./images/magnet_on.png";
         }
         else
         {
             snapBool = false;
-
-            snapPoints.style.border="solid 1px gray";
-            snapPoints.src = "./images/magnet_off.png";
 
             //remove existing lines and Points
             var elementList = primitiveManager.getIDList();

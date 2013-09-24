@@ -1,0 +1,148 @@
+#Oben
+{
+    position: absolute;
+    border-radius: 0px 0px 10px 10px;
+    border: solid 2px #fff;
+    border-top: none;
+    left: 50%;
+    margin-left: -362px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 41px;
+    width: 725px;
+    z-index: 10000;
+    background-image: url(images/karbon_bg.png);
+}
+
+
+/* Die Buttons *******************************************************************/
+
+/* Images */
+#DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; border: solid 1px #fff; }
+#DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 0px; border: solid 1px #fff; }
+#SnapPoints{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; border: solid 1px gray; }
+#ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-right: 5px; margin-left: 5px; }
+#ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonRotieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 0px; }
+#ButtonGroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonUngroup{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonAutoSave{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
+#ButtonSnapToGrid{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; margin-right: 5px; border: solid 1px gray; }
+.buttonTop{ float:left; }
+
+.buttonPlane{ margin-left: 10px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
+.buttonAxis{ border-right: 2px solid #b1b1b1; height:41px; float:left; }
+
+.leftBorder{ margin-left: 5px; padding-left: 5px; border-left: 2px solid #b1b1b1; height:41px; float:left; }
+.rightBorder{ padding-right: 5px; height:41px; float:left; }
+
+#ButtonHand, #ButtonRotieren, #ButtonSkalieren, #ButtonVerschieben, #ButtonGroup, #ButtonUngroup, #ButtonSnapToGrid, #ButtonAutoSave
+{
+    border:1px solid gray;
+}
+
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover, #ButtonGroup:hover, #ButtonUngroup:hover, #ButtonSnapToGrid:hover, #ButtonAutoSave:hover
+{
+	border:1px solid white;
+}
+
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active, #ButtonSnapToGrid:active, #ButtonAutoSave.active
+{	
+	box-shadow:   2px 2px 2px grey,
+	       		 -2px 2px 2px grey,
+	        	  2px -2px 2px grey,
+	       		 -2px -2px 2px grey;
+}
+
+/**********************************************************************************/
+
+
+
+/* Menu ***************************************************************************/
+
+
+.header
+{
+    margin: 5px;
+    float: left;
+    width: 60px;
+    margin-left: 10px;
+    font-family:"Blackadder ITC";
+}
+
+.header ul, ol
+{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.nav li a
+{
+    color: #FFFFFF;
+    height: 21px;
+    width: 60px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-decoration: none;
+    padding-top: 7px;
+    display: block;
+    font-family: Calibri;
+    border: solid 1px gray;
+    border-radius: 0px;
+    background-color: #333333;
+}
+
+.nav li a:hover
+{
+    background-color: #414141;
+}
+
+.nav > li
+{
+    float: left;
+}
+
+.nav li ul
+{
+    display: none;
+    position: absolute;
+}
+
+.nav li:hover > ul 
+{
+    display: block;	
+}
+
+.nav li ul li
+{
+    position:relative;
+}
+
+
+.onOffTick
+{
+    position:absolute; 
+    height: 10px; 
+    top: 11px; 
+    left: 60px;
+}
+
+.Views
+{
+    float:left;
+    width: 111px;
+    height: 30px;
+    margin: 5px;
+    margin-right: 5px;
+    margin-left: 10px;
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 0;
+    -webkit-appearance: none;
+    border:1px solid gray;
+    background: url(images/down_img.jpg) no-repeat right #333333;
+    font-family: Calibri;
+}
