@@ -135,7 +135,7 @@
             <li><a>Scene</a>
                 <ul>
                     <li><a href="#" id="newFile" onclick="primitiveManager.removeAllObjects()" onmouseover="this.style.cursor='pointer';">New</a></li>
-                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';">Fetch...</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.loadScene();">Fetch...</a></li>
                     <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.saveScene();">Store...</a></li>
                 </ul>
             </li>
@@ -315,6 +315,8 @@
                     </IndexedLineSet>
                 </Shape>
             </matrixTransform>
+
+            <inline id='test_inline' url=''></inline>
 
             <transform id="root" translation="0 0 0"></transform>
 
