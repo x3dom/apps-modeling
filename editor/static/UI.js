@@ -248,8 +248,8 @@ function UI(primitiveManager){
                     }
                 }
         });
-        
-        
+
+
         $("#accordion_left").accordion({
                 heightStyle: "content",
                 collapsible: false,
@@ -259,12 +259,12 @@ function UI(primitiveManager){
                     // ?
                 }
         });
-        
+
 
         that.RBAccordion.disable = function(bool){
             $("#accordeon-oben").accordion("option", { disabled: bool });
         };
-        
+
         farbtasticPicker = $.farbtastic('#picker');
         var p = $('#picker').css('opacity', 1.0);
         var selected;
@@ -337,7 +337,7 @@ function UI(primitiveManager){
      * @returns {Null}
      */
     this.initializeComponentEditorSpecialUI = function (){
-        
+
         for (var prim in that.primitiveParameterMap){
             this.addLeftbarElement(that.primitiveParameterMap[prim].image,
                               that.primitiveParameterMap[prim].editorName);

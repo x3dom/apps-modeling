@@ -19,7 +19,10 @@ window.URL = window.URL || window.webkitURL;
  * This function will later on be moved to the storage manager.
  */
 StorageManager.prototype.loadScene = function(){
-    var inlineNode = document.getElementById('test_inline');
+    var inlineNode     = document.createElement('inline');
+    var componentGroup = document.getElementById('loadedComponentsTransform');
+
+    componentGroup.appendChild(inlineNode);
 
     modelStr = "" +
     "\<?xml version='1.0' encoding='UTF-8'?>" +
