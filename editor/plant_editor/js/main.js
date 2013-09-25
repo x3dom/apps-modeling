@@ -11,8 +11,6 @@ var snapping = new Snapping();
 //handles server communication
 var storageManager = new StorageManager();
 
-var primType_counter = {};
-
 window.onload = function(){
     ui.initialize();
     ui.initializePlantEditorSpecialUI();

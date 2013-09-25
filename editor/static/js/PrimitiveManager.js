@@ -284,6 +284,9 @@ function PrimitiveManager(){
     // list of all created groups
     this.groupList = {};
 
+    //counter for primitives of each type, for automatic name assignment
+    this.primType_counter = {};
+
     //ID of the origin primitive, if any
     this.originID = "";
 
@@ -324,7 +327,41 @@ function PrimitiveManager(){
      * but without any parameters.
      */
     this.addComponent = function(name){
-        //TODO: implement
+        ui.toggleGroupMode(false);
+
+        if (HANDLING_MODE === "hand")
+            controller.Activate("translation");
+
+        var componentPrim = new Primitive("nozzle", {});
+
+        //TODO: make it nicer - this whole PrimitiveManager should become an "object manager"
+
+        //at this point, we currently have to manipulate the "primitive", since the
+        //primitive class assumes that we're creating an X3D node with the given name...
+        //...
+
+
+        var id = componentPrim.getID();
+
+        this.primType_counter[name]++;
+        componentPrim.setName(name + "_" + this.primType_counter[name]);
+
+        componentPrim.getDOMNode().addEventListener("mousedown",
+            function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); },
+            false);
+
+        this.primitiveList[id] = componentPrim;
+
+        selectedPrimitiveIDs = [];
+
+        this.selectObject(id);
+
+        this.updateTransformUIFromCurrentObject();
+
+        ui.treeViewer.addPrimitive(id, componentPrim.getName());
+        ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
+
+        return componentPrim;
     };
 
 
@@ -351,8 +388,8 @@ function PrimitiveManager(){
 
         var id   = prim.getID();
 
-        primType_counter[primitive]++;
-        prim.setName(primitive + "_" + primType_counter[primitive]);
+        this.primType_counter[primitive]++;
+        prim.setName(primitive + "_" + this.primType_counter[primitive]);
 
         if (primitive === "IndexedLineSet")
         {

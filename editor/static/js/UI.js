@@ -403,7 +403,7 @@ function UI(primitiveManager){
         divID.appendChild(divIDinnen);
         document.getElementById("componentCatalogueDiv").appendChild(divID);
 
-        primType_counter[name] = 0;
+        primitiveManager.primType_counter[name] = 0;
     };
     
     
@@ -938,8 +938,8 @@ function UI(primitiveManager){
 
             divID.appendChild(divIDinnen);
             document.getElementById("divs").appendChild(divID);
-            
-            primType_counter[that.primitiveParameterMap[name].x3domName] = 0;
+
+            primitiveManager.primType_counter[that.primitiveParameterMap[name].x3domName] = 0;
         };
 
 
