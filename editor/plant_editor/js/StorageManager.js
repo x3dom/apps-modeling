@@ -53,7 +53,7 @@ StorageManager.prototype.loadScene = function(){
 
 
     //get a list of all components from the server
-    var onSuccess = function(data, textStatus, jqXHR){
+    /*var onSuccess = function(data, textStatus, jqXHR){
 
         console.log("Response from server, reading components.");
 
@@ -69,6 +69,7 @@ StorageManager.prototype.loadScene = function(){
     console.log("Sending request to " + server_3D_url + "/composants ...");
 
     $.get(server_3D_url + "/composants", "", onSuccess);
+    */
 };
 
 
