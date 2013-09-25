@@ -306,7 +306,7 @@ function UI(primitiveManager){
         
         that.TBGrid.highlight();
         that.TBPlane.highlight();
-        
+
         primitiveManager.setUI(that);
     };
     
@@ -360,13 +360,50 @@ function UI(primitiveManager){
     };
     
     
-    
+
     /*
      * Initializes all special components of the Plant Editor UI 
      * @returns {Null}
      */
     this.initializePlantEditorSpecialUI = function (){
-        
+        var name = "TestComp";
+        var img  = "images/nozzle.jpg"
+
+        var divID = document.createElement("div");
+        divID.setAttribute("id", name);
+
+        divID.setAttribute('draggable', "true");
+        divID.ondragstart = controller.drag;
+
+        divID.innerHTML = "<img src='" + img + "' id='icon_" + name + "' width='100%' height='100%'>";
+        divID.setAttribute("style",
+            "float:left; width: 70px; height: 70px; margin: 5px; padding: 0px; border: solid 1px " +
+                defColor + "; border-radius: 5px;");
+
+        divID.setAttribute("onmouseover",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseout",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseleave",
+            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+
+        divID.onclick = function () {
+            primitiveManager.addComponent(name);
+        };
+
+        var divIDinnen = document.createElement("div");
+        divIDinnen.setAttribute("id", name + "_inner");
+        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
+            (name.length > 20 ? "-50" : "-40") + "px; text-align: center;");    // hack
+        divIDinnen.innerHTML = name;
+
+        divID.appendChild(divIDinnen);
+        document.getElementById("componentCatalogueDiv").appendChild(divID);
+
+        primType_counter[name] = 0;
     };
     
     

@@ -320,6 +320,16 @@ function PrimitiveManager(){
 
 
     /*
+     * Adds a component by exploiting the primitive class - a component is simply a primitive,
+     * but without any parameters.
+     */
+    this.addComponent = function(name){
+        //TODO: implement
+    };
+
+
+
+    /*
      * Adds a new primitive to the working area and stores its reference
      * @param {type} primitive name of the primitive that should be created
      * @returns {null}
@@ -1087,13 +1097,15 @@ function PrimitiveManager(){
 
 
     this.groupSelectedPrimitives = function(){
+         var selectedPrimitiveIDs = this.getSelectedPrimitiveIDs();
+
         //avoid that two objects belong to the same group:
         //if the user wants to group objects while a group is selected, do nothing
-        if (!ui.groupModeActive())
+        if (!ui.groupModeActive() && selectedPrimitiveIDs.length > 0)
         {
             //put the IDs of the selected objects into a new group
             //(a default name is assigned to the new group)
-            var g = new Group(this.getSelectedPrimitiveIDs());
+            var g = new Group(selectedPrimitiveIDs);
 
             //put the new group in the list of groups
             this.groupList[g.getID()] = g;
