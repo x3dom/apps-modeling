@@ -16,7 +16,7 @@
     width: 685px;
     bottom: 0px;
     z-index: 10000;
-    background-image: url(images/karbon_bg.png);
+    background-image: url(../images/karbon_bg.png);
 }
 
 #primitiveName

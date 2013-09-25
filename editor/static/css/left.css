@@ -4,7 +4,7 @@
 {
     width: 205px;
     height: 100%;
-    background-image: url(images/karbon_bg.png);
+    background-image: url(../images/karbon_bg.png);
     border: solid 2px #fff;
     border-left: none;
     border-radius: 0px 10px 0px 0px;
@@ -19,7 +19,7 @@
     width: 250px;
     height: 100%;
     color: #FFFFFF;
-    background-image: url(images/karbon_bg.png);
+    background-image: url(../images/karbon_bg.png);
     padding:4px;
     padding-top:2px;
     border: solid 2px #fff;
@@ -65,7 +65,7 @@
     top: 50%;
     margin-top: -75px;
     z-index: 100000;
-    background-image: url(images/primitiv.png);
+    background-image: url(../images/primitiv.png);
 }
 
 

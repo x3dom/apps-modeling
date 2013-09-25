@@ -11,7 +11,7 @@
     height: 41px;
     width: 725px;
     z-index: 10000;
-    background-image: url(images/karbon_bg.png);
+    background-image: url(../images/karbon_bg.png);
 }
 
 
@@ -143,6 +143,6 @@
     border-radius: 0;
     -webkit-appearance: none;
     border:1px solid gray;
-    background: url(images/down_img.jpg) no-repeat right #333333;
+    background: url(../images/down_img.jpg) no-repeat right #333333;
     font-family: Calibri;
 }
