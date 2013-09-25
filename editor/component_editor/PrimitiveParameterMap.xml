@@ -62,7 +62,7 @@
     </Primitive>
     <Primitive editorName="Dish" x3domName="Dish" image="images/dish.jpg">
         <Parameter editorName="Diameter" min="0" x3domName="diameter">1.0</Parameter>
-        <Parameter editorName="Radius" min="0" x3domName="radius">0.0</Parameter>
+        <Parameter editorName="Radius" min="0" x3domName="radius">0.5</Parameter>
         <Parameter editorName="Height" min="0" x3domName="height">0.5</Parameter>
         <Parameter editorName="Show Bottom" x3domName="bottom" type="bool" render="false">true</Parameter>
         <Parameter type="vec2" step="1.0" min="0" editorName="Subdivision" x3domName="subdivision" render="false">24,24</Parameter>
