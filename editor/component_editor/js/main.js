@@ -21,7 +21,7 @@ var primType_counter = {};
  * Initializes the entire application
  * @returns {undefined}
  */
-window.onload = function(){
+document.onload = function(){
     ui.initialize();
     ui.initializeComponentEditorSpecialUI();
     controller.Activate("hand");
@@ -36,8 +36,8 @@ window.onload = function(){
  * completed this function will react by a closing dialog
  * @returns {null}
  */
-//window.onbeforeunload = OnBeforeUnload;
-function OnBeforeUnload(oEvent) {   
+//window.onbeforeunload = onBeforeUnload;
+function onBeforeUnload(oEvent) {
     // return a string to show the warning message (not every browser will use this string in the dialog)
     // or run the code you need when the user closes your page  
     if (origin_refPoints_added[0] === 0 ||
