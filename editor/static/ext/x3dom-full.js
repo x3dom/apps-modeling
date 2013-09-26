@@ -1,4 +1,4 @@
-/** X3DOM Runtime, http://www.x3dom.org/ 1.6.0-dev - 32003907258def3185affb88c10d6dbe2993be29 - Wed Sep 25 21:29:59 2013 +0200 */
+/** X3DOM Runtime, http://www.x3dom.org/ 1.6.0-dev - f06623bc45a47e4073860431b0bd89a205fcd8ef - Thu Sep 26 18:39:43 2013 +0200 */
 if(!Array.forEach){Array.forEach=function(array,fun,thisp){var len=array.length;for(var i=0;i<len;i++){if(i in array){fun.call(thisp,array[i],i,array);}}};}
 if(!Array.map){Array.map=function(array,fun,thisp){var len=array.length;var res=[];for(var i=0;i<len;i++){if(i in array){res[i]=fun.call(thisp,array[i],i,array);}}
 return res;};}
@@ -2086,6 +2086,7 @@ n=otherNS.defMap[nsName[1]];if(n)
 otherNS=null;else
 otherNS=otherNS.parent;}
 if(!n){n=null;x3dom.debug.logWarning('Could not USE: '+domNode.getAttribute('USE'));}}}
+if(n){domNode._x3domNode=n;}
 return n;}
 else{if(domNode.localName.toLowerCase()==='route'){var route=domNode;var fromNode=this.defMap[route.getAttribute('fromNode')];var toNode=this.defMap[route.getAttribute('toNode')];if(!(fromNode&&toNode)){x3dom.debug.logWarning("Broken route - can't find all DEFs for "+
 route.getAttribute('fromNode')+" -> "+route.getAttribute('toNode'));return null;}
@@ -3077,7 +3078,7 @@ return null;},getTextures:function(){return this._cf.texture.nodes;},size:functi
 {if(this._vf.url.length||!this._xmlNode){return;}
 x3dom.debug.logInfo("No Texture URL given, searching for &lt;img&gt; elements...");var that=this;try{Array.forEach(this._xmlNode.childNodes,function(childDomNode){if(childDomNode.nodeType===1){var url=childDomNode.getAttribute("src");if(url){that._vf.url.push(url);x3dom.debug.logInfo(that._vf.url[that._vf.url.length-1]);if(childDomNode.localName==="video"){that._needPerFrameUpdate=true;that._video=document.createElement('video');that._video.setAttribute('autobuffer','true');var p=document.getElementsByTagName('body')[0];p.appendChild(that._video);that._video.style.display="none";}}
 else if(childDomNode.localName.toLowerCase()==="canvas"){that._needPerFrameUpdate=true;that._isCanvas=true;that._canvas=childDomNode;}
-if(that._vf.hideChildren){childDomNode.style.display="none";childDomNode.style.visibility="hidden";}
+if(childDomNode.style&&that._vf.hideChildren){childDomNode.style.display="none";childDomNode.style.visibility="hidden";}
 x3dom.debug.logInfo("### Found &lt;"+childDomNode.nodeName+"&gt; tag.");}});}
 catch(e){x3dom.debug.logException(e);}}}));x3dom.registerNodeType("RenderedTexture","Texturing",defineClass(x3dom.nodeTypes.X3DTextureNode,function(ctx){x3dom.nodeTypes.RenderedTexture.superClass.call(this,ctx);if(ctx)
 ctx.doc._nodeBag.renderTextures.push(this);else
@@ -4278,4 +4279,4 @@ c+"</a></h2>";result+="<ul style='list-style-type:circle;'>";for(var t in compon
 x3dom.docs.specBaseURL+x3dom.docs.specURLMap[c]+"#"+t+"' style='color:black; text-decoration:none; font-weight:bold;'>"+
 t+"</a></li>";}
 result+="</ul>";}
-return result;};x3dom.versionInfo={version:'1.6.0-dev',revision:'32003907258def3185affb88c10d6dbe2993be29',date:'Wed Sep 25 21:29:59 2013 +0200'};
+return result;};x3dom.versionInfo={version:'1.6.0-dev',revision:'f06623bc45a47e4073860431b0bd89a205fcd8ef',date:'Thu Sep 26 18:39:43 2013 +0200'};
