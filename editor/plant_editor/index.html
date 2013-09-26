@@ -123,6 +123,7 @@
     <script type='text/javascript' src="../static/js/Group.js"></script>
     <script type='text/javascript' src="../static/js/UI.js"></script>
     <script type='text/javascript' src="../static/js/Controller.js"></script>
+    <script type='text/javascript' src="js/Component.js"></script>
     <script type='text/javascript' src="js/StorageManager.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
 
@@ -263,7 +264,7 @@
 <div id="x3d-view">
     <x3d id="x3d" showStat="false" showLog="false"
          onkeydown="if ((event || window.event).keyCode == 46){ primitiveManager.removeCurrentObject(); /*46 = DEL*/ }"
-         ondrop="controller.drop(event)" ondragover="controller.allowDrop(event)">
+         ondrop="controller.drop(event)" ondragover="controller.allowDrop(event)" ondragenter="controller.allowDrop(event)">
         <scene>
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
@@ -320,7 +321,7 @@
 
             <transform id="root" translation="0 0 0"></transform>
 
-            <transform id="loadedComponentsTransform" rotation="0 0 -1 1.57" scale="0.01 0.01 0.01">
+            <transform id="componentsRoot" render='false' translation="0 0 0">
             </transform>
             
             <transform id="snapPoints"></transform>
