@@ -8,6 +8,10 @@ var controller = new Controller(ui);
 var HANDLING_MODE = "translation";
 // Start snapping
 var snapping = new Snapping();
+// Snapping with mouseevent
+var snapWindow = new SnapWindow();
+// Snapping with mouseevent
+var snapContext = new SnapContext();
 //handles server communication
 var storageManager = new StorageManager();
 

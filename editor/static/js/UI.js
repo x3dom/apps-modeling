@@ -367,7 +367,7 @@ function UI(primitiveManager){
      */
     this.initializePlantEditorSpecialUI = function (){
         var name = "TestComp";
-        var img  = "images/nozzle.jpg"
+        var img  = "images/nozzle.jpg";
 
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
@@ -392,6 +392,7 @@ function UI(primitiveManager){
 
         divID.onclick = function () {
             primitiveManager.addComponent(name);
+            snapContext.init();
         };
 
         var divIDinnen = document.createElement("div");
