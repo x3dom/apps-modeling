@@ -856,7 +856,9 @@ function PrimitiveManager(){
      * @returns (undefined)
      */
     this.highlightCurrentObject = function(on) {
-        if (currentObjectID !== "")
+        var currentObject = this.getCurrentObject();
+
+        if (currentObject && currentObjectID !== "")
         {
             //update the bounding volume, or hide it
             this.highlightCurrentBoundingVolume(true);
@@ -869,9 +871,10 @@ function PrimitiveManager(){
                     this.primitiveList[key].getMatrixTransformNode().highlight(false, highlightCol);
                 }
             }
+
             if (on)
             {
-                this.getCurrentObject().getMatrixTransformNode().highlight(true, highlightCol);
+                currentObject.getMatrixTransformNode().highlight(true, highlightCol);
             }
         }
     };
@@ -940,12 +943,11 @@ function PrimitiveManager(){
     //          - actually, some of this is UI functionality
     //          - better assume that we have no parameters, but we only handle the "current" primitive or group
     this.updateTransformUIFromCurrentObject = function() {
-        if (currentObjectID != "")
-        {
-            var currentObject;
-            var vec = null;
+        var currentObject = this.getCurrentObject();
 
-            currentObject = this.getCurrentObject();
+        if (currentObject && currentObjectID != "")
+        {
+            var vec = null;
 
             ui.BBPrimName.set(currentObject.getName());
 

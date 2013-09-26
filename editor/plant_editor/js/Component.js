@@ -9,12 +9,15 @@ var registeredComponentTypeToX3DStrings = {};
 function getOrCreateRegisteredComponentX3DString(typeName, x3dStr){
     var inlineElement;
     var modelStringURLBlob;
+    var modelStringURL;
 
     if (typeof registeredComponentTypeToX3DStrings[typeName] === 'undefined')
     {
         registeredComponentTypeToX3DStrings[typeName] = x3dStr;
 
         inlineElement = document.createElement("inline");
+        inlineElement.setAttribute('nameSpaceName', "NS_" + typeName);
+        inlineElement.setAttribute('mapDEFToID', "true");
 
         //create a blob from the component's x3d representation, and use it as url for the inline node
         modelStringURLBlob = new Blob([x3dStr], {type: 'text/plain'});
@@ -28,7 +31,7 @@ function getOrCreateRegisteredComponentX3DString(typeName, x3dStr){
     }
 
     return registeredComponentTypeToX3DStrings[typeName];
-};
+}
 
 
 Component.prototype = new TransformableObject();
@@ -53,22 +56,18 @@ function Component(typeName){
 
     this.domNode = document.createElement("inline");
 
+    // USE attribute must be set before attaching to tree because only in attach this is evaluated
+    this.domNode.setAttribute("USE", "COMPONENT_" + typeName);
+
     this.matrixTransformNode.appendChild(this.domNode);
 
     document.getElementById('root').appendChild(this.matrixTransformNode);
 
     //===============
-    //BEGIN ISSUE: somehow, the USE mechanism is not working here
-
-    //A) how we want it
-    //this.domNode.setAttribute("USE", "COMPONENT_" + typeName);
-
-    //B) workaround (brute-force reloading the inlined scene)
-    var modelStringURLBlob = new Blob([getOrCreateRegisteredComponentX3DString(typeName)], {type: 'text/plain'});
+    // workaround (brute-force reloading the inlined scene)
+    /*var modelStringURLBlob = new Blob([getOrCreateRegisteredComponentX3DString(typeName)], {type: 'text/plain'});
     var modelStringURL     = window.URL.createObjectURL(modelStringURLBlob);
-    this.domNode.setAttribute("url", modelStringURL);
-
-    //END ISSUE
+    this.domNode.setAttribute("url", modelStringURL);*/
     //===============
 
     // wrapper for adding moving functionality, last param is callback function,
@@ -77,4 +76,4 @@ function Component(typeName){
         this.matrixTransformNode,
         function(elem, pos){ primitiveManager.objectMoved(elem, pos, that); },
         controller.getGridSize());
-};
+}
