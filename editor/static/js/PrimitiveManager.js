@@ -397,7 +397,11 @@ function PrimitiveManager(){
         }
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); snapContext.init();},
+            function(){
+                primitiveManager.primitivePicked(id);
+                snapping.newSnapObject();
+                if (typeof snapContext !== "undefined") // hack, not defined in component editor
+                    snapContext.init();},
             false);
 		
         this.primitiveList[id] = prim;
