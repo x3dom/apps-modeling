@@ -50,8 +50,8 @@ function Primitive(primType, parameters){
 
     var that = this;
 
-    this.primType   = primType;
-    this.domNode    = document.createElement(this.primType);
+    this.primType = primType;
+    this.domNode  = document.createElement(this.primType);
 
     //two exceptions:
     //for the "Origin" and "Reference Point" primitives, create a special indexedlineset,
@@ -61,7 +61,7 @@ function Primitive(primType, parameters){
         (function(){
             var coordIndexStr = "";
             var pointStr      = "";
-            var colorStr       = "";
+            var colorStr      = "";
 
             //"Origin" geometry
             if (parameters.isOrigin)
@@ -74,7 +74,6 @@ function Primitive(primType, parameters){
             //"Reference Point" geometry
             else
             {
-                //todo: adapt for refpoint 3D icon
                 coordIndexStr = "0 1 -1, 2 3 -1, 4 5 -1, 6 7 -1, 8 9 -1, 10 11 -1, 12 13 -1, \n\
                                  14 15 -1, 16 17 -1, 18 19 -1, 20 21 -1,\n\
                                  22 23 -1, 24 25 -1, 26 27 -1, 28 29 -1,\n\
@@ -326,31 +325,24 @@ function PrimitiveManager(){
      * Adds a component by exploiting the primitive class - a component is simply a primitive,
      * but without any parameters.
      */
-    this.addComponent = function(name){
+    this.addComponent = function(typeName){
         ui.toggleGroupMode(false);
 
         if (HANDLING_MODE === "hand")
             controller.Activate("translation");
 
-        var componentPrim = new Primitive("nozzle", {});
+        var component = new Component(typeName);
 
-        //TODO: make it nicer - this whole PrimitiveManager should become an "object manager"
+        var id = component.getID();
 
-        //at this point, we currently have to manipulate the "primitive", since the
-        //primitive class assumes that we're creating an X3D node with the given name...
-        //...
+        this.primType_counter[typeName]++;
+        component.setName(typeName + "_" + this.primType_counter[typeName]);
 
-
-        var id = componentPrim.getID();
-
-        this.primType_counter[name]++;
-        componentPrim.setName(name + "_" + this.primType_counter[name]);
-
-        componentPrim.getDOMNode().addEventListener("mousedown",
+        component.getDOMNode().addEventListener("mousedown",
             function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); },
             false);
 
-        this.primitiveList[id] = componentPrim;
+        this.primitiveList[id] = component;
 
         selectedPrimitiveIDs = [];
 
@@ -358,10 +350,10 @@ function PrimitiveManager(){
 
         this.updateTransformUIFromCurrentObject();
 
-        ui.treeViewer.addPrimitive(id, componentPrim.getName());
+        ui.treeViewer.addPrimitive(id, component.getName());
         ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
 
-        return componentPrim;
+        return component;
     };
 
 
@@ -547,11 +539,16 @@ function PrimitiveManager(){
                 return;
             }
 
-            selectedPrimitiveIDs = [id];
-            ui.clearParameters();
-            ui.createParameters(this.primitiveList[id].getParameters(), this.primitiveList[id].getDOMNode());
-            ui.setMaterial(this.primitiveList[id].getMaterial());
-            ui.RBAccordion.disable(false);
+            selectedPrimitiveIDs = [id]
+
+            //TODO: this is a little bit dirty, should be refactored
+            if (this.primitiveList[id] instanceof Primitive)
+            {
+                ui.clearParameters();
+                ui.createParameters(this.primitiveList[id].getParameters(), this.primitiveList[id].getDOMNode());
+                ui.setMaterial(this.primitiveList[id].getMaterial());
+                ui.RBAccordion.disable(false);
+            }
         }
 
         this.highlightCurrentObject(true);

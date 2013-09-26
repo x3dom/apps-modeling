@@ -1,3 +1,12 @@
+// default color of all ui elements
+var defColor = "gray";
+// highlight color of all ui elements
+var highlightColor = "#fff";
+// highlight color of all buttons
+var highlightColorButton = "#FFC125";
+
+
+
 /*
  * The UI object handles the getter and setter function for all GUI elements
  * @returns {UI}
@@ -6,12 +15,6 @@ function UI(primitiveManager){
     
     // Variables that handle the toggle behaviour of the toolbars
     var fadeSwitch = [0, 0];
-    // default color of all ui elements
-    var defColor = "gray";
-    // highlight color of all ui elements
-    var highlightColor = "#fff";
-    // highlight color of all buttons
-    var highlightColorButton = "#FFC125";
     // primitive parameter map to synchronize names between editor and x3dom
     this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
     // color picker component
@@ -366,48 +369,51 @@ function UI(primitiveManager){
      * @returns {Null}
      */
     this.initializePlantEditorSpecialUI = function (){
-        var name = "TestComp";
-        var img  = "images/nozzle.jpg"
 
+    };
+    
+    
+
+    /*
+     * Adds a button for a given component type.
+     */
+    this.addComponentType = function(typeName, imgSrc){
+        //create the button, and configure its behavior
         var divID = document.createElement("div");
-        divID.setAttribute("id", name);
+        divID.setAttribute("id", typeName);
 
         divID.setAttribute('draggable', "true");
         divID.ondragstart = controller.drag;
 
-        divID.innerHTML = "<img src='" + img + "' id='icon_" + name + "' width='100%' height='100%'>";
-        divID.setAttribute("style",
-            "float:left; width: 70px; height: 70px; margin: 5px; padding: 0px; border: solid 1px " +
-                defColor + "; border-radius: 5px;");
+        divID.innerHTML = "<img src='" + imgSrc + "' id='icon_" + typeName + "' width='100%' height='100%'>";
+        divID.setAttribute("style", "float:left; width: 70px; height: 70px; margin: 5px; padding: 0px; border: solid 1px " +
+                            defColor + "; border-radius: 5px;");
 
-        divID.setAttribute("onmouseover",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseout",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
-        divID.setAttribute("onmouseleave",
-            "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
-                "'; document.getElementById('" + name + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseover", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + highlightColor +
+                           "'; document.getElementById('" + typeName + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseout", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                           "'; document.getElementById('" + typeName + "_inner').style.color = '" + highlightColor + "';");
+        divID.setAttribute("onmouseleave", "this.style.cursor='pointer'; this.style.border = 'solid 1px " + defColor +
+                           "'; document.getElementById('" + typeName + "_inner').style.color = '" + highlightColor + "';");
 
         divID.onclick = function () {
-            primitiveManager.addComponent(name);
+            primitiveManager.addComponent(typeName);
         };
 
-        var divIDinnen = document.createElement("div");
-        divIDinnen.setAttribute("id", name + "_inner");
-        divIDinnen.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
-            (name.length > 20 ? "-50" : "-40") + "px; text-align: center;");    // hack
-        divIDinnen.innerHTML = name;
+        var innerIDDiv = document.createElement("div");
+        innerIDDiv.setAttribute("id", typeName + "_inner");
+        innerIDDiv.setAttribute("style", "color: " + highlightColor + "; margin-top: " +
+                                (name.length > 20 ? "-50" : "-40") + "px; text-align: center;"); // hack
+        innerIDDiv.innerHTML = typeName;
 
-        divID.appendChild(divIDinnen);
+        divID.appendChild(innerIDDiv);
         document.getElementById("componentCatalogueDiv").appendChild(divID);
 
-        primitiveManager.primType_counter[name] = 0;
+        primitiveManager.primType_counter[typeName] = 0;
     };
-    
-    
-    
+
+
+
     /*
      * Creates an array with primitives an their parameters, including
      * a mapping between the x3dom names and editor names and a default value

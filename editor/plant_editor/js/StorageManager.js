@@ -1,21 +1,17 @@
 function StorageManager(){}
 
 
-
-window.URL = window.URL || window.webkitURL;
-
-
-
 // the server which holds the 3D data of the components
 var server_3D_url = "http://localhost:8080/";
-
 
 
 /*
  * Loads a scene from the server by fetching the current list of components.
  */
 StorageManager.prototype.loadScene = function(){
+    /*
     var inlineNode     = document.createElement('inline');
+
     var componentGroup = document.getElementById('loadedComponentsTransform');
 
     componentGroup.appendChild(inlineNode);
@@ -48,7 +44,7 @@ StorageManager.prototype.loadScene = function(){
 
     //inlineNode.setAttribute("url", "inl.x3d");
     inlineNode.setAttribute("url", modelStringURL);
-
+     */
 
 
 
@@ -70,6 +66,39 @@ StorageManager.prototype.loadScene = function(){
 
     $.get(server_3D_url + "/composants", "", onSuccess);
     */
+
+
+
+    //TESTING
+    //======
+    (function(){
+
+    var testComponentNames  = ["Tank", "Tube"];
+    var testComponentFiles  = ["../static/testing/components/CompA.x3d", "../static/testing/components/CompB.x3d"];
+    var testComponentThumbs = ["../static/testing/components/CompA.png", "../static/testing/components/CompB.png"];
+
+    var i = 0;
+    var xhr;
+    var x3dStr;
+    var comp;
+
+    for (; i < testComponentNames.length; ++i)
+    {
+        xhr = new XMLHttpRequest();
+
+        xhr.open('GET', testComponentFiles[i], false);
+        xhr.send(null);
+        x3dStr = xhr.responseText;
+
+        //register this component type
+        getOrCreateRegisteredComponentX3DString(testComponentNames[i], x3dStr);
+
+        ui.addComponentType(testComponentNames[i], testComponentThumbs[i]);
+    }
+
+    })();
+    //======
+    //END TESTING
 };
 
 
