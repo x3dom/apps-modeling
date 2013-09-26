@@ -397,9 +397,9 @@ function PrimitiveManager(){
         }
 
         prim.getDOMNode().addEventListener("mousedown",
-            function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); },
+            function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); snapContext.init();},
             false);
-
+		
         this.primitiveList[id] = prim;
 
         selectedPrimitiveIDs = [];

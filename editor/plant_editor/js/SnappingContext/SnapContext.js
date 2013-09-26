@@ -3,7 +3,7 @@
  */
 function SnapContext()
 {	
-	this.init = function(key)
+	this.init = function()
 	{
 		snapWindow.create();
 	};

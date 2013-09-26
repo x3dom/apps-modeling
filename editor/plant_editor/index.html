@@ -116,9 +116,11 @@
     <script type='text/javascript' src="js/Snapping/SnapInherits.js"></script>
     <script type='text/javascript' src="js/Snapping/Snapping.js"></script>
     
+    <script type='text/javascript' src="js/SnappingContext/SnapWindow.js"></script>
+    <script type='text/javascript' src="js/SnappingContext/SnapContext.js"></script>
     <script type='text/javascript' src="js/SnappingContext/SnapContext.js"></script>
     <script type='text/javascript' src="js/SnappingContext/SnapWindow.js"></script>
-
+    
     <script type='text/javascript' src="../static/js/TransformableObject.js"></script>
     <script type='text/javascript' src="../static/js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="../static/js/Group.js"></script>
@@ -250,7 +252,7 @@
 
             <h3>Material Editor</h3>
             <div id="colors">
-                <center><div id='picker' class='picker'> </div></center>
+                <center><div id='picker' class='picker'></div> </center>
                 <div class='form-item'><div class='colorLabel'>Diffuse</div><input type='text' id='diffuse' name='color1' class='colorwell' value='#3F7EBD' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Specular</div><input type='text' id='specular' name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
@@ -261,6 +263,10 @@
     </div>
     <div id="button_Rechts" onclick="ui.fadeRight();" onmouseover="this.style.cursor='pointer';"> </div>
 </div>
+
+
+<div id="dialog"> </div>
+
 
 <div id="x3d-view">
     <x3d id="x3d" showStat="false" showLog="false"
