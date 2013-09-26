@@ -87,3 +87,11 @@ body
     width: 85%;
     background-color: rgba(70, 70, 70, 0.8);
 }
+
+[draggable="true"] {
+    -webkit-user-drag: element;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-drag: element;
+    user-select: none;
+}

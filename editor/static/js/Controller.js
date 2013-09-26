@@ -269,57 +269,55 @@ function Controller(ui){
     }
 
 
-
     this.drag = function(event) {
-        if (event.dataTransfer) {
+        if (event.dataTransfer && event.target) {
             var name = event.target.id;
             if (name.indexOf("_") >= 0)
                 name = name.substring(name.indexOf("_") + 1);
 
-            event.dataTransfer.setData("Text", name);
+            event.dataTransfer.setData("text/plain", name);
         }
     };
 
     this.drop = function(event) {
-        event.preventDefault();
-
         if (event.dataTransfer) {
-            var data = event.dataTransfer.getData("Text");
+            var data = event.dataTransfer.getData("text/plain");
             //event.target.appendChild(document.getElementById(data));
             //console.log(data);
-            if (!data)
-                return true;
 
-            var runtime = document.getElementById("x3d").runtime;
+            if (data) {
+                var runtime = document.getElementById("x3d").runtime;
 
-            // get ray from eye through mouse position and calc dist to ground plane
-            var ray = runtime.getViewingRay(event.layerX, event.layerY);
-            var len = 100;
+                // get ray from eye through mouse position and calc dist to ground plane
+                var ray = runtime.getViewingRay(event.layerX, event.layerY);
+                var len = 100;
 
-            // if ray not parallel to plane and reasonably near then use d
-            if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
-                var d = -ray.pos.y / ray.dir.y;
-                len = (d < len) ? d : len;
-            }
+                // if ray not parallel to plane and reasonably near then use d
+                if (Math.abs(ray.dir.y) > x3dom.fields.Eps) {
+                    var d = -ray.pos.y / ray.dir.y;
+                    len = (d < len) ? d : len;
+                }
 
-            var pos = ray.pos.add(ray.dir.multiply(len));
+                var pos = ray.pos.add(ray.dir.multiply(len));
 
-            if (data == "Extrusion" || data == "Solid of Revolution") {
-                ui.editor2D_show( (data == "Extrusion") );
-                ui.setPrimitiveTypeNameAndPos(data, pos);
-            }
-            else {
-                var obj = primitiveManager.addPrimitive(
-                       ui.primitiveParameterMap[data].x3domName,
-                       ui.primitiveParameterMap[data].parameters);
+                if (data == "Extrusion" || data == "Solid of Revolution") {
+                    ui.editor2D_show( (data == "Extrusion") );
+                    ui.setPrimitiveTypeNameAndPos(data, pos);
+                }
+                else {
+                    var obj = primitiveManager.addPrimitive(
+                           ui.primitiveParameterMap[data].x3domName,
+                           ui.primitiveParameterMap[data].parameters);
 
-                if (obj) {
-                    obj.setTranslationAsVec(pos);
-                    primitiveManager.selectObject(obj.getID());
+                    if (obj) {
+                        obj.setTranslationAsVec(pos);
+                        primitiveManager.selectObject(obj.getID());
+                    }
                 }
             }
         }
 
+        event.preventDefault();
         event.stopPropagation();
         event.returnValue = false;
         return false;

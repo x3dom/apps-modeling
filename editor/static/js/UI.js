@@ -322,9 +322,9 @@ function UI(primitiveManager){
     function clamp(min, max, value) {
         min = parseFloat(min);
         max = parseFloat(max);
-        if (min !== null && min !== NaN && value < min)
+        if (min !== null && !isNaN(min) && value < min)
             return min;
-        else if (max !== null && max !== NaN && value > max)
+        else if (max !== null && !isNaN(max) && value > max)
             return max;
 
         return value;
@@ -367,7 +367,7 @@ function UI(primitiveManager){
      */
     this.initializePlantEditorSpecialUI = function (){
         var name = "TestComp";
-        var img  = "images/nozzle.jpg"
+        var img  = "images/nozzle.jpg";
 
         var divID = document.createElement("div");
         divID.setAttribute("id", name);
@@ -486,7 +486,7 @@ function UI(primitiveManager){
             }
             else
             {
-                $("#" + id).spinner( "option", "step", step );
+                return $("#" + id).spinner( "option", "step", step );
             }
         };
         
@@ -590,9 +590,12 @@ function UI(primitiveManager){
         
         
         obj.disable = function(bool){
-            if (bool) document.getElementById(id).style.opacity="0.5";
-            else document.getElementById(id).style.opacity="1.0";
-            document.getElementById(id).disabled = bool;
+            var obj = document.getElementById(id);
+            if (bool)
+                obj.style.opacity="0.5";
+            else
+                obj.style.opacity="1.0";
+            obj.disabled = bool;
         };
         
         if (toolTip)
@@ -620,13 +623,16 @@ function UI(primitiveManager){
         };
         
         obj.disable = function(bool){
-            if (bool) document.getElementById(id).style.opacity="0.5";
-            else document.getElementById(id).style.opacity="1.0";
-            document.getElementById(id).disabled = bool;
+            var obj = document.getElementById(id);
+            if (bool)
+                obj.style.opacity="0.5";
+            else
+                obj.style.opacity="1.0";
+            obj.disabled = bool;
         };
         
         obj.idMap = function(index){
-            return document.getElementById(id)[index].Primitive.IDMap;      // TODO: check, Primitive seems undefined!
+            return document.getElementById(id)[index].primitive.idMap(index);
         };
         
         obj.selectedIndex = function(){

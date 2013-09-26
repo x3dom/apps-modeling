@@ -50,8 +50,8 @@ function Primitive(primType, parameters){
 
     var that = this;
 
-    this.primType   = primType;
-    this.domNode    = document.createElement(this.primType);
+    this.primType = primType;
+    this.domNode  = document.createElement(this.primType);
 
     //two exceptions:
     //for the "Origin" and "Reference Point" primitives, create a special indexedlineset,
@@ -61,7 +61,7 @@ function Primitive(primType, parameters){
         (function(){
             var coordIndexStr = "";
             var pointStr      = "";
-            var colorStr       = "";
+            var colorStr      = "";
 
             //"Origin" geometry
             if (parameters.isOrigin)
@@ -946,7 +946,7 @@ function PrimitiveManager(){
         if (currentObjectID != "")
         {
             var currentObject;
-            var vec;
+            var vec = null;
 
             currentObject = this.getCurrentObject();
 
@@ -965,16 +965,19 @@ function PrimitiveManager(){
                 vec = currentObject.getScale();
             }
 
-            ui.BBTransX.set( vec.x.toFixed(3));
-            ui.BBTransZ.set( vec.y.toFixed(3));
+            if (vec)
+            {
+                ui.BBTransX.set(vec.x.toFixed(3));
+                ui.BBTransZ.set(vec.y.toFixed(3));
 
-            if (HANDLING_MODE !== "scale")
-            {
-                ui.BBTransY.set(-vec.z.toFixed(3));
-            }
-            else
-            {
-                ui.BBTransY.set(vec.z.toFixed(3));
+                if (HANDLING_MODE !== "scale")
+                {
+                    ui.BBTransY.set(-vec.z.toFixed(3));
+                }
+                else
+                {
+                    ui.BBTransY.set(vec.z.toFixed(3));
+                }
             }
         }
     };
