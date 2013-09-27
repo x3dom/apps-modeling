@@ -30,6 +30,19 @@
 }
 
 
+.plantEditorItemViewDebug
+{
+    /*overflow: hidden;
+    overflow-y: auto;*/
+    border: gray 1px solid;
+    background: #191415;
+    padding: 0px;
+    margin: 0px;
+    height: 24%;
+    border-radius: 0px 0px 5px 5px;
+}
+
+
 .plantEditorItemView
 {
     /*overflow: hidden;
@@ -38,7 +51,7 @@
     background: #191415;
     padding: 0px;
     margin: 0px;
-    height: 44%;
+    height: 30%;
     border-radius: 0px 0px 5px 5px;
 }
 
@@ -77,7 +90,8 @@
     margin: 5px 2px;
 }
 
-#treeview
+
+.treeViewDiv
 {
     overflow: hidden; 
     overflow-y: auto; 

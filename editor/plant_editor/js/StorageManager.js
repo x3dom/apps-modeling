@@ -46,27 +46,31 @@ StorageManager.prototype.loadScene = function(){
     inlineNode.setAttribute("url", modelStringURL);
      */
 
+    var componentList = {};
 
+    //TODO: here, we could notify the user about the progress of loading
 
-    //get a list of all components from the server
-    /*var onSuccess = function(data, textStatus, jqXHR){
+    //get a list with all "Component categories" / "Composants" from the server
+    $.get(server_3D_url + "/composants", "",
+        function(data, textStatus, jqXHR){
 
-        console.log("Response from server, reading components.");
+            var jsonResponse = JSON.parse(data);
+            var component;
 
-        var jsonResponse = JSON.parse(data);
-        var component;
-
-        for (component in jsonResponse)
-        {
-            ui.treeViewer.addPrimitive(jsonResponse[component], jsonResponse[component]);
+            for (component in jsonResponse)
+            {
+                ui.treeViewer.addGroup("catalogueTree", jsonResponse[component], jsonResponse[component]);
+            }
         }
-    };
+    );
 
-    console.log("Sending request to " + server_3D_url + "/composants ...");
+    //get a list with all "Components" / "Occurences de Composants" from the server
+    //TODO: make it work
+    //...
 
-    $.get(server_3D_url + "/composants", "", onSuccess);
-    */
-
+    //add components to the tree
+    //TODO: make it work
+    //...
 
 
     //TESTING
