@@ -208,8 +208,55 @@ function UI(primitiveManager){
                 }
             }
         });
-        
-        
+
+
+        ///BEGIN TODO: MERGE THIS WITH THE OTHER INIT CODE ABOVE TO MINIMIZE CODE DUPLICATION
+        ///-----------
+        $("#catalogueTree").dynatree({
+            checkbox: true,
+            selectMode: 3,
+            clickFolderMode: 1,
+            fx: { height: "toggle", duration: 500 },
+            onFocus: function(node) {
+                node.scheduleAction("cancel");
+
+            },
+            onSelect: function(select, node) {
+                function recursiveSelection(tempNode){
+                    if (tempNode.data.isFolder){
+                        for (var i = 0; i < tempNode.childList.length; i++){
+                            recursiveSelection(tempNode.childList[i]);
+                        }
+                    }
+                    else {
+                        /*
+                        primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
+
+                        if (tempNode.isActive()){
+                            if (tempNode.isSelected())
+                                primitiveManager.highlightCurrentObject(true);
+                        }
+                         */
+                    }
+                }
+
+                recursiveSelection(node);
+                //if (!node.data.isFolder)
+                //    primitiveManager.setPrimitiveVisibility(node.data.key, select);
+            },
+            onBlur: function(node) {
+                node.scheduleAction("cancel");
+            },
+            onActivate: function(node){
+                if (node.isSelected()) {
+                    //that.treeViewer.activate(node.data.key);
+                    //primitiveManager.selectObject(node.data.key);
+                }
+            }
+        });
+        //END TODO
+        ///-----------
+
         $("#snapToGrid").switchButton({
             checked: false,
             width: 20,
@@ -220,9 +267,9 @@ function UI(primitiveManager){
             }).change(function(){
         });
         
-        
-        
-        $('#treeview').slimScroll({
+
+        //TODO: something is currently wrong with the scrollbars
+        $('.treeViewDiv').slimScroll({
             height: '100%',
             size: '10px',
             color: '#FFFFFF',
@@ -407,7 +454,7 @@ function UI(primitiveManager){
         innerIDDiv.innerHTML = typeName;
 
         divID.appendChild(innerIDDiv);
-        document.getElementById("componentCatalogueDiv").appendChild(divID);
+        document.getElementById("componentCatalogueDebugDiv").appendChild(divID);
 
         primitiveManager.primType_counter[typeName] = 0;
     };
@@ -1281,9 +1328,9 @@ function UI(primitiveManager){
         };
 
 
-        this.treeViewer.addGroup = function (id, text) {
+        this.treeViewer.addGroup = function (treeID, id, text) {
             // This is how we would add tree nodes programatically
-            var rootNode = $("#tree").dynatree("getRoot");
+            var rootNode = $("#" + treeID).dynatree("getRoot");
             var childNode = rootNode.addChild({
                 title: text,
                 key: id,

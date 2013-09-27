@@ -427,11 +427,6 @@ span.dynatree-drop-target.dynatree-drop-after a
 }
 
 
-
-div#tree {
-	width: 160px;
-        margin-left: -10px;
-}
 ul.dynatree-container {
         width: 230px;
 	background-color: transparent;
