@@ -396,13 +396,19 @@ function PrimitiveManager(){
             }
         }
 
-        prim.getDOMNode().addEventListener("mousedown",
-            function(){
-                primitiveManager.primitivePicked(id);
-                snapping.newSnapObject();
-                if (typeof snapContext !== "undefined") // hack, not defined in component editor
-                    snapContext.init();},
-            false);
+        prim.getDOMNode().addEventListener("mousedown", function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); }, false);
+        
+        
+        /* TODO: to test */        
+        prim.getDOMNode().addEventListener("click", 
+        function(e)
+    	{   
+    		x =(window.event)?window.event.clientX:e.pageX;
+			y  =(window.event)?window.event.clientY:e.pageY;
+			snapContext.init(x, y); 
+        },
+        false);
+		
 		
         this.primitiveList[id] = prim;
 

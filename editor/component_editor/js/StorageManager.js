@@ -13,9 +13,10 @@ StorageManager.prototype.saveScene = function()
     //get the scene data from the primitive manager
     primitiveManager.getSceneData(primitivesJSON);
     // compute how many positive and negative shapes
-    var numberOfPrimitives = primitivesJSON.length
-    var numberOfPositivePrimitives = 0
-    var numberOfNegativePrimitives = 0
+    var numberOfPrimitives = primitivesJSON.length;
+    var numberOfPositivePrimitives = 0;
+    var numberOfNegativePrimitives = 0;
+    
     Array.forEach(primitivesJSON, function(prim){
         if (prim.paramValueMap["Positive Element"] == "true") {
             numberOfPositivePrimitives++;}
@@ -93,7 +94,7 @@ StorageManager.prototype.processDSL = function(shapeDataDSL){
     $.post('/process_dsl',{shape_model:shapeDataDSL}, function(response) {
     // log the response to the console
     console.log("Response: " + response);
-    })
+    });
 };
 
 
