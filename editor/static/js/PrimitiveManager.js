@@ -398,11 +398,11 @@ function PrimitiveManager(){
 
         prim.getDOMNode().addEventListener("mousedown", function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); }, false);
         
-        
-        /* TODO: to test */        
+        // Event for snapping Context      
         prim.getDOMNode().addEventListener("click", 
         function(e)
     	{   
+    		// Determine mouse position
     		x =(window.event)?window.event.clientX:e.pageX;
 			y  =(window.event)?window.event.clientY:e.pageY;
 			snapContext.init(x, y); 

@@ -18,17 +18,6 @@ function SnapContext()
         		height: 80,
         		modal: false,
         		resizable: false,
-        		
-        		show: { effect: "blind", uration: 500 },
-                hide: { effect: "explode", duration: 500 },
-                /*
-                buttons: 
-                {	
-					Ok: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-				*/
             });
          	
          	$("#dialog").dialog( "option", "position", [x, y]);  
@@ -42,7 +31,7 @@ function SnapContext()
             $('#innenDialog').click(function(){pointListShow();});
     	    
     	    /*
-    	    $('#innenDialog').slimScroll({
+    	    $('#dialog').slimScroll({
 		        size: '10px',
 		        width: '120px',
 		        height: '80px',
@@ -80,24 +69,4 @@ function SnapContext()
 	    divPrim.onclick = function () { document.getElementById("contextMenu").style.display = "none"; };
 	};
 	*/
-	
-	this.getMousePosition = function(event) 
-	{
-		var pos = [];
-		try
-		{
-			if(event.button == 2)
-			{
-				pos.push = event.clientY;
-				pos.push = event.clientX;
-			}
-	 	}
-	 	
-	  	catch(e)
-	  	{
-	   		console.log(e);
-	  	}
-	  	
-	   	return pos;
-	};
 }
