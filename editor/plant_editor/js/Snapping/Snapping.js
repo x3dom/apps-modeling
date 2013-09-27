@@ -6,12 +6,8 @@ function Snapping()
 	var snapBool = false;
 	var snapJ = new SnapJSON();
 	var createLine = new CreateLine();
-	var createPoint = new CreatePoint();
-	var objPointList = createPoint.getObjPointList();
-	
-	// Retrieves the information about the position of the Snappoints
-	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
-	
+	var snapPointCreate = new SnapPointCreate();
+	var objPointList = snapPointCreate.getObjPointList();
 	
 	/*
 	 * Starts the ability to snapping
@@ -24,10 +20,16 @@ function Snapping()
         {
             snapBool = true;
             snapping.setSnapping();
+
+            snapPoints.style.border="solid 1px #fff";
+            snapPoints.src = "./images/magnet_on.png";
         }
         else
         {
             snapBool = false;
+
+            snapPoints.style.border="solid 1px gray";
+            snapPoints.src = "./images/magnet_off.png";
 
             //remove existing lines and Points
             var elementList = primitiveManager.getIDList();
@@ -79,6 +81,10 @@ function Snapping()
 		// Observer-Objects
 		var snapObserver = new SnapObserver();
 		var snapSubject = new SnapSubject();
+
+
+		// Retrieves the information about the position of the Snappoints
+		var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
 		
 		
 	    if(elementList.length != null)
@@ -86,7 +92,7 @@ function Snapping()
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
 	    		//Set Point to Object
-	    		createPoint.setPoint(pointListObj.point1.position, elementList[i]);
+	    		snapPointCreate.setPoint(pointListObj.point1.position, elementList[i]);
 		        //Search Object
 	    		var element = primitiveManager.getPrimitiveByID(elementList[i]);
 	    		//Subject is observed
@@ -111,29 +117,19 @@ function Snapping()
     	element.Update = function( myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                                    myPositionPoint, postPositionPoint )
     	{
-			//Calculated distance between the two Snappoint,
+			//Calculated distance to the elements
+			//Each element draws a line on the selected item, 
 			//the lines and the distance are always calculate and updated   			
-			var distance = myPositionPoint.subtract(postPositionPoint).length();		
-						
+			var distance = myPosition.subtract(postPosition).length();		
+			
+			//console.log(distance);
+			//console.log(distancePoint);
+			
 			if(distance != 0)
 			{
-				if(distance < 5.0)
+				if(distance < 4.0)
 				{
-					var myDirectionPoint = myObj.getRotationAngles();
-					var postDirectionPoint = postObj.getRotationAngles();
-					
-					console.log(myDirectionPoint);
-					console.log(postDirectionPoint);				
-									
-					/*TODO:
-					* für die Skalierung muss ich die 2 Variablen anpassen 
-					* myPositionPoint, postPositionPoint, wird noch gemacht
-					*/
-				
-					//Draws line between the two Snappoints
-					createLine.setLine(myPositionPoint, postPositionPoint, myObj, postObj);
-					
-					//Here we check whether the items can be combined
+					createLine.setLine(myPosition, postPosition, myObj, postObj);
 					snapTo(myObj, postObj, myObjPoint, postObjPoint, myPosition, postPosition,
                            myPositionPoint, postPositionPoint, distance);
 				}
@@ -157,25 +153,16 @@ function Snapping()
     {
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     		
-    	if(distance < 3.0)
+    	if(distance < 2.0)
     	{
     		//This is the position of the point in the element, and is added 
     		//to the global position. This point is the connecting point.
     		var postPointTempPosition = snapping.getPosition(postObjPoint.id);
-    		
-    		//Scaling is counted
-    		xX = postPointTempPosition.x * postObj.getScale().x;
-    		yY = postPointTempPosition.y * postObj.getScale().y;
-    		zZ = postPointTempPosition.z * postObj.getScale().z;
-    		
-    		x = postPositionPoint.x + xX;
- 			y = postPositionPoint.y + yY;
-   			z = postPositionPoint.z + zZ;
-   			
-   			
+   
     		//The new position is then passed to the right place    							    		
-    		myObj.setTranslation(x, y, z);
-    		
+    		myObj.setTranslation(postPositionPoint.x + postPointTempPosition.x,
+    			                 postPositionPoint.y + postPointTempPosition.y,
+    			                 postPositionPoint.z + postPointTempPosition.z);
     		
     		primitiveManager.removeSnapNode(postObj.id + '_line');
     		primitiveManager.removeSnapNode(myObj.id + '_line');

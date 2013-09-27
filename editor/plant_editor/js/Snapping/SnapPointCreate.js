@@ -1,7 +1,7 @@
 /*
  * 
  */
-function CreatePoint()
+function SnapPointCreate()
 {
 	var objPointList = [];
 	
@@ -25,7 +25,6 @@ function CreatePoint()
     	var pointTransform = document.createElement('Transform');
     	pointTransform.setAttribute('id', temp);
     	pointTransform.setAttribute('translation', position);
-    	pointTransform.setAttribute('scale', '1 1 1');
     	
     	var pointShape = document.createElement('Shape');
     	var pointAppearance = document.createElement('Appearance');

@@ -6,11 +6,11 @@ function CreateLine()
     /*
      * Draws a line between two elements
      */
-    this.setLine = function(myPositionPoint, postPositionPoint, myObj, postObj)
+    this.setLine = function(myPosition, postPosition, myObj, postObj)
     {
     	var temp = postObj.id + '_line';
-		var point1 = myPositionPoint.x + ' ' + myPositionPoint.y + ' ' + myPositionPoint.z;
-		var point2 = postPositionPoint.x + ' ' + postPositionPoint.y + ' ' + postPositionPoint.z;
+		var point1 = myPosition.x + ' ' + myPosition.y + ' ' + myPosition.z;
+		var point2 = postPosition.x + ' ' + postPosition.y + ' ' + postPosition.z;
     
 		if(document.getElementById(temp))
     	{
