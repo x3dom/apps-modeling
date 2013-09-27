@@ -25,7 +25,8 @@ SnapSubject.prototype.Report = function( )
 		//myPosition is the position of the other member from ObjectArray
 		var postPosition = postObj.getTranslation();
 		var postPointP = snapping.getPosition(this.observers.GetArrayObject(i).getID() + '_point_0');						
-		var postPositionPoint = postPointP.add(postPosition); 
+		var postPositionPoint = postPointP.add(postPosition);
+		
 		
 		//Position from Point from current Element
 		var myPointP = snapping.getPosition(this.getID() + '_point_0');
