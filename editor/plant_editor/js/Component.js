@@ -57,18 +57,18 @@ function Component(typeName){
     this.domNode = document.createElement("inline");
 
     // USE attribute must be set before attaching to tree because only in attach this is evaluated
-    this.domNode.setAttribute("USE", "COMPONENT_" + typeName);
+    //this.domNode.setAttribute("USE", "COMPONENT_" + typeName);
+
+    //===============
+    // workaround (instead of USEing it, brute-force reloading the inlined scene)
+    var modelStringURLBlob = new Blob([getOrCreateRegisteredComponentX3DString(typeName)], {type: 'text/plain'});
+    var modelStringURL     = window.URL.createObjectURL(modelStringURLBlob);
+    this.domNode.setAttribute("url", modelStringURL);
+    //===============
 
     this.matrixTransformNode.appendChild(this.domNode);
 
     document.getElementById('root').appendChild(this.matrixTransformNode);
-
-    //===============
-    // workaround (brute-force reloading the inlined scene)
-    /*var modelStringURLBlob = new Blob([getOrCreateRegisteredComponentX3DString(typeName)], {type: 'text/plain'});
-    var modelStringURL     = window.URL.createObjectURL(modelStringURLBlob);
-    this.domNode.setAttribute("url", modelStringURL);*/
-    //===============
 
     // wrapper for adding moving functionality, last param is callback function,
     // must be called _after_ having added node to tree since otherwise uninitialized

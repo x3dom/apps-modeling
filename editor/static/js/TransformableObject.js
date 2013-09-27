@@ -162,7 +162,6 @@ TransformableObject.prototype.updateMatrixTransform = function(){
     var matSc = x3dom.fields.SFMatrix4f.scale(this.scale);
 
     var transformMat = matTr;
-    //transformMat     = transformMat.mult(matRX.mult(matRY).mult(matRZ));
     transformMat     = transformMat.mult(matRZ.mult(matRY).mult(matRX));
     transformMat     = transformMat.mult(matSc);
 
