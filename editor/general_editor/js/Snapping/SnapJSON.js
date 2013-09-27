@@ -23,7 +23,7 @@ function SnapJSON()
 		
 		if(jsonObj != undefined)
 		{	
-			console.log(jsonObj);
+			//console.log(jsonObj);
 			return jsonObj;
 		}
 		
