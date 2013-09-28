@@ -3,6 +3,12 @@
  */
 function SnapContext()
 {	
+	var snapJ = new SnapJSON();
+	var createContextPoint = new CreateContextPoint();
+	
+	// Retrieves the information about the position of the Snappoints
+	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
+	
 	this.init = function()
 	{
 		snapContext.addContextMenu(x, y);
@@ -48,7 +54,17 @@ function SnapContext()
     
     function pointListShow()
     {
-    	$("#dialogSnap").html('<div id="pointLink">Snap Point</div>');
+    	// List ob Elements on the Display
+    	var elementList = primitiveManager.getIDList();
+    	
+	    if(elementList.length != null)
+	    { 	
+	    	for(var i = 0; i < elementList.length; i++)
+	    	{
+	    		//Set Point to Object
+	    		createContextPoint.setPoint(pointListObj.point1.position, elementList[i]);
+	    	}
+	    }
     }
     
     
