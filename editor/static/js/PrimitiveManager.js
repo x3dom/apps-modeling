@@ -404,8 +404,8 @@ function PrimitiveManager(){
         // Event for snapping Context      
         prim.getDOMNode().addEventListener("click", function(e) {
     		// Determine mouse position
-    		var x =(window.event)?window.event.clientX:e.pageX;
-			var y =(window.event)?window.event.clientY:e.pageY;
+    		x = (window.event)?window.event.clientX:e.pageX;
+			y = (window.event)?window.event.clientY:e.pageY;
 			snapContext.init(x, y); 
         },
         false);
