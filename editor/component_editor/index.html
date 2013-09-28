@@ -297,7 +297,7 @@
 </div>
 
 <div id="x3d-view">
-    <x3d id="x3d" showStat="false" showLog="false"
+    <x3d id="x3d" showStat="false" showLog="false" disableTouch="true"
          onkeydown="if ((event || window.event).keyCode == 46){ primitiveManager.removeCurrentObject(); /*46 = DEL*/ }"
          ondrop="controller.drop(event)" ondragover="controller.allowDrop(event)" ondragenter="controller.allowDrop(event)">
         <scene onbackgroundClicked="ui.createElemOnClick(event);">
