@@ -69,6 +69,45 @@ function SnapContext()
     
     
     /*
+     * 
+     */
+    function snapTo(vecA, vecB)
+    {
+    	//1.rotiere objekt
+		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
+		var rotationMatrix = x3dom.fields.Quaternion.rotateFromTo(vecA, vecB). toMatrix();
+		
+		//update globale rotation, translation, skalierung des objekts („prim“ ist ein „Primitive“)
+		var matTransNode        = prim.getMatrixTransformNode();
+		var oldTransformMat  =  x3dom.fields.SFMatrix4f.parse(matTransNode.getAttribute("matrix")).transpose();
+		
+		var newTransformMat = oldTransformMat.mult(rotationMatrix);
+		
+		var transVec = new x3dom.fields.SFVec3f(0, 0, 0);
+		var scaleVec = new x3dom.fields.SFVec3f(1, 1, 1);
+		var scaleRotQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
+		var rotationQuat = new x3dom.fields.Quaternion(0, 0, 1, 0);
+		newTransformMat.getTransform(transVec, rotationQuat, scaleVec, scaleRotQuat);
+		
+		prim.setTranslationAsVec(transVec);
+		prim.setScaleAsVec(scaleVec);
+		var angles = rotationQuat.toMatrix().getEulerAngles();
+		var rad2Deg = 180.0 / Math.PI;
+		prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
+		
+		//update der world space-positionen der snapping points
+		//(siehe mail “Punkte und Normalen eines Primitives transformieren“)
+		var transformedPoint   = newTransformMat. multMatrixPnt();
+		
+		//2. verschiebe objekt
+		//(otherTransformedPoint ist auch im world space, wurde bereits berechnet)
+		var additionalTranslation = otherTransformedPoint.subtract(transformedPoint);
+		
+		//wende additionalTranslation an
+    }
+    
+    
+    /*
     // Name ist der Name von dem Punkt
     this.addContextMenuEntry = function(name) 
     {
