@@ -212,7 +212,8 @@ function UI(primitiveManager){
 
         ///BEGIN TODO: MERGE THIS WITH THE OTHER INIT CODE ABOVE TO MINIMIZE CODE DUPLICATION
         ///-----------
-        $("#catalogueTree").dynatree({
+        if (document.getElementById('catalogueTree')) {
+          $("#catalogueTree").dynatree({
             checkbox: true,
             selectMode: 3,
             clickFolderMode: 1,
@@ -253,7 +254,8 @@ function UI(primitiveManager){
                     //primitiveManager.selectObject(node.data.key);
                 }
             }
-        });
+          });
+        }
         //END TODO
         ///-----------
 
@@ -266,10 +268,9 @@ function UI(primitiveManager){
             off_label: 'Snap off'
             }).change(function(){
         });
-        
 
-        //TODO: something is currently wrong with the scrollbars
-        $('.treeViewDiv').slimScroll({
+
+        $('#treeview').slimScroll({
             height: '100%',
             size: '10px',
             color: '#FFFFFF',
@@ -1330,7 +1331,9 @@ function UI(primitiveManager){
 
         this.treeViewer.addGroup = function (treeID, id, text) {
             // This is how we would add tree nodes programatically
-            var rootNode = $("#" + treeID).dynatree("getRoot");
+            // TODO: you MUST distinguish between plant and component editor cases to NOT break existing code!
+            var rootNode = $("#tree").dynatree("getRoot");
+            //var rootNode = $("#" + treeID).dynatree("getRoot");
             var childNode = rootNode.addChild({
                 title: text,
                 key: id,
