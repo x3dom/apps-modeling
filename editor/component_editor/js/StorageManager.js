@@ -41,7 +41,7 @@ StorageManager.prototype.saveScene = function()
         // then do the same with rotation
         if ((prim.rX!=0.0) || (prim.rY!=0.0) || (prim.rZ!=0.0))
             {
-            shapeDataDSL += prim.id + " = rotate_shape(" + prim.id + "," + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
+            shapeDataDSL += prim.id + " = rotate_shape_3_axis(" + prim.id + "," + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
             }
     });
 
