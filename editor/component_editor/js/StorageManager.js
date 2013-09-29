@@ -92,9 +92,11 @@ StorageManager.prototype.processDSL = function(shapeDataDSL){
     console.log("Requesting 3D server ...");
     $.post('/process_dsl',{shape_model:shapeDataDSL}, function(response) {
         data = $.parseJSON(response)
-        console.log("Stdout: " + data.stdout);
-        console.log("Stderr: " + data.stderr);
-        });
+        console.log("stdout: " + data.stdout);
+        console.log("stderr: " + data.stderr);
+        console.log("URI geometrie tesselee: " + data.uri_geometrie_tesselee);
+        console.log("URI occurrence geometrique: " + data.uri_occurrence_geometrique);
+    });
 };
 
 
