@@ -3,6 +3,8 @@
  */
 function SnapContext()
 {	
+	var vecA = 0;
+	var vecB = 0;
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
 	
@@ -16,39 +18,40 @@ function SnapContext()
     
     
     this.addContextMenu = function(x, y)
-    {
-		$(function() 
-		{			
-        	$("#dialog").dialog({
-        		width: 120,
-        		height: 80,
-        		modal: false,
-        		resizable: false,
-            });
-         	
-         	$("#dialog").dialog( "option", "position", [x, y]);  
-            
-            //$('.ui-dialog-titlebar').hide();
-            $('#dialog').css('overflow','hidden');
-            $('#dialog').css("border-radius", "5px");
-            
-            $('#innenDialog').html('<li><div id="dialogSnap">Snap-To</div></li>');
-            $('#innenDialog').mouseover(function(){this.style.cursor='pointer';});
-            $('#innenDialog').click(function(){pointListShow();});
-    	    
-    	    /*
-    	    $('#dialog').slimScroll({
-		        size: '10px',
-		        width: '120px',
-		        height: '80px',
-		        color: '#6E6E6E',
-		        position: 'right',
-		        alwaysVisible: true,
-		        railVisible: true,
-		        railColor: '#BDBDBD'
-		    });
-		    */
-		});
+    {   
+    	$("#dialog").dialog({
+    		width: 80,
+    		minHeight: 120,
+    		modal: false,
+    		autoOpen: true,
+    		resizable: false,
+    		open: function (event, ui) 
+    		{
+    			//$('.ui-dialog-titlebar').hide();
+    			$('#dialog').css('overflow', 'inherit');
+    			$('#dialog').css("border-radius", "5px");
+    			
+				$('#innenDialog').html('<li><div id="divContext">Snap-To</div></li>');
+        		$('#innenDialog').mouseover(function(){this.style.cursor='pointer';});
+        		$('#divContext').click(function(){pointListShow();});
+        		
+        		$('.ui-widget-overlay').click (function () {
+    				$('#dialog').dialog('close');
+				});
+        			
+	    	    $('#innenDialog').slimScroll({
+			        size: '10px',
+			        height: '95px',
+			        color: '#7E7E7E',
+			        position: 'right',
+			        alwaysVisible: true,
+			        railVisible: true,
+			        railColor: '#BDBDBD'
+			    });
+			}
+        });
+        
+        $("#dialog").dialog( "option", "position", [x, y]);
     };
     
     
@@ -56,15 +59,19 @@ function SnapContext()
     {
     	// List ob Elements on the Display
     	var elementList = primitiveManager.getIDList();
+
+		if(vecA == 0){ vecA = primitiveManager.getCurrentPrimitive().getTranslation(); }
+		else{ vecB = primitiveManager.getCurrentPrimitive().getTranslation(); }
+		
+		if(vecA != 0 && vecB != 0)
+		{
+			console.log(vecA + "");
+			console.log(vecB + "");
+			//snapTo(vecA, vecB);
+		}
     	
-	    if(elementList.length != null)
-	    { 	
-	    	for(var i = 0; i < elementList.length; i++)
-	    	{
-	    		//Set Point to Object
-	    		createContextPoint.setPoint(pointListObj.point1.position, elementList[i]);
-	    	}
-	    }
+    	//Set Point to this object
+	    createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID());
     }
     
     
@@ -75,7 +82,7 @@ function SnapContext()
     {
     	//1.rotiere objekt
 		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
-		var rotationMatrix = x3dom.fields.Quaternion.rotateFromTo(vecA, vecB). toMatrix();
+		var rotationMatrix = x3dom.fields.Quaternion.rotateFromTo(vecA, vecB).toMatrix();
 		
 		//update globale rotation, translation, skalierung des objekts („prim“ ist ein „Primitive“)
 		var matTransNode        = prim.getMatrixTransformNode();
