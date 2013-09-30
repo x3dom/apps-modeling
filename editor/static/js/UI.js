@@ -1414,5 +1414,13 @@ function UI(primitiveManager){
         };
 
 
+
+        this.componentSearchFieldChanged = function(str) {
+            //TODO: implement
+
+        };
+
+
+
         this.treeViewer = new SimpleTreeViewer("tree");
 }
