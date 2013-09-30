@@ -1,8 +1,5 @@
 function StorageManager(){}
 
-// the server to which the DSL description is sent
-var server_3D_url = "http://localhost:8080/";
-
 StorageManager.prototype.saveScene = function()
 {
     var shapeDataDSL = "# scene data exported from X3DOM component editor\n";
@@ -32,22 +29,24 @@ StorageManager.prototype.saveScene = function()
         shapeDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
         // @todo: the comparison with 0.0 is not safe. 
-        if ((prim.tX!=0.0) && (prim.tY!=0.0) && (prim.tZ!=0.0))
+        if ((prim.tX!=0.0) || (prim.tY!=0.0) || (prim.tZ!=0.0))
             {
             shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
             }
         // @todo: the comparison with 0.0 is not safe. 
         if ((prim.sX!=1.0) || (prim.sY!=1.0) || (prim.sZ!=1.0))
             {
-            shapeDataDSL += prim.id + " = scale_shape(" + prim.sX + "," + prim.sY + "," + prim.sZ + ")\n";
+            shapeDataDSL += prim.id + " = scale_shape(" + prim.id + "," + prim.sX + "," + prim.sY + "," + prim.sZ + ")\n";
             }
         // then do the same with rotation
-        shapeDataDSL += prim.id + " = rotate_shape(" + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
-            
+        if ((prim.rX!=0.0) || (prim.rY!=0.0) || (prim.rZ!=0.0))
+            {
+            shapeDataDSL += prim.id + " = rotate_shape_3_axis(" + prim.id + "," + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
+            }
     });
 
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
-    shapeDataDSL += "component_shape = (";
+    shapeDataDSL += "final_shape = (";
     var positivePrimitiveIndex = 0;
     Array.forEach(primitivesJSON, function(prim){
         if (prim.paramValueMap["Positive Element"] == "true") { 
@@ -92,8 +91,11 @@ StorageManager.prototype.processDSL = function(shapeDataDSL){
     // the result (succesfull, fail, etc.)
     console.log("Requesting 3D server ...");
     $.post('/process_dsl',{shape_model:shapeDataDSL}, function(response) {
-    // log the response to the console
-    console.log("Response: " + response);
+        data = $.parseJSON(response)
+        console.log("stdout: " + data.stdout);
+        console.log("stderr: " + data.stderr);
+        console.log("URI geometrie tesselee: " + data.uri_geometrie_tesselee);
+        console.log("URI occurrence geometrique: " + data.uri_occurrence_geometrique);
     });
 };
 
