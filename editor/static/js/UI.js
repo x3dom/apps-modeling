@@ -212,48 +212,53 @@ function UI(primitiveManager){
 
         ///BEGIN TODO: MERGE THIS WITH THE OTHER INIT CODE ABOVE TO MINIMIZE CODE DUPLICATION
         ///-----------
-        $("#catalogueTree").dynatree({
-            checkbox: true,
-            selectMode: 3,
-            clickFolderMode: 1,
-            fx: { height: "toggle", duration: 500 },
-            onFocus: function(node) {
-                node.scheduleAction("cancel");
+        if ($("#catalogueTree"))
+        {
 
-            },
-            onSelect: function(select, node) {
-                function recursiveSelection(tempNode){
-                    if (tempNode.data.isFolder){
-                        for (var i = 0; i < tempNode.childList.length; i++){
-                            recursiveSelection(tempNode.childList[i]);
+            $("#catalogueTree").dynatree({
+                checkbox: true,
+                selectMode: 3,
+                clickFolderMode: 1,
+                fx: { height: "toggle", duration: 500 },
+                onFocus: function(node) {
+                    node.scheduleAction("cancel");
+
+                },
+                onSelect: function(select, node) {
+                    function recursiveSelection(tempNode){
+                        if (tempNode.data.isFolder){
+                            for (var i = 0; i < tempNode.childList.length; i++){
+                                recursiveSelection(tempNode.childList[i]);
+                            }
+                        }
+                        else {
+                            /*
+                            primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
+
+                            if (tempNode.isActive()){
+                                if (tempNode.isSelected())
+                                    primitiveManager.highlightCurrentObject(true);
+                            }
+                             */
                         }
                     }
-                    else {
-                        /*
-                        primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
 
-                        if (tempNode.isActive()){
-                            if (tempNode.isSelected())
-                                primitiveManager.highlightCurrentObject(true);
+                    recursiveSelection(node);
+                    //if (!node.data.isFolder)
+                    //    primitiveManager.setPrimitiveVisibility(node.data.key, select);
+                    },
+                    onBlur: function(node) {
+                        node.scheduleAction("cancel");
+                    },
+                    onActivate: function(node){
+                        if (node.isSelected()) {
+                            //that.treeViewer.activate(node.data.key);
+                            //primitiveManager.selectObject(node.data.key);
                         }
-                         */
                     }
-                }
+            });
 
-                recursiveSelection(node);
-                //if (!node.data.isFolder)
-                //    primitiveManager.setPrimitiveVisibility(node.data.key, select);
-            },
-            onBlur: function(node) {
-                node.scheduleAction("cancel");
-            },
-            onActivate: function(node){
-                if (node.isSelected()) {
-                    //that.treeViewer.activate(node.data.key);
-                    //primitiveManager.selectObject(node.data.key);
-                }
-            }
-        });
+        }
         //END TODO
         ///-----------
 
