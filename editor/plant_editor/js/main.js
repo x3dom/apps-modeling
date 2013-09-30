@@ -20,5 +20,7 @@ window.onload = function(){
     ui.initializePlantEditorSpecialUI();
     controller.Activate("hand");
     primitiveManager.clearSelection();
-    ui.treeViewer.addGroup("tree", "Scene", "Scene");
+    ui.treeViewer.addGroup("Scene", "Scene");
+
+    ui.catalogueTreeViewer = new SimpleTreeViewer("catalogueTree");
 };

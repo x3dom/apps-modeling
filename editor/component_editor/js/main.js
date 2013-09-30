@@ -28,7 +28,7 @@ document.onload = function(){
     ui.initializeComponentEditorSpecialUI();
     controller.Activate("hand");
     primitiveManager.clearSelection();
-    ui.treeViewer.addGroup("tree", "Scene", "Scene");
+    ui.treeViewer.addGroup("Scene", "Scene");
 };
 
 

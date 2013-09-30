@@ -7,6 +7,104 @@ var highlightColorButton = "#FFC125";
 
 
 
+/**
+ * Class for managing a tree view.
+ */
+SimpleTreeViewer = function(treeElementID){
+    this.treeID = treeElementID;
+};
+
+
+/**
+ * Adds a node to a group of the tree.
+ * @param id ID of the new node
+ * @param text Label of the new node
+ * @param group Group where the node should be added. If left out, the new node is added to the root node.
+ */
+SimpleTreeViewer.prototype.addNode = function (id, text, group) {
+    var groupNode;
+
+    if (arguments.length === 3)
+    {
+        groupNode = this.getNode(group);
+    }
+    else
+    {
+        groupNode = $("#" + this.treeID).dynatree("getRoot");
+    }
+
+    groupNode.addChild({
+        title: text,
+        key: id,
+        //icon: "primitives.jpg",
+        select: true,
+        activate: true
+    });
+};
+
+
+SimpleTreeViewer.prototype.addGroup = function (id, text) {
+
+    var rootNode = $("#" + this.treeID).dynatree("getRoot");
+
+    var childNode = rootNode.addChild({
+        title: text,
+        key: id,
+        isFolder: true,
+        select: true,
+        selectMode: 3,
+        expand: true
+    });
+
+    rootNode.addChild(childNode);
+};
+
+
+SimpleTreeViewer.prototype.moveExistingNodeToGroup = function (node, group) {
+    node  = this.getNode(node);
+    group = this.getNode(group);
+
+    var title  = node.data.title;
+    var id     = node.data.key;
+    var select = node.data.select;
+    var icon   = node.data.icon;
+
+    this.removeNode(id);
+
+    group.addChild({
+        title: title,
+        key: id,
+        icon: icon,
+        select: select,
+        activate: true
+    });
+};
+
+
+SimpleTreeViewer.prototype.getNode = function (id) {
+    return $("#" + this.treeID).dynatree("getTree").getNodeByKey(id);
+};
+
+
+SimpleTreeViewer.prototype.removeNode = function (id) {
+    this.getNode(id).remove();
+};
+
+
+SimpleTreeViewer.prototype.rename = function (id, name) {
+    var node = this.getNode(id);
+    node.data.title = name;
+    node.render();
+};
+
+
+SimpleTreeViewer.prototype.activate = function (id) {
+    var tree = $("#" + this.treeID).dynatree("getTree");
+    tree.activateKey(id);
+};
+
+
+
 /*
  * The UI object handles the getter and setter function for all GUI elements
  * @returns {UI}
@@ -1316,77 +1414,5 @@ function UI(primitiveManager){
         };
 
 
-        this.treeViewer = {};
-
-
-        this.treeViewer.addPrimitive = function (id, text) {
-            // This is how we would add tree nodes programatically
-            var rootNode = $("#tree").dynatree("getRoot");
-
-            rootNode.addChild({
-                title: text,
-                key: id,
-                //icon: "primitives.jpg",
-                select: true,
-                activate: true
-            });
-        };
-
-
-        this.treeViewer.addGroup = function (treeID, id, text) {
-            // This is how we would add tree nodes programatically
-            var rootNode = $("#" + treeID).dynatree("getRoot");
-            var childNode = rootNode.addChild({
-                title: text,
-                key: id,
-                isFolder: true,
-                select: true,
-                selectMode: 3,
-                expand: true
-            });
-            rootNode.addChild(childNode);
-        };
-
-
-        this.treeViewer.moveExistableNodeToGroup = function (node, group) {
-            node = that.treeViewer.getNode(node);
-            group = that.treeViewer.getNode(group);
-            var title = node.data.title;
-            var id = node.data.key;
-            var select = node.data.select;
-            var icon = node.data.icon;
-            that.treeViewer.removeNode(id);
-            group.addChild({
-                title: title,
-                key: id,
-                icon: icon,
-                select: select,
-                activate: true
-            });
-        };
-
-
-        this.treeViewer.getNode = function (id) {
-            return $("#tree").dynatree("getTree").getNodeByKey(id);
-        };
-
-
-        this.treeViewer.removeNode = function (id) {
-            that.treeViewer.getNode(id).remove();
-        };
-
-
-        this.treeViewer.rename = function (id, name) {
-            var node = that.treeViewer.getNode(id);
-            node.data.title = name;
-            node.render();
-        };
-
-
-        this.treeViewer.activate = function (id) {
-            // Get the DynaTree object instance:
-            var tree = $("#tree").dynatree("getTree");
-            // Use it's class methods:
-            tree.activateKey(id);
-        };
+        this.treeViewer = new SimpleTreeViewer("tree");
 }

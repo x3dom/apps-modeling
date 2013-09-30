@@ -322,8 +322,7 @@ function PrimitiveManager(){
 
 
     /*
-     * Adds a component by exploiting the primitive class - a component is simply a primitive,
-     * but without any parameters.
+     * Adds a component to the editor's UI.
      */
     this.addComponent = function(typeName){
         ui.toggleGroupMode(false);
@@ -350,8 +349,8 @@ function PrimitiveManager(){
 
         this.updateTransformUIFromCurrentObject();
 
-        ui.treeViewer.addPrimitive(id, component.getName());
-        ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
+        ui.treeViewer.addNode(id, component.getName());
+        ui.treeViewer.moveExistingNodeToGroup(id, "Scene");
 
         return component;
     };
@@ -418,8 +417,8 @@ function PrimitiveManager(){
 
         this.updateTransformUIFromCurrentObject();
 
-        ui.treeViewer.addPrimitive(id, prim.getName());
-        ui.treeViewer.moveExistableNodeToGroup(id, "Scene");
+        ui.treeViewer.addNode(id, prim.getName());
+        ui.treeViewer.moveExistingNodeToGroup(id, "Scene");
                 
         return prim;
     };
