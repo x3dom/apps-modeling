@@ -69,24 +69,10 @@ SimpleTreeViewer.prototype.addGroup = function (id, text) {
 
 
 SimpleTreeViewer.prototype.moveExistingNodeToGroup = function (node, group) {
-    node  = this.getNode(node);
-    group = this.getNode(group);
+    var node  = this.getNode(node);
+    var group = this.getNode(group);
 
-    var title  = node.data.title;
-    var id     = node.data.key;
-    var select = node.data.select;
-    var icon   = node.data.icon;
-
-    this.removeNode(id);
-
-    group.addChild({
-        title: title,
-        key: id,
-        icon: icon,
-        select: select,
-        activate: true,
-        hideCheckbox: !this.checkable
-    });
+    node.move(group);
 };
 
 
@@ -126,6 +112,8 @@ function UI(primitiveManager){
     this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
 
     this.treeViewer = new SimpleTreeViewer("tree");
+
+    this.catalogueTreeNodes = [];
 
     // color picker component
     var farbtasticPicker = null;
@@ -329,7 +317,7 @@ function UI(primitiveManager){
                 checkbox: true,
                 selectMode: 3,
                 clickFolderMode: 1,
-                fx: { height: "toggle", duration: 500 },
+                fx: null,
                 onFocus: function(node) {
                     node.scheduleAction("cancel");
 
@@ -1427,13 +1415,90 @@ function UI(primitiveManager){
 
 
 
+        this.buildCatalogueTreeFromGroupsAndNodes = function(){
+            $("#catalogueTree").dynatree("getRoot").removeChildren();
+
+            var i;
+            var nodeData;
+
+            for (i = 0; i < this.catalogueTreeNodes.length; ++i)
+            {
+                nodeData = this.catalogueTreeNodes[i];
+
+                if (nodeData.groupName == "")
+                {
+                    this.catalogueTreeViewer.addGroup(nodeData.name, nodeData.name);
+                }
+            }
+
+            for (i = 0; i < this.catalogueTreeNodes.length; ++i)
+            {
+                nodeData = this.catalogueTreeNodes[i];
+
+                if (nodeData.groupName != "")
+                {
+                    this.catalogueTreeViewer.addNode(nodeData.name, nodeData.name, nodeData.groupName);
+                }
+            }
+        };
+
+
+
         this.componentSearchFieldChanged = function(str) {
             this.limitCatalogueTreeToMatchingEntries(str);
         };
 
 
 
-        this.limitCatalogueTreeToMatchingEntries = function(str){
+        this.limitCatalogueTreeToMatchingEntries = function(str, caseSensitive){
+            //unfortunately, with the "dynatree" tree view, there is not other way than removing nodes
+            this.buildCatalogueTreeFromGroupsAndNodes();
 
+            var strContains;
+            var i;
+            var root         = $("#catalogueTree").dynatree("getRoot");
+            var rootChildren = root.getChildren();
+
+            //by default, the search is not case sensitive
+            if (arguments.length >= 2 && caseSensitive)
+            {
+                strContains = function(strA, strB)
+                {
+                    return (strA.indexOf(strB) != -1);
+                }
+            }
+            else
+            {
+                strContains = function(strA, strB)
+                {
+                    return (strA.toLowerCase().indexOf(strB.toLowerCase()) != -1);
+                }
+            }
+
+            var removeNonMatchingNodes = function(node)
+            {
+                var j;
+                var children;
+
+                if (!node.data.isFolder && !strContains(node.data.title, str))
+                {
+                    node.remove();
+                }
+                else
+                {
+                    children = node.getChildren();
+
+                    for (j = 0; children && j < children.length; ++j)
+                    {
+                        removeNonMatchingNodes(children[j]);
+                    }
+                }
+            }
+
+            for (i = 0; i < rootChildren.length; ++i)
+            {
+                removeNonMatchingNodes(rootChildren[i]);
+            }
         };
+
 }

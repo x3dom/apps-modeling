@@ -12,6 +12,8 @@ StorageManager.prototype.loadScene = function(){
 
     var componentURLToComponentName = {};
 
+    ui.catalogueTreeNodes = [];
+
     //TODO: here, we could notify the user about the progress of loading
 
     //get a list with all "Component Classes" / "Composants" from the server
@@ -23,7 +25,7 @@ StorageManager.prototype.loadScene = function(){
 
             for (component in componentURLToComponentName)
             {
-                ui.catalogueTreeViewer.addGroup(componentURLToComponentName[component], componentURLToComponentName[component]);
+                ui.catalogueTreeNodes.push({name: componentURLToComponentName[component], groupName: ""});
             }
         }
     );
@@ -42,11 +44,13 @@ StorageManager.prototype.loadScene = function(){
                 componentOccurenceName = jsonResponse[componentOccurence][0];
                 componentName          = componentURLToComponentName[jsonResponse[componentOccurence][1]];
 
-                ui.catalogueTreeViewer.addNode(componentOccurenceName, componentOccurenceName, componentName);
+                ui.catalogueTreeNodes.push({name: componentOccurenceName, groupName: componentName});
             }
+
+            //TODO: we have to ensure that this happens after the first "GET" result!
+            ui.buildCatalogueTreeFromGroupsAndNodes();
         }
     );
-
 
     //TESTING
     //======
