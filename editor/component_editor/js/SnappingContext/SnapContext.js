@@ -3,10 +3,16 @@
  */
 function SnapContext()
 {
-	vecA_ID = 0;
-	vecA_pos = 0;
-	pointA_ID = 0;
-	pointA_pos = 0;
+	var vecA_ID = 0;		//id from Element
+	var vecA_pos = 0;		//position from Element
+	var pointA_ID = 0;		//id from Point
+	var pointA_pos = 0;		//position from Point
+	var vecB_ID = 0;		//id from Element
+	var vecB_pos = 0;		//position from Element
+	var pointB_ID = 0;		//id from Point
+	var pointB_pos = 0;		//position from Point
+	var currentVecA = 0;	//the right position in the world coordinate from Snappoint
+	var currentVecB = 0;	//the right position in the world coordinate from Snappoint
 
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
@@ -65,52 +71,43 @@ function SnapContext()
     	// List ob Elements on the Display
     	// var elementList = primitiveManager.getIDList();
 
-		if(vecA_pos == 0)
-		{
-			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
-			
-			vecA_ID = primitiveManager.getCurrentPrimitiveID();
-			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
-			
-			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
-			pointA_pos = snapContext.getPosition(pointA_ID); 
-			
-			console.log(vecA_ID);
-			console.log(vecA_pos);
-			console.log(pointA_ID);
-			console.log(pointA_pos);
-		}
-		else
+		if(vecB_pos == 0)
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
 			
 			vecB_ID = primitiveManager.getCurrentPrimitiveID();
 			vecB_pos = primitiveManager.getCurrentPrimitive().getTranslation();
-			
 			pointB_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
-			pointB_pos = snapContext.getPosition(pointB_ID); 
+			pointB_pos = snapContext.getPosition(pointB_ID);
+			currentVecB = vecB_pos.add(pointB_pos);
 			
-			console.log(vecB_ID);
-			console.log(vecB_pos);
-			console.log(pointB_ID);
-			console.log(pointB_pos);
+			console.log(currentVecB);
+		}
+		else
+		{
+			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
+			
+			vecA_ID = primitiveManager.getCurrentPrimitiveID();
+			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
+			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
+			pointA_pos = snapContext.getPosition(pointA_ID); 
+			currentVecA = vecA_pos.add(pointA_pos);
+			
+			console.log(currentVecA);
 		}
 		
-		/*
-		if(vecA != 0 && vecB != 0)
+		
+		if(currentVecA != 0 && currentVecB != 0)
 		{
-			//console.log();
-			//console.log();
-			//snapTo(vecA, vecB);
+			snapTo(currentVecA, currentVecB, primitiveManager.getPrimitiveByID(vecA_ID));
 		}
-		*/
     };
     
     
     /*
      * 
      */
-    function snapTo(vecA, vecB)
+    function snapTo(vecA, vecB, prim)
     {
     	//1.rotiere objekt
 		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
@@ -134,37 +131,21 @@ function SnapContext()
 		var rad2Deg = 180.0 / Math.PI;
 		prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
 		
+		this.primitiveManager.highlightCurrentBoundingVolume(false);
+		prim.setTranslation(vecB.x + pointA_pos.x, vecB.y + pointA_pos.y, vecB.z + pointA_pos.z);
 		//update der world space-positionen der snapping points
 		//(siehe mail “Punkte und Normalen eines Primitives transformieren“)
-		var transformedPoint   = newTransformMat. multMatrixPnt();
+		//var transformedPoint = newTransformMat.multMatrixPnt();
 		
 		//2. verschiebe objekt
 		//(otherTransformedPoint ist auch im world space, wurde bereits berechnet)
-		var additionalTranslation = otherTransformedPoint.subtract(transformedPoint);
+		//var additionalTranslation = otherTransformedPoint.subtract(transformedPoint);
 		
 		//wende additionalTranslation an
     };
     
-    
-    /*
-    // Name ist der Name von dem Punkt
-    this.addContextMenuEntry = function(name) 
-    {
-	    var div = document.getElementById("innenDialog");
-	    var that = this;
 	
-	    var divPrim = document.createElement("div");
-	    divPrim.setAttribute("id", "ctx_" + name);
-	    divPrim.setAttribute("class", "ContextMenuEntry");
-	    divPrim.innerHTML = name;
-	
-	    div.appendChild(divPrim);
-	
-	    divPrim.onclick = function () { document.getElementById("contextMenu").style.display = "none"; };
-	};
-	*/
-	
-		/* */
+	/* */
 	this.getIDList = function()
 	{
         var pointObjID = [];
