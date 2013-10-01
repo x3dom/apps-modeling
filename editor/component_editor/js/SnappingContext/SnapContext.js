@@ -107,8 +107,8 @@ function SnapContext()
     /*
      * 
      */
-    function snapTo(vecA, vecB, prim)
-    {
+    function snapTo(vecA, vecB, prim, objB)
+    {		
     	//1.rotiere objekt
 		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
 		var rotationMatrix = x3dom.fields.Quaternion.rotateFromTo(vecA, vecB).toMatrix();
@@ -129,24 +129,27 @@ function SnapContext()
 		prim.setScaleAsVec(scaleVec);
 		var angles = rotationQuat.toMatrix().getEulerAngles();
 		var rad2Deg = 180.0 / Math.PI;
-		//prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
+		prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
 		
-		this.primitiveManager.highlightCurrentBoundingVolume(false);
-		
+		/*
+    	this.primitiveManager.highlightCurrentBoundingVolume(false);
 		var x = currentVecB.x + pointA_pos.x;
 		var y = currentVecB.y + pointA_pos.y;
 		var z = currentVecB.z + pointA_pos.z;
-		
 		prim.setTranslation(x, y, z);
+		*/	
+			
 		//update der world space-positionen der snapping points
 		//(siehe mail “Punkte und Normalen eines Primitives transformieren“)
-		//var transformedPoint = newTransformMat.multMatrixPnt();
+		var transformedPoint = newTransformMat.multMatrixPnt(vecA);
 		
 		//2. verschiebe objekt
 		//(otherTransformedPoint ist auch im world space, wurde bereits berechnet)
-		//var additionalTranslation = otherTransformedPoint.subtract(transformedPoint);
+		var additionalTranslation = vecB.subtract(transformedPoint);
 		
 		//wende additionalTranslation an
+		this.primitiveManager.highlightCurrentBoundingVolume(false);
+		prim.setTranslation(additionalTranslation.x, additionalTranslation.y, additionalTranslation.z);
     };
     
 	
