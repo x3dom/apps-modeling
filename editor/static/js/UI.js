@@ -9,8 +9,14 @@ var highlightColorButton = "#FFC125";
 
 /**
  * Class for managing a tree view.
+ * The optional elementsCheckable flag indicates whether the tree nodes should be checkable (default: true).
  */
-SimpleTreeViewer = function(treeElementID){
+SimpleTreeViewer = function(treeElementID, elementsCheckable){
+    this.checkable = true;
+
+    if (arguments.length >= 2)
+        this.checkable = elementsCheckable;
+
     this.treeID = treeElementID;
 };
 
@@ -24,7 +30,7 @@ SimpleTreeViewer = function(treeElementID){
 SimpleTreeViewer.prototype.addNode = function (id, text, group) {
     var groupNode;
 
-    if (arguments.length === 3)
+    if (arguments.length >= 3)
     {
         groupNode = this.getNode(group);
     }
@@ -38,7 +44,8 @@ SimpleTreeViewer.prototype.addNode = function (id, text, group) {
         key: id,
         //icon: "primitives.jpg",
         select: true,
-        activate: true
+        activate: true,
+        hideCheckbox: !this.checkable
     });
 };
 
@@ -53,7 +60,8 @@ SimpleTreeViewer.prototype.addGroup = function (id, text) {
         isFolder: true,
         select: true,
         selectMode: 3,
-        expand: true
+        expand: true,
+        hideCheckbox: !this.checkable
     });
 
     rootNode.addChild(childNode);
@@ -76,7 +84,8 @@ SimpleTreeViewer.prototype.moveExistingNodeToGroup = function (node, group) {
         key: id,
         icon: icon,
         select: select,
-        activate: true
+        activate: true,
+        hideCheckbox: !this.checkable
     });
 };
 
@@ -115,6 +124,9 @@ function UI(primitiveManager){
     var fadeSwitch = [0, 0];
     // primitive parameter map to synchronize names between editor and x3dom
     this.primitiveParameterMap = createParameterMap("PrimitiveParameterMap.xml");
+
+    this.treeViewer = new SimpleTreeViewer("tree");
+
     // color picker component
     var farbtasticPicker = null;
     // primitive type for 2D-Editor
@@ -1416,11 +1428,12 @@ function UI(primitiveManager){
 
 
         this.componentSearchFieldChanged = function(str) {
-            //TODO: implement
-
+            this.limitCatalogueTreeToMatchingEntries(str);
         };
 
 
 
-        this.treeViewer = new SimpleTreeViewer("tree");
+        this.limitCatalogueTreeToMatchingEntries = function(str){
+
+        };
 }

@@ -22,5 +22,5 @@ window.onload = function(){
     primitiveManager.clearSelection();
     ui.treeViewer.addGroup("Scene", "Scene");
 
-    ui.catalogueTreeViewer = new SimpleTreeViewer("catalogueTree");
+    ui.catalogueTreeViewer = new SimpleTreeViewer("catalogueTree", false);
 };
