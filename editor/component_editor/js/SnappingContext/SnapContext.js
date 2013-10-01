@@ -2,11 +2,16 @@
  * 
  */
 function SnapContext()
-{	
-	var vecA = 0;
-	var vecB = 0;
+{
+	vecA_ID = 0;
+	vecA_pos = 0;
+	pointA_ID = 0;
+	pointA_pos = 0;
+
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
+	var objPointList = createContextPoint.getObjPointList();
+	
 	
 	// Retrieves the information about the position of the Snappoints
 	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
@@ -56,23 +61,50 @@ function SnapContext()
     
     
     function pointListShow()
-    {
+    {	    
     	// List ob Elements on the Display
-    	var elementList = primitiveManager.getIDList();
+    	// var elementList = primitiveManager.getIDList();
 
-		if(vecA == 0){ vecA = primitiveManager.getCurrentPrimitive().getTranslation(); }
-		else{ vecB = primitiveManager.getCurrentPrimitive().getTranslation(); }
+		if(vecA_pos == 0)
+		{
+			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
+			
+			vecA_ID = primitiveManager.getCurrentPrimitiveID();
+			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
+			
+			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
+			pointA_pos = snapContext.getPosition(pointA_ID); 
+			
+			console.log(vecA_ID);
+			console.log(vecA_pos);
+			console.log(pointA_ID);
+			console.log(pointA_pos);
+		}
+		else
+		{
+			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
+			
+			vecB_ID = primitiveManager.getCurrentPrimitiveID();
+			vecB_pos = primitiveManager.getCurrentPrimitive().getTranslation();
+			
+			pointB_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
+			pointB_pos = snapContext.getPosition(pointB_ID); 
+			
+			console.log(vecB_ID);
+			console.log(vecB_pos);
+			console.log(pointB_ID);
+			console.log(pointB_pos);
+		}
 		
+		/*
 		if(vecA != 0 && vecB != 0)
 		{
-			console.log(vecA + "");
-			console.log(vecB + "");
+			//console.log();
+			//console.log();
 			//snapTo(vecA, vecB);
 		}
-    	
-    	//Set Point to this object
-	    createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID());
-    }
+		*/
+    };
     
     
     /*
@@ -111,7 +143,7 @@ function SnapContext()
 		var additionalTranslation = otherTransformedPoint.subtract(transformedPoint);
 		
 		//wende additionalTranslation an
-    }
+    };
     
     
     /*
@@ -131,4 +163,40 @@ function SnapContext()
 	    divPrim.onclick = function () { document.getElementById("contextMenu").style.display = "none"; };
 	};
 	*/
+	
+		/* */
+	this.getIDList = function()
+	{
+        var pointObjID = [];
+        for (var key in objPointList){
+            pointObjID.push(key);
+        }
+        
+        return pointObjID;
+	};
+	
+	/* */
+    this.getPrimitiveByID = function(id){
+        if (id && objPointList[id]) {
+            return objPointList[id];
+        }
+        else {
+            return null;
+        }
+    };
+	
+	/* */
+    this.getCurrentPrimitiveID = function(){
+        return primitiveManager.getCurrentPrimitiveID() + '_point_0';
+    };
+    
+	/* */
+    this.getCurrentPrimitive = function(){
+    	return snapping.getPrimitiveByID(primitiveManager.getCurrentPrimitiveID() + '_point_0'); 
+    };
+    
+	/* */
+    this.getPosition = function(pointID){
+        return x3dom.fields.SFVec3f.parse(objPointList[pointID].getAttribute("translation"));
+    };
 }
