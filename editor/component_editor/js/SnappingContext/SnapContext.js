@@ -14,6 +14,8 @@ function SnapContext()
 	var currentVecA = 0;	//the right position in the world coordinate from Snappoint
 	var currentVecB = 0;	//the right position in the world coordinate from Snappoint
 
+	var contextObjList = []; //Save only 2 Objects
+	
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
 	var objPointList = createContextPoint.getObjPointList();
@@ -81,11 +83,14 @@ function SnapContext()
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
 			
+			contextObjList.push(primitiveManager.getCurrentPrimitiveID());
+			
 			vecB_ID = primitiveManager.getCurrentPrimitiveID();
 			vecB_pos = primitiveManager.getCurrentPrimitive().getTranslation();
 			pointB_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
 			pointB_pos = snapContext.getPosition(pointB_ID);
 			currentVecB = vecB_pos.add(pointB_pos);
+			snapContext.hide();
 			
 			console.log(currentVecB);
 		}
@@ -93,19 +98,25 @@ function SnapContext()
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
 			
+			contextObjList.push(primitiveManager.getCurrentPrimitiveID());
+			
 			vecA_ID = primitiveManager.getCurrentPrimitiveID();
 			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
 			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
 			pointA_pos = snapContext.getPosition(pointA_ID); 
 			currentVecA = vecA_pos.add(pointA_pos);
+			snapContext.hide();
 			
 			console.log(currentVecA);
 		}
 		
 		
-		if(currentVecA != 0 && currentVecB != 0)
+		if(contextObjList.length == 2)
 		{
 			snapTo(currentVecA, currentVecB, primitiveManager.getPrimitiveByID(vecA_ID));
+			
+			contextObjList = [];	//Reset to null
+			vecB_pos = 0;			//Reset to null
 		}
     };
     
@@ -113,7 +124,7 @@ function SnapContext()
     /*
      * 
      */
-    function snapTo(vecA, vecB, prim, objB)
+    function snapTo(vecA, vecB, prim)
     {		
     	//1.rotiere objekt
 		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
