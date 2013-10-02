@@ -22,7 +22,7 @@ function SnapContext()
 	// Retrieves the information about the position of the Snappoints
 	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
 	
-	this.init = function()
+	this.init = function(x, y)
 	{
 		snapContext.addContextMenu(x, y);
 	};

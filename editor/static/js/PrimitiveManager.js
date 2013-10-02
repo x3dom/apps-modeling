@@ -413,10 +413,13 @@ function PrimitiveManager(){
         prim.getDOMNode().addEventListener("click", 
         function(e)
     	{   
-    		// Determine mouse position, please do not put in front of the variable
-    		x = (window.event)?window.event.clientX:e.pageX;
-			y = (window.event)?window.event.clientY:e.pageY;
-			snapContext.init(x, y); 
+            if (e.button == 2)
+            {
+                // Determine mouse position, please do not put in front of the variable
+                var x = (window.event)?window.event.clientX:e.pageX;
+                var y = (window.event)?window.event.clientY:e.pageY;
+                snapContext.init(x, y);
+            }
         },
         false);
 		
