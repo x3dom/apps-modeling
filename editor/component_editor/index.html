@@ -301,7 +301,7 @@
     <x3d id="x3d" showStat="false" showLog="false" disableTouch="true"
          onkeydown="if ((event || window.event).keyCode == 46){ primitiveManager.removeCurrentObject(); /*46 = DEL*/ }"
          ondrop="controller.drop(event)" ondragover="controller.allowDrop(event)" ondragenter="controller.allowDrop(event)">
-        <scene onbackgroundClicked="ui.createElemOnClick(event);">
+        <scene onbackgroundClicked="ui.createElemOnClick(event); snapContext.hide();">
             <viewpoint id="viewPoint" zNear="0.1"
                        position="8.36 9.81 16.91" orientation="-0.69262 0.71082 0.12256 0.61209">
             </viewpoint>

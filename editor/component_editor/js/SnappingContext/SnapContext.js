@@ -28,6 +28,11 @@ function SnapContext()
 	};
     
     
+    this.hide = function()
+   	{
+   		$(".ui-dialog").hide();
+   	};
+   	
     this.addContextMenu = function(x, y)
     {   
     	$("#dialog").dialog({
@@ -38,7 +43,7 @@ function SnapContext()
     		resizable: false,
     		open: function (event, ui) 
     		{
-    			//$('.ui-dialog-titlebar').hide();
+    			$('.ui-dialog-titlebar').hide();
     			$('#dialog').css('overflow', 'inherit');
     			$('#dialog').css("border-radius", "5px");
     			
@@ -63,6 +68,7 @@ function SnapContext()
         });
         
         $("#dialog").dialog( "option", "position", [x, y]);
+        $(".ui-dialog").show();
     };
     
     
