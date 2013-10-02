@@ -15,10 +15,11 @@ function SnapContext()
 	var currentVecB = 0;	//the right position in the world coordinate from Snappoint
 
 	var contextObjList = []; //Save only 2 Objects
+	var objPointList = [];	 //Pointlist
 	
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
-	var objPointList = createContextPoint.getObjPointList();
+	objPointList = createContextPoint.getObjPointList();
 	
 	
 	// Retrieves the information about the position of the Snappoints
@@ -49,7 +50,7 @@ function SnapContext()
     			$('#dialog').css('overflow', 'inherit');
     			$('#dialog').css("border-radius", "5px");
     			
-				$('#innenDialog').html('<li><div id="divContext">Snap-To</div></li>');
+				$('#innenDialog').html('<li><div id="divContext">Snap to Point</div></li>');
         		$('#innenDialog').mouseover(function(){this.style.cursor='pointer';});
         		$('#divContext').click(function(){pointListShow();});
         		
@@ -67,7 +68,7 @@ function SnapContext()
 			        railColor: '#BDBDBD'
 			    });
 			}
-        });
+     	});
         
         $("#dialog").dialog( "option", "position", [x, y]);
         $(".ui-dialog").show();
@@ -75,10 +76,7 @@ function SnapContext()
     
     
     function pointListShow()
-    {	    
-    	// List ob Elements on the Display
-    	// var elementList = primitiveManager.getIDList();
-
+    {
 		if(vecB_pos == 0)
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
@@ -146,15 +144,7 @@ function SnapContext()
 		prim.setScaleAsVec(scaleVec);
 		var angles = rotationQuat.toMatrix().getEulerAngles();
 		var rad2Deg = 180.0 / Math.PI;
-		prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
-		
-		/*
-    	this.primitiveManager.highlightCurrentBoundingVolume(false);
-		var x = currentVecB.x + pointA_pos.x;
-		var y = currentVecB.y + pointA_pos.y;
-		var z = currentVecB.z + pointA_pos.z;
-		prim.setTranslation(x, y, z);
-		*/	
+		//prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
 			
 		//update der world space-positionen der snapping points
 		//(siehe mail “Punkte und Normalen eines Primitives transformieren“)
@@ -166,7 +156,14 @@ function SnapContext()
 		
 		//wende additionalTranslation an
 		this.primitiveManager.highlightCurrentBoundingVolume(false);
-		prim.setTranslation(additionalTranslation.x, additionalTranslation.y, additionalTranslation.z);
+		//prim.setTranslation(additionalTranslation.x, additionalTranslation.y, additionalTranslation.z);
+		
+		
+    	this.primitiveManager.highlightCurrentBoundingVolume(false);
+		var x = currentVecB.x + pointA_pos.x;
+		var y = currentVecB.y + pointA_pos.y;
+		var z = currentVecB.z + pointA_pos.z;
+		prim.setTranslation(x, y, z);
     };
     
 	
