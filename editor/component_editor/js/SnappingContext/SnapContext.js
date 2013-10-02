@@ -1,22 +1,24 @@
 /*
  * 
  */
-function SnapContext()
-{
-	var vecA_ID = 0;		//id from Element
-	var vecA_pos = 0;		//position from Element
-	var pointA_ID = 0;		//id from Point
-	var pointA_pos = 0;		//position from Point
-	var vecB_ID = 0;		//id from Element
-	var vecB_pos = 0;		//position from Element
-	var pointB_ID = 0;		//id from Point
-	var pointB_pos = 0;		//position from Point
-	var currentVecA = 0;	//the right position in the world coordinate from Snappoint
-	var currentVecB = 0;	//the right position in the world coordinate from Snappoint
+var vecA_ID = 0;		//id from Element
+var vecA_pos = 0;		//position from Element
+var pointA_ID = 0;		//id from Point
+var pointA_pos = 0;		//position from Point
+var vecB_ID = 0;		//id from Element
+var vecB_pos = 0;		//position from Element
+var pointB_ID = 0;		//id from Point
+var pointB_pos = 0;		//position from Point
+var currentVecA = 0;	//the right position in the world coordinate from Snappoint
+var currentVecB = 0;	//the right position in the world coordinate from Snappoint
 
-	var contextObjList = []; //Save only 2 Objects
-	var objPointList = [];	 //Pointlist
-	
+var contextObjList = []; //Save only 2 Objects
+var objPointList = [];	 //Pointlist
+var dialogList = [];	 //List all dialogs
+
+
+function SnapContext()
+{	
 	var snapJ = new SnapJSON();
 	var createContextPoint = new CreateContextPoint();
 	objPointList = createContextPoint.getObjPointList();
@@ -30,15 +32,46 @@ function SnapContext()
 		snapContext.addContextMenu(x, y);
 	};
     
-    
+    // hide the dialog
     this.hide = function()
    	{
    		$(".ui-dialog").hide();
+   		
+   		for(var i = 0; i < dialogList.length; i++)
+   		{
+   			removeNode(dialogList[i]);
+   		}
+   		
    	};
    	
+   	// Remove all Dialog-window
+   	function removeNode(id)
+   	{
+   		var nodePoint = document.getElementById(id);
+        if(nodePoint && nodePoint.parentNode)
+    	    nodePoint.parentNode.removeChild(nodePoint);
+   	}
+ 
+ 	// Create Dialog to one Element
     this.addContextMenu = function(x, y)
     {   
-    	$("#dialog").dialog({
+    	var objectName = primitiveManager.getCurrentPrimitiveID();
+    	var dialogName = objectName + "_dialog";
+    	var innenDialogName = objectName + "_innenDialog";
+   		
+    	var divInnen = document.createElement("div");
+    	divInnen.setAttribute("id", innenDialogName);
+    	
+    	var divAussen = document.createElement("div");
+    	divAussen.setAttribute("id", dialogName);
+    	
+    	divAussen.appendChild(divInnen);
+    	document.getElementById("dialog").appendChild(divAussen);
+    	
+    	var divContextName = objectName + "_context";
+    	
+    	
+    	$("#" + dialogName).dialog({
     		width: 80,
     		minHeight: 120,
     		modal: false,
@@ -47,18 +80,18 @@ function SnapContext()
     		open: function (event, ui) 
     		{
     			$('.ui-dialog-titlebar').hide();
-    			$('#dialog').css('overflow', 'inherit');
-    			$('#dialog').css("border-radius", "5px");
+    			$("#" + dialogName).css('overflow', 'inherit');
+    			$("#" + dialogName).css("border-radius", "5px");
     			
-				$('#innenDialog').html('<li><div id="divContext">Snap to Point</div></li>');
-        		$('#innenDialog').mouseover(function(){this.style.cursor='pointer';});
-        		$('#divContext').click(function(){pointListShow();});
+    			jQuery('<div/>', {
+    				id: divContextName,
+    				text: 'Snap to point'
+				}).appendTo('#' + innenDialogName);
+				
+        		$('#' + innenDialogName).mouseover(function(){this.style.cursor='pointer';});
+        		$('#' + divContextName).click(function(){pointListShow(objectName);}); 
         		
-        		$('.ui-widget-overlay').click (function () {
-    				$('#dialog').dialog('close');
-				});
-        			
-	    	    $('#innenDialog').slimScroll({
+	    	    $('#' + innenDialogName).slimScroll({
 			        size: '10px',
 			        height: '95px',
 			        color: '#7E7E7E',
@@ -68,15 +101,44 @@ function SnapContext()
 			        railColor: '#BDBDBD'
 			    });
 			}
-     	});
+     	}).show();
         
-        $("#dialog").dialog( "option", "position", [x, y]);
-        $(".ui-dialog").show();
+        $("#" + dialogName).dialog( "option", "position", [x, y]);
+        dialogList.push(dialogName); //Save all dialog-window
     };
     
     
-    function pointListShow()
+    function pointListShow(objectName)
     {
+		if(vecB_pos == 0)
+		{
+			createContextPoint.setPoint(pointListObj.point1.position, objectName); 
+			
+			contextObjList.push(objectName);
+			
+			vecB_ID = objectName;
+			vecB_pos = primitiveManager.getPrimitiveByID(objectName).getTranslation();
+			pointB_ID = objectName + '_point_0';
+			pointB_pos = snapContext.getPosition(pointB_ID);
+			currentVecB = vecB_pos.add(pointB_pos);
+			
+			console.log(currentVecB);
+		}
+		else
+		{
+			createContextPoint.setPoint(pointListObj.point1.position, objectName); 
+			
+			contextObjList.push(objectName);
+			
+			vecA_ID = objectName;
+			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
+			pointA_ID = objectName + '_point_0';
+			pointA_pos = snapContext.getPosition(pointA_ID); 
+			currentVecA = vecA_pos.add(pointA_pos);
+			
+			console.log(currentVecA);
+		}
+    	/*
 		if(vecB_pos == 0)
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
@@ -88,7 +150,6 @@ function SnapContext()
 			pointB_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
 			pointB_pos = snapContext.getPosition(pointB_ID);
 			currentVecB = vecB_pos.add(pointB_pos);
-			snapContext.hide();
 			
 			console.log(currentVecB);
 		}
@@ -103,16 +164,15 @@ function SnapContext()
 			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
 			pointA_pos = snapContext.getPosition(pointA_ID); 
 			currentVecA = vecA_pos.add(pointA_pos);
-			snapContext.hide();
 			
 			console.log(currentVecA);
 		}
-		
+		*/
 		
 		if(contextObjList.length == 2)
 		{
 			snapTo(currentVecA, currentVecB, primitiveManager.getPrimitiveByID(vecA_ID));
-			
+			snapContext.hide();
 			contextObjList = [];	//Reset to null
 			vecB_pos = 0;			//Reset to null
 		}
