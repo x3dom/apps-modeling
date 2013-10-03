@@ -10,47 +10,135 @@ var server_3D_url = "http://146.140.4.36:8080/";
  */
 StorageManager.prototype.loadScene = function(){
 
-    var componentURLToComponentName = {};
+    var componentURLToComponentName = null;
+    var componentOccurences         = null;
 
-    ui.catalogueTreeNodes = [];
+    ui.catalogueTreeNodes     = [];
+
+    clearRegisteredComponentX3DStrings();
+
+
+    //TESTING
+    //======
+    //@tpaviot: this works in chrome and FF, but the real GET cases below don't work in FF on Win7,
+    //          there is a response "200 OK", but somehow the callback is not invoked (empy response?)
+    //          Is this maybe an issue with the 3D server?
+    $.get("http://echo.jsontest.com/hello/world",
+        function(data, textStatus, jqXHR)
+        {
+            var jsonObj = JSON.parse(jqXHR.responseText);
+
+            console.log("JSON GET Test: \"Hello, " + jsonObj["hello"] + "\"");
+        }
+    );
+    //======
+
+
+    var finishedLoading = function()
+    {
+        var component;
+        var componentOccurence;
+        var componentOccurenceName;
+        var componentName;
+        var errMsg;
+
+        if (componentURLToComponentName && componentOccurences)
+        {
+            for (component in componentURLToComponentName)
+            {
+                ui.catalogueTreeNodes.push({name: componentURLToComponentName[component], groupName: ""});
+            }
+
+            //@tpaviot: this is just for the test below, we can remove it afterwards
+            var geomTessTestIdx = 0;
+
+            //@tpaviot: "componentOccurences" is simply the JSON object returned by the server,
+            //          which holds all "OccurenceDeComposant" objects
+            for (componentOccurence in componentOccurences)
+            {
+                componentOccurenceName = componentOccurences[componentOccurence][0];
+                componentName          = componentURLToComponentName[componentOccurences[componentOccurence][1]];
+
+                //@tpaviot: If you should add the URI of the corresponding GeometrieTesselee" to the JSON object,
+                //          you should be able to fetch it here
+                //componentGeometryURI = ...
+
+                ui.catalogueTreeNodes.push({name: componentOccurenceName, groupName: componentName});
+
+                //TODO: here, we currently don't have the URI of the geometrie tesselee which belongs to the component
+                //@tpaviot: change "geomTessTestURIs[...]" to the fetched URI (componentGeometryURI)
+                var geomTessTestURIs = ["http://localhost:9000/rest/geometrietesselee/420",
+                                        "http://localhost:9000/rest/geometrietesselee/421",
+                                        "http://localhost:9000/rest/geometrietesselee/422",
+                                        "http://localhost:9000/rest/geometrietesselee/423"];
+
+                //get the component's "Tesselated Geometry" / "Geometrie Tesselee" object from the server
+                //(if there are multiple components using the same one, we currently just rely on the browser cache here)
+                (function(compName, compOccName, geomTessURI){
+
+                    $.get(server_3D_url + "/x3d_mesh_from_geometrie_tesselee_uri?uri=" + geomTessURI,
+                        function(data, textStatus, jqXHR){
+
+                            console.log("Geometrie Tesselee " + geomTessURI + " loaded.");
+
+                            var x3dStr = JSON.parse(jqXHR.responseText);
+
+                            //@tpaviot: we can remove this line after the special characters have been removed
+                            //          from the result which is returned by the 3d server / play framework
+                            x3dStr = x3dStr.replace(/\\n/gi, "");
+                            x3dStr = x3dStr.replace(/\\r/gi, "");
+                                 console.log(x3dStr);
+                            getOrCreateRegisteredComponentX3DString(compName + "_" + compOccName, x3dStr);
+                        }
+                    );
+
+                    //@tpaviot: change "geomTessTestURIs[...]" to the fetched URI (componentGeometryURI)
+                })(componentName, componentOccurenceName, geomTessTestURIs[(geomTessTestIdx++) % 4]);
+            }
+
+            ui.buildCatalogueTreeFromGroupsAndNodes();
+        }
+        else
+        {
+            errMsg = "Error: \"finishedLoading\" called, but no data available.";
+            console.log(errMsg);
+            x3dom.debug.logError(errMsg);
+        }
+    };
+
 
     //TODO: here, we could notify the user about the progress of loading
 
     //get a list with all "Component Classes" / "Composants" from the server
-    $.get(server_3D_url + "/composants", "",
+    $.get(server_3D_url + "/composants",
         function(data, textStatus, jqXHR){
 
-            componentURLToComponentName = JSON.parse(data);
-            var component;
+            console.log("Composants loaded.");
 
-            for (component in componentURLToComponentName)
+            componentURLToComponentName = JSON.parse(jqXHR.responseText);
+
+            if (componentOccurences)
             {
-                ui.catalogueTreeNodes.push({name: componentURLToComponentName[component], groupName: ""});
+                finishedLoading();
             }
         }
     );
 
     //get a list with all "Component Occurences" / "Occurences de Composants" from the server
-    $.get(server_3D_url + "/occurrences_de_composant", "",
+    $.get(server_3D_url + "/occurrences_de_composant",
         function(data, textStatus, jqXHR){
 
-            var jsonResponse = JSON.parse(data);
-            var componentOccurence;
-            var componentOccurenceName;
-            var componentName;
+            console.log("Occurrences de composant loaded.");
 
-            for (componentOccurence in jsonResponse)
+            componentOccurences = JSON.parse(jqXHR.responseText);
+
+            if (componentURLToComponentName)
             {
-                componentOccurenceName = jsonResponse[componentOccurence][0];
-                componentName          = componentURLToComponentName[jsonResponse[componentOccurence][1]];
-
-                ui.catalogueTreeNodes.push({name: componentOccurenceName, groupName: componentName});
+                finishedLoading();
             }
-
-            //TODO: we have to ensure that this happens after the first "GET" result!
-            ui.buildCatalogueTreeFromGroupsAndNodes();
         }
     );
+
 
     //TESTING
     //======

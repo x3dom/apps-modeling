@@ -656,18 +656,21 @@ function PrimitiveManager(){
                     {
                         matrixTransformNode.removeChild(matrixTransformNode.childNodes[i]);
                         ui.treeViewer.removeNode(currentObjectID);
-                        
-                        if (this.primitiveList[currentObjectID].parameters.isRefPoint){
-                            origin_refPoints_added[1]--;
-                        }
-                        if (this.primitiveList[currentObjectID].parameters.isOrigin){
-                            origin_refPoints_added[0] = 0;
-                        }
-                        if (origin_refPoints_added[0] > 0 && origin_refPoints_added[1] > 0){
-                            document.getElementById("warning").style.visibility = "hidden";
-                        }
-                        else {
-                            document.getElementById("warning").style.visibility = "visible";
+
+                        if (this.primitiveList[currentObjectID].parameters)
+                        {
+                            if (this.primitiveList[currentObjectID].parameters.isRefPoint){
+                                origin_refPoints_added[1]--;
+                            }
+                            if (this.primitiveList[currentObjectID].parameters.isOrigin){
+                                origin_refPoints_added[0] = 0;
+                            }
+                            if (origin_refPoints_added[0] > 0 && origin_refPoints_added[1] > 0){
+                                document.getElementById("warning").style.visibility = "hidden";
+                            }
+                            else {
+                                document.getElementById("warning").style.visibility = "visible";
+                            }
                         }
                         
                         delete this.primitiveList[currentObjectID];

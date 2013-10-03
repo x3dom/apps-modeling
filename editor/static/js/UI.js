@@ -113,7 +113,7 @@ function UI(primitiveManager){
 
     this.treeViewer = new SimpleTreeViewer("tree");
 
-    this.catalogueTreeNodes = [];
+    this.catalogueTreeNodes     = [];
 
     // color picker component
     var farbtasticPicker = null;
@@ -349,9 +349,18 @@ function UI(primitiveManager){
                         node.scheduleAction("cancel");
                     },
                     onActivate: function(node){
+                        var parentNode;
+                        var typeName;
+
                         if (node.isSelected()) {
-                            //that.treeViewer.activate(node.data.key);
-                            //primitiveManager.selectObject(node.data.key);
+
+                            parentNode = node.getParent();
+
+                            if (parentNode)
+                            {
+                                typeName = parentNode.data.key + "_" + node.data.key;
+                                primitiveManager.addComponent(typeName);
+                            }
                         }
                     }
             });
@@ -526,6 +535,7 @@ function UI(primitiveManager){
 
     /*
      * Adds a button for a given component type.
+     * TODO: this is just for debugging.
      */
     this.addComponentType = function(typeName, imgSrc){
         //create the button, and configure its behavior

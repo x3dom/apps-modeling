@@ -21,7 +21,7 @@
     </Shape>
   </Transform-->
   
-  <Transform scale='100 100 300'>  
+  <Transform scale='1 1 3'>  
     <Shape>    
        <Appearance>
         <Material diffuseColor='1.0 0.0 0.0'></Material>

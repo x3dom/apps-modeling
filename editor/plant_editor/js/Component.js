@@ -6,6 +6,11 @@ window.URL = window.URL || window.webkitURL;
 var registeredComponentTypeToX3DStrings = {};
 
 
+function clearRegisteredComponentX3DStrings(){
+    registeredComponentTypeToX3DStrings = {};
+}
+
+
 function getOrCreateRegisteredComponentX3DString(typeName, x3dStr){
     var inlineElement;
     var modelStringURLBlob;
@@ -28,6 +33,8 @@ function getOrCreateRegisteredComponentX3DString(typeName, x3dStr){
         inlineElement.setAttribute("url", modelStringURL);
 
         document.getElementById('componentsRoot').appendChild(inlineElement);
+
+        primitiveManager.primType_counter[typeName] = 0;
     }
 
     return registeredComponentTypeToX3DStrings[typeName];
@@ -50,9 +57,6 @@ function Component(typeName){
     this.init();
 
     var that = this;
-
-    //scale to editor units
-    this.setScale(0.01, 0.01, 0.01);
 
     this.domNode = document.createElement("inline");
 
