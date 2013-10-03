@@ -87,7 +87,7 @@ StorageManager.prototype.loadScene = function(){
                             //          from the result which is returned by the 3d server / play framework
                             x3dStr = x3dStr.replace(/\\n/gi, "");
                             x3dStr = x3dStr.replace(/\\r/gi, "");
-                                 console.log(x3dStr);
+
                             getOrCreateRegisteredComponentX3DString(compName + "_" + compOccName, x3dStr);
                         }
                     );
