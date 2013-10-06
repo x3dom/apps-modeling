@@ -540,12 +540,16 @@ function UI(primitiveManager){
     this.addComponentType = function(typeName, imgSrc){
         //create the button, and configure its behavior
         var divID = document.createElement("div");
+
+        // @mlimper: the following 4 lines are for drag and drop of components, the ids are important for defining type
         divID.setAttribute("id", typeName);
 
         divID.setAttribute('draggable', "true");
-        divID.ondragstart = controller.drag;
+        divID.ondragstart = controller.dragComponent;
 
         divID.innerHTML = "<img src='" + imgSrc + "' id='icon_" + typeName + "' width='100%' height='100%'>";
+        //
+
         divID.setAttribute("style", "float:left; width: 70px; height: 70px; margin: 5px; padding: 0px; border: solid 1px " +
                             defColor + "; border-radius: 5px;");
 
@@ -1503,7 +1507,7 @@ function UI(primitiveManager){
                         removeNonMatchingNodes(children[j]);
                     }
                 }
-            }
+            };
 
             for (i = 0; i < rootChildren.length; ++i)
             {

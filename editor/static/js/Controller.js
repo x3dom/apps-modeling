@@ -269,6 +269,20 @@ function Controller(ui){
     }
 
 
+    // this method starts dragging components
+    this.dragComponent = function(event) {
+        if (event.dataTransfer && event.target) {
+            var name = event.target.id;
+            if (name.indexOf("icon_") >= 0)
+                name = name.substring(name.indexOf("icon_") + 5);
+            // add prefix to distinguish both
+            name = "PLANT_COMPONENT_" + name;
+
+            event.dataTransfer.setData("text/plain", name);
+        }
+    };
+
+    // this one is for dragging primitives
     this.drag = function(event) {
         if (event.dataTransfer && event.target) {
             var name = event.target.id;
@@ -300,7 +314,19 @@ function Controller(ui){
 
                 var pos = ray.pos.add(ray.dir.multiply(len));
 
-                if (data == "Extrusion" || data == "Solid of Revolution") {
+                var isPlantComponent = (data.indexOf("PLANT_COMPONENT_") == 0);
+
+                if (isPlantComponent) {
+                    data = data.substring("PLANT_COMPONENT_".length);
+
+                    var comp = primitiveManager.addComponent(data);
+
+                    if (comp) {
+                        comp.setTranslationAsVec(pos);
+                        primitiveManager.selectObject(comp.getID());
+                    }
+                }
+                else if (data == "Extrusion" || data == "Solid of Revolution") {
                     ui.editor2D_show( (data == "Extrusion") );
                     ui.setPrimitiveTypeNameAndPos(data, pos);
                 }
