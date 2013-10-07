@@ -58,19 +58,25 @@ function SnapContext()
     	var objectName = primitiveManager.getCurrentPrimitiveID();
     	var dialogName = objectName + "_dialog";
     	var innenDialogName = objectName + "_innenDialog";
+    	
+    	//Check if a window with that ID exists
+    	//Fixed bug that an empty window context generates
+    	if($("#" + dialogName).length != 0) 
+  		{
+  			console.log("bin hier!!!");
+    		removeMode("#" + dialogName);
+		}
    		
     	var divInnen = document.createElement("div");
     	divInnen.setAttribute("id", innenDialogName);
-    	
     	var divAussen = document.createElement("div");
     	divAussen.setAttribute("id", dialogName);
-    	
     	divAussen.appendChild(divInnen);
     	document.getElementById("dialog").appendChild(divAussen);
-    	
     	var divContextName = objectName + "_context";
     	
-    	
+    	   	
+    	//Create Contextwindow
     	$("#" + dialogName).dialog({
     		width: 80,
     		minHeight: 120,
@@ -138,36 +144,6 @@ function SnapContext()
 			
 			console.log(currentVecA);
 		}
-    	/*
-		if(vecB_pos == 0)
-		{
-			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
-			
-			contextObjList.push(primitiveManager.getCurrentPrimitiveID());
-			
-			vecB_ID = primitiveManager.getCurrentPrimitiveID();
-			vecB_pos = primitiveManager.getCurrentPrimitive().getTranslation();
-			pointB_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
-			pointB_pos = snapContext.getPosition(pointB_ID);
-			currentVecB = vecB_pos.add(pointB_pos);
-			
-			console.log(currentVecB);
-		}
-		else
-		{
-			createContextPoint.setPoint(pointListObj.point1.position, primitiveManager.getCurrentPrimitiveID()); 
-			
-			contextObjList.push(primitiveManager.getCurrentPrimitiveID());
-			
-			vecA_ID = primitiveManager.getCurrentPrimitiveID();
-			vecA_pos = primitiveManager.getCurrentPrimitive().getTranslation();
-			pointA_ID = primitiveManager.getCurrentPrimitiveID() + '_point_0';
-			pointA_pos = snapContext.getPosition(pointA_ID); 
-			currentVecA = vecA_pos.add(pointA_pos);
-			
-			console.log(currentVecA);
-		}
-		*/
 		
 		if(contextObjList.length == 2)
 		{
@@ -183,12 +159,11 @@ function SnapContext()
      * 
      */
     function snapTo(vecA, vecB, prim)
-    {		
-    	//1.rotiere objekt
-		//berechne roationsmatrix, um von vecA zu vecB zu kommen (rotation)
+    {
+		//From vecA to vecB
 		var rotationMatrix = x3dom.fields.Quaternion.rotateFromTo(vecA, vecB).toMatrix();
 		
-		//update globale rotation, translation, skalierung des objekts („prim“ ist ein „Primitive“)
+		//update globale rotation, translation and scaling
 		var matTransNode = prim.getMatrixTransformNode();
 		var oldTransformMat  =  x3dom.fields.SFMatrix4f.parse(matTransNode.getAttribute("matrix")).transpose();
 		
@@ -204,20 +179,19 @@ function SnapContext()
 		prim.setScaleAsVec(scaleVec);
 		var angles = rotationQuat.toMatrix().getEulerAngles();
 		var rad2Deg = 180.0 / Math.PI;
+		
 		//prim.setRotationAngles(angles[0] * rad2Deg, angles[1] * rad2Deg, angles[2] * rad2Deg);
 			
 		//update der world space-positionen der snapping points
-		//(siehe mail “Punkte und Normalen eines Primitives transformieren“)
 		var transformedPoint = newTransformMat.multMatrixPnt(vecA);
 		
-		//2. verschiebe objekt
-		//(otherTransformedPoint ist auch im world space, wurde bereits berechnet)
+		//verschiebe objekt
 		var additionalTranslation = vecB.subtract(transformedPoint);
 		
 		//wende additionalTranslation an
 		this.primitiveManager.highlightCurrentBoundingVolume(false);
-		//prim.setTranslation(additionalTranslation.x, additionalTranslation.y, additionalTranslation.z);
 		
+		//prim.setTranslation(additionalTranslation.x, additionalTranslation.y, additionalTranslation.z);
 		
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
 		var x = currentVecB.x + pointA_pos.x;

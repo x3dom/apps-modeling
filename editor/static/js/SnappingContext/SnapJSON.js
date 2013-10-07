@@ -3,22 +3,22 @@
  */
 function SnapJSON()
 {
-	this.getJSON = function(pfad, objectID, propertie)
+	this.getJSON = function(pfad, objectID)
 	{
-		return loadJSON(pfad, objectID, propertie);	
+		return loadJSON(pfad, objectID);	
 	};
 	
 	/*
 	 * The JSON function gets the path to the file and the name of the object, 
 	 * and returns the values ​​that are queried in the third parameter
 	 */
-	function loadJSON(pfad, id)
+	function loadJSON(pfad, objectID)
     {
     	var snapPoints = [];
     	var normale = [];
     	
 	    // json-string load
-		var json = GetHttpText( pfad + '/' + id + '.json');	
+		var json = GetHttpText( pfad + '/' + objectID + '.json');	
 		var jsonObj = eval ('(' + json + ')');
 		
 		if(jsonObj != undefined)
