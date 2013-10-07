@@ -29,11 +29,6 @@ StorageManager.prototype.saveScene = function()
         shapeDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
         // @todo: the comparison with 0.0 is not safe. 
-        if ((prim.tX!=0.0) || (prim.tY!=0.0) || (prim.tZ!=0.0))
-            {
-            shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
-            }
-        // @todo: the comparison with 0.0 is not safe. 
         if ((prim.sX!=1.0) || (prim.sY!=1.0) || (prim.sZ!=1.0))
             {
             shapeDataDSL += prim.id + " = scale_shape(" + prim.id + "," + prim.sX + "," + prim.sY + "," + prim.sZ + ")\n";
@@ -43,6 +38,12 @@ StorageManager.prototype.saveScene = function()
             {
             shapeDataDSL += prim.id + " = rotate_shape_3_axis(" + prim.id + "," + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
             }
+        // @todo: the comparison with 0.0 is not safe. 
+        if ((prim.tX!=0.0) || (prim.tY!=0.0) || (prim.tZ!=0.0))
+            {
+            shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
+            }
+        
     });
 
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
