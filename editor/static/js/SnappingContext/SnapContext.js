@@ -64,7 +64,8 @@ function SnapContext()
     	if($("#" + dialogName).length != 0) 
   		{
   			console.log("bin hier!!!");
-    		removeMode("#" + dialogName);
+    		snapContext.hide();
+    		//removeMode("#" + dialogName);
 		}
    		
     	var divInnen = document.createElement("div");
