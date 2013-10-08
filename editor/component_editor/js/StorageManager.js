@@ -29,11 +29,6 @@ StorageManager.prototype.saveScene = function()
         shapeDataDSL += that.primitiveInDSL(prim.id, prim.type, prim.paramValueMap);
 
         // @todo: the comparison with 0.0 is not safe. 
-        if ((prim.tX!=0.0) || (prim.tY!=0.0) || (prim.tZ!=0.0))
-            {
-            shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
-            }
-        // @todo: the comparison with 0.0 is not safe. 
         if ((prim.sX!=1.0) || (prim.sY!=1.0) || (prim.sZ!=1.0))
             {
             shapeDataDSL += prim.id + " = scale_shape(" + prim.id + "," + prim.sX + "," + prim.sY + "," + prim.sZ + ")\n";
@@ -43,6 +38,12 @@ StorageManager.prototype.saveScene = function()
             {
             shapeDataDSL += prim.id + " = rotate_shape_3_axis(" + prim.id + "," + prim.rX + "," + prim.rY + "," + prim.rZ + ")\n";
             }
+        // @todo: the comparison with 0.0 is not safe. 
+        if ((prim.tX!=0.0) || (prim.tY!=0.0) || (prim.tZ!=0.0))
+            {
+            shapeDataDSL += prim.id + " = translate_shape(" + prim.id + "," + that.vectorInDSL(prim.tX, prim.tY, prim.tZ)+ ")\n";
+            }
+        
     });
 
     // finish the shape : fuse all positive and negative primitives and create the resulting shape
@@ -132,19 +133,24 @@ StorageManager.prototype.primitiveInDSL = function(id, primType, paramValueMap){
             dslCommands = id + " = make_rectangular_torus(" + paramValueMap["ROutside"] + "," + paramValueMap["RInside"] + "," + paramValueMap["Height"] +"," + paramValueMap["Angle"] + ")\n";
             break;
 
-        case "":
+        case "Nozzle":
+            dslCommands = id + " = make_nozzle(" + paramValueMap["Height"] + "," + paramValueMap["RInside"] + "," + paramValueMap["ROutside"] + "," + paramValueMap["Nozzle Height"] +"," + paramValueMap["Nozzle Radius"] + ")\n";
             break;
 
-        case "":
+        case "Snout":
+            dslCommands = id + " = make_snout(" + paramValueMap["DTop"] + "," + paramValueMap["DBottom"] + "," + paramValueMap["XOff"] + "," + paramValueMap["YOff"] +"," + paramValueMap["Height"] + ")\n";
             break;
 
-        case "":
+        case "Pyramid":
+            dslCommands = id + " = make_pyramid(" + paramValueMap["XBottom"] + "," + paramValueMap["YBottom"] + "," + paramValueMap["XTop"] + "," + paramValueMap["YTop"] +"," + paramValueMap["Height"]+"," + paramValueMap["XOff"] + "," + paramValueMap["YOff"] + ")\n";
             break;
 
-        case "":
+        case "SlopedCylinder":
+            dslCommands = id + " = make_sloped_cylinder(" + paramValueMap["Radius"] + "," + paramValueMap["Height"] + "," + paramValueMap["XTShear"] + "," + paramValueMap["YTShear"] +"," + paramValueMap["XBShear"]+"," + paramValueMap["YBShear"] + ")\n";
             break;
 
-        case "":
+        case "Dish":
+            dslCommands = id + " = make_dish(" + paramValueMap["Diameter"] + "," + paramValueMap["Radius"] + "," + paramValueMap["Height"] + ")\n";
             break;
 
         case "Extrusion":
