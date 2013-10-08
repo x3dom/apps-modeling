@@ -133,19 +133,24 @@ StorageManager.prototype.primitiveInDSL = function(id, primType, paramValueMap){
             dslCommands = id + " = make_rectangular_torus(" + paramValueMap["ROutside"] + "," + paramValueMap["RInside"] + "," + paramValueMap["Height"] +"," + paramValueMap["Angle"] + ")\n";
             break;
 
-        case "":
+        case "Nozzle":
+            dslCommands = id + " = make_nozzle(" + paramValueMap["Height"] + "," + paramValueMap["RInside"] + "," + paramValueMap["ROutside"] + "," + paramValueMap["Nozzle Height"] +"," + paramValueMap["Nozzle Radius"] + ")\n";
             break;
 
-        case "":
+        case "Snout":
+            dslCommands = id + " = make_snout(" + paramValueMap["DTop"] + "," + paramValueMap["DBottom"] + "," + paramValueMap["XOff"] + "," + paramValueMap["YOff"] +"," + paramValueMap["Height"] + ")\n";
             break;
 
-        case "":
+        case "Pyramid":
+            dslCommands = id + " = make_pyramid(" + paramValueMap["XBottom"] + "," + paramValueMap["YBottom"] + "," + paramValueMap["XTop"] + "," + paramValueMap["YTop"] +"," + paramValueMap["Height"]+"," + paramValueMap["XOff"] + "," + paramValueMap["YOff"] + ")\n";
             break;
 
-        case "":
+        case "SlopedCylinder":
+            dslCommands = id + " = make_sloped_cylinder(" + paramValueMap["Radius"] + "," + paramValueMap["Height"] + "," + paramValueMap["XTShear"] + "," + paramValueMap["YTShear"] +"," + paramValueMap["XBShear"]+"," + paramValueMap["YBShear"] + ")\n";
             break;
 
-        case "":
+        case "Dish":
+            dslCommands = id + " = make_dish(" + paramValueMap["Diameter"] + "," + paramValueMap["Radius"] + "," + paramValueMap["Height"] + ")\n";
             break;
 
         case "Extrusion":
