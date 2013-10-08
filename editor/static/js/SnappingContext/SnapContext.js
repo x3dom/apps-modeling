@@ -75,7 +75,7 @@ function SnapContext()
     	divAussen.appendChild(divInnen);
     	document.getElementById("dialog").appendChild(divAussen);
     	var divContextName = objectName + "_context";
-    	
+    	    	
     	   	
     	//Create Contextwindow
     	$("#" + dialogName).dialog({
@@ -119,7 +119,11 @@ function SnapContext()
     {
 		if(vecB_pos == 0)
 		{
-			createContextPoint.setPoint(pointListObj.point1.position, objectName); 
+			createContextPoint.setPoint(pointListObj.point1.position, objectName);
+			createContextPoint.setPoint(pointListObj.point2.position, objectName);
+			createContextPoint.setPoint(pointListObj.point3.position, objectName);
+			createContextPoint.setPoint(pointListObj.point4.position, objectName);
+			createContextPoint.setPoint(pointListObj.point5.position, objectName); 
 			
 			contextObjList.push(objectName);
 			
@@ -133,7 +137,11 @@ function SnapContext()
 		}
 		else
 		{
-			createContextPoint.setPoint(pointListObj.point1.position, objectName); 
+			createContextPoint.setPoint(pointListObj.point1.position, objectName);
+			createContextPoint.setPoint(pointListObj.point2.position, objectName);
+			createContextPoint.setPoint(pointListObj.point3.position, objectName);
+			createContextPoint.setPoint(pointListObj.point4.position, objectName);
+			createContextPoint.setPoint(pointListObj.point5.position, objectName);
 			
 			contextObjList.push(objectName);
 			

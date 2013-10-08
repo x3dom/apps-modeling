@@ -1,20 +1,20 @@
 /*
  * Subject class for the Observer design pattern
  */
-function SnapSubject()
+function SnapContextSubject()
 {
-	this.observers = new SnappingArray();
+	this.observers = new SnapContextArray();
 }
 
 // reports the event context to all Objects
-SnapSubject.prototype.Report = function( )
+SnapContextSubject.prototype.Report = function( )
 {
 	var count = this.observers.ArrayLength();
 };
 
 
 // Add new Observer Element
-SnapSubject.prototype.AddObserver = function( observer )
+SnapContextSubject.prototype.AddObserver = function( observer )
 {
 	if( !observer.Update )
 	{
@@ -27,7 +27,7 @@ SnapSubject.prototype.AddObserver = function( observer )
 
 
 // Remove Observer from Element-List
-SnapSubject.prototype.RemoveObserver = function( observer )
+SnapContextSubject.prototype.RemoveObserver = function( observer )
 {
 	if( !observer.Update )
 	{

@@ -1,7 +1,7 @@
 /*
  * The Update method is used by the Observer
  */
-function SnapObserver()
+function SnapContextObserver()
 {
 	this.Update = function()
 	{
