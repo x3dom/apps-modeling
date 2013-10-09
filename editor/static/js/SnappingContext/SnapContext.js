@@ -75,7 +75,22 @@ function SnapContext()
     	divAussen.appendChild(divInnen);
     	document.getElementById("dialog").appendChild(divAussen);
     	var divContextName = objectName + "_context";
-    	    	
+    	
+    			
+		/*
+    	var contextInnen = document.createElement("div");
+    	divInnen.setAttribute("id", divName);
+    	
+    	var contextInnenH3 = document.createElement("h3");
+    	contextInnenH3.innerHTML("" + objName + "");
+    	
+    	var contextInnenH3div = document.createElement("div");
+    	contextInnenH3div.innerHTML("<p>Element_1</p>");
+    	
+    	contextInnenH3.appendChild(contextInnenH3div);
+    	contextInnen.appendChild(contextInnenH3);
+    	document.getElementById(dialogName).appendChild(contextInnen);
+    	*/  
     	   	
     	//Create Contextwindow
     	$("#" + dialogName).dialog({
@@ -89,11 +104,17 @@ function SnapContext()
     			$('.ui-dialog-titlebar').hide();
     			$("#" + dialogName).css('overflow', 'inherit');
     			$("#" + dialogName).css("border-radius", "5px");
-    			
-    			jQuery('<div/>', {
+				
+				//Start Contextcontent
+        		jQuery('<div/>', {
     				id: divContextName,
     				text: 'Snap to point'
 				}).appendTo('#' + innenDialogName);
+				
+				//Test
+				$("#" + divContextName).accordion({
+					
+				});
 				
         		$('#' + innenDialogName).mouseover(function(){this.style.cursor='pointer';});
         		$('#' + divContextName).click(function(){pointListShow(objectName);}); 
@@ -113,18 +134,14 @@ function SnapContext()
         $("#" + dialogName).dialog( "option", "position", [x, y]);
         dialogList.push(dialogName); //Save all dialog-window
     };
-    
+  	
     
     function pointListShow(objectName)
     {
 		if(vecB_pos == 0)
 		{
 			createContextPoint.setPoint(pointListObj.point1.position, objectName);
-			createContextPoint.setPoint(pointListObj.point2.position, objectName);
-			createContextPoint.setPoint(pointListObj.point3.position, objectName);
-			createContextPoint.setPoint(pointListObj.point4.position, objectName);
-			createContextPoint.setPoint(pointListObj.point5.position, objectName); 
-			
+						
 			contextObjList.push(objectName);
 			
 			vecB_ID = objectName;
@@ -137,11 +154,7 @@ function SnapContext()
 		}
 		else
 		{
-			createContextPoint.setPoint(pointListObj.point1.position, objectName);
 			createContextPoint.setPoint(pointListObj.point2.position, objectName);
-			createContextPoint.setPoint(pointListObj.point3.position, objectName);
-			createContextPoint.setPoint(pointListObj.point4.position, objectName);
-			createContextPoint.setPoint(pointListObj.point5.position, objectName);
 			
 			contextObjList.push(objectName);
 			
