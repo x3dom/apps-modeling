@@ -347,7 +347,7 @@ function PrimitiveManager(){
     	{   
             if (e.button == 2)
             {
-                // Determine mouse position, please do not put in front of the variable
+                // Determine mouse position
                 var x = (window.event)?window.event.clientX:e.pageX;
                 var y = (window.event)?window.event.clientY:e.pageY;
                 snapContext.init(x, y);
@@ -410,7 +410,10 @@ function PrimitiveManager(){
             }
         }
 
-        prim.getDOMNode().addEventListener("mousedown", function(){ primitiveManager.primitivePicked(id); snapping.newSnapObject(); }, false);
+        prim.getDOMNode().addEventListener("mousedown", function(){
+            primitiveManager.primitivePicked(id);
+            snapping.newSnapObject();
+        }, false);
         
         // TODO: please not delete     
         prim.getDOMNode().addEventListener("click", 
@@ -418,7 +421,7 @@ function PrimitiveManager(){
     	{   
             if (e.button == 2)
             {
-                // Determine mouse position, please do not put in front of the variable
+                // Determine mouse position
                 var x = (window.event)?window.event.clientX:e.pageX;
                 var y = (window.event)?window.event.clientY:e.pageY;
                 snapContext.init(x, y);
@@ -566,7 +569,7 @@ function PrimitiveManager(){
                 return;
             }
 
-            selectedPrimitiveIDs = [id]
+            selectedPrimitiveIDs = [id];
 
             //TODO: this is a little bit dirty, should be refactored
             if (this.primitiveList[id] instanceof Primitive)

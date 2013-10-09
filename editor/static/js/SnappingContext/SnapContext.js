@@ -94,7 +94,7 @@ function SnapContext()
     			$("#" + dialogName).css('overflow', 'inherit');
     			$("#" + dialogName).css("border-radius", "5px");
 				
-				inhalt  = "<h3>Object 1</h3>";
+				var inhalt  = "<h3>Object 1</h3>";
 				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
 				inhalt += "<h3>Object 2</h3>";
 				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
@@ -177,7 +177,7 @@ function SnapContext()
 			contextObjList = [];	//Reset to null
 			vecB_pos = 0;			//Reset to null
 		}
-    };
+    }
     
     
     /*
@@ -223,7 +223,7 @@ function SnapContext()
 		var y = currentVecB.y + pointA_pos.y;
 		var z = currentVecB.z + pointA_pos.z;
 		prim.setTranslation(x, y, z);
-    };
+    }
     
 	
 	/* */

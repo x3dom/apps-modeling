@@ -21,13 +21,13 @@ function SnapJSON()
 		var json = GetHttpText( pfad + '/' + objectID + '.json');	
 		var jsonObj = eval ('(' + json + ')');
 		
-		if(jsonObj != undefined)
+		if(jsonObj)
 		{	
 			//console.log(jsonObj);
 			return jsonObj;
 		}
 		
-		return -1;
+		return null;
     }
 
 	

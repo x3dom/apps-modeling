@@ -5,7 +5,7 @@ function SnapJSON()
 {
 	this.getJSON = function(pfad, objectID, propertie)
 	{
-		return loadJSON(pfad, objectID, propertie);	
+		return loadJSON(pfad, objectID);
 	};
 	
 	/*
@@ -20,14 +20,14 @@ function SnapJSON()
 	    // json-string load
 		var json = GetHttpText( pfad + '/' + id + '.json');	
 		var jsonObj = eval ('(' + json + ')');
-		
-		if(jsonObj != undefined)
-		{	
-			//console.log(jsonObj);
-			return jsonObj;
-		}
-		
-		return -1;
+
+        if(jsonObj)
+        {
+            //console.log(jsonObj);
+            return jsonObj;
+        }
+
+        return null;
     }
 
 	
