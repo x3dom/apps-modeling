@@ -67,30 +67,18 @@ function SnapContext()
     		snapContext.hide();
     		//removeMode("#" + dialogName);
 		}
-   		
+   		    	
+    	
     	var divInnen = document.createElement("div");
     	divInnen.setAttribute("id", innenDialogName);
+    	
     	var divAussen = document.createElement("div");
     	divAussen.setAttribute("id", dialogName);
+    	
     	divAussen.appendChild(divInnen);
     	document.getElementById("dialog").appendChild(divAussen);
+    	
     	var divContextName = objectName + "_context";
-    	
-    			
-		/*
-    	var contextInnen = document.createElement("div");
-    	divInnen.setAttribute("id", divName);
-    	
-    	var contextInnenH3 = document.createElement("h3");
-    	contextInnenH3.innerHTML("" + objName + "");
-    	
-    	var contextInnenH3div = document.createElement("div");
-    	contextInnenH3div.innerHTML("<p>Element_1</p>");
-    	
-    	contextInnenH3.appendChild(contextInnenH3div);
-    	contextInnen.appendChild(contextInnenH3);
-    	document.getElementById(dialogName).appendChild(contextInnen);
-    	*/  
     	   	
     	//Create Contextwindow
     	$("#" + dialogName).dialog({
@@ -99,27 +87,40 @@ function SnapContext()
     		modal: false,
     		autoOpen: true,
     		resizable: false,
+
     		open: function (event, ui) 
     		{
     			$('.ui-dialog-titlebar').hide();
     			$("#" + dialogName).css('overflow', 'inherit');
     			$("#" + dialogName).css("border-radius", "5px");
 				
+				inhalt  = "<h3>Object 1</h3>";
+				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+				inhalt += "<h3>Object 2</h3>";
+				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+				inhalt += "<h3>Object 3</h3>";
+				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+				
 				//Start Contextcontent
-        		jQuery('<div/>', {
-    				id: divContextName,
-    				text: 'Snap to point'
-				}).appendTo('#' + innenDialogName);
+				jQuery('<div></div>', {id: divContextName}).appendTo('#' + innenDialogName);		
+				$('#' + divContextName).append(inhalt);
 				
-				//Test
+				//Start accordion
 				$("#" + divContextName).accordion({
-					
-				});
+					heightStyle: "content",
+					collapsible: true,
+					active: false,
+					autoHeight: false,
+					clearStyle: true
+				}).show();
 				
-        		$('#' + innenDialogName).mouseover(function(){this.style.cursor='pointer';});
-        		$('#' + divContextName).click(function(){pointListShow(objectName);}); 
+				$("#" + divContextName).css('padding', '0px');
+				$(".ui-accordion-content").css('padding', '0px');
+				$(".ui-accordion-content").css('margin', '0px');
+				$(".ui-accordion-content").css('overflow', 'inherit');
         		
-	    	    $('#' + innenDialogName).slimScroll({
+        		/*
+	    	    $('#' + dialogName).slimScroll({
 			        size: '10px',
 			        height: '95px',
 			        color: '#7E7E7E',
@@ -128,8 +129,10 @@ function SnapContext()
 			        railVisible: true,
 			        railColor: '#BDBDBD'
 			    });
+			    */
 			}
      	}).show();
+        
         
         $("#" + dialogName).dialog( "option", "position", [x, y]);
         dialogList.push(dialogName); //Save all dialog-window

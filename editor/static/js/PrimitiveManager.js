@@ -365,19 +365,7 @@ function PrimitiveManager(){
         this.updateTransformUIFromCurrentObject();
 
         ui.treeViewer.addNode(id, component.getName());
-        ui.treeViewer.moveExistingNodeToGroup(id, "Scene");
-        	
-       	
-    		//var element = primitiveManager.getPrimitiveByID(id);
-    		var element = component;
-    		var snapContextObserver = new SnapContextObserver();
-			var snapContextSubject = new SnapContextSubject();
-	        SnapContextInherits(snapContextSubject, element);
-			SnapContextInherits(snapContextObserver, element);
-	        element.AddObserver(id);
-			elementUpdate(element);
-			console.log(element);
-       	
+        ui.treeViewer.moveExistingNodeToGroup(id, "Scene");      	
        	
         return component;
     };
