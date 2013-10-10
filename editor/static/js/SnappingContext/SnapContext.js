@@ -93,13 +93,61 @@ function SnapContext()
     			$('.ui-dialog-titlebar').hide();
     			$("#" + dialogName).css('overflow', 'inherit');
     			$("#" + dialogName).css("border-radius", "5px");
+				$("#" + dialogName).css('padding', '0px');
+				$("#" + dialogName).css('margin', '0px');
 				
-				var inhalt  = "<h3>Object 1</h3>";
-				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-				inhalt += "<h3>Object 2</h3>";
-				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-				inhalt += "<h3>Object 3</h3>";
-				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+				
+				var min = 1;
+				var max = 5;
+				var zahl = Math.floor(Math.random() * (max - min)) + min;
+				
+				switch(zahl)
+				{
+					case 1:
+						var inhalt  = "<h3>Snappoints</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
+						/*inhalt += "<h3>Object 2</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						inhalt += "<h3>Object 3</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
+					break;
+					
+					case 2:
+						var inhalt  = "<h3>Snappoints</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
+						/*inhalt += "<h3>Object 2</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						inhalt += "<h3>Object 3</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
+					break;
+					
+					case 3:
+						var inhalt  = "<h3>Snappoints</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li><li>Point 4</li></ul></div>";
+						/*inhalt += "<h3>Object 2</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						inhalt += "<h3>Object 3</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
+					break;
+					
+					case 4:
+						var inhalt  = "<h3>Snappoints</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li><li>Point 4</li><li>Point 5</li></ul></div>";
+						/*inhalt += "<h3>Object 2</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						inhalt += "<h3>Object 3</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
+					break;
+					
+					case 5:
+						var inhalt  = "<h3>Snappoints</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						/*inhalt += "<h3>Object 2</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
+						inhalt += "<h3>Object 3</h3>";
+						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
+					break;
+				}
 				
 				//Start Contextcontent
 				jQuery('<div></div>', {id: divContextName}).appendTo('#' + innenDialogName);		
@@ -109,20 +157,21 @@ function SnapContext()
 				$("#" + divContextName).accordion({
 					heightStyle: "content",
 					collapsible: true,
-					active: false,
+					//active: false,
 					autoHeight: false,
 					clearStyle: true
 				}).show();
 				
 				$("#" + divContextName).css('padding', '0px');
+				$("#" + divContextName).css('margin', '0px');
 				$(".ui-accordion-content").css('padding', '0px');
 				$(".ui-accordion-content").css('margin', '0px');
 				$(".ui-accordion-content").css('overflow', 'inherit');
         		
         		/*
-	    	    $('#' + dialogName).slimScroll({
+	    	    $("#" + divContextName).slimScroll({
 			        size: '10px',
-			        height: '95px',
+			        height: '100px',
 			        color: '#7E7E7E',
 			        position: 'right',
 			        alwaysVisible: true,
