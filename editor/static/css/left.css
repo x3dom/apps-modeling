@@ -51,12 +51,12 @@
     background: #191415;
     padding: 0px;
     margin: 0px;
-    height: 28%;
+    height: 42%;
     border-radius: 0px 0px 5px 5px;
 }
 
 
-#plantEditorLeftBar h3
+.plantEditorLeftBar h3
 {
     font-size: 14px;
     background-color:#414141;
@@ -66,6 +66,15 @@
     margin:0px;
     margin-top:4px;
     border-radius: 5px 5px 0px 0px;
+}
+
+
+#plantEditorSearchArea
+{
+    background-color:#414141;
+    border-left: gray 1px solid;
+    border-right: gray 1px solid;
+    margin:0px;
 }
 
 

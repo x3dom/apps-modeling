@@ -234,17 +234,16 @@
                 <div class="treeViewDiv" id="tree"></div>
             </div>
 
-            <h3>Component Catalogue (Debug)</h3>
-            <div id="componentCatalogueDebugDiv" class="plantEditorItemViewDebug"> </div>
-
             <h3>Component Catalogue</h3>
+
+            <div id="plantEditorSearchArea">
+                <input id="componentSearchField" oninput="ui.componentSearchFieldChanged(this.value);" style="margin:6px;width:80%" type="text"/>
+                <input title="Fetch matching components from the database" type='button' style="background:#191415;border:solid 1px gray;width:25px;height:25px;margin-top:5px;vertical-align:top;background-image:url('images/SearchInDB.png');" onclick="ui.fetchMatchingComponentsFromDBClicked();"></input>
+            </div>
+
             <div id="componentCatalogueDiv" class="plantEditorItemView">
                 <div class="treeViewDiv" id="catalogueTree"></div>
             </div>
-
-            <input id="componentSearchField" oninput="ui.componentSearchFieldChanged(this.value);" style="margin:6px;width:80%" type="text"/>
-
-            <input type='button' style="background:#191415;border:solid 1px gray;width:25px;height:25px;margin-top:5px;vertical-align:top;background-image:url('images/SearchInDB.png');" onclick="ui.fetchMatchingComponentsFromDBClicked();"></input>
     </div>
 </div>
 
