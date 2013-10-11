@@ -312,6 +312,22 @@ function UI(primitiveManager){
         ///-----------
         if ($("#catalogueTree"))
         {
+            var addComponent = function(node)
+            {
+                var parentNode;
+                var typeName;
+
+                if (node.isSelected()) {
+
+                    parentNode = node.getParent();
+
+                    if (parentNode)
+                    {
+                        typeName = parentNode.data.key + "_" + node.data.key;
+                        primitiveManager.addComponent(typeName);
+                    }
+                }
+            };
 
             $("#catalogueTree").dynatree({
                 checkbox: true,
@@ -320,49 +336,39 @@ function UI(primitiveManager){
                 fx: null,
                 onFocus: function(node) {
                     node.scheduleAction("cancel");
-
                 },
                 onSelect: function(select, node) {
-                    function recursiveSelection(tempNode){
+                    /*function recursiveSelection(tempNode){
                         if (tempNode.data.isFolder){
                             for (var i = 0; i < tempNode.childList.length; i++){
                                 recursiveSelection(tempNode.childList[i]);
                             }
                         }
                         else {
-                            /*
                             primitiveManager.setPrimitiveVisibility(tempNode.data.key, tempNode.isSelected());
 
                             if (tempNode.isActive()){
                                 if (tempNode.isSelected())
                                     primitiveManager.highlightCurrentObject(true);
                             }
-                             */
                         }
+
                     }
 
                     recursiveSelection(node);
                     //if (!node.data.isFolder)
                     //    primitiveManager.setPrimitiveVisibility(node.data.key, select);
-                    },
-                    onBlur: function(node) {
-                        node.scheduleAction("cancel");
-                    },
-                    onActivate: function(node){
-                        var parentNode;
-                        var typeName;
-
-                        if (node.isSelected()) {
-
-                            parentNode = node.getParent();
-
-                            if (parentNode)
-                            {
-                                typeName = parentNode.data.key + "_" + node.data.key;
-                                primitiveManager.addComponent(typeName);
-                            }
-                        }
-                    }
+                    */
+                },
+                onBlur: function(node) {
+                    node.scheduleAction("cancel");
+                },
+                onActivate: function(node){
+                    addComponent(node);
+                },
+                onClick: function(domNode, event){
+                    addComponent($.ui.dynatree.getNode(domNode));
+                }
             });
 
         }

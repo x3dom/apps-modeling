@@ -63,7 +63,11 @@ StorageManager.prototype.loadComponents = function(searchStr){
             for (componentOccurence in componentOccurences)
             {
                 componentOccurenceName      = componentOccurence;   //this is the "idFonct"
-                componentName               = componentURLToComponentName[componentOccurences[componentOccurence][1]];
+
+                //TODO: "Composants" are currently not used
+                //componentName               = componentURLToComponentName[componentOccurences[componentOccurence][1]];
+                componentName = "Composants";
+
                 componentGeometryIdentifier = componentOccurences[componentOccurence][0];   //this is the "Occurence..." URI
 
                 ui.catalogueTreeNodes.push({name: componentOccurenceName, groupName: componentName});
@@ -100,6 +104,15 @@ StorageManager.prototype.loadComponents = function(searchStr){
     //TODO: here, we could notify the user about the progress of loading
 
     //get a list with all "Component Classes" / "Composants" from the server
+    //TODO: "Composants" are currently not used
+
+    //------
+    //FOR DEMONSTRATION:
+    componentURLToComponentName       = {};
+    componentURLToComponentName ["*"] = "Composants";
+    //------
+
+    /*
     $.get(server_3D_url + "/composants",
         function(data, textStatus, jqXHR){
 
@@ -113,6 +126,7 @@ StorageManager.prototype.loadComponents = function(searchStr){
             }
         }
     );
+    */
 
     //get a list with all "Component Occurences" / "Occurences de Composants" from the server
     $.get(server_3D_url + "/occurrences_de_composant?search=" + searchStr,

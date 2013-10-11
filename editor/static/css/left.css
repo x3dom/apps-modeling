@@ -45,8 +45,8 @@
 
 .plantEditorItemView
 {
-    /*overflow: hidden;
-    overflow-y: auto;*/
+    overflow: hidden;
+    /*overflow-y: auto;*/
     border: gray 1px solid;
     background: #191415;
     padding: 0px;
