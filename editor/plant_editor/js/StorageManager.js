@@ -6,10 +6,17 @@ function StorageManager(){}
 var server_3D_url = "http://146.140.4.36:8080/";
 
 
-/*
- * Loads a scene from the server by fetching the current list of components.
- */
+
 StorageManager.prototype.loadScene = function(){
+    console.log("WARNING: This function is currently not implemented. Please use the search bar and hit the button to fetch matching data from the DB.");
+};
+
+
+
+/*
+ * Loads components, which are matching the given string, from the server.
+ */
+StorageManager.prototype.loadComponents = function(searchStr){
 
     var componentURLToComponentName = null;
     var componentOccurences         = null;
@@ -41,6 +48,7 @@ StorageManager.prototype.loadScene = function(){
         var componentOccurence;
         var componentOccurenceName;
         var componentName;
+        var componentGeometryIdentifier;
         var errMsg;
 
         if (componentURLToComponentName && componentOccurences)
@@ -57,30 +65,20 @@ StorageManager.prototype.loadScene = function(){
             //          which holds all "OccurenceDeComposant" objects
             for (componentOccurence in componentOccurences)
             {
-                componentOccurenceName = componentOccurences[componentOccurence][0];
-                componentName          = componentURLToComponentName[componentOccurences[componentOccurence][1]];
-
-                //@tpaviot: If you should add the URI of the corresponding GeometrieTesselee" to the JSON object,
-                //          you should be able to fetch it here
-                //componentGeometryURI = ...
+                componentOccurenceName      = componentOccurence;   //this is the "idFonct"
+                componentName               = componentURLToComponentName[componentOccurences[componentOccurence][1]];
+                componentGeometryIdentifier = componentOccurences[componentOccurence][0];   //this is the "Occurence..." URI
 
                 ui.catalogueTreeNodes.push({name: componentOccurenceName, groupName: componentName});
 
-                //TODO: here, we currently don't have the URI of the geometrie tesselee which belongs to the component
-                //@tpaviot: change "geomTessTestURIs[...]" to the fetched URI (componentGeometryURI)
-                var geomTessTestURIs = ["http://localhost:9000/rest/geometrietesselee/420",
-                                        "http://localhost:9000/rest/geometrietesselee/421",
-                                        "http://localhost:9000/rest/geometrietesselee/422",
-                                        "http://localhost:9000/rest/geometrietesselee/423"];
-
-                //get the component's "Tesselated Geometry" / "Geometrie Tesselee" object from the server
+                //get the component's X3D mesh from the server
                 //(if there are multiple components using the same one, we currently just rely on the browser cache here)
-                (function(compName, compOccName, geomTessURI){
+                (function(compName, compOccName, geomID){
 
-                    $.get(server_3D_url + "/x3d_mesh_from_geometrie_tesselee_uri?uri=" + geomTessURI,
+                    $.get(server_3D_url + "/get_x3dmesh_for_occurrence?uri=" + geomID,
                         function(data, textStatus, jqXHR){
 
-                            console.log("Geometrie Tesselee " + geomTessURI + " loaded.");
+                            console.log("X3D mesh for component \"" + geomID + "\" loaded.");
 
                             var x3dStr = JSON.parse(jqXHR.responseText);
 
@@ -93,8 +91,7 @@ StorageManager.prototype.loadScene = function(){
                         }
                     );
 
-                    //@tpaviot: change "geomTessTestURIs[...]" to the fetched URI (componentGeometryURI)
-                })(componentName, componentOccurenceName, geomTessTestURIs[(geomTessTestIdx++) % 4]);
+                })(componentName, componentOccurenceName, componentGeometryIdentifier);
             }
 
             ui.buildCatalogueTreeFromGroupsAndNodes();
@@ -126,7 +123,7 @@ StorageManager.prototype.loadScene = function(){
     );
 
     //get a list with all "Component Occurences" / "Occurences de Composants" from the server
-    $.get(server_3D_url + "/occurrences_de_composant",
+    $.get(server_3D_url + "/occurrences_de_composant?search=" + searchStr,
         function(data, textStatus, jqXHR){
 
             console.log("Occurrences de composant loaded.");

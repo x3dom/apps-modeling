@@ -1473,6 +1473,9 @@ function UI(primitiveManager){
             var root         = $("#catalogueTree").dynatree("getRoot");
             var rootChildren = root.getChildren();
 
+            if (!rootChildren)
+                return;
+
             //by default, the search is not case sensitive
             if (arguments.length >= 2 && caseSensitive)
             {
@@ -1515,4 +1518,12 @@ function UI(primitiveManager){
             }
         };
 
+
+
+        this.fetchMatchingComponentsFromDBClicked = function()
+        {
+            var searchStr = $("#componentSearchField").val();
+
+            storageManager.loadComponents(searchStr);
+        };
 }

@@ -138,7 +138,7 @@
             <li><a>Scene</a>
                 <ul>
                     <li><a href="#" id="newFile" onclick="primitiveManager.removeAllObjects()" onmouseover="this.style.cursor='pointer';">New</a></li>
-                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.loadScene();">Fetch...</a></li>
+                    <li><a href="#" id="loadFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.loadComponents();">Fetch...</a></li>
                     <li><a href="#" id="saveFile" onmouseover="this.style.cursor='pointer';" onclick="storageManager.saveScene();">Store...</a></li>
                 </ul>
             </li>
@@ -227,7 +227,7 @@
 
 
 <div id="Links"> 
-    <div id="plantEditorLeftBar">
+    <div class="plantEditorLeftBar">
 
             <h3>Scene</h3>
             <div class='plantEditorItemView'>
@@ -241,8 +241,10 @@
             <div id="componentCatalogueDiv" class="plantEditorItemView">
                 <div class="treeViewDiv" id="catalogueTree"></div>
             </div>
-            <img style="vertical-align:middle;" src='images/Editor2D-Zoom.png'/>
+
             <input id="componentSearchField" oninput="ui.componentSearchFieldChanged(this.value);" style="margin:6px;width:80%" type="text"/>
+
+            <input type='button' style="background:#191415;border:solid 1px gray;width:25px;height:25px;margin-top:5px;vertical-align:top;background-image:url('images/SearchInDB.png');" onclick="ui.fetchMatchingComponentsFromDBClicked();"></input>
     </div>
 </div>
 
