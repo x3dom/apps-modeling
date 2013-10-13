@@ -364,7 +364,7 @@ function UI(primitiveManager){
                     node.scheduleAction("cancel");
                 },
                 onActivate: function(node){
-                    addComponent(node);
+                    //addComponent(node);
                 },
                 onClick: function(domNode, event){
                     addComponent($.ui.dynatree.getNode(domNode));
