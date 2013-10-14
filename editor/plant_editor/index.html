@@ -92,7 +92,7 @@
 
     <link rel="stylesheet" type="text/css" href="../static/standard/jquery-ui-1.10.3.custom.css">
     <link rel='stylesheet' type='text/css' href='../static/ext/farbtastic.css'>
-    
+
     <link rel='stylesheet' type='text/css' href='../static/css/screen.css'>
     <link rel='stylesheet' type='text/css' href='../static/css/bottom.css'>
     <link rel='stylesheet' type='text/css' href='../static/css/right.css'>
@@ -100,7 +100,7 @@
     <link rel='stylesheet' type='text/css' href='../static/css/top.css'>
     <link rel='stylesheet' type='text/css' href='../static/ext/jquery.switchbutton.css'>
     <link rel="stylesheet" type="text/css" href='../static/ext/ui.dynatree.css'>
-    
+
     <script type='text/javascript' src="../static/ext/jquery-1.9.1.js"></script>
     <script type='text/javascript' src="../static/ext/jquery-ui-1.10.3.custom.js"></script>
     <script type='text/javascript' src="../static/ext/jquery.slimscroll.min.js"></script>
@@ -118,7 +118,7 @@
     <script type='text/javascript' src="../static/js/SnappingContext/SnapJSON.js"></script>
     <script type='text/javascript' src="../static/js/SnappingContext/CreateContextPoint.js"></script>
     <script type='text/javascript' src="../static/js/SnappingContext/SnapContext.js"></script>
-    
+
     <script type='text/javascript' src="../static/js/TransformableObject.js"></script>
     <script type='text/javascript' src="../static/js/PrimitiveManager.js"></script>
     <script type='text/javascript' src="../static/js/Group.js"></script>
@@ -156,7 +156,7 @@
             </li>
         </ul>
     </div>
-    
+
     <!--<div class="header">
         <ul class="nav">
             <li><a>Highlight</a>
@@ -185,7 +185,7 @@
                                 onclick="controller.removePlane();"/></div>
     <div class="rightBorder"><img title="Toggles axis cross on/off" src="images/axis_png.png" id="DeleteAxis" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removeAxis();"/></div>
-    <div class="leftBorder"><img title="Activates navigation mode and deselects all primitives" src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';" 
+    <div class="leftBorder"><img title="Activates navigation mode and deselects all primitives" src="images/hand_png.png" id="ButtonHand" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('hand'); primitiveManager.clearSelection();"/></div>
     <div class="buttonTop"><img title="Activates translation mode of selected primitives" src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('translation');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
@@ -226,7 +226,7 @@
 </div>
 
 
-<div id="Links"> 
+<div id="Links">
     <div class="plantEditorLeftBar">
 
             <h3>Scene</h3>
@@ -235,15 +235,7 @@
             </div>
 
             <h3>Component Catalogue</h3>
-
-            <div id="plantEditorSearchArea">
-                <input id="componentSearchField" oninput="ui.componentSearchFieldChanged(this.value);" style="margin:6px;width:80%" type="text"/>
-                <input title="Fetch matching components from the database" type='button' style="background:#191415;border:solid 1px gray;width:25px;height:25px;margin-top:5px;vertical-align:top;background-image:url('images/SearchInDB.png');" onclick="ui.fetchMatchingComponentsFromDBClicked();"></input>
-            </div>
-
-            <div id="componentCatalogueDiv" class="plantEditorItemView">
-                <div class="treeViewDiv" id="catalogueTree"></div>
-            </div>
+            <div id="componentCatalogueDebugDiv" class="plantEditorItemViewDebug"> </div>
     </div>
 </div>
 
@@ -261,7 +253,7 @@
                 <div class='form-item'><div class='colorLabel'>Specular</div><input type='text' id='specular' name='color2' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Emissive</div><input type='text' id='emissive' name='color3' class='colorwell' value='#000000' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
                 <div class='form-item'><div class='colorLabel'>Transparency</div><input type='text' id='transparency' value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
-                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>         
+                <div class='form-item'><div class='colorLabel'>Shininess</div><input type='text' id='shininess' value='0.3' onchange='primitiveManager.changePrimitiveMaterial(this.id);'/></div>
             </div>
         </div>
     </div>
@@ -298,7 +290,7 @@
             <orthoviewpoint id="orthoViewPointRight" zNear="0.01" zFar="10000" fieldOfView="-7.5 -7.5 7.5 7.5"
                             position="10 0 0" orientation="0 1 0 1.57079632679">
             </orthoviewpoint>
-            
+
             <navigationInfo id="navi" type='"EXAMINE" "ANY"'></navigationInfo>
 
 
@@ -334,7 +326,7 @@
 
             <transform id="componentsRoot" render='false' translation="0 0 0">
             </transform>
-            
+
             <transform id="snapPoints"></transform>
             <transform id="snapLines"></transform>
         </scene>
