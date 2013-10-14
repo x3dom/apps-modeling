@@ -1,8 +1,8 @@
 function StorageManager(){}
 
 
-// TODO: this address needs to be parameterizable
 // the server which holds the 3D data of the components
+// usually, this is left empty because the "3D server" application is used to invoke this editor.
 //var server_3D_url = "http://146.140.4.36:8080/";
 var server_3D_url = "";
 
