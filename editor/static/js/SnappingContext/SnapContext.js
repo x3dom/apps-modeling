@@ -24,8 +24,8 @@ function SnapContext()
 	objPointList = createContextPoint.getObjPointList();
 	
 	
-	// Retrieves the information about the position of the Snappoints
-	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
+	// Retrieves the information about the position of the Snappoin.ts
+	var pointListObj = snapJ.getJSON('../static/testing/components/', 'CompB');
 	
 	this.init = function(x, y)
 	{
@@ -96,58 +96,8 @@ function SnapContext()
 				$("#" + dialogName).css('padding', '0px');
 				$("#" + dialogName).css('margin', '0px');
 				
-				
-				var min = 1;
-				var max = 5;
-				var zahl = Math.floor(Math.random() * (max - min)) + min;
-				
-				switch(zahl)
-				{
-					case 1:
-						var inhalt  = "<h3>Snappoints</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
-						/*inhalt += "<h3>Object 2</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						inhalt += "<h3>Object 3</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
-					break;
-					
-					case 2:
-						var inhalt  = "<h3>Snappoints</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
-						/*inhalt += "<h3>Object 2</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						inhalt += "<h3>Object 3</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
-					break;
-					
-					case 3:
-						var inhalt  = "<h3>Snappoints</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li><li>Point 4</li></ul></div>";
-						/*inhalt += "<h3>Object 2</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						inhalt += "<h3>Object 3</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
-					break;
-					
-					case 4:
-						var inhalt  = "<h3>Snappoints</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li><li>Point 4</li><li>Point 5</li></ul></div>";
-						/*inhalt += "<h3>Object 2</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						inhalt += "<h3>Object 3</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
-					break;
-					
-					case 5:
-						var inhalt  = "<h3>Snappoints</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						/*inhalt += "<h3>Object 2</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";
-						inhalt += "<h3>Object 3</h3>";
-						inhalt += "<div><ul><li>Point 1</li><li>Point 2</li><li>Point 3</li></ul></div>";*/
-					break;
-				}
+				var inhalt  = "<h3>Snappoints</h3>";
+				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
 				
 				//Start Contextcontent
 				jQuery('<div></div>', {id: divContextName}).appendTo('#' + innenDialogName);		
