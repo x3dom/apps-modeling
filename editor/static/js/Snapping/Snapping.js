@@ -10,7 +10,7 @@ function Snapping()
 	var objPointList = createPoint.getObjPointList();
 	
 	// Retrieves the information about the position of the Snappoints
-	var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
+	//var pointListObj = snapJ.getJSON('./x3d/JsonFiles', 'Box');
 	
 	
 	/*

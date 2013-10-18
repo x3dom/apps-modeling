@@ -31,26 +31,7 @@ function SnapContext()
 	{
 		snapContext.addContextMenu(x, y);
 	};
-    
-    // hide the dialog
-    this.hide = function()
-   	{
-   		$(".ui-dialog").hide();
-   		
-   		for(var i = 0; i < dialogList.length; i++)
-   		{
-   			removeNode(dialogList[i]);
-   		}
-   		
-   	};
-   	
-   	// Remove all Dialog-window
-   	function removeNode(id)
-   	{
-   		var nodePoint = document.getElementById(id);
-        if(nodePoint && nodePoint.parentNode)
-    	    nodePoint.parentNode.removeChild(nodePoint);
-   	}
+
  
  	// Create Dialog to one Element
     this.addContextMenu = function(x, y)
@@ -60,10 +41,8 @@ function SnapContext()
     	var innenDialogName = objectName + "_innenDialog";
     	
     	//Check if a window with that ID exists
-    	//Fixed bug that an empty window context generates
     	if($("#" + dialogName).length != 0) 
   		{
-  			console.log("bin hier!!!");
     		snapContext.hide();
     		//removeMode("#" + dialogName);
 		}
@@ -97,7 +76,8 @@ function SnapContext()
 				$("#" + dialogName).css('margin', '0px');
 				
 				var inhalt  = "<h3>Snappoints</h3>";
-				inhalt += "<div><ul><li>Point 1</li><li>Point 2</li></ul></div>";
+				inhalt += "<div><ul><li id='point1' onmouseover='this.style.cursor='pointer';'>Point 1</li>";
+				inhalt += "<li id='point2' onmouseover='this.style.cursor='pointer';'>Point 2</li></ul></div>";
 				
 				//Start Contextcontent
 				jQuery('<div></div>', {id: divContextName}).appendTo('#' + innenDialogName);		
@@ -117,24 +97,14 @@ function SnapContext()
 				$(".ui-accordion-content").css('padding', '0px');
 				$(".ui-accordion-content").css('margin', '0px');
 				$(".ui-accordion-content").css('overflow', 'inherit');
-        		
-        		/*
-	    	    $("#" + divContextName).slimScroll({
-			        size: '10px',
-			        height: '100px',
-			        color: '#7E7E7E',
-			        position: 'right',
-			        alwaysVisible: true,
-			        railVisible: true,
-			        railColor: '#BDBDBD'
-			    });
-			    */
 			}
      	}).show();
         
-        
         $("#" + dialogName).dialog( "option", "position", [x, y]);
         dialogList.push(dialogName); //Save all dialog-window
+        
+        $("point1").bind("click", pointListShow(objectName), false);
+        $("point2").bind("click", pointListShow(objectName), false);
     };
   	
     
@@ -179,9 +149,6 @@ function SnapContext()
     }
     
     
-    /*
-     * 
-     */
     function snapTo(vecA, vecB, prim)
     {
 		//From vecA to vecB
@@ -224,40 +191,24 @@ function SnapContext()
 		prim.setTranslation(x, y, z);
     }
     
-	
-	/* */
-	this.getIDList = function()
-	{
-        var pointObjID = [];
-        for (var key in objPointList){
-            pointObjID.push(key);
-        }
-        
-        return pointObjID;
-	};
-	
-	/* */
-    this.getPrimitiveByID = function(id){
-        if (id && objPointList[id]) {
-            return objPointList[id];
-        }
-        else {
-            return null;
-        }
-    };
-	
-	/* */
-    this.getCurrentPrimitiveID = function(){
-        return primitiveManager.getCurrentPrimitiveID() + '_point_0';
-    };
     
-	/* */
-    this.getCurrentPrimitive = function(){
-    	return snapping.getPrimitiveByID(primitiveManager.getCurrentPrimitiveID() + '_point_0'); 
-    };
-    
-	/* */
-    this.getPosition = function(pointID){
-        return x3dom.fields.SFVec3f.parse(objPointList[pointID].getAttribute("translation"));
-    };
+        // hide the dialog
+    this.hide = function()
+   	{
+   		$(".ui-dialog").hide();
+   		
+   		for(var i = 0; i < dialogList.length; i++)
+   		{
+   			removeNode(dialogList[i]);
+   		}
+   		
+   	};
+   	
+   	
+   	function removeNode(id)
+   	{
+   		var nodePoint = document.getElementById(id);
+        if(nodePoint && nodePoint.parentNode)
+    	    nodePoint.parentNode.removeChild(nodePoint);
+   	}
 }
