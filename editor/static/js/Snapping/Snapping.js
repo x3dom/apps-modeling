@@ -3,7 +3,8 @@
  */
 function Snapping()
 {
-	var snapBool = false;				// Sind die Elemente verbunden? 
+	var snapBool = -1;					// Sind die Elemente verbunden?
+	
 	//var createLine = new CreateLine();	// das Objekt um die Linien darzustellen
 	
 	var objPointList = [];				// Speicher die Liste der Snappoints
@@ -12,6 +13,10 @@ function Snapping()
 	var objNormalListCounter = [];		// Speicher Liste der Vorhandene IDs der Objekte
 	
 	
+	this.setSnapBool = function(value)
+	{
+		snapBool = value;
+	};
 	
 	/* Punkte und Normale werden erzeugt und dargestellt */
 	this.createPointNormale = function()
@@ -28,18 +33,18 @@ function Snapping()
 	/* Start funktion */
 	this.init = function()
 	{
-        if(snapBool == false) { snapBool = true; snapping.setSnapping(); }
-        else
-        {
-            snapBool = false;
-            var elementList = primitiveManager.getIDList();
-             
-            // Vorhandene Punkte und Normale entfernen
-            for(var i = 0; i < objPointList.length; i++)
-         	{
-            	primitiveManager.removeSnapNode(objPointList[i]);
-                primitiveManager.removeSnapNode(objNormalList[i]);
-            }
+		var temp = primitiveManager.getIDList();
+		
+		if(temp.length > 1 && snapBool > -1)
+		{
+	        if(snapBool == 0) { snapping.setSnapping(snapBool); console.log("Magnet"); }		//Magnet
+	        else if(snapBool == 1) { snapping.setSnapping(snapBool); console.log("Magnet Context"); }	//Context
+        }
+        else 
+		{
+			console.log("Punkte Loeschen");
+            primitiveManager.removeSnapNode(objPointList);
+            primitiveManager.removeSnapNode(objNormalList);
         }
 	};
 	
@@ -63,8 +68,15 @@ function Snapping()
 	
 	
 	/* Punkte und Normale werden erzeugt, Snapping-Eigenschaften erzeugt */
-    this.setSnapping = function()
+    this.setSnapping = function(snapBool)
     {
+    	if(snapBool == 1)
+    	{
+    		// Punkte und Normale erzeugen
+    		snapping.createPointNormale();
+    		return;
+    	}
+    	
     	// Punkte und Normale erzeugen
     	snapping.createPointNormale();
     	

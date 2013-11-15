@@ -163,9 +163,9 @@ function SnapContext()
     	var objA = [];
     	var objB = [];
     	console.log("From: " + fromTo[0] + " to: " + fromTo[1]);
+    	console.log("From: " + fromTo[0] + " to: " + fromTo[1]);
     	
-    	
-    	console.log(document.getElementById(objPointList[0].id.getAttribute('translation')));
+    	//console.log(document.getElementById(objPointList[0].id.getAttribute('translation')));
     	
     	for(i = 0; i < objPointList.length; i++)
     	{
@@ -187,6 +187,7 @@ function SnapContext()
 		z = objB.z + objB.zL;    		
 		
 		temp.setTranslation(x, y, z);
+		snapContext.hide();
     };
 	
 

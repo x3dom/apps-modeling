@@ -641,11 +641,18 @@ function PrimitiveManager(){
      * Removes snapNode
      * @returns {undefined}
      */  
-    this.removeSnapNode = function(id)
+    this.removeSnapNode = function(obj)
     {
-    	var snapPoint = document.getElementById(id);
-        if (snapPoint && snapPoint.parentNode)
-    	    snapPoint.parentNode.removeChild(snapPoint);
+    	var i;
+    	
+    	for(i = 0; i < obj.length; i++)
+    	{
+    		var snapPoint = document.getElementById(obj[i]);
+    		
+        	if (snapPoint && snapPoint.parentNode){
+    	    	snapPoint.parentNode.removeChild(snapPoint);
+    	    }
+    	}
     };
 	
     

@@ -8,6 +8,7 @@ function Controller(ui){
     
     // IntervalID for automatically saving mode
     var saveInterval = null;
+    var counterMagnet = 0;
     
     
     /*
@@ -214,13 +215,33 @@ function Controller(ui){
     
     
     this.highlightSnapPrimitves = function() {
-        if (ui.TBSnap.highlighted){
-            ui.TBSnap.setImage("./images/magnet_off.png");
-            ui.TBSnap.dehighlight();
+    	
+    	snapping.setSnapBool(counterMagnet);
+    	
+    	if(counterMagnet == 0)
+    	{
+	        if (ui.TBSnap.highlighted){
+	            ui.TBSnap.setImage("./images/magnet_off.png");
+	            ui.TBSnap.dehighlight();
+	            snapping.setSnapBool(-1);
+	        }
+	        
+	        else
+	      	{
+	      		counterMagnet = 0;
+	      		snapping.setSnapBool(counterMagnet);
+	            ui.TBSnap.setImage("./images/magnet_on.png");
+	            ui.TBSnap.highlight();
+	            return;
+	        }
         }
-        else {
-            ui.TBSnap.setImage("./images/magnet_on.png");
+        if(counterMagnet == 1)
+        {
+        	ui.TBSnap.setImage("./images/magnet_context.png");
             ui.TBSnap.highlight();
+            snapping.setSnapBool(counterMagnet);
+            counterMagnet = 0;
+            return;
         }
     };
     
