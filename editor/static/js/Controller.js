@@ -7,9 +7,7 @@
 function Controller(ui){
     
     // IntervalID for automatically saving mode
-    var saveInterval = null;
-    var counterMagnet = 0;
-    
+    var saveInterval = null;    
     
     /*
      * Activates the specified transformation mode 
@@ -215,33 +213,40 @@ function Controller(ui){
     
     
     this.highlightSnapPrimitves = function() {
-    	
-    	snapping.setSnapBool(counterMagnet);
-    	
-    	if(counterMagnet == 0)
+	
+		var varCount = primitiveManager.getIDList();
+	
+    	if(varCount.length > 1)
     	{
-	        if (ui.TBSnap.highlighted){
-	            ui.TBSnap.setImage("./images/magnet_off.png");
-	            ui.TBSnap.dehighlight();
-	            snapping.setSnapBool(-1);
-	        }
-	        
-	        else
-	      	{
-	      		counterMagnet = 0;
-	      		snapping.setSnapBool(counterMagnet);
-	            ui.TBSnap.setImage("./images/magnet_on.png");
-	            ui.TBSnap.highlight();
-	            return;
-	        }
-        }
-        if(counterMagnet == 1)
-        {
-        	ui.TBSnap.setImage("./images/magnet_context.png");
-            ui.TBSnap.highlight();
-            snapping.setSnapBool(counterMagnet);
-            counterMagnet = 0;
-            return;
+    		console.log(snapping.getSnapBool());
+    		
+    		if(snapping.getSnapBool() == 0){ snapping.setSnapBool(1); }
+    		
+    		console.log(snapping.getSnapBool());
+    		
+			if(snapping.getSnapBool() == 1)
+			{
+				console.log("magnet");
+			    ui.TBSnap.setImage("./images/magnet_on.png");
+			    ui.TBSnap.highlight();
+			    snapping.setSnapBool(2);
+			}
+			
+			else if(snapping.getSnapBool() == 2)
+			{
+				console.log("magnet_context");
+				ui.TBSnap.setImage("./images/magnet_context.png");
+			    ui.TBSnap.highlight();
+			    snapping.setSnapBool(0);
+			}
+    	}
+		
+		else if (ui.TBSnap.highlighted)
+		{
+			console.log("Ohne Magnet");
+            ui.TBSnap.setImage("./images/magnet_off.png");
+            ui.TBSnap.dehighlight();
+            snapping.setSnapBool(1);
         }
     };
     
