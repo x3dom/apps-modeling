@@ -211,46 +211,17 @@ function Controller(ui){
     };
     
     
-    
     this.highlightSnapPrimitves = function() {
-	
-		var varCount = primitiveManager.getIDList();
-	
-    	if(varCount.length > 1)
-    	{
-    		console.log(snapping.getSnapBool());
-    		
-    		if(snapping.getSnapBool() == 0){ snapping.setSnapBool(1); }
-    		
-    		console.log(snapping.getSnapBool());
-    		
-			if(snapping.getSnapBool() == 1)
-			{
-				console.log("magnet");
-			    ui.TBSnap.setImage("./images/magnet_on.png");
-			    ui.TBSnap.highlight();
-			    snapping.setSnapBool(2);
-			}
-			
-			else if(snapping.getSnapBool() == 2)
-			{
-				console.log("magnet_context");
-				ui.TBSnap.setImage("./images/magnet_context.png");
-			    ui.TBSnap.highlight();
-			    snapping.setSnapBool(0);
-			}
-    	}
-		
-		else if (ui.TBSnap.highlighted)
-		{
-			console.log("Ohne Magnet");
+        if (ui.TBSnap.highlighted){
             ui.TBSnap.setImage("./images/magnet_off.png");
             ui.TBSnap.dehighlight();
-            snapping.setSnapBool(1);
+        }
+        else {
+            ui.TBSnap.setImage("./images/magnet_on.png");
+            ui.TBSnap.highlight();
         }
     };
     
-
 
     /*
      * Gets grid size or 0 if no snapping

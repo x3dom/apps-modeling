@@ -3,18 +3,12 @@
  */
 function Snapping()
 {
-	var snapBool = 0;					// Sind die Elemente verbunden?
+	var snapBool = false;
 	var varCount = 0;					// Wie viele Elemente
-	
 	var objPointList = [];				// Speicher die Liste der Snappoints
 	var objPointListCounter = [];		// Speicher Liste der Vorhandene IDs der Objekte
 	var objNormalList = [];				// Speichert eine Liste der Normale die erzeugt werden
 	var objNormalListCounter = [];		// Speicher Liste der Vorhandene IDs der Objekte
-	
-	
-	this.setSnapBool = function(value) { snapBool = value; };
-	this.getSnapBool = function(value) { return snapBool; };
-	this.getVarCount = function(value) { varCount = value; };
 	
 	
 	/* Punkte und Normale werden erzeugt und dargestellt */
@@ -29,24 +23,27 @@ function Snapping()
 		objNormalListCounter = createPointNormal.objectNormalListCounter();
 	};
 	
-	/* Start funktion */
+	
+	/*
+	 * Starts the ability to snapping
+	 */
 	this.init = function()
 	{
-		varCount = primitiveManager.getIDList();
-		
-		if(varCount.length > 1 && snapBool >= 1)
-		{
-	        if(snapBool == 1) { snapping.setSnapping(snapBool); snapBool = 2;}	//Magnet
-	        if(snapBool == 2) { snapping.setSnapping(snapBool); snapBool = 0;}	//Context
+        if(snapBool == false)
+        {
+            snapBool = true;
+            snapping.setSnapping();
         }
-        
-        else 
-		{
-           // primitiveManager.removeSnapNode(objPointList);
-           // primitiveManager.removeSnapNode(objNormalList);
-            snapbool = 1;
+        else
+        {
+            snapBool = false;
+
+            //remove existing lines and Points
+            primitiveManager.removeSnapNode(objPointList);
+        	primitiveManager.removeSnapNode(objNormalList);
         }
 	};
+	
 	
 	/* Wenn ein neues Element eingefuegt wird, bekommt dieses die Snapping funktionalitaet */
 	this.newSnapObject = function(objID)
@@ -68,15 +65,8 @@ function Snapping()
 	
 	
 	/* Punkte und Normale werden erzeugt, Snapping-Eigenschaften erzeugt */
-    this.setSnapping = function(snapBool)
+    this.setSnapping = function(temp)
     {
-    	if(snapBool == 2)
-    	{
-    		// Punkte und Normale erzeugen
-    		snapping.createPointNormale();
-    		return;
-    	}
-    	  		
     	// Punkte und Normale erzeugen
     	snapping.createPointNormale();
     	
@@ -125,6 +115,7 @@ function Snapping()
     		}
 		};
 	}
+	
 	
 	/* Die Uebergebene Punkte werden verbundne */
 	function snapTo(myObjPoint, postObjPoint, distance)
