@@ -110,7 +110,7 @@ function CreatePointNormal()
     	if(normalCounter == 0)
     	{
     		oldObjNormal = myObjID;
-    	}
+		}
     	else
     	{
     		if(oldObjNormal != myObjID)
@@ -119,6 +119,12 @@ function CreatePointNormal()
     			oldObjNormal = myObjID;	
     		}
     	}
+    	
+ 		var temp2 = [2];
+    	temp2[0] = pointE[0] + pointA[0];
+    	temp2[1] = pointE[1] + pointA[1];
+    	temp2[2] = pointE[2] + pointA[2];
+    	    	
     	
 		//var temp = myObjID + '_normal';
     	var temp = myObjID + '_normal_' + normalCounter;
@@ -134,7 +140,7 @@ function CreatePointNormal()
     	var lineSet = document.createElement('IndexedLineSet');
     	var lineSetCoordinate = document.createElement('Coordinate');
     	lineSet.setAttribute('coordIndex', '0 0 1 -1');
-    	lineSetCoordinate.setAttribute('point', pointA + ', ' + pointE);
+    	lineSetCoordinate.setAttribute('point', pointA + ',' + temp2);
     	
     	lineAppearance.appendChild(lineMaterial);
     	lineShape.appendChild(lineAppearance);

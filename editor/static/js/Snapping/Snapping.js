@@ -110,7 +110,7 @@ function Snapping()
     			for(j = 0; j < postPoints.length; j++)
     			{
     				distance = myObj.myPoints[i].position.subtract(postPoints[j].position).length();
-					if(distance < 7) { snapTo(myObj.myPoints[i], postPoints[j], distance); }
+					if(distance < 7) { snapTo(myObj, myObj.myPoints[i], postPoints[j], distance); }
     			}
     		}
 		};
@@ -118,24 +118,41 @@ function Snapping()
 	
 	
 	/* Die Uebergebene Punkte werden verbundne */
-	function snapTo(myObjPoint, postObjPoint, distance)
-    {
+	function snapTo(myObj, myObjPoint, postObjPoint, distance)
+    {    	
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
-    		
+    	
     	if(distance < 4.0)
     	{
-    		var post = primitiveManager.getPrimitiveByID(postObjPoint.objID);  		
-    		var temp = primitiveManager.getPrimitiveByID(myObjPoint.objID);
+    		var post = primitiveManager.getPrimitiveByID(postObjPoint.objID);
 			
-			temp.rotationAngles.x = post.rotationAngles.x;
-			temp.rotationAngles.y = post.rotationAngles.y;
-			temp.rotationAngles.z = post.rotationAngles.z;
+			//xt = postObjPoint.x + postObjPoint.xL;	//Welt und Lokalle Position werden addiert
+    		//yt = postObjPoint.y + postObjPoint.yL;
+    		//zt = postObjPoint.z + postObjPoint.zL; 
+			//myObj.setTranslation(xt, yt, zt);
 			
-    		x = postObjPoint.x + postObjPoint.xL;	//Welt und Lokalle Position werden addiert
-    		y = postObjPoint.y + postObjPoint.yL;
-    		z = postObjPoint.z + postObjPoint.zL;    		
+			/*Translation auf das Element*/
+			//x = post.translation.x;
+    		//y = post.translation.y;
+    		//z = post.translation.z;
     		
-    		temp.setTranslation(x, y, z);
+    		x = postObjPoint.xL;
+    		y = postObjPoint.yL;
+    		z = postObjPoint.zL;
+			
+			myObj.setTranslation(x, y, z);
+    		
+			//Rotation anwenden
+			myObj.rotationAngles.x = post.rotationAngles.x;
+			myObj.rotationAngles.y = post.rotationAngles.y;
+			myObj.rotationAngles.z = post.rotationAngles.z;
+			myObj.updateMatrixTransform();
+			
+			xb = postObjPoint.tx;
+    		yb = postObjPoint.ty;
+    		zb = postObjPoint.tz;
+    		
+    		myObj.setTranslation(xb, yb, zb);
     	}
     };
     

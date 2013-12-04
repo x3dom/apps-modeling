@@ -11,6 +11,7 @@ Subject.prototype.Report = function(objPointList, objPointListCounter)
 {
 	var i, j, k;
 	var temp;
+	var temp2;
 	
 	var myObj = this;				// Aktuell ausgewaehltes Objekt
 	var myPoints = [];				// Punkte des aktuellen Objekts mit Parameter
@@ -53,9 +54,6 @@ Subject.prototype.Report = function(objPointList, objPointListCounter)
 		myPoints[i].xL = temp.x; //xL, yL, zL Lokalle Position der Punkte im Objekt
 		myPoints[i].yL = temp.y;
 		myPoints[i].zL = temp.z;
-		myPoints[i].rotationX = myObj.rotationAngles.x;
-		myPoints[i].rotationY = myObj.rotationAngles.y;
-		myPoints[i].rotationZ = myObj.rotationAngles.z;
 		myPoints[i].position = new x3dom.fields.SFVec3f(myPoints[i].x, myPoints[i].y, myPoints[i].z);
 	}
 	myObj.myPoints = new Array();		// Im Objekt wird ein neues Parameter erzeugt
@@ -72,20 +70,20 @@ Subject.prototype.Report = function(objPointList, objPointListCounter)
 				var objID = postPointsTemp[i].slice(0, postPointsTemp[i].search("_"));
 				var post = primitiveManager.getPrimitiveByID(objID);
 				
-				temp = snapping.getPosition(postPointsTemp[i]);
+				temp2 = snapping.getPosition(postPointsTemp[i]);
 				
 				postPoints[i] = new Array();
 				postPoints[i].id = postPointsTemp[i];
 				postPoints[i].objID = objID;
-				postPoints[i].x = postObjList[j].translation.x + temp.x;
-				postPoints[i].y = postObjList[j].translation.y + temp.y;
-				postPoints[i].z = postObjList[j].translation.z + temp.z;
-				postPoints[i].xL = temp.x; //xL, yL, zL Lokalle Position der Punkte im Objekt
-				postPoints[i].yL = temp.y;
-				postPoints[i].zL = temp.z;
-				postPoints[i].rotationX = post.rotationAngles.x;
-				postPoints[i].rotationY = post.rotationAngles.y;
-				postPoints[i].rotationZ = post.rotationAngles.z;
+				postPoints[i].tx = postObjList[j].translation.x; //Position der Objekt wo sich der PUnkt befindet
+				postPoints[i].ty = postObjList[j].translation.y;
+				postPoints[i].tz = postObjList[j].translation.z;
+				postPoints[i].xL = temp2.x; //xL, yL, zL Lokalle Position der Punkte im Objekt
+				postPoints[i].yL = temp2.y;
+				postPoints[i].zL = temp2.z;
+				postPoints[i].x = postObjList[j].translation.x + temp2.x;
+				postPoints[i].y = postObjList[j].translation.y + temp2.y;
+				postPoints[i].z = postObjList[j].translation.z + temp2.z;
 				postPoints[i].position = new x3dom.fields.SFVec3f(postPoints[i].x, postPoints[i].y, postPoints[i].z);
 			}
 		}

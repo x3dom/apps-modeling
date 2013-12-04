@@ -63,10 +63,13 @@ function SnapContext()
 				
 				for(i = 0; i < objPointList.length; i++)
 				{
-					$('#' + divContextName).html(function() {
-						divInhalt += "<li id='" + objPointList[i].id  + "__" + dialogName + "'>" + objPointList[i].id + "</li>";
-						return divInhalt;
-					});
+					if(objectName === objPointList[i].objID)
+					{
+						$('#' + divContextName).html(function() {
+							divInhalt += "<li id='" + objPointList[i].id  + "__" + dialogName + "'>" + objPointList[i].id + "</li>";
+							return divInhalt;
+						});
+					}
 				}
 				divInhalt += "</ul></div>";
 				/**********************************************************************************/				
@@ -162,8 +165,6 @@ function SnapContext()
     	var i;
     	var objA = [];
     	var objB = [];
-    	console.log("From: " + fromTo[0] + " to: " + fromTo[1]);
-    	console.log("From: " + fromTo[0] + " to: " + fromTo[1]);
     	
     	//console.log(document.getElementById(objPointList[0].id.getAttribute('translation')));
     	
