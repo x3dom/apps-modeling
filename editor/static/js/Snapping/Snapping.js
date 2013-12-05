@@ -148,9 +148,9 @@ function Snapping()
 			myObj.rotationAngles.z = post.rotationAngles.z;
 			myObj.updateMatrixTransform();
 			
-			xb = postObjPoint.tx;
-    		yb = postObjPoint.ty;
-    		zb = postObjPoint.tz;
+			xb = postObjPoint.tx + (2 * x);
+    		yb = postObjPoint.ty + (2 * y);
+    		zb = postObjPoint.tz + (2 * z);
     		
     		myObj.setTranslation(xb, yb, zb);
     	}
