@@ -3,15 +3,26 @@ var dialogList = [];
 
 function SnapContext()
 {	
+	var snapBool = false;
 	var fromTo = [];
 	var objPointList = [];
 	
-	this.init = function(x, y)
+	this.init = function()
 	{
-		objPointList = pointAttribute(snapping.getObjPointList());
-		snapContext.addContextMenu(x, y);
+		if(SnappingVar == 0){ SnappingVar = 2;}
+		else if(SnappingVar == 2){ SnappingVar = 0;}
+		snapping.createPointNormale();
 	};
 
+ 	this.start = function(x, y)
+ 	{ 		
+ 		if(SnappingVar == 2)
+ 		{
+ 			objPointList = pointAttribute(snapping.getObjPointList());
+ 			snapping.createPointNormale();
+ 			snapContext.addContextMenu(x, y);
+ 		}	
+ 	};
  
  	// Context fuer einen Element erstellen
     this.addContextMenu = function(x, y)
@@ -76,9 +87,32 @@ function SnapContext()
 				
 				/**********************************************************************************/
 				for(i = 0; i < objPointList.length; i++)
-				{					
+				{
+					$('#' + objPointList[i].id + "__" + dialogName).hover(function()
+					{
+						var temp;
+    					var createPointNormal = new CreatePointNormal();
+						var objID = this.id.slice(0, this.id.search("__"));					
+						var neueString = objID.replace("point", "normal");
+					  	temp = createPointNormal.getPointSpitz(neueString);
+					  	temp.setAttribute('render', 'false');
+        				//document.getElementById("#" + neueString + "_spitze").setAttribute('diffuseColor', '1 1 0');
+        				
+						},function()
+					  	{
+					  		var temp;
+	    					var createPointNormal = new CreatePointNormal();
+							var objID = this.id.slice(0, this.id.search("__"));
+							var neueString = objID.replace("point", "normal");
+						  	temp = createPointNormal.getPointSpitz(neueString);
+						  	temp.setAttribute('render', 'true');
+						  	//document.getElementById("#" + neueString + "_spitze").setAttribute('diffuseColor', '1 1 0');
+						}
+					);
+					
+				    				
 					$('#' + objPointList[i].id + "__" + dialogName).on('mouseover', function() 
-				    {
+				    {				    	
 				        $(this).css('cursor','pointer');
 				    });
 				    

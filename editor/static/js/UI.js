@@ -175,6 +175,7 @@ function UI(primitiveManager){
         that.TBUngroup = that.newImageProperty("ButtonUngroup", true);
         that.TBSnapToGrid = that.newImageProperty("ButtonSnapToGrid", true);
         that.TBSnap = that.newImageProperty("SnapPoints", true);
+        that.TBSnap2 = that.newImageProperty("SnapPoints2", true);
         that.TBAutoSave = that.newImageProperty("ButtonAutoSave", true);
         that.TBViewpoints = that.newComboBoxProperty("Viewpoints", true);
 

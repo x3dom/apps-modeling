@@ -178,6 +178,10 @@
             <option value='all'>Show All</option>
         </select>
     </div>
+    
+    <!-- title="Activates scaling mode of selected primitives"
+         title="Activates rotation mode of selected primitives"
+        -->
 
     <div class="leftBorder"><img title="Toggles raster plane on/off" src="images/plane_png.png" id="DeletePlane" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.removePlane();"/></div>
@@ -187,15 +191,15 @@
                                 onclick="controller.Activate('hand'); primitiveManager.clearSelection();"/></div>
     <div class="buttonTop"><img title="Activates translation mode of selected primitives" src="images/verschieben_png.png" id="ButtonVerschieben" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.Activate('translation');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
-    <div class="buttonTop"><img title="Activates scaling mode of selected primitives"  src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.Activate('scale');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
-    <div class="rightBorder"><img title="Activates rotation mode of selected primitives" src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.Activate('rotation');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
+    <div class="buttonTop"><img   src="images/skalieren_png.png" id="ButtonSkalieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('scale1');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
+    <div class="rightBorder"><img  src="images/drehen_png.png" id="ButtonRotieren" onmouseover="this.style.cursor='pointer';"
+                                onclick="controller.Activate('rotation1');primitiveManager.updateTransformUIFromCurrentObject();"/></div>
     <div class="leftBorder"><img title="Snaps/Unsnaps the selected primitive to grid during translation" src="images/snapGrid_off.png" id="ButtonSnapToGrid" onmouseover="this.style.cursor='pointer';"
                                 onclick="controller.snapPrimitiveToGrid();"/></div>
-    <div class="buttonTop"><img title="If activated it saves automatically" src="images/autoSave_off.png" id="ButtonAutoSave" onmouseover="this.style.cursor='pointer';"
-                                onclick="controller.autoSave(2);"/></div>
-    <div class="buttonTop"><img title="Activates snapping functionality between primitives" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
+    <div class="buttonTop"><img title="Snapping with contextwindow" src="images/magnet_off.png" id="SnapPoints2" onmouseover="this.style.cursor='pointer';"
+                                onclick="snapContext.init(); controller.highlightSnapPrimitves2();"/></div>
+    <div class="buttonTop"><img title="Snapping within contextwindow" src="images/magnet_off.png" id="SnapPoints" onmouseover="this.style.cursor='pointer';"
                                 onclick="snapping.init(); controller.highlightSnapPrimitves();"/></div>
     <div class="buttonTop"><img title="Creates a group of the selected primitives" src="images/group.png" id="ButtonGroup" onmouseover="this.style.cursor='pointer';"
                                 onclick="primitiveManager.groupSelectedPrimitives();"/></div>
@@ -229,7 +233,7 @@
 
             <h3>Scene</h3>
             <div class='plantEditorItemView'>
-                <div class="treeViewDiv" id="tree"></div>
+                <div class="treeViewDiv" id="tree"> </div>
             </div>
 
             <h3>Component Catalogue</h3>

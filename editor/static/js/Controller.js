@@ -1,3 +1,6 @@
+var snapActive = 0;
+var contextActive = 0;
+
 /*
  * The Controller component handles all program specific actions, like activation
  * and deactivation of plane and axis, definition of viewpoint and transformation
@@ -213,12 +216,27 @@ function Controller(ui){
     
     this.highlightSnapPrimitves = function() {
         if (ui.TBSnap.highlighted){
+        	snapActive = 0;
             ui.TBSnap.setImage("./images/magnet_off.png");
             ui.TBSnap.dehighlight();
         }
         else {
+        	snapActive = 1;
             ui.TBSnap.setImage("./images/magnet_on.png");
             ui.TBSnap.highlight();
+        }
+    };
+    
+    this.highlightSnapPrimitves2 = function() {
+        if (ui.TBSnap2.highlighted){
+        	contextActive = 0;
+            ui.TBSnap2.setImage("./images/magnet_off.png");
+            ui.TBSnap2.dehighlight();
+        }
+        else {
+        	contextActive = 1;
+            ui.TBSnap2.setImage("./images/magnet_context.png");
+            ui.TBSnap2.highlight();
         }
     };
     

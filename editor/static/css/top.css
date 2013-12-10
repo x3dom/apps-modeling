@@ -21,6 +21,7 @@
 #DeletePlane{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 5px; border: solid 1px #fff; }
 #DeleteAxis{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; margin-right: 0px; border: solid 1px #fff; }
 #SnapPoints{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; border: solid 1px gray; }
+#SnapPoints2{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; border: solid 1px gray; }
 #ButtonHand{ float: left; width: 28px; height: 28px; margin: 5px; margin-right: 5px; margin-left: 5px; }
 #ButtonVerschieben{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
 #ButtonSkalieren{ float: left; width: 28px; height: 28px; margin: 5px; margin-left: 0px; }
@@ -42,12 +43,12 @@
     border:1px solid gray;
 }
 
-#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover, #ButtonGroup:hover, #ButtonUngroup:hover, #ButtonSnapToGrid:hover, #ButtonAutoSave:hover
+#ButtonHand:hover, #ButtonRotieren:hover, #ButtonSkalieren:hover, #ButtonVerschieben:hover, #DeleteAxis:hover, #DeletePlane:hover, #SnapPoints:hover, #SnapPoints2:hover, #ButtonGroup:hover, #ButtonUngroup:hover, #ButtonSnapToGrid:hover, #ButtonAutoSave:hover
 {
 	border:1px solid white;
 }
 
-#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active, #ButtonSnapToGrid:active, #ButtonAutoSave.active
+#ButtonHand:active, #ButtonRotieren:active, #ButtonSkalieren:active, #ButtonVerschieben:active, #DeleteAxis:active, #DeletePlane:active, #ButtonGroup:active, #ButtonUngroup:active, #SnapPoints:active, #SnapPoints2:active, #ButtonSnapToGrid:active, #ButtonAutoSave.active
 {	
 	box-shadow:   2px 2px 2px grey,
 	       		 -2px 2px 2px grey,

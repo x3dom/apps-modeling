@@ -1,4 +1,7 @@
 /* */
+var pointComponent = [];
+var pointSpitzCom = [];
+
 function CreatePointNormal()
 {
 	var oldObjPoint = 0;
@@ -29,7 +32,7 @@ function CreatePointNormal()
 		/* Die Liste der Elemente wird durgelaufen und die Liste der Punkte auch */
 		/* Dann werden die Punkte an den Elemente gesetzt */
 		/* Wenn neue Elemente zu der Liste kommen muss man das hier auch aendern */
-		if(elementList.length != null)
+		if(elementList.length != null && elementList.length > 1)
 	    {
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
@@ -88,7 +91,7 @@ function CreatePointNormal()
     	pointMaterial.setAttribute('diffuseColor', '1 1 0');
     	
     	var pointSphere = document.createElement('Sphere');
-    	pointSphere.setAttribute('radius', '0.07');
+    	pointSphere.setAttribute('radius', '0.1');
     	
     	pointAppearance.appendChild(pointMaterial);
     	pointShape.appendChild(pointAppearance);
@@ -98,6 +101,7 @@ function CreatePointNormal()
     	var objectTransform = primitiveManager.getPrimitiveByID(myObjID).getMatrixTransformNode();
     	objectTransform.appendChild(pointTransform);
     	
+    	pointComponent[temp] = pointTransform;
     	objPointListCounter[myObjID] = pointCounter;	// Zu jedem Objekt wird registriert wie viele Punkte er hat, wird immer ueberschrieben
     	objPointList[temp] = pointTransform;			// Jeder Punkt hat eine eindeutige ID
 		pointCounter++;									// Wie viele Punkte Pro Objekt
@@ -135,27 +139,72 @@ function CreatePointNormal()
     	var lineShape = document.createElement('Shape');
     	var lineAppearance = document.createElement('Appearance');
     	var lineMaterial = document.createElement('Material');
-    	lineMaterial.setAttribute('diffuseColor', '1 1 0');
+    	lineMaterial.setAttribute('diffuseColor', '1 1 1');
     	
     	var lineSet = document.createElement('IndexedLineSet');
     	var lineSetCoordinate = document.createElement('Coordinate');
     	lineSet.setAttribute('coordIndex', '0 0 1 -1');
     	lineSetCoordinate.setAttribute('point', pointA + ',' + temp2);
     	
-    	lineAppearance.appendChild(lineMaterial);
+    	
+    	
+    	var pointSpitz = document.createElement('Transform');
+    	pointSpitz.setAttribute('id', temp + '_spitze');
+    	pointSpitz.setAttribute('translation', temp2);
+    	pointSpitz.setAttribute('scale', '1 1 1');
+    	var spitzShape = document.createElement('Shape');
+    	var spitzAppearance = document.createElement('Appearance');
+    	var spitzMaterial = document.createElement('Material');
+    	spitzMaterial.setAttribute('diffuseColor', '0 0 1');
+    	var spitzSphere = document.createElement('Sphere');
+    	spitzSphere.setAttribute('radius', '0.1');
+    	
+    	spitzAppearance.appendChild(spitzMaterial);
+    	spitzShape.appendChild(spitzAppearance);
+    	spitzShape.appendChild(spitzSphere);
+    	pointSpitz.appendChild(spitzShape);
+    	
+    	
+    	
+		
+		lineAppearance.appendChild(lineMaterial);
     	lineShape.appendChild(lineAppearance);
     	lineSet.appendChild(lineSetCoordinate);
     	lineShape.appendChild(lineSet);
     	lineTransform.appendChild(lineShape);
     	
+    	lineTransform.appendChild(pointSpitz);
+    	
     	var objectTransform = primitiveManager.getPrimitiveByID(myObjID).getMatrixTransformNode();
     	objectTransform.appendChild(lineTransform);
     	
+    	pointSpitzCom[temp] = pointSpitz;
     	objNormalListCounter[myObjID] = normalCounter;	// speichert die Liste der IDs der vorhandene Objekte
     	objNormalList[temp] = lineTransform;			// Jeder Punkt hat eine eindeutige ID
     	normalCounter++;								// Wie viele Normale Pro Objekt
 	}
 	
+	
+	this.getPointSpitz = function(id)
+	{
+    	if (id) {
+    		console.log(pointSpitzCom[id]);
+            return pointSpitzCom[id];
+        }
+        else {
+            return null;
+        }
+	};
+	
+	this.getPointComponent = function(id)
+	{
+        if (id) {
+            return pointComponent[id];
+        }
+        else {
+            return null;
+        }
+	};
 	
 	this.objectPointList = function() 
 	{

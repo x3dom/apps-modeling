@@ -363,7 +363,7 @@ function PrimitiveManager(){
                 // Determine mouse position
                 var x = (window.event)?window.event.clientX:e.pageX;
                 var y = (window.event)?window.event.clientY:e.pageY;
-                snapContext.init(x, y);
+                snapContext.start(x, y);
             }
         },
         false);
@@ -437,7 +437,7 @@ function PrimitiveManager(){
                 // Determine mouse position
                 var x = (window.event)?window.event.clientX:e.pageX;
                 var y = (window.event)?window.event.clientY:e.pageY;
-                snapContext.init(x, y);
+                snapContext.start(x, y);
             }
         },
         false);

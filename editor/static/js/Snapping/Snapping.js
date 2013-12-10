@@ -1,3 +1,6 @@
+var SnappingVar = 0;
+var xA, yA, zA;
+
 /*
  * Die Zentrale funktion um das Snapping zu kontrollieren
  */
@@ -28,14 +31,16 @@ function Snapping()
 	 * Starts the ability to snapping
 	 */
 	this.init = function()
-	{
+	{		
         if(snapBool == false)
         {
+        	SnappingVar = 1;
             snapBool = true;
             snapping.setSnapping();
         }
         else
         {
+        	SnappingVar = 0;
             snapBool = false;
 
             //remove existing lines and Points
@@ -78,7 +83,7 @@ function Snapping()
 		var subject = new Subject();
 		
 		
-	    if(elementList.length != null)
+	    if(elementList.length != null && elementList.length > 1)
 	    { 	
 	    	for(var i = 0; i < elementList.length; i++)
 	    	{
@@ -110,50 +115,79 @@ function Snapping()
     			for(j = 0; j < postPoints.length; j++)
     			{
     				distance = myObj.myPoints[i].position.subtract(postPoints[j].position).length();
-					if(distance < 7) { snapTo(myObj, myObj.myPoints[i], postPoints[j], distance); }
+					if(distance < 7 && SnappingVar == 1) { snapTo(myObj, myObj.myPoints[i], postPoints[j], distance); }
     			}
     		}
 		};
 	}
 	
+	function matrixTransform(xM, yM, zM, x, y, z)
+	{
+		xA = (1 * x) + (0 * y) + (0 * z) + (1 * xM);
+		yA = (0 * x) + (1 * y) + (0 * z) + (1 * yM);
+		zA = (0 * x) + (0 * y) + (1 * z) + (1 * zM);
+	}
 	
 	/* Die Uebergebene Punkte werden verbundne */
 	function snapTo(myObj, myObjPoint, postObjPoint, distance)
     {    	
     	this.primitiveManager.highlightCurrentBoundingVolume(false);
     	
+    	
     	if(distance < 4.0)
     	{
+    		
+    		var postLokalPos = snapping.getPosition(postObjPoint.id);
+    		var post = primitiveManager.getPrimitiveByID(postObjPoint.objID);	
+			
+			myObj.setTranslation(postObjPoint.position.x + postLokalPos.x,
+				                 postObjPoint.position.y + postLokalPos.y,
+				                 postObjPoint.position.z + postLokalPos.z);
+				                 
+			myObj.rotationAngles.x = post.rotationAngles.x;
+			myObj.rotationAngles.y = post.rotationAngles.y;
+			myObj.rotationAngles.z = post.rotationAngles.z;
+
+				                 
+			//myObj.updateMatrixTransform();	
+    	}
+    	
+    	/*
+    	if(distance < 4.0)
+    	{
+    		var x, y, z;
     		var post = primitiveManager.getPrimitiveByID(postObjPoint.objID);
-			
-			//xt = postObjPoint.x + postObjPoint.xL;	//Welt und Lokalle Position werden addiert
-    		//yt = postObjPoint.y + postObjPoint.yL;
-    		//zt = postObjPoint.z + postObjPoint.zL; 
-			//myObj.setTranslation(xt, yt, zt);
-			
-			/*Translation auf das Element*/
-			//x = post.translation.x;
-    		//y = post.translation.y;
-    		//z = post.translation.z;
-    		
-    		x = postObjPoint.xL;
-    		y = postObjPoint.yL;
-    		z = postObjPoint.zL;
-			
-			myObj.setTranslation(x, y, z);
-    		
+
 			//Rotation anwenden
 			myObj.rotationAngles.x = post.rotationAngles.x;
 			myObj.rotationAngles.y = post.rotationAngles.y;
 			myObj.rotationAngles.z = post.rotationAngles.z;
 			myObj.updateMatrixTransform();
-			
-			xb = postObjPoint.tx + (2 * x);
-    		yb = postObjPoint.ty + (2 * y);
-    		zb = postObjPoint.tz + (2 * z);
-    		
-    		myObj.setTranslation(xb, yb, zb);
-    	}
+
+			x = primitiveManager.getPrimitiveByID(postObjPoint.objID);
+			console.log(x);
+			/*
+			if(postObjPoint.id == x.myPoints[0].id)
+			{
+				console.log("Punkt 1 " + x.myPoints[0].x);
+				myObj.translation.x = x.myPoints[0].x;
+				myObj.translation.y = x.myPoints[0].y;
+				myObj.translation.z = x.myPoints[0].z;
+			}
+			else if(postObjPoint.id == x.myPoints[1].id)
+			{
+				console.log("Punkt 2 " + x.myPoints[1].x);
+				myObj.translation.x = x.myPoints[1].x;
+				myObj.translation.y = x.myPoints[1].y;
+				myObj.translation.z = x.myPoints[1].z;
+			}
+			*/
+			//var trans = new x3dom.fields.SFVec3f(x, y, z);
+
+			//myObj.translation.x = postObjPoint.position.x;
+			//myObj.translation.y = postObjPoint.position.y;
+			//myObj.translation.z = postObjPoint.position.z;
+    	
     };
     
     this.getPrimitiveByID = function(id)
@@ -165,10 +199,15 @@ function Snapping()
             return null;
         }
     };
-	
+   	
     this.getPosition = function(pointID)
-    {  	
-        return x3dom.fields.SFVec3f.parse(document.getElementById(pointID).getAttribute('translation'));
+    {
+    	var temp;
+    	var createPointNormal = new CreatePointNormal();
+    	temp = createPointNormal.getPointComponent(pointID);
+    	
+    	return x3dom.fields.SFVec3f.parse(temp.getAttribute("translation"));
+        //return x3dom.fields.SFVec3f.parse(document.getElementById(pointID).getAttribute('translation'));
     };
     
 	this.getObjPointList = function()
